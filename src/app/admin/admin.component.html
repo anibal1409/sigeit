@@ -1,0 +1,40 @@
+<mat-drawer-container class="mat-drawer-container">
+    <mat-toolbar color="primary">
+        <button
+          mat-icon-button
+          class="example-icon"
+          aria-label="Example icon-button with menu icon"
+          (click)="drawer.toggle()"
+        >
+          <mat-icon>menu</mat-icon>
+        </button>
+        <span>{{title}}</span>
+        <span class="spacer"></span>
+      </mat-toolbar>
+  <mat-drawer mode="side" #drawer>
+    <div class="image-container">
+        <a
+          href="javascript:void(0)"
+          routerLink="/dashboard"
+          (click)="drawer.toggle()"
+        >
+          <img src="../../assets/Logo.png" alt="sss" />
+        </a>
+      </div>
+    <ul class="buttons-container">
+      <li
+        *ngFor="let option of optionList"
+        (click)="menuOption(option)"
+        href="javascript:void(0)"
+        (click)="drawer.toggle()"
+        class="button-item"
+        routerLinkActive="router-link-active"
+        [routerLink]="option.value"
+      >
+        <mat-icon class="button-icon">{{ option.icon }}</mat-icon>
+        <span>{{ option.name }}</span>
+      </li>
+    </ul>
+  </mat-drawer>
+  <router-outlet></router-outlet>
+</mat-drawer-container>
