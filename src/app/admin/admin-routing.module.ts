@@ -13,7 +13,6 @@ const routes: Routes = [
       { path: 'classrooms', component: WelcomeComponent },
       { path: 'careers', component: WelcomeComponent },
       { path: 'config', component: WelcomeComponent },
-      { path: 'dedications', component: WelcomeComponent },
       { path: 'departments', component: WelcomeComponent },
       { path: 'schools', component: WelcomeComponent },
       {

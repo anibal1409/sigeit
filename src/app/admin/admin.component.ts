@@ -40,11 +40,6 @@ export class AdminComponent {
       icon: 'settings',
     },
     {
-      name: 'Dedicaciones',
-      value: 'dedications',
-      icon: 'history_edu',
-    },
-    {
       name: 'Departamentos',
       value: 'departments',
       icon: 'apartment',
