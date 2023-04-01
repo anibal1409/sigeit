@@ -36,7 +36,7 @@ export class AdminComponent {
     },
     {
       name: 'Configuraciones',
-      value: 'config',
+      value: 'settings',
       icon: 'settings',
     },
     {
