@@ -1,0 +1,26 @@
+<div class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <span class="module-title">Usuarios</span>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <tecnops-table
+        emptyMessage="No hay usuarios para mostrar"
+        emptySearchMessage="Ningún usuario coincide con la busqueda"
+        (clickOption)="clickAction($event)"
+      ></tecnops-table>
+    </mat-card-content>
+  </mat-card>
+  <button
+    mat-fab
+    matTooltip="Agregar nuevo usuario"
+    color="accent"
+    aria-label="Agregar nuevo usuario"
+    class="btn-fixed"
+    (click)="showModal()"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
