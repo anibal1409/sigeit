@@ -5,17 +5,29 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { WelcomeComponent } from './repositories/welcome/welcome.component';
-import { SubjectsComponent } from './repositories/subjects/subjects.component';
-import { ClassroomsComponent } from './repositories/classrooms/classrooms.component';
-import { CareersComponent } from './repositories/careers/careers.component';
-import { SettingsComponent } from './repositories/settings/settings.component';
-import { DepartmentsComponent } from './repositories/departments/departments.component';
-import { SchoolsComponent } from './repositories/schools/schools.component';
-import { PeriodsComponent } from './repositories/periods/periods.component';
-import { TeachersComponent } from './repositories/teachers/teachers.component';
+import { SubjectsModule } from './repositories/subjects/subjects.module';
+import { ClassroomsModule } from './repositories/classrooms/classrooms.module';
+import { CareersModule } from './repositories/careers/careers.module';
+import { SettingsModule } from './repositories/settings/settings.module';
+import { DepartmentsModule } from './repositories/departments/departments.module';
+import { SchoolsModule } from './repositories/schools/schools.module';
+import { PeriodsModule } from './repositories/periods/periods.module';
+import { TeachersModule } from './repositories/teachers/teachers.module';
 @NgModule({
-  declarations: [AppComponent, WelcomeComponent, SubjectsComponent, ClassroomsComponent, CareersComponent, SettingsComponent, DepartmentsComponent, SchoolsComponent, PeriodsComponent, TeachersComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule],
+  declarations: [AppComponent, WelcomeComponent],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    SubjectsModule,
+    ClassroomsModule,
+    CareersModule,
+    SettingsModule,
+    DepartmentsModule,
+    SchoolsModule,
+    PeriodsModule,
+    TeachersModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
