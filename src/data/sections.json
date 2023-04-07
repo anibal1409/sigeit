@@ -1,0 +1,10 @@
+[{
+    "id": null,
+    "id_signature":null,
+    "id_teacher": null,
+    "id_classroom": null,
+    "id_period":null,
+    "section_name": null,
+    "status": true,
+    "capacity": 30
+}]

@@ -1,0 +1,830 @@
+[
+  {
+    "id": 0,
+    "code": "021111",
+    "name": "Extraacadémica",
+    "credits": 1,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 1,
+    "code": "061013",
+    "name": "Comprensión y expresión Lingüística I",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 2,
+    "code": "071823",
+    "name": "Inglés Instrumental",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 3,
+    "code": "081814",
+    "name": "Matemáticas I",
+    "credits": 4,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 4,
+    "code": "091012",
+    "name": "Desarrollo de Destrezas para el Aprendizaje",
+    "credits": 2,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 5,
+    "code": "101214",
+    "name": "Química General",
+    "credits": 4,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 6,
+    "code": "0151111",
+    "name": "Extraacadémica (Deportiva)",
+    "credits": 1,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 7,
+    "code": "051324",
+    "name": "Física I",
+    "credits": 4,
+    "hours": 0,
+    "prerequisites": ["081814"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 8,
+    "code": "061023",
+    "name": "Comprensión y expresión Lingüística II",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["061013"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 9,
+    "code": "071121",
+    "name": "Inglés Técnico I",
+    "credits": 1,
+    "hours": 0,
+    "prerequisites": ["0071823"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 10,
+    "code": "081824",
+    "name": "Matemáticas II",
+    "credits": 4,
+    "hours": 0,
+    "prerequisites": ["0081814"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 11,
+    "code": "0721162",
+    "name": "Introducción a la Lógica Formal y Algoritmos",
+    "credits": 2,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 11,
+    "code": "0721162",
+    "name": "Introducción a la Lógica Formal y Algoritmos",
+    "credits": 2,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 12,
+    "code": "052131",
+    "name": "Laboratorio de Física I",
+    "credits": 1,
+    "hours": 0,
+    "prerequisites": ["0051324"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 13,
+    "code": "052134",
+    "name": "Física II",
+    "credits": 4,
+    "hours": 0,
+    "prerequisites": ["0051324"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 14,
+    "code": "082814",
+    "name": "Matemáticas III",
+    "credits": 4,
+    "hours": 0,
+    "prerequisites": ["0081824"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 15,
+    "code": "0712642",
+    "name": "Introducción a la Ingeniería de Sistemas",
+    "credits": 2,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 16,
+    "code": "0722103",
+    "name": "Programación Orientada a Objetos",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0081824", "0721162"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 17,
+    "code": "0722111",
+    "name": "Taller de Programación Orientada a Objetos",
+    "credits": 1,
+    "hours": 0,
+    "prerequisites": ["0721162"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 18,
+    "code": "073023",
+    "name": "Metodología de la Investigación",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 19,
+    "code": "082824",
+    "name": "Matemáticas IV",
+    "credits": 4,
+    "hours": 0,
+    "prerequisites": ["0082814"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 20,
+    "code": "0623313",
+    "name": "Estadística I",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0082814"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 21,
+    "code": "0712142",
+    "name": "Introducción a la Economía",
+    "credits": 2,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 22,
+    "code": "0722123",
+    "name": "Objetos y Abstracción de Datos",
+    "credits": 2,
+    "hours": 0,
+    "prerequisites": ["0722103", "0722111"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 23,
+    "code": "0722123",
+    "name": "Taller de Objetos y Abstracción de Datos",
+    "credits": 1,
+    "hours": 0,
+    "prerequisites": ["0722111"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 24,
+    "code": "0624622",
+    "name": "Estadística II",
+    "credits": 2,
+    "hours": 0,
+    "prerequisites": ["0623313"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 25,
+    "code": "0713122",
+    "name": "Inferencia y Diseño de Experimentos",
+    "credits": 2,
+    "hours": 0,
+    "prerequisites": ["0623313"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 26,
+    "code": "0713172",
+    "name": "Sistemas de Costo",
+    "credits": 2,
+    "hours": 0,
+    "prerequisites": ["0712142"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 27,
+    "code": "0713463",
+    "name": "Circuitos y Sistemas",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0052134", "082824"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 28,
+    "code": "0713632",
+    "name": "Teoría de Sistemas",
+    "credits": 2,
+    "hours": 0,
+    "prerequisites": ["0712642"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 29,
+    "code": "0713643",
+    "name": "Sistemas de Operación",
+    "credits": 2,
+    "hours": 0,
+    "prerequisites": ["0722123"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 30,
+    "code": "0723913",
+    "name": "Métodos Numéricos",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0082824", "0722103"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 31,
+    "code": "0713113",
+    "name": "Economía de Empresas",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0713172"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 32,
+    "code": "0713622",
+    "name": "Administración de Sistemas de Base de Datos",
+    "credits": 2,
+    "hours": 0,
+    "prerequisites": ["0713643"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 33,
+    "code": "0713633",
+    "name": "Enfoque Sistémico",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0713632"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 34,
+    "code": "0713653",
+    "name": "Análisis de Decisiones",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0713122"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 35,
+    "code": "0713663",
+    "name": "Optimización de Operaciones",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0723913"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 36,
+    "code": "0723533",
+    "name": "Electrónica",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0713463"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 37,
+    "code": "0714153",
+    "name": "Preparación, Evaluación y Control de Proyectos",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0713113"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 38,
+    "code": "0714323",
+    "name": "Preparación, Evaluación y Control de Proyectos",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0713622"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 39,
+    "code": "0714633",
+    "name": "Modelos de Operaciones I",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0713663"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 40,
+    "code": "0714643",
+    "name": "Sistemas Dinámicos",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0723533"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 41,
+    "code": "0724641",
+    "name": "Laboratorio de Circuitos y Electrónica",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0723533"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 42,
+    "code": "0625613",
+    "name": "Administración Financiera de Empresas",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0713113"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 43,
+    "code": "0714123",
+    "name": "Gestión Empresarial I",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0714153"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 44,
+    "code": "0714133",
+    "name": "Modelos de Operaciones II",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0714633"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 44,
+    "code": "0714612",
+    "name": "Aplicación y Auditoría de Sistemas de Información",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0714323"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 45,
+    "code": "0714642",
+    "name": "Sistemas de Comunicacion Industrial",
+    "credits": 2,
+    "hours": 0,
+    "prerequisites": ["0713622"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 46,
+    "code": "0625822",
+    "name": "Leyes y Deontología",
+    "credits": 2,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 47,
+    "code": "0715112",
+    "name": "Planificación Estratégica",
+    "credits": 2,
+    "hours": 0,
+    "prerequisites": ["0714123"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 48,
+    "code": "0715116",
+    "name": "Trabajo de Grado",
+    "credits": 6,
+    "hours": 0,
+    "prerequisites": ["0714133", "0715112"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 49,
+    "code": "0214100",
+    "name": "Servicio Comunitario",
+    "credits": 100,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 49,
+    "code": "9099999",
+    "name": "Áreas de Grado",
+    "credits": 6,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 50,
+    "code": "0714303",
+    "name": "Programación No Lineal",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0713663"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 51,
+    "code": "0714353",
+    "name": "Problemas y Proyectos Especiales",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 52,
+    "code": "0714643",
+    "name": "Sistemas de Control Discreto",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0714643"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 53,
+    "code": "0714373",
+    "name": "Instrumentación y Control de Procesos",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0714363"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 54,
+    "code": "0714383",
+    "name": "Procesos Estocásticos",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0713122"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 55,
+    "code": "0714393",
+    "name": "Teoría de Colas",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0714383"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 56,
+    "code": "0714903",
+    "name": "Teoría de Sobrevivencia",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0714383"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 57,
+    "code": "0714933",
+    "name": "Seminario de Ingeniería de Sistemas",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0713633"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 58,
+    "code": "0714943",
+    "name": "Sistemología Interpretativa",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0713633"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 59,
+    "code": "0714953",
+    "name": "Dinámica de Sistemas",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0714643"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 60,
+    "code": "0714963",
+    "name": "Sistemas Inteligentes",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0714323", "0714612"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 61,
+    "code": "0714973",
+    "name": "Gestión Empresarial II",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0714123"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 62,
+    "code": "0714983",
+    "name": "Cuadro de Mando Integral",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0715112"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 63,
+    "code": "0714993",
+    "name": "Simulación de Sistemas",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 64,
+    "code": "0715123",
+    "name": "Gerencia de Mantenimiento",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 65,
+    "code": "0715333",
+    "name": "Gerencia Logística",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0714133"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 66,
+    "code": "0715903",
+    "name": "Sistemas de Control de Espacios de Estado",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0714363"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 67,
+    "code": "0715933",
+    "name": "Control de Proyectos",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0714153"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 68,
+    "code": "0715943",
+    "name": "Comportamiento Organizacional",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0714973"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 69,
+    "code": "0715953",
+    "name": "Administración de Recursos Humanos",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0714123"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 70,
+    "code": "0715963",
+    "name": "Dirección de Operaciones",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0714633"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 71,
+    "code": "0723123",
+    "name": "Estructura de Datos",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0722123"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 71,
+    "code": "0723131",
+    "name": "Taller de Estructura de Datos",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0722131"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 72,
+    "code": "0723373",
+    "name": "Lenguaje de Programación",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0723123"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 73,
+    "code": "0724713",
+    "name": "Desarrollo de Software",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": ["0714612"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 74,
+    "code": "061183",
+    "name": "Etica",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 75,
+    "code": "061222",
+    "name": "Historia de la Cultura",
+    "credits": 2,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 76,
+    "code": "061822",
+    "name": "Sexología Básica",
+    "credits": 2,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 76,
+    "code": "061922",
+    "name": "Expresión Oral y Escrita",
+    "credits": 2,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 77,
+    "code": "062032",
+    "name": "Expresión Escrita",
+    "credits": 2,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 78,
+    "code": "062052",
+    "name": "Dinámica de Grupos",
+    "credits": 2,
+    "hours": 0,
+    "prerequisites": ["0061013"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 79,
+    "code": "062122",
+    "name": "Comunicación y Sociedad",
+    "credits": 2,
+    "hours": 0,
+    "prerequisites": ["0061013"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 80,
+    "code": "071112",
+    "name": "Inglés Instrumental I",
+    "credits": 2,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 81,
+    "code": "071222",
+    "name": "Inglés Instrumental II",
+    "credits": 2,
+    "hours": 0,
+    "prerequisites": ["0071112"],
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 82,
+    "code": "0112832",
+    "name": "Grupo y Liderazgo",
+    "credits": 2,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 83,
+    "code": "0112943",
+    "name": "Introducción a la Filosofía de la Ciencia",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 84,
+    "code": "0113053",
+    "name": "Dirección de Reuniones",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 85,
+    "code": "0113183",
+    "name": "Sociología Urbana",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  },
+  {
+    "id": 86,
+    "code": "9032242",
+    "name": "Educación Ambiental",
+    "credits": 3,
+    "hours": 0,
+    "prerequisites": null,
+    "pensum_type": "NEW"
+  }
+]

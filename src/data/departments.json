@@ -1,0 +1,20 @@
+[
+  {
+    "id": 0,
+    "name": "Departamento de Ingeniería de Sistemas",
+    "description": "",
+    "status": true,
+    "logo": "",
+    "acronym": "DIS",
+    "id_school": 0
+  },
+  {
+    "id": 1,
+    "name": "Departamento de Ciencias Sociales y Sociohumanisticas",
+    "description": "",
+    "status": true,
+    "logo": "",
+    "acronym": "DCSS",
+    "id_school": 0 
+  }
+]
