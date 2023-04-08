@@ -1,29 +1,38 @@
 [
   {
-    "id": 0,
-    "name": "Departamento de Ingeniería de Sistemas",
+    "id": 1,
+    "name": "Ingeniería de Sistemas",
     "description": "",
     "status": true,
     "logo": "",
     "abbreviation": "DIS",
-    "id_school": 0
+    "id_school": 1
   },
   {
-    "id": 1,
-    "name": "Departamento de Ciencias Sociales y Sociohumanisticas",
+    "id": 2,
+    "name": "Ingeniería de Petroleo",
+    "description": "",
+    "status": true,
+    "logo": "",
+    "abbreviation": "DIP",
+    "id_school": 1
+  },
+  {
+    "id": 3,
+    "name": "Ciencias Sociales y Sociohumanisticas",
     "description": "",
     "status": true,
     "logo": "",
     "abbreviation": "DCSS",
-    "id_school": 0 
+    "id_school": 2
   },
   {
-    "id": 2,
-    "name": "Departamento de Ciencias y Humanidades",
+    "id": 4,
+    "name": "Ciencias y Humanidades",
     "description": "",
     "status": true,
     "logo": "",
     "abbreviation": "DCH",
-    "id_school": 1 
+    "id_school": 2
   }
 ]
