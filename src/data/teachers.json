@@ -2,8 +2,8 @@
   {
     "id": 0,
     "id_document": 11602609,
-    "firstName": "Yazmin Del Valle",
-    "lastName": "Sieiro Patete",
+    "first_name": "Yazmin Del Valle",
+    "last_name": "Sieiro Patete",
     "status": true,
     "email": "ysieiro@gmail.com",
     "id_department": 0
@@ -11,8 +11,8 @@
   {
     "id": 1,
     "id_document": 14422263,
-    "firstName": "Rogel Francisco",
-    "lastName": "Avila",
+    "first_name": "Rogel Francisco",
+    "last_name": "Avila",
     "status": true,
     "email": "ravila@gmail.com",
     "id_department": 0
@@ -20,8 +20,8 @@
   {
     "id": 2,
     "id_document": 23539583,
-    "firstName": "Anibal",
-    "lastName": "Fariñas",
+    "first_name": "Anibal",
+    "last_name": "Fariñas",
     "status": true,
     "email": "afarinas@gmail.com",
     "id_department": 0
@@ -29,8 +29,8 @@
   {
     "id": 3,
     "id_document": 18678044,
-    "firstName": "Yoelys Eugenia",
-    "lastName": "Monrroy Monasterio",
+    "first_name": "Yoelys Eugenia",
+    "last_name": "Monrroy Monasterio",
     "status": true,
     "email": "ymonrroy@gmail.com",
     "id_department": 0
@@ -38,8 +38,8 @@
   {
     "id": 4,
     "id_document": 16573748,
-    "firstName": "Glorimar Vickarin",
-    "lastName": "Aponte Gonzalez",
+    "first_name": "Glorimar Vickarin",
+    "last_name": "Aponte Gonzalez",
     "status": true,
     "email": "agonzales@gmail.com",
     "id_department": 0
@@ -47,8 +47,8 @@
   {
     "id": 5,
     "id_document": 22718808,
-    "firstName": "Angel Rafael",
-    "lastName": "Dennys Mejias",
+    "first_name": "Angel Rafael",
+    "last_name": "Dennys Mejias",
     "status": true,
     "email": "dmejias@gmail.com",
     "id_department": 0
@@ -56,8 +56,8 @@
   {
     "id": 6,
     "id_document": 11383348,
-    "firstName": "Frank Ramon",
-    "lastName": "Diaz Barreto",
+    "first_name": "Frank Ramon",
+    "last_name": "Diaz Barreto",
     "status": true,
     "email": "fdiaz@gmail.com",
     "id_department": 0
@@ -65,8 +65,8 @@
   {
     "id": 7,
     "id_document": 11777433,
-    "firstName": "Orlando",
-    "lastName": "Sevilla",
+    "first_name": "Orlando",
+    "last_name": "Sevilla",
     "status": true,
     "email": "osevilla@gmail.com",
     "id_department": 0
@@ -74,8 +74,8 @@
   {
     "id": 8,
     "id_document": 11899365,
-    "firstName": "Harry Edgard",
-    "lastName": "Coa Hurtado",
+    "first_name": "Harry Edgard",
+    "last_name": "Coa Hurtado",
     "status": true,
     "email": "hcoa@gmail.com",
     "id_department": 0
@@ -83,8 +83,8 @@
   {
     "id": 9,
     "id_document": 13894293,
-    "firstName": "Sorelis",
-    "lastName": "Gómez Benavidez",
+    "first_name": "Sorelis",
+    "last_name": "Gómez Benavidez",
     "status": true,
     "email": "sgomez@gmail.com",
     "id_department": 0
@@ -92,8 +92,8 @@
   {
     "id": 10,
     "id_document": 19080588,
-    "firstName": "Jose Aly",
-    "lastName": "Jimenez Angulo",
+    "first_name": "Jose Aly",
+    "last_name": "Jimenez Angulo",
     "status": true,
     "email": "jjimenez@gmail.com",
     "id_department": 0
@@ -101,8 +101,8 @@
   {
     "id": 11,
     "id_document": 16199486,
-    "firstName": "Yeisland Carolina",
-    "lastName": "Rodriguez Villasmil",
+    "first_name": "Yeisland Carolina",
+    "last_name": "Rodriguez Villasmil",
     "status": true,
     "email": "yrodriguez@gmail.com",
     "id_department": 0
@@ -110,8 +110,8 @@
   {
     "id": 12,
     "id_document": 8353569,
-    "firstName": "Norberto",
-    "lastName": "Díaz",
+    "first_name": "Norberto",
+    "last_name": "Díaz",
     "status": true,
     "email": "ndiaz@gmail.com",
     "id_department": 0
@@ -119,8 +119,8 @@
   {
     "id": 13,
     "id_document": 17779509,
-    "firstName": "Cesar Omar",
-    "lastName": "Estaba Hernandez",
+    "first_name": "Cesar Omar",
+    "last_name": "Estaba Hernandez",
     "status": true,
     "email": "cestaba@gmail.com",
     "id_department": 0
@@ -129,8 +129,8 @@
   {
     "id": 14,
     "id_document": 22718998,
-    "firstName": "Simon Jose",
-    "lastName": "Farias Moreno",
+    "first_name": "Simon Jose",
+    "last_name": "Farias Moreno",
     "status": true,
     "email": "sfarias@gmail.com",
     "id_department": 0
@@ -138,128 +138,128 @@
   {
     "id": 15,
     "id_document": 22718998,
-    "firstName": "Simon Jose",
-    "lastName": "Farias Moreno",
+    "first_name": "Simon Jose",
+    "last_name": "Farias Moreno",
     "status": true,
     "email": "sfarias@gmail.com",
     "id_department": 0
   } ,{
     "id": 16,
     "id_document": 24213400,
-    "firstName": "Alex Beatriz",
-    "lastName": "Donado Madera",
+    "first_name": "Alex Beatriz",
+    "last_name": "Donado Madera",
     "status": true,
     "email": "adonado@gmail.com",
     "id_department": 0
   },{
     "id": 17,
     "id_document": 16381717,
-    "firstName": "Anakarina",
-    "lastName": "Garcia",
+    "first_name": "Anakarina",
+    "last_name": "Garcia",
     "status": true,
     "email": "agarcia@gmail.com",
     "id_department": 0
   },{
     "id": 18,
     "id_document": 12340346,
-    "firstName": "Yamila Aurora",
-    "lastName": "Gascon Mujica",
+    "first_name": "Yamila Aurora",
+    "last_name": "Gascon Mujica",
     "status": true,
     "email": "ygascon@gmail.com",
     "id_department": 0
   },{
     "id": 19,
     "id_document": 11007489,
-    "firstName": "Freddy Jose",
-    "lastName": "Gonzalez Perez",
+    "first_name": "Freddy Jose",
+    "last_name": "Gonzalez Perez",
     "status": true,
     "email": "fgonzales@gmail.com",
     "id_department": 0
   },{
     "id": 20,
     "id_document": 21134341,
-    "firstName": "Heickel Anthony",
-    "lastName": "Loreto Blanco",
+    "first_name": "Heickel Anthony",
+    "last_name": "Loreto Blanco",
     "status": true,
     "email": "hloreto@gmail.com",
     "id_department": 0
   },{
     "id": 21,
     "id_document": 16816960,
-    "firstName": "Jose Del Valle",
-    "lastName": "Navarro Gutierrez",
+    "first_name": "Jose Del Valle",
+    "last_name": "Navarro Gutierrez",
     "status": true,
     "email": "jnavarro@gmail.com",
     "id_department": 0
   },{
     "id": 22,
     "id_document": 8287283,
-    "firstName": "Juan",
-    "lastName": "Oliveira",
+    "first_name": "Juan",
+    "last_name": "Oliveira",
     "status": true,
     "email": "joliveira@gmail.com",
     "id_department": 0
   },{
     "id": 23,
     "id_document": 14009373,
-    "firstName": "Alba Rocio",
-    "lastName": "Ortiz Suarez",
+    "first_name": "Alba Rocio",
+    "last_name": "Ortiz Suarez",
     "status": true,
     "email": "aortiz@gmail.com",
     "id_department": 0
   },{
     "id": 24,
     "id_document": 9895259,
-    "firstName": "Beatriz",
-    "lastName": "Pérez",
+    "first_name": "Beatriz",
+    "last_name": "Pérez",
     "status": true,
     "email": "bperez@gmail.com",
     "id_department": 0
   },{
     "id": 25,
     "id_document": 8929986,
-    "firstName": "Maria Elena",
-    "lastName": "Pinto Rodriguez",
+    "first_name": "Maria Elena",
+    "last_name": "Pinto Rodriguez",
     "status": true,
     "email": "mpinto@gmail.com",
     "id_department": 0
   },{
     "id": 26,
     "id_document": 12113136,
-    "firstName": "Mario Alexander",
-    "lastName": "Silva Huerta",
+    "first_name": "Mario Alexander",
+    "last_name": "Silva Huerta",
     "status": true,
     "email": "msilva@gmail.com",
     "id_department": 0
   },{
     "id": 27,
     "id_document": 8277843,
-    "firstName": "Francys María",
-    "lastName": "Tononi Mendoza",
+    "first_name": "Francys María",
+    "last_name": "Tononi Mendoza",
     "status": true,
     "email": "ftononi@gmail.com",
     "id_department": 0
   },{
     "id": 28,
     "id_document": 14284846,
-    "firstName": "Nelsy Emilia",
-    "lastName": "Vivenes Ortiz",
+    "first_name": "Nelsy Emilia",
+    "last_name": "Vivenes Ortiz",
     "status": true,
     "email": "nvivenes@gmail.com",
     "id_department": 0
   },{
     "id": 29,
     "id_document": 8965229,
-    "firstName": "Abdelnaser",
-    "lastName": "Yordi",
+    "first_name": "Abdelnaser",
+    "last_name": "Yordi",
     "status": true,
     "email": "ayordi@gmail.com",
     "id_department": 0
   },{
     "id": 30,
     "id_document": 15511946,
-    "firstName": "Marlene Alexandra",
-    "lastName": "Zerpa Zerpa",
+    "first_name": "Marlene Alexandra",
+    "last_name": "Zerpa Zerpa",
     "status": true,
     "email": "mzerpa@gmail.com",
     "id_department": 0

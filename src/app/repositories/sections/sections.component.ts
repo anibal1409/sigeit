@@ -11,9 +11,14 @@ import {
 } from '@angular/forms';
 
 import { Subscription } from 'rxjs';
+import {
+  TableDataVM,
+  TableService,
+} from 'src/app/common';
 
 import { DepartmentVM } from '../departments';
 import { SubjectVM } from '../subjects/model';
+import { SectionVM } from './model';
 import { SectionsService } from './sections.service';
 
 interface SemesterVM { id: number, name: string };
@@ -21,10 +26,9 @@ interface SemesterVM { id: number, name: string };
 @Component({
   selector: 'app-sections',
   templateUrl: './sections.component.html',
-  styleUrls: ['./sections.component.scss']
+  styleUrls: ['./sections.component.scss'],
 })
 export class SectionsComponent implements OnInit, OnDestroy {
-
   form!: FormGroup;
 
   myControl = new FormControl('');
@@ -89,11 +93,52 @@ export class SectionsComponent implements OnInit, OnDestroy {
     },
   ];
 
+  sectionsData: TableDataVM<SectionVM> = {
+    headers: [
+      {
+        columnDef: 'section_name',
+        header: 'Nombre',
+        cell: (element: { [key: string]: string }) =>
+          `${element['section_name']}`,
+      },
+      {
+        columnDef: 'id_subject',
+        header: 'Asignatura',
+        cell: (element: { [key: string]: string }) =>
+          `${element['id_subject']}`,
+      },
+      {
+        columnDef: 'id_period',
+        header: 'Periodo',
+        cell: (element: { [key: string]: string }) => `${element['id_period']}`,
+      },
+      {
+        columnDef: 'id_teacher',
+        header: 'Profesor',
+        cell: (element: { [key: string]: string }) =>
+          `${element['id_teacher']}`,
+      },
+      {
+        columnDef: 'status',
+        header: 'Estatus',
+        cell: (element: { [key: string]: string }) => `${element['status']}`,
+      },
+      {
+        columnDef: 'capacity',
+        header: 'Capacidad',
+        cell: (element: { [key: string]: string }) => `${element['capacity']}`,
+      },
+    ],
+    body: [],
+    options: [],
+  };
+
   private sub$ = new Subscription();
 
   constructor(
     private sectionsService: SectionsService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private tableService: TableService
   ) { }
 
   ngOnDestroy(): void {
@@ -156,4 +201,28 @@ export class SectionsComponent implements OnInit, OnDestroy {
   //   return this.options.filter(option => option.toLowerCase().includes(filterValue));
   // }
 
+
+
+  // ngOnInit(): void {
+  //   this.sub$.add(
+  //     this.httpClient
+  //       .get<SectionVM[]>('../../../data/sections.json')
+  //       .subscribe((sections) => {
+  //         this.sectionsData = {
+  //           ...this.sectionsData,
+  //           body: sections || [],
+  //         };
+  //         this.sectionsData.body = this.sectionsData.body.map((data) =>
+  //           data['status'] == true
+  //             ? { ...data, status: 'Activo' }
+  //             : { ...data, status: 'Inactivo' }
+  //         );
+  //         this.tableService.setData(this.sectionsData);
+  //       })
+  //   );
+  // }
+
+  // ngOnDestroy(): void {
+  //   this.sub$.unsubscribe();
+  // }
 }

@@ -3,7 +3,7 @@ export interface TeacherVM {
   id_document: number;
   first_name: string;
   last_name: string;
-  status: boolean;
+  status: boolean | string;
   email: string;
   id_department: number;
 }

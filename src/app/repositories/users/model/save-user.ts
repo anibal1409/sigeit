@@ -7,5 +7,5 @@ export interface SaveUser {
   role?: string;
   permissions: [any];
   birthday_date: Date | string;
-  status: boolean;
+  status: boolean | string;
 }

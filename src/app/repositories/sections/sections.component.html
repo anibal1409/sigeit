@@ -1,3 +1,4 @@
+
 <form [formGroup]="form!" >
   <div class="row">
     <div class="col-md-4 col-12">
@@ -62,3 +63,25 @@
   </div>
 
 </form>
+
+<div class="container">
+    <mat-card>
+      <mat-card-header>
+      </mat-card-header>
+      <mat-card-content>
+        <sigeit-table
+          emptyMessage="No hay secciones para mostrar"
+        ></sigeit-table>
+      </mat-card-content>
+    </mat-card>
+    <button
+      mat-fab
+      matTooltip="Agregar seccion"
+      color="primary"
+      aria-label="Agregar seccion"
+      class="btn-fixed"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+

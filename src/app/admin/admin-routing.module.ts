@@ -44,7 +44,13 @@ const routes: Routes = [
             (m) => m.DepartmentsModule
           ),
       },
-      { path: 'schools', component: WelcomeComponent },
+      {
+        path: 'schools',
+        loadChildren: () =>
+          import('../repositories/schools/schools.module').then(
+            (m) => m.SchoolsModule
+          ),
+      },
       {
         path: 'scheludes',
         loadChildren: () =>

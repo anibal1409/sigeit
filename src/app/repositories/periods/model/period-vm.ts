@@ -7,5 +7,5 @@ export interface PeriodVM {
   end_time: Date | string;
   interval: Date | string | number;
   block: Date | string | number;
-  status: boolean;
+  status: boolean | string;
 }

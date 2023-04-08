@@ -289,3 +289,8 @@ body {
 .mdc-dialog__container {
   min-width: 678px !important;
 }
+.btn-fixed {
+  position: fixed !important;
+  bottom: 2rem;
+  right: 2rem;
+}
