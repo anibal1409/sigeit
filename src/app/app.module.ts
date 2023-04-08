@@ -13,12 +13,14 @@ import { DepartmentsModule } from './repositories/departments/departments.module
 import { SchoolsModule } from './repositories/schools/schools.module';
 import { PeriodsModule } from './repositories/periods/periods.module';
 import { TeachersModule } from './repositories/teachers/teachers.module';
+import { AuthModule } from './auth/auth.module';
 @NgModule({
   declarations: [AppComponent, WelcomeComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    AuthModule,
     SubjectsModule,
     ClassroomsModule,
     CareersModule,

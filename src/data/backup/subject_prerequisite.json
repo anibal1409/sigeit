@@ -1,0 +1,497 @@
+[
+  {
+    "id": 0,
+    "subject_id": 0,
+    "prerequisite_id": null
+  },
+  {
+    "id": 1,
+    "subject_id": 1,
+    "prerequisite_id": null
+  },
+  {
+    "id": 2,
+    "subject_id": 2,
+    "prerequisite_id": null
+  },
+  {
+    "id": 3,
+    "subject_id": 3,
+    "prerequisite_id": null
+  },
+  {
+    "id": 4,
+    "subject_id": 4,
+    "prerequisite_id": null
+  },
+  {
+    "id": 5,
+    "subject_id": 5,
+    "prerequisite_id": null
+  },
+  {
+    "id": 6,
+    "subject_id": 6,
+    "prerequisite_id": null
+  },
+  {
+    "id": 7,
+    "subject_id": 7,
+    "prerequisite_id": 3
+  },
+  {
+    "id": 8,
+    "subject_id": 8,
+    "prerequisite_id": 1
+  },
+  {
+    "id": 9,
+    "subject_id": 9,
+    "prerequisite_id": 2
+  },
+  {
+    "id": 10,
+    "subject_id": 10,
+    "prerequisite_id": 3
+  },
+  {
+    "id": 11,
+    "subject_id": 11,
+    "prerequisite_id": null
+  },
+  {
+    "id": 12,
+    "subject_id": 12,
+    "prerequisite_id": 7
+  },
+  {
+    "id": 13,
+    "subject_id": 13,
+    "prerequisite_id": 7
+  },
+  {
+    "id": 14,
+    "subject_id": 14,
+    "prerequisite_id": 10
+  },
+  {
+    "id": 15,
+    "subject_id": 15,
+    "prerequisite_id": null
+  },
+  {
+    "id": 16,
+    "subject_id": 16,
+    "prerequisite_id": 10
+  },
+  {
+    "id": 17,
+    "subject_id": 16,
+    "prerequisite_id": 11
+  },
+  {
+    "id": 18,
+    "subject_id": 17,
+    "prerequisite_id": 11
+  },
+  {
+    "id": 19,
+    "subject_id": 18,
+    "prerequisite_id": null
+  },
+  {
+    "id": 20,
+    "subject_id": 19,
+    "prerequisite_id": 14
+  },
+  {
+    "id": 21,
+    "subject_id": 20,
+    "prerequisite_id": 14
+  },
+  {
+    "id": 22,
+    "subject_id": 21,
+    "prerequisite_id": null
+  },
+  {
+    "id": 23,
+    "subject_id": 22,
+    "prerequisite_id": 16
+  },
+  {
+    "id": 24,
+    "subject_id": 22,
+    "prerequisite_id": 17
+  },
+  {
+    "id": 25,
+    "subject_id": 23,
+    "prerequisite_id": 17
+  },
+  {
+    "id": 26,
+    "subject_id": 24,
+    "prerequisite_id": 20
+  },
+  {
+    "id": 27,
+    "subject_id": 25,
+    "prerequisite_id": 20
+  },
+  {
+    "id": 28,
+    "subject_id": 26,
+    "prerequisite_id": 21
+  },
+  {
+    "id": 29,
+    "subject_id": 27,
+    "prerequisite_id": 13
+  },
+  {
+    "id": 30,
+    "subject_id": 27,
+    "prerequisite_id": 19
+  },
+  {
+    "id": 31,
+    "subject_id": 28,
+    "prerequisite_id": 15
+  },
+  {
+    "id": 32,
+    "subject_id": 29,
+    "prerequisite_id": 22
+  },
+  {
+    "id": 33,
+    "subject_id": 30,
+    "prerequisite_id": 19
+  },
+  {
+    "id": 34,
+    "subject_id": 30,
+    "prerequisite_id": 16
+  },
+  {
+    "id": 35,
+    "subject_id": 31,
+    "prerequisite_id": 26
+  },
+  {
+    "id": 36,
+    "subject_id": 32,
+    "prerequisite_id": 29
+  },
+  {
+    "id": 37,
+    "subject_id": 33,
+    "prerequisite_id": 28
+  },
+  {
+    "id": 38,
+    "subject_id": 34,
+    "prerequisite_id": 25
+  },
+  {
+    "id": 39,
+    "subject_id": 35,
+    "prerequisite_id": 30
+  },
+  {
+    "id": 40,
+    "subject_id": 36,
+    "prerequisite_id": 27
+  },
+  {
+    "id": 41,
+    "subject_id": 37,
+    "prerequisite_id": 31
+  },
+  {
+    "id": 42,
+    "subject_id": 38,
+    "prerequisite_id": 32
+  },
+  {
+    "id": 43,
+    "subject_id": 39,
+    "prerequisite_id": 35
+  },
+  {
+    "id": 44,
+    "subject_id": 40,
+    "prerequisite_id": 36
+  },
+  {
+    "id": 45,
+    "subject_id": 41,
+    "prerequisite_id": 36
+  },
+  {
+    "id": 46,
+    "subject_id": 42,
+    "prerequisite_id": 31
+  },
+  {
+    "id": 47,
+    "subject_id": 43,
+    "prerequisite_id": 37
+  },
+  {
+    "id": 48,
+    "subject_id": 44,
+    "prerequisite_id": 39
+  },
+  {
+    "id": 49,
+    "subject_id": 45,
+    "prerequisite_id": 38
+  },
+  {
+    "id": 50,
+    "subject_id": 46,
+    "prerequisite_id": 32
+  },
+  {
+    "id": 51,
+    "subject_id": 47,
+    "prerequisite_id": null
+  },
+  {
+    "id": 52,
+    "subject_id": 48,
+    "prerequisite_id": 43
+  },
+  {
+    "id": 53,
+    "subject_id": 49,
+    "prerequisite_id": 44
+  },
+  {
+    "id": 54,
+    "subject_id": 49,
+    "prerequisite_id": 48
+  },
+  {
+    "id": 55,
+    "subject_id": 50,
+    "prerequisite_id": null
+  },
+  {
+    "id": 56,
+    "subject_id": 51,
+    "prerequisite_id": 44
+  },
+  {
+    "id": 57,
+    "subject_id": 51,
+    "prerequisite_id": 48
+  },
+  {
+    "id": 58,
+    "subject_id": 52,
+    "prerequisite_id": 35
+  },
+  {
+    "id": 59,
+    "subject_id": 53,
+    "prerequisite_id": null
+  },
+  {
+    "id": 60,
+    "subject_id": 54,
+    "prerequisite_id": 40
+  },
+  {
+    "id": 61,
+    "subject_id": 55,
+    "prerequisite_id": 54
+  },
+  {
+    "id": 62,
+    "subject_id": 56,
+    "prerequisite_id": 25
+  },
+  {
+    "id": 63,
+    "subject_id": 57,
+    "prerequisite_id": 56
+  },
+  {
+    "id": 64,
+    "subject_id": 58,
+    "prerequisite_id": 56
+  },
+  {
+    "id": 65,
+    "subject_id": 59,
+    "prerequisite_id": 33
+  },
+  {
+    "id": 66,
+    "subject_id": 60,
+    "prerequisite_id": 33
+  },
+  {
+    "id": 67,
+    "subject_id": 61,
+    "prerequisite_id": 40
+  },
+  {
+    "id": 68,
+    "subject_id": 62,
+    "prerequisite_id": 38
+  },
+  {
+    "id": 69,
+    "subject_id": 62,
+    "prerequisite_id": 45
+  },
+  {
+    "id": 70,
+    "subject_id": 63,
+    "prerequisite_id": 43
+  },
+  {
+    "id": 71,
+    "subject_id": 64,
+    "prerequisite_id": 48
+  },
+  {
+    "id": 72,
+    "subject_id": 65,
+    "prerequisite_id": null
+  },
+  {
+    "id": 73,
+    "subject_id": 66,
+    "prerequisite_id": null
+  },
+  {
+    "id": 74,
+    "subject_id": 67,
+    "prerequisite_id": 44
+  },
+  {
+    "id": 75,
+    "subject_id": 68,
+    "prerequisite_id": 54
+  },
+  {
+    "id": 76,
+    "subject_id": 69,
+    "prerequisite_id": 37
+  },
+  {
+    "id": 77,
+    "subject_id": 70,
+    "prerequisite_id": 63
+  },
+  {
+    "id": 78,
+    "subject_id": 71,
+    "prerequisite_id": 43
+  },
+  {
+    "id": 79,
+    "subject_id": 72,
+    "prerequisite_id": 39
+  },
+  {
+    "id": 80,
+    "subject_id": 73,
+    "prerequisite_id": 22
+  },
+  {
+    "id": 81,
+    "subject_id": 74,
+    "prerequisite_id": 12
+  },
+  {
+    "id": 82,
+    "subject_id": 75,
+    "prerequisite_id": 73
+  },
+  {
+    "id": 83,
+    "subject_id": 76,
+    "prerequisite_id": 45
+  },
+  {
+    "id": 84,
+    "subject_id": 77,
+    "prerequisite_id": null
+  },
+  {
+    "id": 85,
+    "subject_id": 78,
+    "prerequisite_id": null
+  },
+  {
+    "id": 86,
+    "subject_id": 79,
+    "prerequisite_id": null
+  },
+  {
+    "id": 87,
+    "subject_id": 80,
+    "prerequisite_id": null
+  },
+  {
+    "id": 88,
+    "subject_id": 81,
+    "prerequisite_id": null
+  },
+  {
+    "id": 89,
+    "subject_id": 82,
+    "prerequisite_id": 1
+  },
+  {
+    "id": 90,
+    "subject_id": 83,
+    "prerequisite_id": 1
+  },
+  {
+    "id": 91,
+    "subject_id": 84,
+    "prerequisite_id": null
+  },
+  {
+    "id": 92,
+    "subject_id": 85,
+    "prerequisite_id": 84
+  },
+  {
+    "id": 93,
+    "subject_id": 85,
+    "prerequisite_id": null
+  },
+  {
+    "id": 94,
+    "subject_id": 86,
+    "prerequisite_id": null
+  },
+  {
+    "id": 95,
+    "subject_id": 87,
+    "prerequisite_id": null
+  },
+  {
+    "id": 96,
+    "subject_id": 88,
+    "prerequisite_id": null
+  },
+  {
+    "id": 97,
+    "subject_id": 89,
+    "prerequisite_id": null
+  },
+  {
+    "id": 98,
+    "subject_id": 90,
+    "prerequisite_id": null
+  }
+]
