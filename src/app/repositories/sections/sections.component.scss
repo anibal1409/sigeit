@@ -1,4 +1,8 @@
-.container {
+:host {
+  mat-form-field {
+    width: 100%;
+  }
+  .container {
     padding: 1.5rem;
     box-sizing: border-box;
   }
@@ -19,3 +23,5 @@
       margin: 0.5rem;
     }
   }
+}
+

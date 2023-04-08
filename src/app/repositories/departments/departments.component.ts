@@ -1,8 +1,17 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { DepartmentVM } from './model';
-import { TableDataVM, TableService } from 'src/app/common';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+
 import { Subscription } from 'rxjs';
+import {
+  TableDataVM,
+  TableService,
+} from 'src/app/common';
+
+import { DepartmentsService } from './departments.service';
+import { DepartmentItemVM } from './model';
 
 @Component({
   selector: 'app-departments',
@@ -10,12 +19,13 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./departments.component.scss'],
 })
 export class DepartmentsComponent implements OnInit, OnDestroy {
+
   constructor(
-    private httpClient: HttpClient,
-    private tableService: TableService
+    private tableService: TableService,
+    private departmentsService: DepartmentsService,
   ) {}
 
-  departmentsData: TableDataVM<DepartmentVM> = {
+  departmentsData: TableDataVM<DepartmentItemVM> = {
     headers: [
       {
         columnDef: 'name',
@@ -31,7 +41,7 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
       {
         columnDef: 'id_school',
         header: 'Escuela',
-        cell: (element: { [key: string]: string }) => `${element['id_school']}`,
+        cell: (element: { [key: string]: string }) => `${(element['school'] as any)?.name}`,
       },
       {
         columnDef: 'status',
@@ -46,8 +56,8 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
   sub$ = new Subscription();
   ngOnInit(): void {
     this.sub$.add(
-      this.httpClient
-        .get<DepartmentVM[]>('../../../data/departments.json')
+      this.departmentsService
+        .getDepartments$()
         .subscribe((departments) => {
           this.departmentsData = {
             ...this.departmentsData,

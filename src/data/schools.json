@@ -1,6 +1,6 @@
 [
   {
-    "id": 0,
+    "id": 1,
     "name": "Escuela de Ingeniería y Ciencias Aplicadas",
     "description": "",
     "status": true,
@@ -8,7 +8,7 @@
     "abbreviation": "EICA"
   },
   {
-    "id": 1,
+    "id": 2,
     "name": "Escuela de Cursos Basicos",
     "description": "",
     "status": true,

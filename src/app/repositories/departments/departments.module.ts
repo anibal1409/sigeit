@@ -1,14 +1,17 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { DepartmentsRoutingModule } from './departments-routing.module';
-import { DepartmentsComponent } from './departments.component';
-import { DepartmentsService } from './departments.service';
-import { TableModule } from 'src/app/common';
+import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { HttpClientModule } from '@angular/common/http';
+
+import { TableModule } from 'src/app/common';
+
+import { GetSchoolsService } from '../schools';
+import { DepartmentsRoutingModule } from './departments-routing.module';
+import { DepartmentsComponent } from './departments.component';
+import { DepartmentsService } from './departments.service';
+import { GetDepartmentsService } from './use-cases';
 
 @NgModule({
   declarations: [DepartmentsComponent],
@@ -21,6 +24,10 @@ import { HttpClientModule } from '@angular/common/http';
     MatIconModule,
     MatButtonModule,
   ],
-  providers: [DepartmentsService],
+  providers: [
+    DepartmentsService,
+    GetSchoolsService,
+    GetDepartmentsService,
+  ],
 })
 export class DepartmentsModule {}
