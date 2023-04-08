@@ -7,7 +7,7 @@
     "hours": 0,
     "semester": 1,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 1,
@@ -17,7 +17,7 @@
     "hours": 0,
     "semester": 1,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 2,
@@ -27,7 +27,7 @@
     "hours": 0,
     "semester": 1,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 3,
@@ -37,7 +37,7 @@
     "hours": 0,
     "semester": 1,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 4,
@@ -47,7 +47,7 @@
     "hours": 0,
     "semester": 1,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 5,
@@ -57,7 +57,7 @@
     "hours": 0,
     "semester": 1,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 6,
@@ -67,7 +67,7 @@
     "hours": 0,
     "semester": 1,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 7,
@@ -77,7 +77,7 @@
     "hours": 0,
     "semester": 2,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 8,
@@ -87,7 +87,7 @@
     "hours": 0,
     "semester": 2,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 9,
@@ -97,7 +97,7 @@
     "hours": 0,
     "semester": 2,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 10,
@@ -107,7 +107,7 @@
     "hours": 0,
     "semester": 2,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 11,
@@ -117,7 +117,7 @@
     "hours": 0,
     "semester": 2,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
 
   {
@@ -128,7 +128,7 @@
     "hours": 0,
     "semester": 3,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 13,
@@ -138,7 +138,7 @@
     "hours": 0,
     "semester": 3,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 14,
@@ -148,7 +148,7 @@
     "hours": 0,
     "semester": 3,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 15,
@@ -158,7 +158,7 @@
     "hours": 0,
     "semester": 3,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 16,
@@ -168,7 +168,7 @@
     "hours": 0,
     "semester": 3,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 17,
@@ -178,7 +178,7 @@
     "hours": 0,
     "semester": 3,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 18,
@@ -188,7 +188,7 @@
     "hours": 0,
     "semester": 4,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 19,
@@ -198,7 +198,7 @@
     "hours": 0,
     "semester": 4,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 20,
@@ -208,7 +208,7 @@
     "hours": 0,
     "semester": 4,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 21,
@@ -218,7 +218,7 @@
     "hours": 0,
     "semester": 4,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 22,
@@ -228,7 +228,7 @@
     "hours": 0,
     "semester": 4,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 23,
@@ -238,7 +238,7 @@
     "hours": 0,
     "semester": 4,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 24,
@@ -248,7 +248,7 @@
     "hours": 0,
     "semester": 5,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 25,
@@ -258,7 +258,7 @@
     "hours": 0,
     "semester": 5,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 26,
@@ -268,7 +268,7 @@
     "hours": 0,
     "semester": 5,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 27,
@@ -278,7 +278,7 @@
     "hours": 0,
     "semester": 5,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 28,
@@ -288,7 +288,7 @@
     "hours": 0,
     "semester": 5,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 29,
@@ -298,7 +298,7 @@
     "hours": 0,
     "semester": 5,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 30,
@@ -308,7 +308,7 @@
     "hours": 0,
     "semester": 5,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 31,
@@ -318,7 +318,7 @@
     "hours": 0,
     "semester": 6,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 32,
@@ -328,7 +328,7 @@
     "hours": 0,
     "semester": 6,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 33,
@@ -338,7 +338,7 @@
     "hours": 0,
     "semester": 6,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 34,
@@ -348,7 +348,7 @@
     "hours": 0,
     "semester": 6,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 35,
@@ -358,7 +358,7 @@
     "hours": 0,
     "semester": 6,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 36,
@@ -368,7 +368,7 @@
     "hours": 0,
     "semester": 6,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 37,
@@ -378,7 +378,7 @@
     "hours": 0,
     "semester": 7,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 38,
@@ -388,7 +388,7 @@
     "hours": 0,
     "semester": 7,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 39,
@@ -398,7 +398,7 @@
     "hours": 0,
     "semester": 7,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 40,
@@ -408,7 +408,7 @@
     "hours": 0,
     "semester": 7,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 41,
@@ -418,7 +418,7 @@
     "hours": 0,
     "semester": 7,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 42,
@@ -428,7 +428,7 @@
     "hours": 0,
     "semester": 8,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 43,
@@ -438,7 +438,7 @@
     "hours": 0,
     "semester": 8,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 44,
@@ -448,7 +448,7 @@
     "hours": 0,
     "semester": 8,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 45,
@@ -458,7 +458,7 @@
     "hours": 0,
     "semester": 8,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 46,
@@ -468,7 +468,7 @@
     "hours": 0,
     "semester": 8,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 47,
@@ -478,7 +478,7 @@
     "hours": 0,
     "semester": 9,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 48,
@@ -488,7 +488,7 @@
     "hours": 0,
     "semester": 9,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 49,
@@ -498,7 +498,7 @@
     "hours": 0,
     "semester": 10,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 50,
@@ -508,7 +508,7 @@
     "hours": 0,
     "semester": 55,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 51,
@@ -518,7 +518,7 @@
     "hours": 0,
     "semester": 10,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 52,
@@ -528,7 +528,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 53,
@@ -538,7 +538,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 54,
@@ -548,7 +548,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 55,
@@ -558,7 +558,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 56,
@@ -568,7 +568,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 57,
@@ -578,7 +578,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 58,
@@ -588,7 +588,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 59,
@@ -598,7 +598,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 60,
@@ -608,7 +608,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 61,
@@ -618,7 +618,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 62,
@@ -628,7 +628,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 63,
@@ -638,7 +638,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 64,
@@ -648,7 +648,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 65,
@@ -658,7 +658,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 66,
@@ -668,7 +668,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 67,
@@ -678,7 +678,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 68,
@@ -688,7 +688,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 69,
@@ -698,7 +698,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 70,
@@ -708,7 +708,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 71,
@@ -718,7 +718,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 72,
@@ -728,7 +728,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 73,
@@ -738,7 +738,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 74,
@@ -748,7 +748,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 75,
@@ -758,7 +758,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 76,
@@ -768,7 +768,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 77,
@@ -778,25 +778,27 @@
     "hours": 0,
     "semester": 99,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 78,
     "code": "061222",
     "name": "Historia de la Cultura",
     "credits": 2,
+    "semester": 99,
     "hours": 0,
     "prerequisites": null,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 79,
     "code": "061822",
     "name": "Sexología Básica",
     "credits": 2,
+    "semester": 99,
     "hours": 0,
     "prerequisites": null,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 80,
@@ -806,7 +808,7 @@
     "hours": 0,
     "semester": 99,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 81,
@@ -816,7 +818,7 @@
     "hours": 0,
     "semester": 99,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 82,
@@ -826,7 +828,7 @@
     "hours": 0,
     "semester": 99,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 83,
@@ -836,7 +838,7 @@
     "hours": 0,
     "semester": 99,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 84,
@@ -846,7 +848,7 @@
     "hours": 0,
     "semester": 99,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 85,
@@ -856,7 +858,7 @@
     "hours": 0,
     "semester": 99,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 86,
@@ -866,7 +868,7 @@
     "hours": 0,
     "semester": 99,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 87,
@@ -876,7 +878,7 @@
     "hours": 0,
     "semester": 99,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 88,
@@ -886,7 +888,7 @@
     "hours": 0,
     "semester": 99,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 89,
@@ -896,7 +898,7 @@
     "hours": 0,
     "semester": 99,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   },
   {
     "id": 90,
@@ -906,6 +908,6 @@
     "hours": 0,
     "semester": 99,
     "status": true,
-    "type_curriculum": "NEW"
+    "type_curriculum": "2"
   }
 ]
