@@ -4,7 +4,7 @@ export interface SubjectVM {
   credits: number | string;
   hours: number;
   code: number;
-  status: boolean;
+  status: boolean | string;
   semester: number;
   type_curriculum: string;
 }

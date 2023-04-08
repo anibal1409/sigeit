@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 interface optionItem {
   name: string;
@@ -11,7 +12,7 @@ interface optionItem {
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss'],
 })
-export class AdminComponent {
+export class AdminComponent implements OnInit {
   title = 'SIGEIT';
   user = {
     img: '',
@@ -76,10 +77,21 @@ export class AdminComponent {
     },
   ];
 
-  menuOption(option: optionItem): void {
-    console.log(option.name);
-    if (option.name !== 'Configuraciones') {
+  constructor(private router: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    const path = this.router.children[0].snapshot.routeConfig?.path;
+    if (path) {
+      const item = this.optionList.find((option) => option.value === path);
+      this.menuOption(item);
+    }
+  }
+
+  menuOption(option?: optionItem): void {
+    if (option && option.name !== 'Configuraciones') {
       this.title = option.name;
+    } else if (!option) {
+      this.title = 'SIGEIT';
     }
   }
 }
