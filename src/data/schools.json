@@ -5,6 +5,14 @@
     "description": "",
     "status": true,
     "logo": "",
-    "acronym": "EICA"
+    "abbreviation": "EICA"
+  },
+  {
+    "id": 1,
+    "name": "Escuela de Cursos Basicos",
+    "description": "",
+    "status": true,
+    "logo": "",
+    "abbreviation": "ECB"
   }
 ]

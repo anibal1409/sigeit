@@ -1,5 +1,11 @@
-[{
+[
+  {
     "id": 0,
-    "name": "Ingeniería De Sistemas", "description": "", "status": true,
+    "name": "Ingeniería De Sistemas",
+    "description": "",
+    "status": true,
+    "logo": "",
+    "abbreviation": "IDS",
     "id_department": 0
-}]
+  }
+]

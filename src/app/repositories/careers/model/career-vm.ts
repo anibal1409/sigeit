@@ -4,4 +4,6 @@ export interface CareerVM {
   description?: string;
   status: boolean;
   id_department: number;
+  logo: string;
+  abbreviation: string;
 }

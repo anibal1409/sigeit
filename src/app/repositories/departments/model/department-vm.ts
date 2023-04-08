@@ -3,7 +3,7 @@ export interface DepartmentVM {
   name: string;
   description?: string;
   status: boolean;
-  acronym: string;
+  abbreviation: string;
   logo: string;
   id_school: number;
 }

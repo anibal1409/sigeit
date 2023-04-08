@@ -5,7 +5,7 @@
     "description": "",
     "status": true,
     "logo": "",
-    "acronym": "DIS",
+    "abbreviation": "DIS",
     "id_school": 0
   },
   {
@@ -14,7 +14,16 @@
     "description": "",
     "status": true,
     "logo": "",
-    "acronym": "DCSS",
+    "abbreviation": "DCSS",
     "id_school": 0 
+  },
+  {
+    "id": 2,
+    "name": "Departamento de Ciencias y Humanidades",
+    "description": "",
+    "status": true,
+    "logo": "",
+    "abbreviation": "DCH",
+    "id_school": 1 
   }
 ]

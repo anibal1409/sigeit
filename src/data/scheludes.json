@@ -1,0 +1,211 @@
+[{
+    "id": 0,
+    "id_classroom": 14,
+    "day": "Lun",
+    "start": "09:30",
+    "end": "11:55",
+    "id_section": 0
+},{
+    "id": 1,
+    "id_classroom": 20,
+    "day": "Mie",
+    "start": "10:20",
+    "end": "12:45",
+    "id_section": 1
+},{
+    "id": 2,
+    "id_classroom": 17,
+    "day": "Lun",
+    "start": "07:00",
+    "end": "09:25",
+    "id_section":2
+},{
+    "id": 3,
+    "id_classroom": 20,
+    "day": "Mar",
+    "start": "07:00",
+    "end": "09:25",
+    "id_section":3
+},{
+    "id": 4,
+    "id_classroom": 14,
+    "day":"Mar",
+    "start": "09:30",
+    "end": "11:05",
+    "id_section": 4
+},{
+    "id": 5,
+    "id_classroom": 20,
+    "day":"Jue",
+    "start": "09:30",
+    "end": "11:05",
+    "id_section": 4
+},{
+    "id": 6,
+    "id_classroom": 14,
+    "day":"Mie",
+    "start": "08:40",
+    "end": "10:15",
+    "id_section": 5
+},{
+    "id": 7,
+    "id_classroom": 20,
+    "day":"Vie",
+    "start": "09:30",
+    "end": "11:05",
+    "id_section": 5
+},{
+    "id": 8,
+    "id_classroom": 14,
+    "day": "Mar",
+    "start": "07:00",
+    "end": "09:25",
+    "id_section": 6
+},{
+    "id": 9,
+    "id_classroom": 20,
+    "day": "Jue",
+    "start": "11:10",
+    "end": "12:45",
+    "id_section": 6
+},{
+    "id": 10,
+    "id_classroom": 15,
+    "day":"Mie",
+    "start": "07:00",
+    "end": "08:35",
+    "id_section": 7
+},{
+    "id": 11,
+    "id_classroom": 20,
+    "day":"Jue",
+    "start": "07:00",
+    "end": "09:25",
+    "id_section": 7
+},{
+    "id": 12,
+    "id_classroom": 17,
+    "day":"Mie",
+    "start": "08:40",
+    "end": "10:15",
+    "id_section": 8
+},{
+    "id": 13,
+    "id_classroom": 20,
+    "day":"Vie",
+    "start": "08:40",
+    "end": "11:05",
+    "id_section": 8
+},{
+    "id": 14,
+    "id_classroom": 18,
+    "day":"Mar",
+    "start": "08:40",
+    "end": "10:15",
+    "id_section": 9
+},{
+    "id": 15,
+    "id_classroom": 20,
+    "day":"Jue",
+    "start": "09:30",
+    "end": "11:55",
+    "id_section": 9
+},{
+    "id": 16,
+    "id_classroom": 20,
+    "day":"Mie",
+    "start": "08:40",
+    "end": "11:05",
+    "id_section": 10
+},{
+    "id": 17,
+    "id_classroom": 17,
+    "day":"Vie",
+    "start": "08:40",
+    "end": "10:15",
+    "id_section": 10
+},{
+    "id": 18,
+    "id_classroom": 19,
+    "day":"Lun",
+    "start": "07:50",
+    "end": "10:15",
+    "id_section": 11
+},{
+    "id": 19,
+    "id_classroom": 19,
+    "day":"Mar",
+    "start": "07:00",
+    "end": "09:25",
+    "id_section": 12
+},{
+    "id": 20,
+    "id_classroom": 20,
+    "day":"Lun",
+    "start": "09:30",
+    "end": "11:55",
+    "id_section": 13
+},{
+    "id": 22,
+    "id_classroom": 15,
+    "day":"Mar",
+    "start": "09:30",
+    "end": "11:55",
+    "id_section": 14
+},{
+    "id": 23,
+    "id_classroom": 13,
+    "day":"Lun",
+    "start": "07:00",
+    "end": "08:35",
+    "id_section": 15
+},{
+    "id": 24,
+    "id_classroom": 20,
+    "day":"Mar",
+    "start": "07:00",
+    "end": "08:35",
+    "id_section": 15
+},{
+    "id": 25,
+    "id_classroom": 18,
+    "day":"Lun",
+    "start": "09:30",
+    "end": "11:05",
+    "id_section": 16
+},{
+    "id": 26,
+    "id_classroom": 20,
+    "day":"Mie",
+    "start": "07:00",
+    "end": "08:35",
+    "id_section": 16
+},{
+    "id": 27,
+    "id_classroom": 17,
+    "day":"Mie",
+    "start": "07:00",
+    "end": "08:35",
+    "id_section": 17
+},{
+    "id": 28,
+    "id_classroom": 20,
+    "day":"Vie",
+    "start": "07:00",
+    "end": "08:35",
+    "id_section": 18
+},{
+    "id": 29,
+    "id_classroom": 19,
+    "day":"Mie",
+    "start": "07:00",
+    "end": "09:25",
+    "id_section": 19
+},{
+    "id": 30,
+    "id_classroom": 20,
+    "day":"Mie",
+    "start": "09:30",
+    "end": "11:55",
+    "id_section": 20
+}]
