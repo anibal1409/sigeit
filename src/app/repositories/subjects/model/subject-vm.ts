@@ -4,7 +4,7 @@ export interface SubjectVM {
   credits: number | string;
   hours: number;
   code: number;
-  prerequisites: any | null;
-  pensum_type: 'NEW' | 'OLD';
-  career_id: number;
+  status: boolean;
+  semester: number;
+  type_curriculum: string;
 }

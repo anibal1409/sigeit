@@ -4,5 +4,5 @@ export interface SchoolVM {
   description: string;
   status: boolean;
   logo: string;
-  acronym: string;
+  abbreviation: string;
 }

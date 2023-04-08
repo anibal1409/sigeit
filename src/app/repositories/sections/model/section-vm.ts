@@ -1,9 +1,9 @@
 export interface SectionVM {
   id?: number;
   id_subject: number;
-  id_classroom: number;
   id_period: number;
-  name: string;
+  id_teacher: number;
+  section_name: string;
   status: boolean;
   capacity: number;
 }

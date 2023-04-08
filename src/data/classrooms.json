@@ -29,85 +29,79 @@
     "status": true,
     "id_department": 1
 },{
-    "id": 6,
-    "name": "A-05",
-    "type": "CLASSROOM",
-    "status": true,
-    "id_department": 1
-},{
-    "id": 7,
+    "id": 5,
     "name": "A-06",
     "type": "CLASSROOM",
     "status": true,
     "id_department": 1
 },{
-    "id": 8,
+    "id": 6,
     "name": "A-07",
     "type": "CLASSROOM",
     "status": true,
     "id_department": 1
 },{
-    "id": 9,
+    "id": 7,
     "name": "A-08",
     "type": "CLASSROOM",
     "status": true,
     "id_department": 1
 },{
-    "id": 10,
+    "id": 8,
     "name": "A-09",
     "type": "CLASSROOM",
     "status": true,
     "id_department": 1
 },{
-    "id": 11,
+    "id": 9,
     "name": "A-10",
     "type": "CLASSROOM",
     "status": true,
     "id_department": 1
 },{
-    "id": 12,
+    "id": 10,
     "name": "A-11",
     "type": "CLASSROOM",
     "status": true,
     "id_department": 1
 },{
-    "id": 13,
+    "id": 11,
     "name": "A-12",
     "type": "CLASSROOM",
     "status": true,
     "id_department": 1
 },{
-    "id": 14,
+    "id": 12,
     "name": "A-43",
     "type": "CLASSROOM",
     "status": true,
     "id_department": 0
 },{
-    "id": 15,
+    "id": 13,
     "name": "A-44",
     "type": "CLASSROOM",
     "status": true,
     "id_department": 0
 },{
-    "id": 16,
+    "id": 14,
     "name": "A-45",
     "type": "CLASSROOM",
     "status": true,
     "id_department":0
 },{
-    "id": 17,
+    "id": 15,
     "name": "A-46",
     "type": "CLASSROOM",
     "status": true,
     "id_department": 0
 },{
-    "id": 18,
+    "id": 16,
     "name": "A-47",
     "type": "CLASSROOM",
     "status": true,
     "id_department": 0
 },{
-    "id": 19,
+    "id": 17,
     "name": "LC-05",
     "type": "LAB",
     "status": true,
@@ -119,13 +113,13 @@
     "status": true,
     "id_department": 0
 },{
-    "id": 18,
+    "id": 19,
     "name": "LE-01",
     "type": "LAB",
     "status": true,
     "id_department": 0
 },{
-    "id": 18,
+    "id": 20,
     "name": "A-00",
     "type": "VIRTUAL",
     "status": true,
