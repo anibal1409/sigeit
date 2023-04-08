@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { DepartmentVM } from '../departments';
 import { SubjectVM } from '../subjects';
 import {
-  GetDepartamentsService,
+  GetDepartamentsBySchoolService,
   GetSubjectsService,
 } from './use-cases';
 
@@ -13,7 +13,7 @@ import {
 export class SectionsService {
 
   constructor(
-    private getDepartamentsService: GetDepartamentsService,
+    private getDepartamentsService: GetDepartamentsBySchoolService,
     private getSubjectsService: GetSubjectsService,
   ) {}
 
