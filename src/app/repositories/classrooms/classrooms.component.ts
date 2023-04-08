@@ -1,10 +1,69 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ClassroomVM } from './model';
+import { HttpClient } from '@angular/common/http';
+import { TableDataVM, TableService } from 'src/app/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-classrooms',
   templateUrl: './classrooms.component.html',
-  styleUrls: ['./classrooms.component.scss']
+  styleUrls: ['./classrooms.component.scss'],
 })
-export class ClassroomsComponent {
+export class ClassroomsComponent implements OnInit, OnDestroy {
+  constructor(
+    private httpClient: HttpClient,
+    private tableService: TableService
+  ) {}
 
+  classroomData: TableDataVM<ClassroomVM> = {
+    headers: [
+      {
+        columnDef: 'name',
+        header: 'Nombre',
+        cell: (element: { [key: string]: string }) => `${element['name']}`,
+      },
+      {
+        columnDef: 'type',
+        header: 'Tipo',
+        cell: (element: { [key: string]: string }) => `${element['type']}`,
+      },
+      {
+        columnDef: 'id_department',
+        header: 'Departamento',
+        cell: (element: { [key: string]: string }) =>
+          `${element['id_department']}`,
+      },
+      {
+        columnDef: 'status',
+        header: 'Estatus',
+        cell: (element: { [key: string]: string }) => `${element['status']}`,
+      },
+    ],
+    body: [],
+    options: [],
+  };
+
+  sub$ = new Subscription();
+
+  ngOnInit(): void {
+    this.sub$.add(
+      this.httpClient
+        .get<ClassroomVM[]>('../../../data/classrooms.json')
+        .subscribe((classrooms) => {
+          this.classroomData = {
+            ...this.classroomData,
+            body: classrooms || [],
+          };
+          this.classroomData.body = this.classroomData.body.map((data) =>
+            data['status'] == true
+              ? { ...data, status: 'Activo' }
+              : { ...data, status: 'Inactivo' }
+          );
+          this.tableService.setData(this.classroomData);
+        })
+    );
+  }
+  ngOnDestroy(): void {
+    this.sub$.unsubscribe;
+  }
 }

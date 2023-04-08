@@ -10,7 +10,7 @@ export interface UserVM {
   role?: string;
   permissions: [any];
   birthday_date: Date | string;
-  status: boolean;
+  status: boolean | string;
   options?: {
     options?: Array<RowOptionVM<RowActionUser>>;
   };
