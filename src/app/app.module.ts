@@ -1,19 +1,23 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { AppRoutingModule } from './app-routing.module';
-import { WelcomeComponent } from './repositories/welcome/welcome.component';
-import { SubjectsModule } from './repositories/subjects/subjects.module';
-import { ClassroomsModule } from './repositories/classrooms/classrooms.module';
-import { CareersModule } from './repositories/careers/careers.module';
-import { SettingsModule } from './repositories/settings/settings.module';
-import { DepartmentsModule } from './repositories/departments/departments.module';
-import { SchoolsModule } from './repositories/schools/schools.module';
-import { PeriodsModule } from './repositories/periods/periods.module';
-import { TeachersModule } from './repositories/teachers/teachers.module';
+import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
+import { CareersModule } from './repositories/careers/careers.module';
+import { ClassroomsModule } from './repositories/classrooms/classrooms.module';
+import {
+  DepartmentsModule,
+} from './repositories/departments/departments.module';
+import { PeriodsModule } from './repositories/periods/periods.module';
+import { SchoolsModule } from './repositories/schools/schools.module';
+import { SettingsModule } from './repositories/settings/settings.module';
+import { SubjectsModule } from './repositories/subjects/subjects.module';
+import { TeachersModule } from './repositories/teachers/teachers.module';
+import { WelcomeComponent } from './repositories/welcome/welcome.component';
+
 @NgModule({
   declarations: [AppComponent, WelcomeComponent],
   imports: [
@@ -29,6 +33,7 @@ import { AuthModule } from './auth/auth.module';
     SchoolsModule,
     PeriodsModule,
     TeachersModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
