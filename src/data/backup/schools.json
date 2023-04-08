@@ -1,0 +1,18 @@
+[
+  {
+    "id": 0,
+    "name": "Escuela de Ingeniería y Ciencias Aplicadas",
+    "description": "",
+    "status": true,
+    "logo": "",
+    "abbreviation": "EICA"
+  },
+  {
+    "id": 1,
+    "name": "Escuela de Cursos Basicos",
+    "description": "",
+    "status": true,
+    "logo": "",
+    "abbreviation": "ECB"
+  }
+]

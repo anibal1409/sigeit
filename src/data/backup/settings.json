@@ -1,0 +1,13 @@
+[
+  {
+    "id": 0,
+    "institute_name": "Universidad De Oriente",
+    "institute_abbreviation":"UDO",
+    "institute_logo": "",
+    "description": "",
+    "start_time": "07:00",
+    "end_time": "16:00",
+    "rest_interval": "00:05",
+    "schelude_inderval": "00:40"
+  }
+]
