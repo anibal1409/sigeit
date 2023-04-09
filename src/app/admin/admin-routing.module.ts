@@ -79,7 +79,13 @@ const routes: Routes = [
             (m) => m.SectionsModule
           ),
       },
-      { path: 'users', component: WelcomeComponent },
+      {
+        path: 'users',
+        loadChildren: () =>
+          import('../repositories/users/users.module').then(
+            (m) => m.UsersModule
+          ),
+      },
     ],
   },
 ];
