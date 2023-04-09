@@ -54,11 +54,7 @@ export class CareersComponent implements OnInit, OnDestroy {
           ...this.careersData,
           body: careers || [],
         };
-        this.careersData.body = this.careersData.body.map((data) =>
-          data['status'] == true
-            ? { ...data, status: 'Activo' }
-            : { ...data, status: 'Inactivo' }
-        );
+
         this.tableService.setData(this.careersData);
       })
     );

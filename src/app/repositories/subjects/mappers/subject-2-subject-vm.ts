@@ -7,7 +7,7 @@ export function Subject2SubjectVM(subject: any): SubjectVM {
     hours: subject?.hours,
     name: subject?.name,
     semester: subject?.semester,
-    status: subject?.status,
+    status: subject?.status ? 'Activo' : 'Inactivo',
     type_curriculum: subject?.type_curriculum,
     id: subject?.id,
     department_id: subject?.department_id,

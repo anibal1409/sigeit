@@ -6,6 +6,6 @@ export function Classroom2ClassroomVM(Classroom: any): ClassroomVM {
     name: Classroom.name,
     type: Classroom.type,
     id_department: Classroom.id_department,
-    status: Classroom.status,
+    status: Classroom.status ? 'Activo' : 'Inactivo',
   };
 }

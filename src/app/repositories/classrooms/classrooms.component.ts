@@ -53,11 +53,6 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
           ...this.classroomData,
           body: classrooms || [],
         };
-        this.classroomData.body = this.classroomData.body.map((data) =>
-          data['status'] == true
-            ? { ...data, status: 'Activo' }
-            : { ...data, status: 'Inactivo' }
-        );
         this.tableService.setData(this.classroomData);
       })
     );

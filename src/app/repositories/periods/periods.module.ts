@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
+import { GetPeriodsService } from './use-cases';
 
 @NgModule({
   declarations: [PeriodsComponent],
@@ -21,6 +22,6 @@ import { HttpClientModule } from '@angular/common/http';
     MatIconModule,
     MatButtonModule,
   ],
-  providers: [PeriodsService],
+  providers: [PeriodsService, GetPeriodsService],
 })
 export class PeriodsModule {}

@@ -9,6 +9,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { TableModule } from 'src/app/common';
 import { HttpClientModule } from '@angular/common/http';
+import { GetScheludesService } from './use-cases';
 
 @NgModule({
   declarations: [ScheludesComponent],
@@ -21,6 +22,6 @@ import { HttpClientModule } from '@angular/common/http';
     MatIconModule,
     MatButtonModule,
   ],
-  providers: [ScheludesService],
+  providers: [ScheludesService, GetScheludesService],
 })
 export class ScheludesModule {}
