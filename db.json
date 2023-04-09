@@ -1,8 +1,8 @@
 {
-  "carres": [
+  "careers": [
     {
       "id": 0,
-      "name": "Ingeniería De Sistemas",
+      "name": "Ingeniería de Sistemas",
       "description": "",
       "status": true,
       "logo": "",
@@ -167,7 +167,7 @@
       "status": true,
       "logo": "",
       "abbreviation": "DIS",
-      "shoolId": 1
+      "schoolId": 1
     },
     {
       "id": 2,
@@ -176,7 +176,7 @@
       "status": true,
       "logo": "",
       "abbreviation": "DIP",
-      "shoolId": 1
+      "schoolId": 1
     },
     {
       "id": 3,
@@ -185,7 +185,7 @@
       "status": true,
       "logo": "",
       "abbreviation": "DCSS",
-      "shoolId": 2
+      "schoolId": 2
     },
     {
       "id": 4,
@@ -194,7 +194,7 @@
       "status": true,
       "logo": "",
       "abbreviation": "DCH",
-      "shoolId": 2
+      "schoolId": 2
     }
   ],
   "schools": [

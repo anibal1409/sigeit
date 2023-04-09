@@ -1,7 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { map, Observable } from 'rxjs';
+import {
+  map,
+  Observable,
+} from 'rxjs';
 
 import { Period2PeriodItemVM } from '../mappers';
 import { PeriodItemVM } from '../model';
@@ -11,9 +14,10 @@ export class GetPeriodsService {
   constructor(private http: HttpClient) {}
 
   exec(): Observable<Array<PeriodItemVM>> {
-    return this.http.get('data/periods.json').pipe(
+    return this.http.get('http://localhost:3000/periods')
+    .pipe(
       map((data: any) => {
-        return data?.map((period: any) => Period2PeriodItemVM(period));
+        return data?.map(Period2PeriodItemVM);
       })
     );
   }

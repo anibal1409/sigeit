@@ -3,7 +3,7 @@ import { DepartmentVM } from '../model';
 export function Department2DepartmentVM(department: any): DepartmentVM {
   return {
     abbreviation: department?.abbreviation,
-    id_school: department?.id_school,
+    schoolId: department?.schoolId,
     logo: department?.logo,
     name: department?.name,
     status: department?.status ? 'Activo' : 'Inactivo',

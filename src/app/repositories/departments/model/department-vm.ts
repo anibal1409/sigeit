@@ -5,5 +5,5 @@ export interface DepartmentVM {
   status: boolean | string;
   abbreviation: string;
   logo: string;
-  id_school: number;
+  schoolId: number;
 }

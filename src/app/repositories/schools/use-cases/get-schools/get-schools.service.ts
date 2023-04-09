@@ -17,7 +17,7 @@ export class GetSchoolsService {
   ) {}
 
   exec(): Observable<Array<SchoolItemVM>> {
-    return this.http.get('data/schools.json')
+    return this.http.get('http://localhost:3000/schools')
     .pipe(
       map((schools: any) => schools.map(School2SchoolItemVM)),
     );
