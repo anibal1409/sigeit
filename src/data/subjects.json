@@ -7,12 +7,7 @@
     "hours": 0,
     "semester": 1,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 3
->>>>>>> main
   },
   {
     "id": 1,
@@ -22,12 +17,7 @@
     "hours": 0,
     "semester": 1,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 3
->>>>>>> main
   },
   {
     "id": 2,
@@ -37,12 +27,7 @@
     "hours": 0,
     "semester": 1,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 3
->>>>>>> main
   },
   {
     "id": 3,
@@ -52,12 +37,7 @@
     "hours": 0,
     "semester": 1,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 4
->>>>>>> main
   },
   {
     "id": 4,
@@ -67,12 +47,7 @@
     "hours": 0,
     "semester": 1,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 3
->>>>>>> main
   },
   {
     "id": 5,
@@ -82,12 +57,7 @@
     "hours": 0,
     "semester": 1,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 4
->>>>>>> main
   },
   {
     "id": 6,
@@ -97,12 +67,7 @@
     "hours": 0,
     "semester": 1,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 3
->>>>>>> main
   },
   {
     "id": 7,
@@ -112,12 +77,7 @@
     "hours": 0,
     "semester": 2,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 4
->>>>>>> main
   },
   {
     "id": 8,
@@ -127,12 +87,7 @@
     "hours": 0,
     "semester": 2,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 3
->>>>>>> main
   },
   {
     "id": 9,
@@ -142,12 +97,7 @@
     "hours": 0,
     "semester": 2,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 3
->>>>>>> main
   },
   {
     "id": 10,
@@ -157,12 +107,7 @@
     "hours": 0,
     "semester": 2,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 4
->>>>>>> main
   },
   {
     "id": 11,
@@ -172,12 +117,7 @@
     "hours": 0,
     "semester": 2,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
 
   {
@@ -188,12 +128,7 @@
     "hours": 0,
     "semester": 3,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 4
->>>>>>> main
   },
   {
     "id": 13,
@@ -203,12 +138,7 @@
     "hours": 0,
     "semester": 3,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 4
->>>>>>> main
   },
   {
     "id": 14,
@@ -218,12 +148,7 @@
     "hours": 0,
     "semester": 3,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 4
->>>>>>> main
   },
   {
     "id": 15,
@@ -233,12 +158,7 @@
     "hours": 0,
     "semester": 3,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 16,
@@ -248,12 +168,7 @@
     "hours": 0,
     "semester": 3,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 17,
@@ -263,12 +178,7 @@
     "hours": 0,
     "semester": 3,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 18,
@@ -278,12 +188,7 @@
     "hours": 0,
     "semester": 4,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 19,
@@ -293,12 +198,7 @@
     "hours": 0,
     "semester": 4,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 4
->>>>>>> main
   },
   {
     "id": 20,
@@ -308,12 +208,7 @@
     "hours": 0,
     "semester": 4,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 21,
@@ -323,12 +218,7 @@
     "hours": 0,
     "semester": 4,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 22,
@@ -338,12 +228,7 @@
     "hours": 0,
     "semester": 4,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 23,
@@ -353,12 +238,7 @@
     "hours": 0,
     "semester": 4,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 24,
@@ -368,12 +248,7 @@
     "hours": 0,
     "semester": 5,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 25,
@@ -383,12 +258,7 @@
     "hours": 0,
     "semester": 5,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 26,
@@ -398,12 +268,7 @@
     "hours": 0,
     "semester": 5,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 27,
@@ -413,12 +278,7 @@
     "hours": 0,
     "semester": 5,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 28,
@@ -428,12 +288,7 @@
     "hours": 0,
     "semester": 5,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 29,
@@ -443,12 +298,7 @@
     "hours": 0,
     "semester": 5,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 30,
@@ -458,12 +308,7 @@
     "hours": 0,
     "semester": 5,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 31,
@@ -473,12 +318,7 @@
     "hours": 0,
     "semester": 6,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 32,
@@ -488,12 +328,7 @@
     "hours": 0,
     "semester": 6,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 33,
@@ -503,12 +338,7 @@
     "hours": 0,
     "semester": 6,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 34,
@@ -518,12 +348,7 @@
     "hours": 0,
     "semester": 6,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 35,
@@ -533,12 +358,7 @@
     "hours": 0,
     "semester": 6,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 36,
@@ -548,12 +368,7 @@
     "hours": 0,
     "semester": 6,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 37,
@@ -563,12 +378,7 @@
     "hours": 0,
     "semester": 7,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 38,
@@ -578,12 +388,7 @@
     "hours": 0,
     "semester": 7,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 39,
@@ -593,12 +398,7 @@
     "hours": 0,
     "semester": 7,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 40,
@@ -608,12 +408,7 @@
     "hours": 0,
     "semester": 7,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 41,
@@ -623,12 +418,7 @@
     "hours": 0,
     "semester": 7,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 42,
@@ -638,12 +428,7 @@
     "hours": 0,
     "semester": 8,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 43,
@@ -653,12 +438,7 @@
     "hours": 0,
     "semester": 8,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 44,
@@ -668,12 +448,7 @@
     "hours": 0,
     "semester": 8,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 45,
@@ -683,12 +458,7 @@
     "hours": 0,
     "semester": 8,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 46,
@@ -698,12 +468,7 @@
     "hours": 0,
     "semester": 8,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 47,
@@ -713,12 +478,7 @@
     "hours": 0,
     "semester": 9,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 48,
@@ -728,12 +488,7 @@
     "hours": 0,
     "semester": 9,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 49,
@@ -743,12 +498,7 @@
     "hours": 0,
     "semester": 10,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 50,
@@ -758,12 +508,7 @@
     "hours": 0,
     "semester": 55,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 51,
@@ -773,12 +518,7 @@
     "hours": 0,
     "semester": 10,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 52,
@@ -788,12 +528,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 53,
@@ -803,12 +538,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 54,
@@ -818,12 +548,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 55,
@@ -833,12 +558,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 56,
@@ -848,12 +568,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 57,
@@ -863,12 +578,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 58,
@@ -878,12 +588,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 59,
@@ -893,12 +598,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 60,
@@ -908,12 +608,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 61,
@@ -923,12 +618,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 62,
@@ -938,12 +628,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 63,
@@ -953,12 +638,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 64,
@@ -968,12 +648,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 65,
@@ -983,12 +658,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 66,
@@ -998,12 +668,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 67,
@@ -1013,12 +678,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 68,
@@ -1028,12 +688,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 69,
@@ -1043,12 +698,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 70,
@@ -1058,12 +708,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 71,
@@ -1073,12 +718,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 72,
@@ -1088,12 +728,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 73,
@@ -1103,12 +738,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 74,
@@ -1118,12 +748,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 75,
@@ -1133,12 +758,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 76,
@@ -1148,12 +768,7 @@
     "hours": 0,
     "semester": 88,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 77,
@@ -1163,12 +778,7 @@
     "hours": 0,
     "semester": 99,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 3
->>>>>>> main
   },
   {
     "id": 78,
@@ -1178,12 +788,7 @@
     "semester": 99,
     "hours": 0,
     "prerequisites": null,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 3
->>>>>>> main
   },
   {
     "id": 79,
@@ -1193,12 +798,7 @@
     "semester": 99,
     "hours": 0,
     "prerequisites": null,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 1
->>>>>>> main
   },
   {
     "id": 80,
@@ -1208,12 +808,7 @@
     "hours": 0,
     "semester": 99,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 3
->>>>>>> main
   },
   {
     "id": 81,
@@ -1223,12 +818,7 @@
     "hours": 0,
     "semester": 99,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 3
->>>>>>> main
   },
   {
     "id": 82,
@@ -1238,12 +828,7 @@
     "hours": 0,
     "semester": 99,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 3
->>>>>>> main
   },
   {
     "id": 83,
@@ -1253,12 +838,7 @@
     "hours": 0,
     "semester": 99,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 3
->>>>>>> main
   },
   {
     "id": 84,
@@ -1268,12 +848,7 @@
     "hours": 0,
     "semester": 99,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 3
->>>>>>> main
   },
   {
     "id": 85,
@@ -1283,12 +858,7 @@
     "hours": 0,
     "semester": 99,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 3
->>>>>>> main
   },
   {
     "id": 86,
@@ -1298,12 +868,7 @@
     "hours": 0,
     "semester": 99,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 3
->>>>>>> main
   },
   {
     "id": 87,
@@ -1313,12 +878,7 @@
     "hours": 0,
     "semester": 99,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 3
->>>>>>> main
   },
   {
     "id": 88,
@@ -1328,12 +888,7 @@
     "hours": 0,
     "semester": 99,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 3
->>>>>>> main
   },
   {
     "id": 89,
@@ -1343,12 +898,7 @@
     "hours": 0,
     "semester": 99,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 3
->>>>>>> main
   },
   {
     "id": 90,
@@ -1358,11 +908,6 @@
     "hours": 0,
     "semester": 99,
     "status": true,
-<<<<<<< HEAD
     "type_curriculum": "2"
-=======
-    "type_curriculum": "NEW",
-    "department_id": 3
->>>>>>> main
   }
 ]
