@@ -1,15 +1,12 @@
-.container {
+.mat-container {
   padding: 1.5rem;
   box-sizing: border-box;
 }
 
 mat-card-header {
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 }
 
-.module-title {
-  font-size: 2rem;
-}
 
 mat-card {
   min-width: max-content;

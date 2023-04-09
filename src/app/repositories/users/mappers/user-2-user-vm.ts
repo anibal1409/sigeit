@@ -4,9 +4,14 @@ import { UserVM, RowActionUser } from '../model';
 export function User2UserVM(user: any): UserVM {
   return {
     id: user.id,
-    name: user.name,
+    first_name: user.first_name,
+    last_name: user.last_name,
+    id_document: user.id_document,
+    birthday_date: user.birthday_date,
     email: user.email,
-    status: user.status,
+    status: user.status ? 'Activo' : 'Inactivo',
+    password: user.password,
+    id_department: user.id_department,
     role: user.role,
     options: {
       options: [

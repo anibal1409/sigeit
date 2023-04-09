@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { map, Observable } from 'rxjs';
 
-import { User2UserVM } from '../../mappers';
+import { User2UserItemVM } from '../../mappers';
 import { HttpClient } from '@angular/common/http';
 import { UserItemVM } from '../../model/user-item-vm';
 
@@ -12,7 +12,9 @@ export class GetUsersService {
 
   exec(): Observable<Array<UserItemVM>> {
     return this.httpClient
-      .get('http://localhost:3000/users')
-      .pipe(map((users: any) => users.map(User2UserVM)));
+      .get(
+        'http://localhost:3000/users?_sort=last_name&_order=asc&_expand=department'
+      )
+      .pipe(map((users: any) => users.map(User2UserItemVM)));
   }
 }

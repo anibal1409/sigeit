@@ -11,17 +11,40 @@ import { UserVM } from './model';
   styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent implements OnInit, OnDestroy {
-  data: TableDataVM = {
+  usersData: TableDataVM = {
     headers: [
       {
-        columnDef: 'name',
+        columnDef: 'id_document',
+        header: 'Cedula',
+        cell: (element: { [key: string]: string }) =>
+          `${element['id_document']}`,
+      },
+      {
+        columnDef: 'last_name',
+        header: 'Apellido',
+        cell: (element: { [key: string]: string }) => `${element['last_name']}`,
+      },
+      {
+        columnDef: 'first_name',
         header: 'Nombre',
-        cell: (element: { [key: string]: string }) => `${element['name']}`,
+        cell: (element: { [key: string]: string }) =>
+          `${element['first_name']}`,
+      },
+      {
+        columnDef: 'role',
+        header: 'Rol',
+        cell: (element: { [key: string]: string }) => `${element['role']}`,
       },
       {
         columnDef: 'email',
         header: 'Correo',
         cell: (element: { [key: string]: string }) => `${element['email']}`,
+      },
+      {
+        columnDef: 'id_department',
+        header: 'Departamento',
+        cell: (element: { [key: string]: string }) =>
+          `${(element['department'] as any).name}`,
       },
       {
         columnDef: 'status',
@@ -45,17 +68,13 @@ export class UsersComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.sub$.add(
       this.usersService.getUsers$().subscribe((users: UserVM[] | null) => {
-        this.data = {
-          ...this.data,
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        console.log(users);
+        this.usersData = {
+          ...this.usersData,
           body: (users as any) || [],
         };
-        this.data.body = this.data.body.map((data) =>
-          data['status'] == true
-            ? { ...data, status: 'Inactivo' }
-            : { ...data, status: 'Activo' }
-        );
-        this.tableService.setData(this.data);
+
+        this.tableService.setData(this.usersData);
       })
     );
   }

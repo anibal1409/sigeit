@@ -6,5 +6,6 @@ export function User2UserItemVM(user: any): UserItemVM {
   const userVM = User2UserVM(user);
   return {
     ...userVM,
+    department: Department2DepartmentVM(user?.department),
   };
 }

@@ -1,4 +1,42 @@
 {
+  "users": [{
+    "id": 1,
+    "first_name": "Anibal",
+    "last_name": "Fariñas",
+    "id_document": 99299356,
+    "email": "afarinas@gmail.com",
+    "birthday_date": "01/01/1950",
+    "password": "12345678",
+    "role": "Profesor",
+    "departmentId": 1,
+    "status": true
+  },
+  {
+    "id": 2,
+    "first_name": "Administrador",
+    "last_name": "Sigeit",
+    "id_document": 122956356,
+    "email": "admin.sigeit@gmail.com",
+    "birthday_date": "01/01/1950",
+    "password": "10345678",
+    "role": "Administrador",
+    "departmentId": 1,
+    "status": true
+
+  },
+  {
+    "id": 3,
+    "first_name": "John",
+    "last_name": "Doe",
+    "id_document": 3928533,
+    "email": "jdoe@gmail.com",
+    "birthday_date": "01/01/1950",
+    "password": "aaassfasf",
+    "role": "Colaborador",
+    "departmentId": 2,
+    "status": true
+
+  }],
   "careers": [
     {
       "id": 0,
