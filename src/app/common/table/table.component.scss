@@ -1,6 +1,9 @@
 .mat-cell {
   max-width: 20rem;
 }
+table{
+  width: 100%;
+}
 
 .mat-cell-empty {
   text-align: center;
@@ -18,4 +21,7 @@
 .data-cell:has(button) {
   display: flex;
   justify-content: center;
+}
+.mat-elevation-z8{
+  overflow: auto;
 }

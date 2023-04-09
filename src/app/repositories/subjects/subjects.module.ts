@@ -10,6 +10,7 @@ import { TableModule } from 'src/app/common';
 import { SubjectsRoutingModule } from './subjects-routing.module';
 import { SubjectsComponent } from './subjects.component';
 import { SubjectsService } from './subjects.service';
+import { GetSubjectsService } from './use-cases';
 
 @NgModule({
   declarations: [SubjectsComponent],
@@ -22,6 +23,6 @@ import { SubjectsService } from './subjects.service';
     MatIconModule,
     MatButtonModule,
   ],
-  providers: [SubjectsService],
+  providers: [SubjectsService, GetSubjectsService],
 })
 export class SubjectsModule {}

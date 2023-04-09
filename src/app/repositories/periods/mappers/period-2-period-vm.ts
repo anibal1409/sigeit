@@ -10,7 +10,7 @@ export function Period2PeriodVM(period: any): PeriodVM {
     stage: period?.stage,
     start: period?.start,
     start_time: period?.start_time,
-    status: period?.status,
+    status: period?.status ? 'Activo' : 'Inactivo',
     id: period?.id,
   };
 }

@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, finalize } from 'rxjs';
 
 @Component({
-  selector: 'tecnops-recovery-password',
+  selector: 'sigeit-recovery-password',
   templateUrl: './recovery-password.component.html',
   styleUrls: ['./recovery-password.component.scss'],
 })

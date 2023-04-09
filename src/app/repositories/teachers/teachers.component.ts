@@ -64,11 +64,6 @@ export class TeachersComponent implements OnInit, OnDestroy {
           ...this.teachersData,
           body: teachers || [],
         };
-        this.teachersData.body = this.teachersData.body.map((data) =>
-          data['status'] == true
-            ? { ...data, status: 'Activo' }
-            : { ...data, status: 'Inactivo' }
-        );
         this.tableService.setData(this.teachersData);
       })
     );

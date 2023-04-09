@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription, finalize } from 'rxjs';
 
 @Component({
-  selector: 'tecnops-login',
+  selector: 'sigeit-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })

@@ -49,11 +49,6 @@ export class SchoolsComponent implements OnInit, OnDestroy {
             ...this.schoolsData,
             body: schools || [],
           };
-          this.schoolsData.body = this.schoolsData.body.map((data) =>
-            data['status'] == true
-              ? { ...data, status: 'Activo' }
-              : { ...data, status: 'Inactivo' }
-          );
           this.tableService.setData(this.schoolsData);
         })
     );

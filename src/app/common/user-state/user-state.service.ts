@@ -18,17 +18,17 @@ export class UserStateService {
 
   setUser(user: UserStateVM | null): void {
     this.user$.next(user);
-    localStorage.setItem('tecnops-user', JSON.stringify(user));
+    localStorage.setItem('sigeit-user', JSON.stringify(user));
   }
 
   clear(): void {
     this.user$.next(null);
-    localStorage.removeItem('tecnops-user');
+    localStorage.removeItem('sigeit-user');
   }
 
   getUserStorage(): UserStateVM | null {
     let user = null;
-    const userString = localStorage.getItem('tecnops-user');
+    const userString = localStorage.getItem('sigeit-user');
     if (userString) {
       user = JSON.parse(userString) as UserStateVM;
     }

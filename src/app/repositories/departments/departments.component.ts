@@ -1,14 +1,7 @@
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
-import {
-  TableDataVM,
-  TableService,
-} from 'src/app/common';
+import { TableDataVM, TableService } from 'src/app/common';
 
 import { DepartmentsService } from './departments.service';
 import { DepartmentItemVM } from './model';
@@ -19,10 +12,9 @@ import { DepartmentItemVM } from './model';
   styleUrls: ['./departments.component.scss'],
 })
 export class DepartmentsComponent implements OnInit, OnDestroy {
-
   constructor(
     private tableService: TableService,
-    private departmentsService: DepartmentsService,
+    private departmentsService: DepartmentsService
   ) {}
 
   departmentsData: TableDataVM<DepartmentItemVM> = {
@@ -41,7 +33,8 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
       {
         columnDef: 'id_school',
         header: 'Escuela',
-        cell: (element: { [key: string]: string }) => `${(element['school'] as any)?.name}`,
+        cell: (element: { [key: string]: string }) =>
+          `${(element['school'] as any)?.name}`,
       },
       {
         columnDef: 'status',
@@ -56,20 +49,13 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
   sub$ = new Subscription();
   ngOnInit(): void {
     this.sub$.add(
-      this.departmentsService
-        .getDepartments$()
-        .subscribe((departments) => {
-          this.departmentsData = {
-            ...this.departmentsData,
-            body: departments || [],
-          };
-          this.departmentsData.body = this.departmentsData.body.map((data) =>
-            data['status'] == true
-              ? { ...data, status: 'Activo' }
-              : { ...data, status: 'Inactivo' }
-          );
-          this.tableService.setData(this.departmentsData);
-        })
+      this.departmentsService.getDepartments$().subscribe((departments) => {
+        this.departmentsData = {
+          ...this.departmentsData,
+          body: departments || [],
+        };
+        this.tableService.setData(this.departmentsData);
+      })
     );
   }
 

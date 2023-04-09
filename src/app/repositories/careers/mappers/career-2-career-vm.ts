@@ -8,6 +8,6 @@ export function Career2CareerVM(Career: any): CareerVM {
     abbreviation: Career?.abbreviation,
     id_department: Career?.id_department,
     logo: Career?.logo,
-    status: Career?.status,
+    status: Career?.status ? 'Activo' : 'Inactivo',
   };
 }
