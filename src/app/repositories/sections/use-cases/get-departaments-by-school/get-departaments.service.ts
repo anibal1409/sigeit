@@ -19,7 +19,7 @@ export class GetDepartamentsBySchoolService {
   ) {}
 
   exec(shoolId: number): Observable<Array<DepartmentVM>> {
-    const url = shoolId === -1 ? `http://localhost:3000/departments` : `http://localhost:3000/departments?shoolId=${shoolId}`;
+    const url = shoolId === -1 ? `http://localhost:3000/departments` : `http://localhost:3000/departments?schoolId=${shoolId}`;
     return this.http.get(url)
     .pipe(
       map((departments: any) => departments.map(Department2DepartmentVM)),
