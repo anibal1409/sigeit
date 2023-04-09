@@ -1,0 +1,63 @@
+<form [formGroup]="form!" class="p-5">
+  <div class="row">
+    <div class="col-md-2">
+      <mat-form-field>
+        <mat-label>Sección</mat-label>
+        <input 
+          type="number" 
+          matInput 
+          formControlName="section_name"
+          placeholder="1"
+        >
+      </mat-form-field>
+    </div>
+    <div class="col-md-2">
+      <mat-form-field>
+        <mat-label>Capacidad</mat-label>
+        <input 
+          type="number" 
+          matInput 
+          formControlName="capacity"
+          placeholder="1"
+        >
+      </mat-form-field>
+    </div>
+    <div class="col-md-5">
+      <mat-form-field >
+        <mat-label>Profesor</mat-label>
+        <input 
+          type="text"
+          placeholder="Seleccione un profesor"
+          aria-label="profesor"
+          matInput
+          formControlName="teacherId"
+          [matAutocomplete]="autoTeacher"
+        >
+        <mat-autocomplete #autoTeacher="matAutocomplete">
+          <mat-option *ngFor="let teacher of teachers" [value]="teacher.id">
+            {{teacher?.last_name ? teacher?.last_name + ',' : '' }} {{teacher.first_name}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div class="col-md-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Estado</mat-label>
+        <mat-select 
+          formControlName="status"
+        >
+          <mat-option *ngFor="let statu of status" [value]="statu.id">{{statu.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <button (click)="save()" mat-raised-button color="primary">Guardar</button>
+    </div>
+    <div class="col">
+      <button (click)="clickCancel()" mat-raised-button>Cancelar</button>
+    </div>
+  </div>
+</form>

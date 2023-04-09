@@ -1,9 +1,13 @@
 import { RowOptionVM } from '../../../common';
-import { RowActionSchelude } from './row-action';
-import { ScheludeVM } from './schelude-vm';
+import { ClassroomVM } from '../../classrooms/model';
+import { DayVM } from './day-vm';
+import { RowActionSchedule } from './row-action';
+import { ScheduleVM } from './schelude-vm';
 
-export interface ScheludeItemVM extends ScheludeVM {
+export interface ScheduleItemVM extends ScheduleVM {
+  classroom?: ClassroomVM;
+  day?: DayVM;
   options?: {
-    options?: Array<RowOptionVM<RowActionSchelude>>;
+    options?: Array<RowOptionVM<RowActionSchedule>>;
   };
 }

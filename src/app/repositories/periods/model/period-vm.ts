@@ -3,9 +3,10 @@ export interface PeriodVM {
   name: string;
   start: Date | string;
   end: Date | string;
-  start_time: Date | string;
-  end_time: Date | string;
-  interval: Date | string | number;
-  block: Date | string | number;
+  start_time: string;
+  end_time: string;
+  duration: number;
+  interval: number;
   status: boolean | string;
+  stage: string;
 }

@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GetSubjectsService } from './get-subjects.service';
+import { FindPeriodService } from './find-period.service';
 
-describe('GetSubjectsService', () => {
-  let service: GetSubjectsService;
+describe('FindPeriodService', () => {
+  let service: FindPeriodService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GetSubjectsService);
+    service = TestBed.inject(FindPeriodService);
   });
 
   it('should be created', () => {

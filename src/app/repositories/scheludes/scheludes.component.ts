@@ -1,8 +1,33 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ScheludeVM } from './model';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+
 import { Subscription } from 'rxjs';
-import { TableDataVM, TableService } from 'src/app/common';
-import { ScheludesService } from './scheludes.service';
+import {
+  ConfirmModalComponent,
+  OptionAction,
+  SEMESTERS,
+  SemesterVM,
+  TableDataVM,
+  TableService,
+} from 'src/app/common';
+
+import { DepartmentVM } from '../departments';
+import { SectionVM } from '../sections';
+import { SubjectVM } from '../subjects';
+import {
+  RowActionSchedule,
+  ScheduleVM,
+} from './model';
+import { SchedulesService } from './scheludes.service';
 
 @Component({
   selector: 'app-scheludes',
@@ -10,12 +35,14 @@ import { ScheludesService } from './scheludes.service';
   styleUrls: ['./scheludes.component.scss'],
 })
 export class ScheludesComponent implements OnInit, OnDestroy {
-  constructor(
-    private scheludesService: ScheludesService,
-    private tableService: TableService
-  ) {}
+  form!: FormGroup;
 
-  scheludeData: TableDataVM<ScheludeVM> = {
+  departments: Array<DepartmentVM> = [];
+  subjects: Array<SubjectVM> = [];
+  semesters: Array<SemesterVM> = SEMESTERS;
+  sections: Array<SectionVM> = [];
+
+  scheludeData: TableDataVM<ScheduleVM> = {
     headers: [
       {
         columnDef: 'id_classroom',
@@ -49,21 +76,176 @@ export class ScheludesComponent implements OnInit, OnDestroy {
     options: [],
   };
 
-  sub$ = new Subscription();
+  periodId = 3;
+  departmentId = 0;
+  semester = -1;
+  subjectId = 0;
+  sectionId = 0;
+  scheduleId = 0;
+
+  showForm = false;
+
+  private sub$ = new Subscription();
+
+  constructor(
+    private fb: FormBuilder,
+    private tableService: TableService,
+    private matDialog: MatDialog,
+    private schedulesService: SchedulesService,
+  ) {}
 
   ngOnInit(): void {
-    this.sub$.add(
-      this.scheludesService.getScheludes$().subscribe((scheludes) => {
-        this.scheludeData = {
-          ...this.scheludeData,
-          body: scheludes || [],
-        };
-        this.tableService.setData(this.scheludeData);
-      })
+    this.createForm();
+    this.loadDepartments();
+    this.schedulesService.findPeriod$(this.periodId).subscribe(
+      (period) => {
+        const intervals = this.schedulesService.generateTimeIntervals(period.start_time, period.end_time, period.duration, period.interval);
+        console.log(intervals);
+      }
     );
   }
 
   ngOnDestroy(): void {
     this.sub$.unsubscribe();
+  }
+
+  private createForm(): void {
+    this.form = this.fb.group({
+      departmentId: [null, [Validators.required]],
+      subjectId: [null, [Validators.required]],
+      semester: [-1, [Validators.required]],
+      sectionId: [null, [Validators.required]],
+    });
+
+    this.sub$.add(
+      this.form.get('departmentId')?.valueChanges.subscribe(
+        (departmentId) => {
+          console.log(departmentId);
+          this.departmentId = +departmentId;
+          this.loadSubjects();
+        }
+      )
+    );
+  
+    this.sub$.add(
+      this.form.get('semester')?.valueChanges.subscribe(
+        (val) => {
+          console.log(val);
+          this.semester = +val;
+          this.loadSubjects();
+        }
+      )
+    );
+
+    this.sub$.add(
+      this.form.get('subjectId')?.valueChanges.subscribe(
+        (subjectId) => {
+          console.log(subjectId);
+          this.subjectId = +subjectId;
+          this.loadSections();
+        }
+      )
+    );
+
+    this.sub$.add(
+      this.form.get('sectionId')?.valueChanges.subscribe(
+        (sectionId) => {
+          console.log(sectionId);
+          this.sectionId = +sectionId;
+          this.loadSchedules();
+        }
+      )
+    );
+  }
+
+  private loadDepartments(): void {
+    this.sub$.add(
+      this.schedulesService.getDepartaments$(1).subscribe(
+        (departaments) => {
+          this.departments = departaments;
+        }
+      )
+    );
+  }
+
+  private loadSubjects(): void {
+    this.sub$.add(
+      this.schedulesService.getSubjects$(+this.departmentId, +this.semester).subscribe(
+        (subjects) => {
+          this.subjects = subjects;
+        }
+      )
+    );
+  }
+
+  loadSections(): void {
+    this.sub$.add(
+      this.schedulesService.getSections$(this.subjectId, this.periodId).subscribe(
+        (sections) => {
+          this.sections = sections;
+        }
+      )
+    );
+  }
+
+  loadSchedules(): void {
+    this.sub$.add(
+      this.schedulesService.getSectionSchedules$(this.sectionId).subscribe(
+        (schedules) => {
+          this.scheludeData = {
+            ...this.scheludeData,
+            body: schedules || [],
+          };
+          this.tableService.setData(this.scheludeData);
+        }
+      )
+    );
+  }
+
+  changeShowForm(showForm: boolean): void {
+    this.showForm = showForm;
+    if (!showForm) {
+      this.sectionId = 0;
+    }
+  }
+
+  displayFn(item: DepartmentVM | SubjectVM | SemesterVM): string {
+    return item && item?.name ? item.name : '';
+  }
+  
+  clickOption(event: OptionAction): void {
+    switch (event.option.value) {
+      case RowActionSchedule.update:
+        this.sectionId = +event.data['id'];
+        this.changeShowForm(true);
+      break;
+      case RowActionSchedule.delete:
+        this.showConfirm(event.data as any);
+      break;
+    }
+  }
+
+  showConfirm(schedule: ScheduleVM): void {
+    const dialogRef = this.matDialog.open(ConfirmModalComponent, {
+      data: {
+        message: {
+          title: 'Eliminar Sección',
+          body: `¿Está seguro que desea eliminar la sección <strong>${
+            schedule
+          }</strong>?`,
+        },
+      },
+      hasBackdrop: true,
+    });
+
+    dialogRef.componentInstance.closed.subscribe((res) => {
+      dialogRef.close();
+      if (res) {
+        this.schedulesService.removeSchedule$(schedule?.id || 0).subscribe(
+          () => {
+          }
+        );
+      }
+    });
   }
 }

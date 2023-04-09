@@ -1,8 +1,8 @@
-export interface ScheludeVM {
+export interface ScheduleVM {
   id?: number;
-  id_classroom: number;
-  day: Date | string;
+  classroomId: number;
+  dayId: number;
   start: Date | string;
   end: Date | string;
-  id_section: number;
+  sectionId: number;
 }
