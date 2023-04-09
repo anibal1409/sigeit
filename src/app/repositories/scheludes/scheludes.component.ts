@@ -241,10 +241,10 @@ export class ScheludesComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.closed.subscribe((res) => {
       dialogRef.close();
       if (res) {
-        // this.schedulesService.removeSchedule$(schedule?.id || 0).subscribe(
-        //   () => {
-        //   }
-        // );
+        this.schedulesService.removeSchedule$(schedule?.id || 0).subscribe(
+          () => {
+          }
+        );
       }
     });
   }

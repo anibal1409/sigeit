@@ -19,7 +19,10 @@ import {
   GetTeachersService,
   TeacherItemVM,
 } from '../teachers';
-import { ScheduleItemVM } from './model';
+import {
+  ScheduleItemVM,
+  ScheduleVM,
+} from './model';
 import {
   CreateScheduleService,
   FindScheduleService,
@@ -41,7 +44,7 @@ export class SchedulesService {
     private createScheduleService: CreateScheduleService,
     private findScheduleService: FindScheduleService,
     private removeScheduleService: RemoveScheduleService,
-    private ppdateScheduleService: UpdateScheduleService,
+    private updateScheduleService: UpdateScheduleService,
   ) { }
 
   getDepartaments$(idSchool: number): Observable<Array<DepartmentVM>> {
@@ -60,21 +63,21 @@ export class SchedulesService {
     return this.getTeachersService.exec();
   }
 
-  // createSchedule$(section: SectionVM): Observable<SectionItemVM> {
-  //   return this.createSectionService.exec(section);
-  // }
+  createSchedule$(schedule: ScheduleVM): Observable<ScheduleItemVM> {
+    return this.createScheduleService.exec(schedule);
+  }
 
-  // findSchedule$(sectionId: number): Observable<SectionVM> {
-  //   return this.findSectionService.exec(sectionId);
-  // }
+  findSchedule$(scheduleId: number): Observable<ScheduleVM> {
+    return this.findScheduleService.exec(scheduleId);
+  }
 
-  // updateSchedule$(section: SectionVM): Observable<SectionItemVM> {
-  //   return this.updateSectionService.exec(section);
-  // }
+  updateSchedule$(schedule: ScheduleVM): Observable<ScheduleItemVM> {
+    return this.updateScheduleService.exec(schedule);
+  }
 
-  // removeSchedule$(sectionId: number): Observable<number> {
-  //   return this.removeSectionService.exec(sectionId);
-  // }
+  removeSchedule$(scheduleId: number): Observable<number> {
+    return this.removeScheduleService.exec(scheduleId);
+  }
 
   generateTimeIntervals(startTime: string, endTime: string, duration: number, interval: number): any[] {
     const intervals = [];
