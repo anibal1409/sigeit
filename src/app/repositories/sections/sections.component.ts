@@ -8,16 +8,22 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 import {
+  ConfirmModalComponent,
+  OptionAction,
   TableDataVM,
   TableService,
 } from 'src/app/common';
 
 import { DepartmentVM } from '../departments';
 import { SubjectVM } from '../subjects/model';
-import { SectionVM } from './model';
+import {
+  RowActionSection,
+  SectionVM,
+} from './model';
 import { SectionsService } from './sections.service';
 
 interface SemesterVM { id: number, name: string };
@@ -103,7 +109,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
         columnDef: 'id_teacher',
         header: 'Profesor',
         cell: (element: { [key: string]: string }) =>
-          `${element['id_teacher']}`,
+          `${(element['teacher'] as any)?.last_name ? (element['teacher'] as any)?.last_name + ',' : ''} ${(element['teacher'] as any)?.first_name}`,
       },
       {
         columnDef: 'status',
@@ -119,16 +125,21 @@ export class SectionsComponent implements OnInit, OnDestroy {
     body: [],
     options: [],
   };
-  department = 0;
+  periodId = 3;
+  departmentId = 0;
   semester = -1;
-  subject = 0;
+  subjectId = 0;
+  sectionId = 0;
+
+  showForm = false;
 
   private sub$ = new Subscription();
 
   constructor(
     private sectionsService: SectionsService,
     private fb: FormBuilder,
-    private tableService: TableService
+    private tableService: TableService,
+    private matDialog: MatDialog,
   ) { }
 
   ngOnDestroy(): void {
@@ -146,16 +157,16 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
   private createForm(): void {
     this.form = this.fb.group({
-      department: [null, [Validators.required]],
-      subject: [null, [Validators.required]],
+      departmentId: [null, [Validators.required]],
+      subjectId: [null, [Validators.required]],
       semester: [-1, [Validators.required]]
     });
 
     this.sub$.add(
-      this.form.get('department')?.valueChanges.subscribe(
-        (val) => {
-          console.log(val);
-          this.department = val;
+      this.form.get('departmentId')?.valueChanges.subscribe(
+        (departmentId) => {
+          console.log(departmentId);
+          this.departmentId = +departmentId;
           this.loadSubjects();
         }
       )
@@ -165,18 +176,18 @@ export class SectionsComponent implements OnInit, OnDestroy {
       this.form.get('semester')?.valueChanges.subscribe(
         (val) => {
           console.log(val);
-          this.semester = val;
+          this.semester = +val;
           this.loadSubjects();
         }
       )
     );
 
     this.sub$.add(
-      this.form.get('subject')?.valueChanges.subscribe(
-        (subject) => {
-          console.log(subject);
-          this.subject = subject;
-          this.loadSections(+subject);
+      this.form.get('subjectId')?.valueChanges.subscribe(
+        (subjectId) => {
+          console.log(subjectId);
+          this.subjectId = +subjectId;
+          this.loadSections();
         }
       )
     );
@@ -184,7 +195,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
   private loadSubjects(): void {
     this.sub$.add(
-      this.sectionsService.getSubjects$(+this.department, +this.semester).subscribe(
+      this.sectionsService.getSubjects$(+this.departmentId, +this.semester).subscribe(
         (subjects) => {
           this.subjects = subjects;
         }
@@ -192,9 +203,9 @@ export class SectionsComponent implements OnInit, OnDestroy {
     );
   }
 
-  private loadSections(subjectId: number): void {
+  loadSections(): void {
     this.sub$.add(
-      this.sectionsService.getSections$(subjectId, 2).subscribe(
+      this.sectionsService.getSections$(this.subjectId, this.periodId).subscribe(
         (sections) => {
           this.sectionsData = {
             ...this.sectionsData,
@@ -211,13 +222,51 @@ export class SectionsComponent implements OnInit, OnDestroy {
     );
   }
 
+  changeShowForm(showForm: boolean): void {
+    this.showForm = showForm;
+    if (!showForm) {
+      this.sectionId = 0;
+    }
+  }
+
   displayFn(item: DepartmentVM | SubjectVM | SemesterVM): string {
     return item && item?.name ? item.name : '';
   }
+  
+  clickOption(event: OptionAction): void {
+    switch (event.option.value) {
+      case RowActionSection.update:
+        this.sectionId = +event.data['id'];
+        this.changeShowForm(true);
+      break;
+      case RowActionSection.delete:
+        this.showConfirm(event.data as any);
+      break;
+    }
+  }
 
-  // private _filter(value: string): string[] {
-  //   const filterValue = value.toLowerCase();
+  showConfirm(section: SectionVM): void {
+    const dialogRef = this.matDialog.open(ConfirmModalComponent, {
+      data: {
+        message: {
+          title: 'Eliminar Sección',
+          body: `¿Está seguro que desea eliminar la sección <strong>${
+            section.section_name
+          }</strong>?`,
+        },
+      },
+      hasBackdrop: true,
+    });
 
-  //   return this.options.filter(option => option.toLowerCase().includes(filterValue));
-  // }
+    dialogRef.componentInstance.closed.subscribe((res) => {
+      dialogRef.close();
+      if (res) {
+        this.sectionsService.removeSection$(section?.id || 0).subscribe(
+          () => {
+            this.loadSections();
+          }
+        );
+      }
+    });
+  }
 }

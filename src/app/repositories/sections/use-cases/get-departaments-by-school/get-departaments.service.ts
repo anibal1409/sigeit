@@ -18,15 +18,11 @@ export class GetDepartamentsBySchoolService {
     private http: HttpClient
   ) {}
 
-  exec(idSchool: number): Observable<Array<DepartmentVM>> {
-    return this.http.get('data/departments.json')
+  exec(shoolId: number): Observable<Array<DepartmentVM>> {
+    const url = shoolId === -1 ? `http://localhost:3000/departments` : `http://localhost:3000/departments?shoolId=${shoolId}`;
+    return this.http.get(url)
     .pipe(
       map((departments: any) => departments.map(Department2DepartmentVM)),
-      map(
-        (departments) => {
-          return departments.filter((department: DepartmentVM) => idSchool === -1 || department.id_school === idSchool);
-        }
-      )
     );
   }
 }

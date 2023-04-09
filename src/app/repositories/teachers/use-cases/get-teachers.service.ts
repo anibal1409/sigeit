@@ -1,9 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { DepartmentItemVM, GetDepartmentsService } from '../../departments';
-import { TeacherItemVM } from '../model';
-import { Observable, forkJoin, map } from 'rxjs';
+
+import {
+  forkJoin,
+  map,
+  Observable,
+} from 'rxjs';
+
+import {
+  DepartmentItemVM,
+  GetDepartmentsService,
+} from '../../departments';
 import { Teacher2TeacherItemVM } from '../mappers';
+import { TeacherItemVM } from '../model';
 
 @Injectable()
 export class GetTeachersService {
@@ -14,7 +23,7 @@ export class GetTeachersService {
 
   exec(): Observable<Array<TeacherItemVM>> {
     return forkJoin({
-      teachers: this.httpClient.get('data/teachers.json'),
+      teachers: this.httpClient.get('http://localhost:3000/teachers?_sort=last_name&_order=asc'),
       departments: this.getDepartmentsService.exec(),
     }).pipe(
       map((data: { teachers: any; departments: Array<DepartmentItemVM> }) => {

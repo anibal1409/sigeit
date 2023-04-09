@@ -1,9 +1,12 @@
+import { TeacherVM } from '../../teachers/model';
+
 export interface SectionVM {
   id?: number;
-  id_subject: number;
-  id_period: number;
-  id_teacher: number;
+  subjectId: number;
+  periodId: number;
+  teacherId: number;
   section_name: string;
   status: boolean | string;
   capacity: number;
+  teacher?: TeacherVM;
 }

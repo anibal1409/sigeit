@@ -19,7 +19,7 @@ export class GetSubjectSectionsService {
   ) { }
 
   exec(subjectId: number, periodId: number): Observable<Array<SectionItemVM>> {
-    return this.http.get(`http://localhost:3000/sections?id_subject=${subjectId}&id_period=${periodId}`)
+    return this.http.get(`http://localhost:3000/sections?subjectId=${subjectId}&periodId=${periodId}&_expand=teacher`)
       .pipe(
         map((sections: any) => sections.map(Section2SectionItemVM)),
       );

@@ -11,15 +11,19 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 
 import { TableModule } from '../../common';
+import { GetTeachersService } from '../teachers';
 import { FormComponent } from './form/form.component';
 import { SectionsRoutingModule } from './sections-routing.module';
 import { SectionsComponent } from './sections.component';
 import { SectionsService } from './sections.service';
 import {
   CreateSectionService,
+  FindSectionService,
   GetDepartamentsBySchoolService,
   GetSubjectsByDepartmentService,
   GetSubjectSectionsService,
+  RemoveSectionService,
+  UpdateSectionService,
 } from './use-cases';
 
 @NgModule({
@@ -44,6 +48,10 @@ import {
     GetDepartamentsBySchoolService,
     GetSubjectSectionsService,
     CreateSectionService,
+    GetTeachersService,
+    FindSectionService,
+    UpdateSectionService,
+    RemoveSectionService,
   ],
 })
 export class SectionsModule {}

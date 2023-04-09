@@ -19,12 +19,12 @@ export class GetSubjectsByDepartmentService {
   ) { }
 
   exec(departmentId: number, semester: number): Observable<Array<SubjectVM>> {
-    return this.http.get('data/subjects.json')
+    return this.http.get(`http://localhost:3000/subjects?departmentId=${departmentId}`)
       .pipe(
         map((subjects: any) => subjects.map(Subject2SubjectVM)),
         map(
           (subjects) => {
-            return subjects.filter((subject: SubjectVM) => subject.department_id === departmentId && (subject.semester === semester || semester === -1));
+            return subjects.filter((subject: SubjectVM) => (subject.semester === semester || semester === -1));
           }
         )
       );

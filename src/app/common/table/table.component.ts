@@ -10,9 +10,19 @@ import {
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource, MatTable } from '@angular/material/table';
-import { OptionAction, RowOptionVM, TableDataVM } from './model';
-import { TableService } from './table.service'; /** Constants used to fill up our data base. */
+import {
+  MatTable,
+  MatTableDataSource,
+} from '@angular/material/table';
+
+import {
+  OptionAction,
+  RowOptionVM,
+  TableDataVM,
+} from './model';
+import {
+  TableService,
+} from './table.service'; /** Constants used to fill up our data base. */
 
 @Component({
   selector: 'sigeit-table',
