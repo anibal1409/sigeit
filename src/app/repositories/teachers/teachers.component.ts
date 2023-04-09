@@ -3,6 +3,7 @@ import { TeacherVM } from './model';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { TableDataVM, TableService } from 'src/app/common';
+import { TeachersService } from './teachers.service';
 
 @Component({
   selector: 'app-teachers',
@@ -11,7 +12,7 @@ import { TableDataVM, TableService } from 'src/app/common';
 })
 export class TeachersComponent implements OnInit, OnDestroy {
   constructor(
-    private httpClient: HttpClient,
+    private teachersService: TeachersService,
     private tableService: TableService
   ) {}
 
@@ -43,7 +44,7 @@ export class TeachersComponent implements OnInit, OnDestroy {
         columnDef: 'id_department',
         header: 'Departamento',
         cell: (element: { [key: string]: string }) =>
-          `${element['id_department']}`,
+          `${(element['department'] as any).name}`,
       },
       {
         columnDef: 'status',
@@ -58,20 +59,18 @@ export class TeachersComponent implements OnInit, OnDestroy {
   sub$ = new Subscription();
   ngOnInit(): void {
     this.sub$.add(
-      this.httpClient
-        .get<TeacherVM[]>('../../../data/teachers.json')
-        .subscribe((teachers) => {
-          this.teachersData = {
-            ...this.teachersData,
-            body: teachers || [],
-          };
-          this.teachersData.body = this.teachersData.body.map((data) =>
-            data['status'] == true
-              ? { ...data, status: 'Activo' }
-              : { ...data, status: 'Inactivo' }
-          );
-          this.tableService.setData(this.teachersData);
-        })
+      this.teachersService.getTeachers$().subscribe((teachers) => {
+        this.teachersData = {
+          ...this.teachersData,
+          body: teachers || [],
+        };
+        this.teachersData.body = this.teachersData.body.map((data) =>
+          data['status'] == true
+            ? { ...data, status: 'Activo' }
+            : { ...data, status: 'Inactivo' }
+        );
+        this.tableService.setData(this.teachersData);
+      })
     );
   }
   ngOnDestroy(): void {

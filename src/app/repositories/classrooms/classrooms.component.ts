@@ -3,6 +3,7 @@ import { ClassroomVM } from './model';
 import { HttpClient } from '@angular/common/http';
 import { TableDataVM, TableService } from 'src/app/common';
 import { Subscription } from 'rxjs';
+import { ClassroomsService } from './classrooms.service';
 
 @Component({
   selector: 'app-classrooms',
@@ -11,7 +12,7 @@ import { Subscription } from 'rxjs';
 })
 export class ClassroomsComponent implements OnInit, OnDestroy {
   constructor(
-    private httpClient: HttpClient,
+    private classroomsService: ClassroomsService,
     private tableService: TableService
   ) {}
 
@@ -31,7 +32,7 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
         columnDef: 'id_department',
         header: 'Departamento',
         cell: (element: { [key: string]: string }) =>
-          `${element['id_department']}`,
+          `${(element['department'] as any).name}`,
       },
       {
         columnDef: 'status',
@@ -47,20 +48,18 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sub$.add(
-      this.httpClient
-        .get<ClassroomVM[]>('../../../data/classrooms.json')
-        .subscribe((classrooms) => {
-          this.classroomData = {
-            ...this.classroomData,
-            body: classrooms || [],
-          };
-          this.classroomData.body = this.classroomData.body.map((data) =>
-            data['status'] == true
-              ? { ...data, status: 'Activo' }
-              : { ...data, status: 'Inactivo' }
-          );
-          this.tableService.setData(this.classroomData);
-        })
+      this.classroomsService.getClassrooms$().subscribe((classrooms) => {
+        this.classroomData = {
+          ...this.classroomData,
+          body: classrooms || [],
+        };
+        this.classroomData.body = this.classroomData.body.map((data) =>
+          data['status'] == true
+            ? { ...data, status: 'Activo' }
+            : { ...data, status: 'Inactivo' }
+        );
+        this.tableService.setData(this.classroomData);
+      })
     );
   }
   ngOnDestroy(): void {

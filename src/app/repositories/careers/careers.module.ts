@@ -8,6 +8,8 @@ import { TableModule } from 'src/app/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { GetCareersService } from './use-cases/get-careers.service';
+import { GetDepartmentsService } from '../departments';
 
 @NgModule({
   declarations: [CareersComponent],
@@ -19,6 +21,6 @@ import { MatButtonModule } from '@angular/material/button';
     MatIconModule,
     MatButtonModule,
   ],
-  providers: [CareersService],
+  providers: [CareersService, GetCareersService, GetDepartmentsService],
 })
 export class CareersModule {}
