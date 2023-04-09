@@ -54,7 +54,7 @@
         >
         <mat-autocomplete #autoSubjects="matAutocomplete" [displayWith]="displayFn">
           <mat-option *ngFor="let subject of subjects" [value]="subject.id">
-            {{subject.name}}
+            ({{subject.code}}) {{subject.name}}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
@@ -85,3 +85,10 @@
     </button>
   </div>
 
+
+
+<app-form
+  [periodId]="2"
+  [subjectId]="31"
+>
+</app-form>

@@ -5,7 +5,6 @@ import {
 } from '@angular/core';
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
@@ -31,7 +30,6 @@ interface SemesterVM { id: number, name: string };
 export class SectionsComponent implements OnInit, OnDestroy {
   form!: FormGroup;
 
-  myControl = new FormControl('');
   departments: Array<DepartmentVM> = [];
   subjects: Array<SubjectVM> = [];
   semesters: Array<SemesterVM> = [
@@ -97,20 +95,9 @@ export class SectionsComponent implements OnInit, OnDestroy {
     headers: [
       {
         columnDef: 'section_name',
-        header: 'Nombre',
+        header: 'Sección',
         cell: (element: { [key: string]: string }) =>
           `${element['section_name']}`,
-      },
-      {
-        columnDef: 'id_subject',
-        header: 'Asignatura',
-        cell: (element: { [key: string]: string }) =>
-          `${element['id_subject']}`,
-      },
-      {
-        columnDef: 'id_period',
-        header: 'Periodo',
-        cell: (element: { [key: string]: string }) => `${element['id_period']}`,
       },
       {
         columnDef: 'id_teacher',
@@ -132,6 +119,9 @@ export class SectionsComponent implements OnInit, OnDestroy {
     body: [],
     options: [],
   };
+  department = 0;
+  semester = -1;
+  subject = 0;
 
   private sub$ = new Subscription();
 
@@ -163,7 +153,9 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('department')?.valueChanges.subscribe(
-        () => {
+        (val) => {
+          console.log(val);
+          this.department = val;
           this.loadSubjects();
         }
       )
@@ -171,17 +163,28 @@ export class SectionsComponent implements OnInit, OnDestroy {
   
     this.sub$.add(
       this.form.get('semester')?.valueChanges.subscribe(
-        () => {
+        (val) => {
+          console.log(val);
+          this.semester = val;
           this.loadSubjects();
+        }
+      )
+    );
+
+    this.sub$.add(
+      this.form.get('subject')?.valueChanges.subscribe(
+        (subject) => {
+          console.log(subject);
+          this.subject = subject;
+          this.loadSections(+subject);
         }
       )
     );
   }
 
   private loadSubjects(): void {
-    const {department, semester} = this.form.value;
     this.sub$.add(
-      this.sectionsService.getSubjects$(+department, +semester).subscribe(
+      this.sectionsService.getSubjects$(+this.department, +this.semester).subscribe(
         (subjects) => {
           this.subjects = subjects;
         }
@@ -189,9 +192,26 @@ export class SectionsComponent implements OnInit, OnDestroy {
     );
   }
 
+  private loadSections(subjectId: number): void {
+    this.sub$.add(
+      this.sectionsService.getSections$(subjectId, 2).subscribe(
+        (sections) => {
+          this.sectionsData = {
+            ...this.sectionsData,
+            body: sections || [],
+          };
+          this.sectionsData.body = this.sectionsData.body.map((data) =>
+            data['status'] == true
+              ? { ...data, status: 'Activo' }
+              : { ...data, status: 'Inactivo' }
+          );
+          this.tableService.setData(this.sectionsData);
+        }
+      )
+    );
+  }
+
   displayFn(item: DepartmentVM | SubjectVM | SemesterVM): string {
-    console.log(item, item?.name);
-    
     return item && item?.name ? item.name : '';
   }
 
@@ -199,30 +219,5 @@ export class SectionsComponent implements OnInit, OnDestroy {
   //   const filterValue = value.toLowerCase();
 
   //   return this.options.filter(option => option.toLowerCase().includes(filterValue));
-  // }
-
-
-
-  // ngOnInit(): void {
-  //   this.sub$.add(
-  //     this.httpClient
-  //       .get<SectionVM[]>('../../../data/sections.json')
-  //       .subscribe((sections) => {
-  //         this.sectionsData = {
-  //           ...this.sectionsData,
-  //           body: sections || [],
-  //         };
-  //         this.sectionsData.body = this.sectionsData.body.map((data) =>
-  //           data['status'] == true
-  //             ? { ...data, status: 'Activo' }
-  //             : { ...data, status: 'Inactivo' }
-  //         );
-  //         this.tableService.setData(this.sectionsData);
-  //       })
-  //   );
-  // }
-
-  // ngOnDestroy(): void {
-  //   this.sub$.unsubscribe();
   // }
 }

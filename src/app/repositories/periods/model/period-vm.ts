@@ -8,4 +8,5 @@ export interface PeriodVM {
   interval: Date | string | number;
   block: Date | string | number;
   status: boolean | string;
+  stage: string;
 }

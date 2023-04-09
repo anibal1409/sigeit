@@ -12,7 +12,7 @@ import {
 } from '../../../subjects';
 
 @Injectable()
-export class GetSubjectsService {
+export class GetSubjectsByDepartmentService {
 
   constructor(
     private http: HttpClient

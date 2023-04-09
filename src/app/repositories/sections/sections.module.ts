@@ -8,18 +8,22 @@ import { MatCommonModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 import { TableModule } from '../../common';
+import { FormComponent } from './form/form.component';
 import { SectionsRoutingModule } from './sections-routing.module';
 import { SectionsComponent } from './sections.component';
 import { SectionsService } from './sections.service';
 import {
+  CreateSectionService,
   GetDepartamentsBySchoolService,
-  GetSubjectsService,
+  GetSubjectsByDepartmentService,
+  GetSubjectSectionsService,
 } from './use-cases';
 
 @NgModule({
-  declarations: [SectionsComponent],
+  declarations: [SectionsComponent, FormComponent],
   imports: [
     CommonModule, 
     SectionsRoutingModule,
@@ -32,11 +36,14 @@ import {
     MatButtonModule,
     TableModule,
     MatAutocompleteModule,
+    MatSelectModule,
   ],
   providers: [
     SectionsService,
-    GetSubjectsService,
+    GetSubjectsByDepartmentService,
     GetDepartamentsBySchoolService,
+    GetSubjectSectionsService,
+    CreateSectionService,
   ],
 })
 export class SectionsModule {}

@@ -1,29 +1,30 @@
 [
   {
-    "id": 0,
+    "id": 1,
     "name": "II-2021",
-    "status": true,
+    "status": false,
     "start": "2022-04-01",
     "end": "2022-08-01",
     "start_time": "07:00",
     "end_time": "14:00",
     "block": "00:05",
-    "interval": "00:40"
-
+    "interval": "00:40",
+    "stage": "FINALIZADO"
   },
   {
-    "id": 1,
+    "id": 2,
     "name": "I-2022",
-    "status": true,
+    "status": false,
     "start": "2022-10-01",
     "end": "2023-03-01",
     "start_time": "07:00",
     "end_time": "14:00",
     "block": "00:05",
-    "interval": "00:40"
+    "interval": "00:40",
+    "stage": "FINALIZADO"
   },
   {
-    "id": 2,
+    "id": 3,
     "name": "II-2022",
     "status": true,
     "start": "2023-04-01",
@@ -31,6 +32,7 @@
     "start_time": "07:00",
     "end_time": "16:00",
     "block": "00:05",
-    "interval": "00:40"
+    "interval": "00:40",
+    "stage": "POR PLANIFICAR"
   }
 ]
