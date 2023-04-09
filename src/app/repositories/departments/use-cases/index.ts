@@ -1,1 +1,1 @@
-export * from './get-departments';
+export * from './get-departments.service';

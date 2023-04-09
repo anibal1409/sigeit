@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ScheludeVM } from './model';
-import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { TableDataVM, TableService } from 'src/app/common';
+import { ScheludesService } from './scheludes.service';
 
 @Component({
   selector: 'app-scheludes',
@@ -11,7 +11,7 @@ import { TableDataVM, TableService } from 'src/app/common';
 })
 export class ScheludesComponent implements OnInit, OnDestroy {
   constructor(
-    private httpClient: HttpClient,
+    private scheludesService: ScheludesService,
     private tableService: TableService
   ) {}
 
@@ -53,15 +53,13 @@ export class ScheludesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sub$.add(
-      this.httpClient
-        .get<ScheludeVM[]>('../../../data/scheludes.json')
-        .subscribe((scheludes) => {
-          this.scheludeData = {
-            ...this.scheludeData,
-            body: scheludes || [],
-          };
-          this.tableService.setData(this.scheludeData);
-        })
+      this.scheludesService.getScheludes$().subscribe((scheludes) => {
+        this.scheludeData = {
+          ...this.scheludeData,
+          body: scheludes || [],
+        };
+        this.tableService.setData(this.scheludeData);
+      })
     );
   }
 

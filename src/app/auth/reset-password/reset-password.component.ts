@@ -6,7 +6,7 @@ import { Subscription, finalize } from 'rxjs';
 import { passwordMatchValidator } from '../../common/password-match-validator.directive';
 
 @Component({
-  selector: 'tecnops-reset-password',
+  selector: 'sigeit-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss'],
 })

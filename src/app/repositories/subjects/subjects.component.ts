@@ -3,6 +3,7 @@ import { SubjectVM } from './model';
 import { HttpClient } from '@angular/common/http';
 import { TableDataVM, TableService } from 'src/app/common';
 import { Subscription } from 'rxjs';
+import { SubjectsService } from './subjects.service';
 
 @Component({
   selector: 'app-subjects',
@@ -11,7 +12,7 @@ import { Subscription } from 'rxjs';
 })
 export class SubjectsComponent implements OnInit, OnDestroy {
   constructor(
-    private httpClient: HttpClient,
+    private subjectsService: SubjectsService,
     private tableService: TableService
   ) {}
 
@@ -62,20 +63,13 @@ export class SubjectsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sub$.add(
-      this.httpClient
-        .get<SubjectVM[]>('../../../data/subjects.json')
-        .subscribe((subjects) => {
-          this.subjectsData = {
-            ...this.subjectsData,
-            body: subjects || [],
-          };
-          this.subjectsData.body = this.subjectsData.body.map((data) =>
-            data['status'] == true
-              ? { ...data, status: 'Activo' }
-              : { ...data, status: 'Inactivo' }
-          );
-          this.tableService.setData(this.subjectsData);
-        })
+      this.subjectsService.getSubjects$().subscribe((subjects) => {
+        this.subjectsData = {
+          ...this.subjectsData,
+          body: subjects || [],
+        };
+        this.tableService.setData(this.subjectsData);
+      })
     );
   }
   ngOnDestroy(): void {
