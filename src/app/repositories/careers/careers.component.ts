@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CareerItemVM, CareerVM } from './model';
 import { TableDataVM, TableService } from 'src/app/common';
 import { Subscription } from 'rxjs';
+import { CareersService } from './careers.service';
 
 @Component({
   selector: 'app-careers',
@@ -11,7 +12,7 @@ import { Subscription } from 'rxjs';
 })
 export class CareersComponent implements OnInit, OnDestroy {
   constructor(
-    private httpClient: HttpClient,
+    private careersService: CareersService,
     private tableService: TableService
   ) {}
 
@@ -32,8 +33,9 @@ export class CareersComponent implements OnInit, OnDestroy {
       {
         columnDef: 'id_department',
         header: 'Departamento',
-        cell: (element: { [key: string]: string }) =>
-          `${element['id_department']}`,
+        cell: (element: { [key: string]: string }) => {
+          return `${(element['department'] as any).name}`;
+        },
       },
       {
         columnDef: 'status',
@@ -47,21 +49,18 @@ export class CareersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sub$.add(
-      this.httpClient
-        .get<CareerVM[]>('../../../data/careers.json')
-        .subscribe((careers) => {
-          console.log(careers);
-          this.careersData = {
-            ...this.careersData,
-            body: careers || [],
-          };
-          this.careersData.body = this.careersData.body.map((data) =>
-            data['status'] == true
-              ? { ...data, status: 'Activo' }
-              : { ...data, status: 'Inactivo' }
-          );
-          this.tableService.setData(this.careersData);
-        })
+      this.careersService.getCareers$().subscribe((careers) => {
+        this.careersData = {
+          ...this.careersData,
+          body: careers || [],
+        };
+        this.careersData.body = this.careersData.body.map((data) =>
+          data['status'] == true
+            ? { ...data, status: 'Activo' }
+            : { ...data, status: 'Inactivo' }
+        );
+        this.tableService.setData(this.careersData);
+      })
     );
   }
   ngOnDestroy(): void {

@@ -9,6 +9,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
+import { GetTeachersService } from './use-cases/get-teachers.service';
+import { GetDepartmentsService } from '../departments';
 
 @NgModule({
   declarations: [TeachersComponent],
@@ -21,6 +23,6 @@ import { HttpClientModule } from '@angular/common/http';
     MatIconModule,
     MatButtonModule,
   ],
-  providers: [TeachersService],
+  providers: [TeachersService, GetTeachersService, GetDepartmentsService],
 })
 export class TeachersModule {}
