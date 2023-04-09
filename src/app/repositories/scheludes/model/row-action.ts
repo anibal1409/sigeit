@@ -1,4 +1,4 @@
-export enum RowActionSchelude {
+export enum RowActionSchedule {
   update = 'update',
   delete = 'delete',
 }

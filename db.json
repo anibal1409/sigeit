@@ -217,15 +217,52 @@
   ],
   "settings": [
     {
-      "id": 0,
+      "id": 1,
       "institute_name": "Universidad De Oriente",
       "institute_abbreviation": "UDO",
       "institute_logo": "",
       "description": "",
       "start_time": "07:00",
-      "end_time": "16:00",
-      "rest_interval": "00:05",
-      "schelude_inderval": "00:40"
+      "end_time": "16:05",
+      "interval": 5,
+      "duration": 45
+    }
+  ],
+  "days": [
+    {
+      "id": 1,
+      "name": "Lunes",
+      "abbreviation": "Lun"
+    },
+    {
+      "id": 2,
+      "name": "Martes",
+      "abbreviation": "Mar"
+    },
+    {
+      "id": 3,
+      "name": "Miercoles",
+      "abbreviation": "Mie"
+    },
+    {
+      "id": 4,
+      "name": "Jueves",
+      "abbreviation": "Jue"
+    },
+    {
+      "id": 5,
+      "name": "Viernes",
+      "abbreviation": "Vie"
+    },
+    {
+      "id": 6,
+      "name": "Sabado",
+      "abbreviation": "Sab"
+    },
+    {
+      "id": 7,
+      "name": "Domingo",
+      "abbreviation": "Dom"
     }
   ],
   "subject_carrer": [
@@ -890,9 +927,9 @@
       "start": "2022-04-01",
       "end": "2022-08-01",
       "start_time": "07:00",
-      "end_time": "14:00",
-      "block": "00:05",
-      "interval": "00:40",
+      "end_time": "14:25",
+      "interval": 5,
+      "duration": 45,
       "stage": "FINALIZADO"
     },
     {
@@ -902,9 +939,9 @@
       "start": "2022-10-01",
       "end": "2023-03-01",
       "start_time": "07:00",
-      "end_time": "14:00",
-      "block": "00:05",
-      "interval": "00:40",
+      "end_time": "14:25",
+      "interval": 5,
+      "duration": 45,
       "stage": "FINALIZADO"
     },
     {
@@ -914,9 +951,9 @@
       "start": "2023-04-01",
       "end": "2023-08-01",
       "start_time": "07:00",
-      "end_time": "16:00",
-      "block": "00:05",
-      "interval": "00:40",
+      "end_time": "16:05",
+      "interval": 5,
+      "duration": 45,
       "stage": "POR PLANIFICAR"
     }
   ],

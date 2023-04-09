@@ -14,6 +14,8 @@ import { Subscription } from 'rxjs';
 import {
   ConfirmModalComponent,
   OptionAction,
+  SEMESTERS,
+  SemesterVM,
   TableDataVM,
   TableService,
 } from 'src/app/common';
@@ -26,8 +28,6 @@ import {
 } from './model';
 import { SectionsService } from './sections.service';
 
-interface SemesterVM { id: number, name: string };
-
 @Component({
   selector: 'app-sections',
   templateUrl: './sections.component.html',
@@ -38,64 +38,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
   departments: Array<DepartmentVM> = [];
   subjects: Array<SubjectVM> = [];
-  semesters: Array<SemesterVM> = [
-    {
-      id: -1,
-      name: 'Todos',
-    },
-    {
-      id: 1,
-      name: '1',
-    },
-    {
-      id: 2,
-      name: '2',
-    },
-    {
-      id: 3,
-      name: '3',
-    },
-    {
-      id: 4,
-      name: '4',
-    },
-    {
-      id: 5,
-      name: '5',
-    },
-    {
-      id: 6,
-      name: '6',
-    },
-    {
-      id: 7,
-      name: '7',
-    },
-    {
-      id: 8,
-      name: '8',
-    },
-    {
-      id: 9,
-      name: '9',
-    },
-    {
-      id: 10,
-      name: '10',
-    },
-    {
-      id: 55,
-      name: '55',
-    },
-    {
-      id: 88,
-      name: '88',
-    },
-    {
-      id: 99,
-      name: '99',
-    },
-  ];
+  semesters: Array<SemesterVM> = SEMESTERS;
 
   sectionsData: TableDataVM<SectionVM> = {
     headers: [
@@ -148,11 +91,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.createForm();
-    this.sectionsService.getDepartaments$(1).subscribe(
-      (departaments) => {
-        this.departments = departaments;
-      }
-    );
+    this.loadDepartments();
   }
 
   private createForm(): void {
@@ -188,6 +127,16 @@ export class SectionsComponent implements OnInit, OnDestroy {
           console.log(subjectId);
           this.subjectId = +subjectId;
           this.loadSections();
+        }
+      )
+    );
+  }
+
+  private loadDepartments(): void {
+    this.sub$.add(
+      this.sectionsService.getDepartaments$(1).subscribe(
+        (departaments) => {
+          this.departments = departaments;
         }
       )
     );
