@@ -1,16 +1,16 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { TeachersRoutingModule } from './teachers-routing.module';
-import { TeachersService } from './teachers.service';
-import { TeachersComponent } from './teachers.component';
-import { TableModule } from 'src/app/common';
+import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { HttpClientModule } from '@angular/common/http';
+
+import { TableModule } from 'src/app/common';
+
+import { TeachersRoutingModule } from './teachers-routing.module';
+import { TeachersComponent } from './teachers.component';
+import { TeachersService } from './teachers.service';
 import { GetTeachersService } from './use-cases/get-teachers.service';
-import { GetDepartmentsService } from '../departments';
 
 @NgModule({
   declarations: [TeachersComponent],
@@ -23,6 +23,6 @@ import { GetDepartmentsService } from '../departments';
     MatIconModule,
     MatButtonModule,
   ],
-  providers: [TeachersService, GetTeachersService, GetDepartmentsService],
+  providers: [TeachersService, GetTeachersService],
 })
 export class TeachersModule {}

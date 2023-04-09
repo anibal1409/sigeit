@@ -1,16 +1,13 @@
-import { DepartmentItemVM } from '../../departments';
+import { Department2DepartmentVM } from '../../departments';
 import { CareerItemVM } from '../model';
 import { Career2CareerVM } from './career-2-career-vm';
 
 export function Career2CareerItemVM(
-  career: any,
-  departments: Array<DepartmentItemVM>
+  career: any
 ): CareerItemVM {
   const careerVM = Career2CareerVM(career);
   return {
     ...careerVM,
-    department: departments.find(
-      (department) => department.id === careerVM.id_department
-    ),
+    department: Department2DepartmentVM(career?.department),
   };
 }

@@ -7,7 +7,6 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { TableModule } from 'src/app/common';
 
-import { GetSchoolsService } from '../schools';
 import { DepartmentsRoutingModule } from './departments-routing.module';
 import { DepartmentsComponent } from './departments.component';
 import { DepartmentsService } from './departments.service';
@@ -26,7 +25,6 @@ import { GetDepartmentsService } from './use-cases';
   ],
   providers: [
     DepartmentsService,
-    GetSchoolsService,
     GetDepartmentsService,
   ],
 })

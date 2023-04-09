@@ -1,8 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { SchoolVM } from './model';
-import { HttpClient } from '@angular/common/http';
-import { TableDataVM, TableService } from 'src/app/common';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+
 import { Subscription } from 'rxjs';
+import {
+  TableDataVM,
+  TableService,
+} from 'src/app/common';
+
+import { SchoolVM } from './model';
+import { GetSchoolsService } from './use-cases';
 
 @Component({
   selector: 'app-schools',
@@ -11,7 +20,7 @@ import { Subscription } from 'rxjs';
 })
 export class SchoolsComponent implements OnInit, OnDestroy {
   constructor(
-    private httpClient: HttpClient,
+    private getSchoolsService: GetSchoolsService,
     private tableService: TableService
   ) {}
 
@@ -42,8 +51,7 @@ export class SchoolsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sub$.add(
-      this.httpClient
-        .get<SchoolVM[]>('../../../data//schools.json')
+      this.getSchoolsService.exec()
         .subscribe((schools) => {
           this.schoolsData = {
             ...this.schoolsData,
