@@ -100,7 +100,20 @@
     color="primary"
     aria-label="Agregar horario"
     class="btn-fixed"
+    (click)="changeShowForm(true)"
   >
     <mat-icon>add</mat-icon>
   </button>
 </div>
+
+
+<ng-container *ngIf="showForm">
+  <app-form
+    [sectionId]="sectionId"
+    [scheduleId]="scheduleId"
+    [periodId]="periodId"  
+    (closed)="loadSchedules(); changeShowForm(false)"
+    (cancel)="changeShowForm(false)"
+  >
+  </app-form>
+</ng-container>

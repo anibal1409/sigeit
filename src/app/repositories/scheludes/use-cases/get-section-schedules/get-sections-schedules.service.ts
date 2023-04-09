@@ -19,7 +19,7 @@ export class GetSectionsSchedulesService {
   exec(sectionId: number): Observable<Array<ScheduleItemVM>> {
     return this.http.get(`http://localhost:3000/schedules?sectionId=${sectionId}&_expand=classroom&_expand=day`)
       .pipe(
-        map((sections: any) => sections.map(Schedule2ScheduleItemVM)),
+        map((schedules: any) => schedules.map(Schedule2ScheduleItemVM)),
       );
   }
 }

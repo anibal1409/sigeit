@@ -48,18 +48,12 @@ export class ScheludesComponent implements OnInit, OnDestroy {
         columnDef: 'id_classroom',
         header: 'Aula',
         cell: (element: { [key: string]: string }) =>
-          `${element['id_classroom']}`,
+          `${(element['classroom'] as any)?.name}`,
       },
       {
         columnDef: 'day',
         header: 'Dia',
-        cell: (element: { [key: string]: string }) => `${element['day']}`,
-      },
-      {
-        columnDef: 'id_section',
-        header: 'Seccion',
-        cell: (element: { [key: string]: string }) =>
-          `${element['id_section']}`,
+        cell: (element: { [key: string]: string }) => `${(element['day'] as any)?.name}`,
       },
       {
         columnDef: 'start',
@@ -97,12 +91,6 @@ export class ScheludesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createForm();
     this.loadDepartments();
-    this.schedulesService.findPeriod$(this.periodId).subscribe(
-      (period) => {
-        const intervals = this.schedulesService.generateTimeIntervals(period.start_time, period.end_time, period.duration, period.interval);
-        console.log(intervals);
-      }
-    );
   }
 
   ngOnDestroy(): void {

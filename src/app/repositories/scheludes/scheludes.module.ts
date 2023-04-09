@@ -13,6 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { TableModule } from 'src/app/common';
 
+import { GetClassroomsService } from '../classrooms';
 import { FindPeriodService } from '../periods';
 import {
   GetDepartamentsBySchoolService,
@@ -27,6 +28,7 @@ import { SchedulesService } from './scheludes.service';
 import {
   CreateScheduleService,
   FindScheduleService,
+  GetDaysService,
   GetSectionsSchedulesService,
   RemoveScheduleService,
   UpdateScheduleService,
@@ -61,6 +63,8 @@ import {
     FindScheduleService,
     RemoveScheduleService,
     UpdateScheduleService,
+    GetClassroomsService,
+    GetDaysService,
   ],
 })
 export class ScheludesModule {}

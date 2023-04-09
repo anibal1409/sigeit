@@ -1,1 +1,85 @@
-<p>form works!</p>
+<form [formGroup]="form!" class="p-5">
+  <div class="row">
+    <div class="col-md-3">
+      <mat-form-field >
+        <mat-label>Día</mat-label>
+        <input 
+          type="text"
+          placeholder="Seleccione un día"
+          aria-label="Día"
+          matInput
+          formControlName="dayId"
+          [matAutocomplete]="autoDay"
+        >
+        <mat-autocomplete #autoDay="matAutocomplete">
+          <mat-option *ngFor="let day of days" [value]="day.id">
+            {{day.name}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div class="col-md-3">
+      <mat-form-field >
+        <mat-label>Aula</mat-label>
+        <input 
+          type="text"
+          placeholder="Seleccione un aula"
+          aria-label="Aula"
+          matInput
+          formControlName="classroomId"
+          [matAutocomplete]="autoClassroom"
+        >
+        <mat-autocomplete #autoClassroom="matAutocomplete">
+          <mat-option *ngFor="let classroom of classrooms" [value]="classroom.id">
+            {{classroom.name}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div class="col-md-3">
+      <mat-form-field >
+        <mat-label>Desde</mat-label>
+        <input 
+          type="text"
+          placeholder="Seleccione una hora"
+          aria-label="Desde"
+          matInput
+          formControlName="start"
+          [matAutocomplete]="autoStart"
+        >
+        <mat-autocomplete #autoStart="matAutocomplete">
+          <mat-option *ngFor="let start of startIntervals" [value]="start">
+            {{start}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div class="col-md-3">
+      <mat-form-field >
+        <mat-label>Hasta</mat-label>
+        <input 
+          type="text"
+          placeholder="Seleccione una hora"
+          aria-label="Hasta"
+          matInput
+          formControlName="end"
+          [matAutocomplete]="autoEnd"
+        >
+        <mat-autocomplete #autoEnd="matAutocomplete">
+          <mat-option *ngFor="let end of endIntervals" [value]="end">
+            {{end}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <button (click)="save()" mat-raised-button color="primary">Guardar</button>
+    </div>
+    <div class="col">
+      <button (click)="clickCancel()" mat-raised-button>Cancelar</button>
+    </div>
+  </div>
+</form>

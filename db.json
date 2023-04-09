@@ -232,27 +232,27 @@
     {
       "id": 1,
       "name": "Lunes",
-      "abbreviation": "Lun"
+      "abbreviation": 1
     },
     {
       "id": 2,
       "name": "Martes",
-      "abbreviation": "Mar"
+      "abbreviation": 2
     },
     {
       "id": 3,
       "name": "Miercoles",
-      "abbreviation": "Mie"
+      "abbreviation": 3
     },
     {
       "id": 4,
       "name": "Jueves",
-      "abbreviation": "Jue"
+      "abbreviation": 4
     },
     {
       "id": 5,
       "name": "Viernes",
-      "abbreviation": "Vie"
+      "abbreviation": 5
     },
     {
       "id": 6,
@@ -2488,7 +2488,7 @@
     {
       "id": 1,
       "classroomId": 20,
-      "day": "Mie",
+      "dayId": 3,
       "start": "10:20",
       "end": "12:45",
       "sectionId": 1
@@ -2496,7 +2496,7 @@
     {
       "id": 2,
       "classroomId": 17,
-      "day": "Lun",
+      "dayId": 1,
       "start": "07:00",
       "end": "09:25",
       "sectionId": 2
@@ -2504,7 +2504,7 @@
     {
       "id": 3,
       "classroomId": 20,
-      "day": "Mar",
+      "dayId": 2,
       "start": "07:00",
       "end": "09:25",
       "sectionId": 3
@@ -2512,7 +2512,7 @@
     {
       "id": 4,
       "classroomId": 14,
-      "day": "Mar",
+      "dayId": 2,
       "start": "09:30",
       "end": "11:05",
       "sectionId": 4
@@ -2520,7 +2520,7 @@
     {
       "id": 5,
       "classroomId": 20,
-      "day": "Jue",
+      "dayId": 4,
       "start": "09:30",
       "end": "11:05",
       "sectionId": 4
@@ -2528,7 +2528,7 @@
     {
       "id": 6,
       "classroomId": 14,
-      "day": "Mie",
+      "dayId": 3,
       "start": "08:40",
       "end": "10:15",
       "sectionId": 5
@@ -2536,7 +2536,7 @@
     {
       "id": 7,
       "classroomId": 20,
-      "day": "Vie",
+      "dayId": 5,
       "start": "09:30",
       "end": "11:05",
       "sectionId": 5
@@ -2544,7 +2544,7 @@
     {
       "id": 8,
       "classroomId": 14,
-      "day": "Mar",
+      "dayId": 2,
       "start": "07:00",
       "end": "09:25",
       "sectionId": 6
@@ -2552,7 +2552,7 @@
     {
       "id": 9,
       "classroomId": 20,
-      "day": "Jue",
+      "dayId": 4,
       "start": "11:10",
       "end": "12:45",
       "sectionId": 6
@@ -2560,7 +2560,7 @@
     {
       "id": 10,
       "classroomId": 15,
-      "day": "Mie",
+      "dayId": 3,
       "start": "07:00",
       "end": "08:35",
       "sectionId": 7
@@ -2568,7 +2568,7 @@
     {
       "id": 11,
       "classroomId": 20,
-      "day": "Jue",
+      "dayId": 4,
       "start": "07:00",
       "end": "09:25",
       "sectionId": 7
@@ -2576,7 +2576,7 @@
     {
       "id": 12,
       "classroomId": 17,
-      "day": "Mie",
+      "dayId": 3,
       "start": "08:40",
       "end": "10:15",
       "sectionId": 8
@@ -2584,7 +2584,7 @@
     {
       "id": 13,
       "classroomId": 20,
-      "day": "Vie",
+      "dayId": 5,
       "start": "08:40",
       "end": "11:05",
       "sectionId": 8
@@ -2592,7 +2592,7 @@
     {
       "id": 14,
       "classroomId": 18,
-      "day": "Mar",
+      "dayId": 2,
       "start": "08:40",
       "end": "10:15",
       "sectionId": 9
@@ -2600,7 +2600,7 @@
     {
       "id": 15,
       "classroomId": 20,
-      "day": "Jue",
+      "dayId": 4,
       "start": "09:30",
       "end": "11:55",
       "sectionId": 9
@@ -2608,7 +2608,7 @@
     {
       "id": 16,
       "classroomId": 20,
-      "day": "Mie",
+      "dayId": 3,
       "start": "08:40",
       "end": "11:05",
       "sectionId": 10
@@ -2616,7 +2616,7 @@
     {
       "id": 17,
       "classroomId": 17,
-      "day": "Vie",
+      "dayId": 5,
       "start": "08:40",
       "end": "10:15",
       "sectionId": 10
@@ -2624,7 +2624,7 @@
     {
       "id": 18,
       "classroomId": 19,
-      "day": "Lun",
+      "dayId": 1,
       "start": "07:50",
       "end": "10:15",
       "sectionId": 11
@@ -2632,7 +2632,7 @@
     {
       "id": 19,
       "classroomId": 19,
-      "day": "Mar",
+      "dayId": 2,
       "start": "07:00",
       "end": "09:25",
       "sectionId": 12
@@ -2640,7 +2640,7 @@
     {
       "id": 20,
       "classroomId": 20,
-      "day": "Lun",
+      "dayId": 1,
       "start": "09:30",
       "end": "11:55",
       "sectionId": 13
@@ -2648,7 +2648,7 @@
     {
       "id": 22,
       "classroomId": 15,
-      "day": "Mar",
+      "dayId": 2,
       "start": "09:30",
       "end": "11:55",
       "sectionId": 14
@@ -2656,7 +2656,7 @@
     {
       "id": 23,
       "classroomId": 13,
-      "day": "Lun",
+      "dayId": 1,
       "start": "07:00",
       "end": "08:35",
       "sectionId": 15
@@ -2664,31 +2664,31 @@
     {
       "id": 24,
       "classroomId": 20,
-      "day": "Mar",
+      "dayId": 2,
       "start": "07:00",
       "end": "08:35",
       "sectionId": 15
     },
     {
-      "id": 25,
-      "classroomId": 18,
-      "day": "Lun",
-      "start": "09:30",
-      "end": "11:05",
-      "sectionId": 16
+      "classroomId": 12,
+      "dayId": 1,
+      "start": "07:00",
+      "end": "09:25",
+      "sectionId": 25,
+      "id": 25
     },
     {
-      "id": 26,
-      "classroomId": 20,
-      "day": "Mie",
+      "classroomId": 19,
+      "dayId": 1,
       "start": "07:00",
-      "end": "08:35",
-      "sectionId": 16
+      "end": "07:45",
+      "sectionId": 26,
+      "id": 26
     },
     {
       "id": 27,
       "classroomId": 17,
-      "day": "Mie",
+      "dayId": 3,
       "start": "07:00",
       "end": "08:35",
       "sectionId": 17
@@ -2696,7 +2696,7 @@
     {
       "id": 28,
       "classroomId": 20,
-      "day": "Vie",
+      "dayId": 5,
       "start": "07:00",
       "end": "08:35",
       "sectionId": 18
@@ -2704,7 +2704,7 @@
     {
       "id": 29,
       "classroomId": 19,
-      "day": "Mie",
+      "dayId": 3,
       "start": "07:00",
       "end": "09:25",
       "sectionId": 19
@@ -2712,7 +2712,7 @@
     {
       "id": 30,
       "classroomId": 20,
-      "day": "Mie",
+      "dayId": 3,
       "start": "09:30",
       "end": "11:55",
       "sectionId": 20
