@@ -1,13 +1,5 @@
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
@@ -23,10 +15,7 @@ import {
 import { DepartmentVM } from '../departments';
 import { SectionVM } from '../sections';
 import { SubjectVM } from '../subjects';
-import {
-  RowActionSchedule,
-  ScheduleVM,
-} from './model';
+import { RowActionSchedule, ScheduleVM } from './model';
 import { SchedulesService } from './scheludes.service';
 
 @Component({
@@ -91,18 +80,21 @@ export class ScheludesComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private tableService: TableService,
     private matDialog: MatDialog,
-    private schedulesService: SchedulesService,
+    private schedulesService: SchedulesService
   ) {}
 
   ngOnInit(): void {
     this.createForm();
     this.loadDepartments();
-    this.schedulesService.findPeriod$(this.periodId).subscribe(
-      (period) => {
-        const intervals = this.schedulesService.generateTimeIntervals(period.start_time, period.end_time, period.duration, period.interval);
-        console.log(intervals);
-      }
-    );
+    this.schedulesService.findPeriod$(this.periodId).subscribe((period) => {
+      const intervals = this.schedulesService.generateTimeIntervals(
+        period.start_time,
+        period.end_time,
+        period.duration,
+        period.interval
+      );
+      console.log(intervals);
+    });
   }
 
   ngOnDestroy(): void {
@@ -118,87 +110,78 @@ export class ScheludesComponent implements OnInit, OnDestroy {
     });
 
     this.sub$.add(
-      this.form.get('departmentId')?.valueChanges.subscribe(
-        (departmentId) => {
-          console.log(departmentId);
-          this.departmentId = +departmentId;
-          this.loadSubjects();
-        }
-      )
-    );
-  
-    this.sub$.add(
-      this.form.get('semester')?.valueChanges.subscribe(
-        (val) => {
-          console.log(val);
-          this.semester = +val;
-          this.loadSubjects();
-        }
-      )
+      this.form.get('departmentId')?.valueChanges.subscribe((department) => {
+        this.departmentId = +department.id;
+        this.loadSubjects();
+      })
     );
 
     this.sub$.add(
-      this.form.get('subjectId')?.valueChanges.subscribe(
-        (subjectId) => {
-          console.log(subjectId);
-          this.subjectId = +subjectId;
-          this.loadSections();
-        }
-      )
+      this.form.get('semester')?.valueChanges.subscribe((semester) => {
+        console.log(semester);
+        this.semester = +semester.id;
+        this.loadSubjects();
+      })
     );
 
     this.sub$.add(
-      this.form.get('sectionId')?.valueChanges.subscribe(
-        (sectionId) => {
-          console.log(sectionId);
-          this.sectionId = +sectionId;
-          this.loadSchedules();
-        }
-      )
+      this.form.get('subjectId')?.valueChanges.subscribe((subject) => {
+        console.log(subject);
+        this.subjectId = +subject.id;
+        this.loadSections();
+      })
+    );
+
+    this.sub$.add(
+      this.form.get('sectionId')?.valueChanges.subscribe((section) => {
+        console.log(section);
+        this.sectionId = +section.id;
+        this.loadSchedules();
+      })
     );
   }
 
   private loadDepartments(): void {
     this.sub$.add(
-      this.schedulesService.getDepartaments$(1).subscribe(
-        (departaments) => {
-          this.departments = departaments;
-        }
-      )
+      this.schedulesService.getDepartaments$(1).subscribe((departaments) => {
+        this.departments = departaments;
+      })
     );
   }
 
   private loadSubjects(): void {
+    console.log(this.semester);
     this.sub$.add(
-      this.schedulesService.getSubjects$(+this.departmentId, +this.semester).subscribe(
-        (subjects) => {
+      this.schedulesService
+        .getSubjects$(+this.departmentId, +this.semester)
+        .subscribe((subjects) => {
+          console.log(subjects);
           this.subjects = subjects;
-        }
-      )
+        })
     );
   }
 
   loadSections(): void {
     this.sub$.add(
-      this.schedulesService.getSections$(this.subjectId, this.periodId).subscribe(
-        (sections) => {
+      this.schedulesService
+        .getSections$(this.subjectId, this.periodId)
+        .subscribe((sections) => {
           this.sections = sections;
-        }
-      )
+        })
     );
   }
 
   loadSchedules(): void {
     this.sub$.add(
-      this.schedulesService.getSectionSchedules$(this.sectionId).subscribe(
-        (schedules) => {
+      this.schedulesService
+        .getSectionSchedules$(this.sectionId)
+        .subscribe((schedules) => {
           this.scheludeData = {
             ...this.scheludeData,
             body: schedules || [],
           };
           this.tableService.setData(this.scheludeData);
-        }
-      )
+        })
     );
   }
 
@@ -209,19 +192,23 @@ export class ScheludesComponent implements OnInit, OnDestroy {
     }
   }
 
-  displayFn(item: DepartmentVM | SubjectVM | SemesterVM): string {
-    return item && item?.name ? item.name : '';
+  displayFn(item: DepartmentVM | SubjectVM | SemesterVM | any): string {
+    if (item.section_name) {
+      return item.section_name;
+    } else {
+      return item.name;
+    }
   }
-  
+
   clickOption(event: OptionAction): void {
     switch (event.option.value) {
       case RowActionSchedule.update:
         this.sectionId = +event.data['id'];
         this.changeShowForm(true);
-      break;
+        break;
       case RowActionSchedule.delete:
         this.showConfirm(event.data as any);
-      break;
+        break;
     }
   }
 
@@ -230,9 +217,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
       data: {
         message: {
           title: 'Eliminar Sección',
-          body: `¿Está seguro que desea eliminar la sección <strong>${
-            schedule
-          }</strong>?`,
+          body: `¿Está seguro que desea eliminar la sección <strong>${schedule}</strong>?`,
         },
       },
       hasBackdrop: true,
@@ -241,10 +226,9 @@ export class ScheludesComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.closed.subscribe((res) => {
       dialogRef.close();
       if (res) {
-        this.schedulesService.removeSchedule$(schedule?.id || 0).subscribe(
-          () => {
-          }
-        );
+        this.schedulesService
+          .removeSchedule$(schedule?.id || 0)
+          .subscribe(() => {});
       }
     });
   }

@@ -5,54 +5,58 @@ export const SEMESTERS = [
   },
   {
     id: 1,
-    name: '1',
+    name: 'Primer Semestre',
   },
   {
     id: 2,
-    name: '2',
+    name: 'Segundo Semestre',
   },
   {
     id: 3,
-    name: '3',
+    name: 'Tercer Semestre',
   },
   {
     id: 4,
-    name: '4',
+    name: 'Cuarto Semestre',
   },
   {
     id: 5,
-    name: '5',
+    name: 'Quinto Semestre',
   },
   {
     id: 6,
-    name: '6',
+    name: 'Sexto Semestre',
   },
   {
     id: 7,
-    name: '7',
+    name: 'Septimo Semestre',
   },
   {
     id: 8,
-    name: '8',
+    name: 'Octavo Semestre',
   },
   {
     id: 9,
-    name: '9',
+    name: 'Noveno Semestre',
   },
   {
     id: 10,
-    name: '10',
+    name: 'Ultimo Semestre',
   },
   {
     id: 55,
-    name: '55',
+    name: 'Servicio Comunitario',
+  },
+  {
+    id: 77,
+    name: 'Extracademicas',
   },
   {
     id: 88,
-    name: '88',
+    name: 'Electivas Tecnicas',
   },
   {
     id: 99,
-    name: '99',
+    name: 'Electivas Sociohumanisticas',
   },
-]
+];

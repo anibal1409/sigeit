@@ -13,7 +13,7 @@
           [matAutocomplete]="autoDepartments"
         >
         <mat-autocomplete #autoDepartments="matAutocomplete" [displayWith]="displayFn">
-          <mat-option *ngFor="let department of departments" [value]="department.id">
+          <mat-option *ngFor="let department of departments" [value]="department">
             {{department.name}}
           </mat-option>
         </mat-autocomplete>
@@ -33,7 +33,7 @@
           [matAutocomplete]="autoSemester"
         >
         <mat-autocomplete #autoSemester="matAutocomplete" [displayWith]="displayFn">
-          <mat-option *ngFor="let semester of semesters" [value]="semester.id">
+          <mat-option *ngFor="let semester of semesters" [value]="semester">
             {{semester.name}}
           </mat-option>
         </mat-autocomplete>
@@ -53,7 +53,7 @@
           [matAutocomplete]="autoSubjects"
         >
         <mat-autocomplete #autoSubjects="matAutocomplete" [displayWith]="displayFn">
-          <mat-option *ngFor="let subject of subjects" [value]="subject.id">
+          <mat-option *ngFor="let subject of subjects" [value]="subject">
             ({{subject.code}}) {{subject.name}}
           </mat-option>
         </mat-autocomplete>
