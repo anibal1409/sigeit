@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Subscription } from 'rxjs';
+import { Observable, Subscription, map, startWith } from 'rxjs';
 
 import { TeacherVM } from '../../teachers/model';
 import { SectionVM } from '../model';
@@ -56,6 +56,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
   private sub$ = new Subscription();
 
+  filteredTeachers = new Observable<TeacherVM[]>();
+
   constructor(
     private sectionsService: SectionsService,
     private fb: FormBuilder
@@ -77,6 +79,24 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     this.sub$.add(
       this.sectionsService.getTeachers$().subscribe((teachers) => {
         this.teachers = teachers;
+        if (teachers) {
+          this.filteredTeachers = this.form.controls[
+            'teacherId'
+          ].valueChanges.pipe(
+            startWith<string | TeacherVM>(''),
+            map((value: any) => {
+              if (value !== null) {
+                return typeof value === 'string'
+                  ? value
+                  : `${value.last_name}, ${value.first_name}`;
+              }
+              return '';
+            }),
+            map((name: any) => {
+              return name ? this._teacherFilter(name) : this.teachers.slice();
+            })
+          );
+        }
       })
     );
     if (this.sectionId) {
@@ -179,5 +199,12 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
         return `${item.last_name},  ${item.first_name}`;
       }
     } else return '';
+  }
+
+  private _teacherFilter(name: string): TeacherVM[] {
+    const filterValue = name.toLowerCase();
+    return this.teachers.filter(
+      (option) => option.last_name.toLowerCase().indexOf(filterValue) === 0
+    );
   }
 }

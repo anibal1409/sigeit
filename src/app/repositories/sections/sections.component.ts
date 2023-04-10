@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
-import { Subscription } from 'rxjs';
+import { Observable, Subscription, map, startWith } from 'rxjs';
 import {
   ConfirmModalComponent,
   OptionAction,
@@ -71,6 +71,10 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
   private sub$ = new Subscription();
 
+  filteredDepartments!: Observable<DepartmentVM[]>;
+  filteredSemesters!: Observable<SemesterVM[]>;
+  filteredSubjects!: Observable<SubjectVM[]>;
+
   constructor(
     private sectionsService: SectionsService,
     private fb: FormBuilder,
@@ -85,6 +89,20 @@ export class SectionsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createForm();
     this.loadDepartments();
+    if (this.semester) {
+      this.filteredSemesters = this.form.controls['semester'].valueChanges.pipe(
+        startWith<string | SemesterVM>(''),
+        map((value: any) => {
+          if (value !== null) {
+            return typeof value === 'string' ? value : value.name;
+          }
+          return '';
+        }),
+        map((name: any) => {
+          return name ? this._semesterFilter(name) : this.semesters.slice();
+        })
+      );
+    }
   }
 
   private createForm(): void {
@@ -123,6 +141,24 @@ export class SectionsComponent implements OnInit, OnDestroy {
     this.sub$.add(
       this.sectionsService.getDepartaments$(1).subscribe((departaments) => {
         this.departments = departaments;
+        if (departaments) {
+          this.filteredDepartments = this.form.controls[
+            'departmentId'
+          ].valueChanges.pipe(
+            startWith<string | DepartmentVM>(''),
+            map((value: any) => {
+              if (value !== null) {
+                return typeof value === 'string' ? value : value.name;
+              }
+              return '';
+            }),
+            map((name: any) => {
+              return name
+                ? this._departmentFilter(name)
+                : this.departments.slice();
+            })
+          );
+        }
       })
     );
   }
@@ -133,6 +169,22 @@ export class SectionsComponent implements OnInit, OnDestroy {
         .getSubjects$(+this.departmentId, +this.semester)
         .subscribe((subjects) => {
           this.subjects = subjects;
+          if (subjects) {
+            this.filteredSubjects = this.form.controls[
+              'subjectId'
+            ].valueChanges.pipe(
+              startWith<string | SubjectVM>(''),
+              map((value: any) => {
+                if (value !== null) {
+                  return typeof value === 'string' ? value : value.name;
+                }
+                return '';
+              }),
+              map((name: any) => {
+                return name ? this._subjectFilter(name) : this.subjects.slice();
+              })
+            );
+          }
         })
     );
   }
@@ -198,5 +250,25 @@ export class SectionsComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  private _departmentFilter(name: string): DepartmentVM[] {
+    const filterValue = name.toLowerCase();
+    return this.departments.filter(
+      (option) => option.name.toLowerCase().indexOf(filterValue) === 0
+    );
+  }
+
+  private _semesterFilter(name: string): SemesterVM[] {
+    const filterValue = name.toLowerCase();
+    return this.semesters.filter(
+      (option) => option.name.toLowerCase().indexOf(filterValue) === 0
+    );
+  }
+  private _subjectFilter(name: string): SubjectVM[] {
+    const filterValue = name.toLowerCase();
+    return this.subjects.filter(
+      (option) => option.name.toLowerCase().indexOf(filterValue) === 0
+    );
   }
 }

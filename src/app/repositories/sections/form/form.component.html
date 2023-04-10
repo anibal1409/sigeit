@@ -34,7 +34,7 @@
           [matAutocomplete]="autoTeacher"
         >
         <mat-autocomplete #autoTeacher="matAutocomplete" [displayWith]="displayFn">
-          <mat-option *ngFor="let teacher of teachers" [value]="teacher">
+          <mat-option *ngFor="let teacher of filteredTeachers | async" [value]="teacher">
             {{teacher?.last_name ? teacher?.last_name + ',' : '' }} {{teacher.first_name}}
           </mat-option>
         </mat-autocomplete>
