@@ -189,11 +189,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
   }
 
   displayFn(item: DepartmentVM | SubjectVM | SemesterVM | any): string {
-    if (item.section_name) {
-      return item.section_name;
-    } else {
-      return item.name;
-    }
+    return item?.name;
   }
 
   clickOption(event: OptionAction): void {

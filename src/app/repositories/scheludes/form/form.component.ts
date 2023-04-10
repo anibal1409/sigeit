@@ -124,7 +124,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   save(): void {
     const section = this.form.value;
     let obs;    
-    section.section_name = +section.section_name < 10 ? `0${+section.section_name}` : section.section_name;
+    section.name = +section.name < 10 ? `0${+section.name}` : section.name;
     if (this.sectionId) {
       section.id = this.sectionId;
       obs = this.schedulesService.updateSchedule$(section);

@@ -116,11 +116,11 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
             this.sections = sections;
             if (sections?.length) {
               const lastSection = sections?.reduce((prev, current) => {
-                return (+prev.section_name > +current.section_name) ? prev : current;
+                return (+prev.name > +current.name) ? prev : current;
               });
               if (lastSection) {
                 this.form.patchValue({
-                  section_name: +lastSection.section_name + 1,
+                  name: +lastSection.name + 1,
                 })
               }
             }
@@ -135,7 +135,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       subjectId: [this.subjectId, [Validators.required]],
       periodId: [this.periodId, [Validators.required]],
       teacherId: [null, [Validators.required]],
-      section_name: [1, [Validators.required]],
+      name: [1, [Validators.required]],
       status: [true, [Validators.required]],
       capacity: [0, [Validators.required]]
     });
@@ -144,7 +144,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   save(): void {
     const section = this.form.value;
     let obs;    
-    section.section_name = +section.section_name < 10 ? `0${+section.section_name}` : section.section_name;
+    section.name = +section.name < 10 ? `0${+section.name}` : section.name;
     if (this.sectionId) {
       section.id = this.sectionId;
       obs = this.sectionsService.updateSection$(section);

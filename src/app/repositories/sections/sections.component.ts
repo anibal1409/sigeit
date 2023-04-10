@@ -1,5 +1,13 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
@@ -14,7 +22,10 @@ import {
 
 import { DepartmentVM } from '../departments';
 import { SubjectVM } from '../subjects/model';
-import { RowActionSection, SectionVM } from './model';
+import {
+  RowActionSection,
+  SectionVM,
+} from './model';
 import { SectionsService } from './sections.service';
 
 @Component({
@@ -32,10 +43,10 @@ export class SectionsComponent implements OnInit, OnDestroy {
   sectionsData: TableDataVM<SectionVM> = {
     headers: [
       {
-        columnDef: 'section_name',
+        columnDef: 'name',
         header: 'Sección',
         cell: (element: { [key: string]: string }) =>
-          `${element['section_name']}`,
+          `${element['name']}`,
       },
       {
         columnDef: 'id_teacher',
@@ -184,7 +195,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
       data: {
         message: {
           title: 'Eliminar Sección',
-          body: `¿Está seguro que desea eliminar la sección <strong>${section.section_name}</strong>?`,
+          body: `¿Está seguro que desea eliminar la sección <strong>${section.name}</strong>?`,
         },
       },
       hasBackdrop: true,

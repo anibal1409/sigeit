@@ -7,7 +7,7 @@ export function Section2SectionVM(section: any): SectionVM {
     periodId: section?.periodId,
     subjectId: section?.subjectId,
     teacherId: section?.teacherId,
-    section_name: section?.section_name,
+    name: section?.name,
     status: section?.status,
     id: section?.id,
     teacher: Teacher2TeacherVM(section?.teacher),

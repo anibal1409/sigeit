@@ -2292,7 +2292,7 @@
       "subjectId": 31,
       "teacherId": 12,
       "periodId": 2,
-      "section_name": "01",
+      "name": "01",
       "status": true,
       "capacity": 30
     },
@@ -2301,7 +2301,7 @@
       "subjectId": 31,
       "teacherId": 12,
       "periodId": 2,
-      "section_name": "02",
+      "name": "02",
       "status": true,
       "capacity": 30
     },
@@ -2310,7 +2310,7 @@
       "subjectId": 32,
       "teacherId": 11,
       "periodId": 2,
-      "section_name": "01",
+      "name": "01",
       "status": true,
       "capacity": 30
     },
@@ -2319,7 +2319,7 @@
       "subjectId": 32,
       "teacherId": 11,
       "periodId": 2,
-      "section_name": "02",
+      "name": "02",
       "status": true,
       "capacity": 30
     },
@@ -2328,7 +2328,7 @@
       "subjectId": 33,
       "teacherId": 13,
       "periodId": 2,
-      "section_name": "01",
+      "name": "01",
       "status": true,
       "capacity": 30
     },
@@ -2337,7 +2337,7 @@
       "subjectId": 33,
       "teacherId": 13,
       "periodId": 2,
-      "section_name": "02",
+      "name": "02",
       "status": true,
       "capacity": 30
     },
@@ -2346,7 +2346,7 @@
       "subjectId": 36,
       "teacherId": 10,
       "periodId": 2,
-      "section_name": "01",
+      "name": "01",
       "status": true,
       "capacity": 30
     },
@@ -2355,7 +2355,7 @@
       "subjectId": 37,
       "teacherId": 2,
       "periodId": 2,
-      "section_name": "01",
+      "name": "01",
       "status": true,
       "capacity": 30
     },
@@ -2364,7 +2364,7 @@
       "subjectId": 37,
       "teacherId": 2,
       "periodId": 2,
-      "section_name": "02",
+      "name": "02",
       "status": true,
       "capacity": 30
     },
@@ -2373,7 +2373,7 @@
       "subjectId": 38,
       "teacherId": 14,
       "periodId": 2,
-      "section_name": "01",
+      "name": "01",
       "status": true,
       "capacity": 30
     },
@@ -2382,7 +2382,7 @@
       "subjectId": 38,
       "teacherId": 14,
       "periodId": 2,
-      "section_name": "02",
+      "name": "02",
       "status": true,
       "capacity": 30
     },
@@ -2391,7 +2391,7 @@
       "subjectId": 41,
       "teacherId": 10,
       "periodId": 2,
-      "section_name": "01",
+      "name": "01",
       "status": true,
       "capacity": 30
     },
@@ -2400,7 +2400,7 @@
       "subjectId": 41,
       "teacherId": 10,
       "periodId": 2,
-      "section_name": "02",
+      "name": "02",
       "status": true,
       "capacity": 30
     },
@@ -2409,7 +2409,7 @@
       "subjectId": 42,
       "teacherId": 30,
       "periodId": 2,
-      "section_name": "01",
+      "name": "01",
       "status": true,
       "capacity": 30
     },
@@ -2418,7 +2418,7 @@
       "subjectId": 42,
       "teacherId": 30,
       "periodId": 2,
-      "section_name": "02",
+      "name": "02",
       "status": true,
       "capacity": 30
     },
@@ -2427,7 +2427,7 @@
       "subjectId": 44,
       "teacherId": 27,
       "periodId": 2,
-      "section_name": "01",
+      "name": "01",
       "status": true,
       "capacity": 30
     },
@@ -2436,7 +2436,7 @@
       "subjectId": 44,
       "teacherId": 27,
       "periodId": 2,
-      "section_name": "02",
+      "name": "02",
       "status": true,
       "capacity": 30
     },
@@ -2445,7 +2445,7 @@
       "subjectId": 45,
       "teacherId": 28,
       "periodId": 2,
-      "section_name": "01",
+      "name": "01",
       "status": true,
       "capacity": 30
     },
@@ -2454,7 +2454,7 @@
       "subjectId": 45,
       "teacherId": 28,
       "periodId": 2,
-      "section_name": "02",
+      "name": "02",
       "status": true,
       "capacity": 30
     },
@@ -2463,7 +2463,7 @@
       "subjectId": 46,
       "teacherId": 19,
       "periodId": 2,
-      "section_name": "01",
+      "name": "01",
       "status": true,
       "capacity": 30
     },
@@ -2472,7 +2472,7 @@
       "subjectId": 46,
       "teacherId": 19,
       "periodId": 2,
-      "section_name": "02",
+      "name": "02",
       "status": true,
       "capacity": 30
     },
@@ -2480,7 +2480,7 @@
       "subjectId": 31,
       "periodId": 2,
       "teacherId": 30,
-      "section_name": "03",
+      "name": "03",
       "status": true,
       "capacity": 0,
       "id": 22
@@ -2489,7 +2489,7 @@
       "subjectId": 31,
       "periodId": 2,
       "teacherId": 30,
-      "section_name": "04",
+      "name": "04",
       "status": true,
       "capacity": 0,
       "id": 23
@@ -2498,7 +2498,7 @@
       "subjectId": 31,
       "periodId": 2,
       "teacherId": 30,
-      "section_name": "04",
+      "name": "04",
       "status": true,
       "capacity": 0,
       "id": 24
@@ -2507,7 +2507,7 @@
       "subjectId": 11,
       "periodId": 3,
       "teacherId": 1,
-      "section_name": "01",
+      "name": "01",
       "status": true,
       "capacity": 20,
       "id": 25
@@ -2516,7 +2516,7 @@
       "subjectId": 11,
       "periodId": 3,
       "teacherId": 1,
-      "section_name": "02",
+      "name": "02",
       "status": true,
       "capacity": 30,
       "id": 26
