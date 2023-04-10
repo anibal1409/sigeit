@@ -1,1 +1,135 @@
-<p>settings works!</p>
+<!-- Modal -->
+
+<mat-card id="modal-card">
+  <mat-card-header id="modal-header">
+    <mat-card-title><p id="modal-title">Configuración</p></mat-card-title>
+    <button
+      id="modal-close-button"
+      type="button"
+      mat-fab
+      color="basic"
+      aria-label="Close"
+      (click)="closeModal(false)"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-card-header>
+
+  <form class="formControl" [formGroup]="form!" (ngSubmit)="closeModal(true)">
+    <mat-card-content>
+      <!-- <div id="modal-image" class="img-container">
+          <sm-soc-avatar-control
+            formControlName="image"
+            id="image"
+            name="image"
+          ></sm-soc-avatar-control>
+        </div> -->
+      <mat-form-field id="modal-form-field-container">
+        <mat-label>Nombre de la institución</mat-label>
+        <input
+          matInput
+          type="text"
+          name="institute_name"
+          id="institute_name"
+          formControlName="institute_name"
+          required
+        />
+        <mat-error *ngIf="form.controls['institute_name'].hasError('required')"
+          >Campo requerido</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field id="modal-form-field-container">
+        <mat-label>Siglas de la institución</mat-label>
+        <input
+          matInput
+          type="text"
+          name="institute_abbreviation"
+          id="institute_abbreviation"
+          formControlName="institute_abbreviation"
+          required
+        />
+        <mat-error
+          *ngIf="form.controls['institute_abbreviation'].hasError('required')"
+          >Campo requerido</mat-error
+        >
+      </mat-form-field>
+      <div class="inputs-container">
+      <mat-form-field id="modal-form-field-container">
+        <mat-label>Hora de entrada</mat-label>
+        <input
+          matInput
+          type="text"
+          name="start_time"
+          id="start_time"
+          formControlName="start_time"
+          required
+        />
+        <mat-error *ngIf="form.controls['start_time'].hasError('required')"
+          >Campo requerido</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field id="modal-form-field-container">
+        <mat-label>Hora de salida</mat-label>
+        <input
+          matInput
+          type="text"
+          name="end_time"
+          id="end_time"
+          formControlName="end_time"
+          required
+        />
+        <mat-error *ngIf="form.controls['end_time'].hasError('required')"
+          >Campo requerido</mat-error
+        >
+      </mat-form-field>
+      </div>
+      <div class="inputs-container">
+       
+        <mat-form-field id="modal-form-field-container">
+          <mat-label>Duración de bloque de horario</mat-label>
+          <input
+            matInput
+            type="number"
+            name="duration"
+            id="duration"
+            formControlName="duration"
+            required
+          />
+          <mat-error *ngIf="form.controls['duration'].hasError('required')"
+            >Campo requerido</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field id="modal-form-field-container">
+            <mat-label>Intervalo entre bloque de horario</mat-label>
+            <input
+              matInput
+              type="number"
+              name="interval"
+              id="interval"
+              formControlName="interval"
+              required
+            />
+            <mat-error *ngIf="form.controls['interval'].hasError('required')"
+              >Campo requerido</mat-error
+            >
+          </mat-form-field>
+      </div>
+
+      <mat-card-actions id="modal-actions">
+        <button
+          type="submit"
+          mat-button
+          color="primary"
+          [disabled]="!form.valid"
+        >
+          Guardar
+        </button>
+        <button mat-button type="button" (click)="closeModal(false)">
+          Cancelar
+        </button>
+      </mat-card-actions>
+      <div class="modal-footer"></div>
+    </mat-card-content>
+  </form>
+</mat-card>
+<!-- End of Modal  -->

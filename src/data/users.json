@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "first_name": "Anibal",
+    "last_name": "Fariñas",
+    "id_document": 99299356,
+    "email": "afarinas@gmail.com",
+    "birthday_date": "01/01/1950",
+    "password": "12345678",
+    "id_department": 1
+  },
+  {
+    "id": 2,
+    "first_name": "María",
+    "last_name": "Pinto",
+    "id_document": 122956356,
+    "email": "mpinto@gmail.com",
+    "birthday_date": "01/01/1950",
+    "password": "10345678",
+    "id_department": 1
+  },
+  {
+    "id": 3,
+    "first_name": "John",
+    "last_name": "Doe",
+    "id_document": 3928533,
+    "email": "jdoe@gmail.com",
+    "birthday_date": "01/01/1950",
+    "password": "aaassfasf",
+    "id_department": 2
+  }
+]

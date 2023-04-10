@@ -12,8 +12,8 @@
           formControlName="departmentId"
           [matAutocomplete]="autoDepartments"
         >
-        <mat-autocomplete #autoDepartments="matAutocomplete">
-          <mat-option *ngFor="let department of departments" [value]="department.id">
+        <mat-autocomplete #autoDepartments="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let department of departments" [value]="department">
             {{department.name}}
           </mat-option>
         </mat-autocomplete>
@@ -32,8 +32,8 @@
           formControlName="semester"
           [matAutocomplete]="autoSemester"
         >
-        <mat-autocomplete #autoSemester="matAutocomplete">
-          <mat-option *ngFor="let semester of semesters" [value]="semester.id">
+        <mat-autocomplete #autoSemester="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let semester of semesters" [value]="semester">
             {{semester.name}}
           </mat-option>
         </mat-autocomplete>
@@ -52,8 +52,8 @@
           formControlName="subjectId"
           [matAutocomplete]="autoSubjects"
         >
-        <mat-autocomplete #autoSubjects="matAutocomplete">
-          <mat-option *ngFor="let subject of subjects" [value]="subject.id">
+        <mat-autocomplete #autoSubjects="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let subject of subjects" [value]="subject">
             ({{subject.code}}) {{subject.name}}
           </mat-option>
         </mat-autocomplete>
@@ -72,8 +72,8 @@
           formControlName="sectionId"
           [matAutocomplete]="autoSections"
         >
-        <mat-autocomplete #autoSections="matAutocomplete">
-          <mat-option *ngFor="let section of sections" [value]="section.id">
+        <mat-autocomplete #autoSections="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let section of sections" [value]="section">
             {{section.section_name}}
           </mat-option>
         </mat-autocomplete>

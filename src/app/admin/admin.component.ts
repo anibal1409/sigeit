@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SettingsService } from '../repositories/settings/settings.service';
 
 interface optionItem {
   name: string;
@@ -77,10 +78,14 @@ export class AdminComponent implements OnInit {
     },
   ];
 
-  constructor(private router: ActivatedRoute) {}
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private settingsService: SettingsService
+  ) {}
 
   ngOnInit(): void {
-    const path = this.router.children[0].snapshot.routeConfig?.path;
+    const path = this.activatedRoute.children[0].snapshot.routeConfig?.path;
     if (path) {
       const item = this.optionList.find((option) => option.value === path);
       this.menuOption(item);
@@ -90,8 +95,11 @@ export class AdminComponent implements OnInit {
   menuOption(option?: optionItem): void {
     if (option && option.name !== 'Configuraciones') {
       this.title = option.name;
+      this.router.navigate([`/dashboard/${option.value}`]);
     } else if (!option) {
       this.title = 'SIGEIT';
+    } else {
+      this.settingsService.open();
     }
   }
 }
