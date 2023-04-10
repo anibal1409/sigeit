@@ -1,13 +1,5 @@
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
@@ -22,10 +14,7 @@ import {
 
 import { DepartmentVM } from '../departments';
 import { SubjectVM } from '../subjects/model';
-import {
-  RowActionSection,
-  SectionVM,
-} from './model';
+import { RowActionSection, SectionVM } from './model';
 import { SectionsService } from './sections.service';
 
 @Component({
@@ -52,7 +41,11 @@ export class SectionsComponent implements OnInit, OnDestroy {
         columnDef: 'id_teacher',
         header: 'Profesor',
         cell: (element: { [key: string]: string }) =>
-          `${(element['teacher'] as any)?.last_name ? (element['teacher'] as any)?.last_name + ',' : ''} ${(element['teacher'] as any)?.first_name}`,
+          `${
+            (element['teacher'] as any)?.last_name
+              ? (element['teacher'] as any)?.last_name + ','
+              : ''
+          } ${(element['teacher'] as any)?.first_name}`,
       },
       {
         columnDef: 'status',
@@ -82,8 +75,8 @@ export class SectionsComponent implements OnInit, OnDestroy {
     private sectionsService: SectionsService,
     private fb: FormBuilder,
     private tableService: TableService,
-    private matDialog: MatDialog,
-  ) { }
+    private matDialog: MatDialog
+  ) {}
 
   ngOnDestroy(): void {
     this.sub$.unsubscribe();
@@ -98,64 +91,57 @@ export class SectionsComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       departmentId: [null, [Validators.required]],
       subjectId: [null, [Validators.required]],
-      semester: [-1, [Validators.required]]
+      semester: [-1, [Validators.required]],
     });
 
     this.sub$.add(
-      this.form.get('departmentId')?.valueChanges.subscribe(
-        (departmentId) => {
-          console.log(departmentId);
-          this.departmentId = +departmentId;
-          this.loadSubjects();
-        }
-      )
-    );
-  
-    this.sub$.add(
-      this.form.get('semester')?.valueChanges.subscribe(
-        (val) => {
-          console.log(val);
-          this.semester = +val;
-          this.loadSubjects();
-        }
-      )
+      this.form.get('departmentId')?.valueChanges.subscribe((department) => {
+        console.log(department);
+        this.departmentId = +department.id;
+        this.loadSubjects();
+      })
     );
 
     this.sub$.add(
-      this.form.get('subjectId')?.valueChanges.subscribe(
-        (subjectId) => {
-          console.log(subjectId);
-          this.subjectId = +subjectId;
-          this.loadSections();
-        }
-      )
+      this.form.get('semester')?.valueChanges.subscribe((semester) => {
+        console.log(semester);
+        this.semester = +semester.id;
+        this.loadSubjects();
+      })
+    );
+
+    this.sub$.add(
+      this.form.get('subjectId')?.valueChanges.subscribe((subject) => {
+        console.log(subject);
+        this.subjectId = +subject.id;
+        this.loadSections();
+      })
     );
   }
 
   private loadDepartments(): void {
     this.sub$.add(
-      this.sectionsService.getDepartaments$(1).subscribe(
-        (departaments) => {
-          this.departments = departaments;
-        }
-      )
+      this.sectionsService.getDepartaments$(1).subscribe((departaments) => {
+        this.departments = departaments;
+      })
     );
   }
 
   private loadSubjects(): void {
     this.sub$.add(
-      this.sectionsService.getSubjects$(+this.departmentId, +this.semester).subscribe(
-        (subjects) => {
+      this.sectionsService
+        .getSubjects$(+this.departmentId, +this.semester)
+        .subscribe((subjects) => {
           this.subjects = subjects;
-        }
-      )
+        })
     );
   }
 
   loadSections(): void {
     this.sub$.add(
-      this.sectionsService.getSections$(this.subjectId, this.periodId).subscribe(
-        (sections) => {
+      this.sectionsService
+        .getSections$(this.subjectId, this.periodId)
+        .subscribe((sections) => {
           this.sectionsData = {
             ...this.sectionsData,
             body: sections || [],
@@ -166,8 +152,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
               : { ...data, status: 'Inactivo' }
           );
           this.tableService.setData(this.sectionsData);
-        }
-      )
+        })
     );
   }
 
@@ -181,16 +166,16 @@ export class SectionsComponent implements OnInit, OnDestroy {
   displayFn(item: DepartmentVM | SubjectVM | SemesterVM): string {
     return item && item?.name ? item.name : '';
   }
-  
+
   clickOption(event: OptionAction): void {
     switch (event.option.value) {
       case RowActionSection.update:
         this.sectionId = +event.data['id'];
         this.changeShowForm(true);
-      break;
+        break;
       case RowActionSection.delete:
         this.showConfirm(event.data as any);
-      break;
+        break;
     }
   }
 
@@ -199,9 +184,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
       data: {
         message: {
           title: 'Eliminar Sección',
-          body: `¿Está seguro que desea eliminar la sección <strong>${
-            section.section_name
-          }</strong>?`,
+          body: `¿Está seguro que desea eliminar la sección <strong>${section.section_name}</strong>?`,
         },
       },
       hasBackdrop: true,
@@ -210,11 +193,9 @@ export class SectionsComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.closed.subscribe((res) => {
       dialogRef.close();
       if (res) {
-        this.sectionsService.removeSection$(section?.id || 0).subscribe(
-          () => {
-            this.loadSections();
-          }
-        );
+        this.sectionsService.removeSection$(section?.id || 0).subscribe(() => {
+          this.loadSections();
+        });
       }
     });
   }

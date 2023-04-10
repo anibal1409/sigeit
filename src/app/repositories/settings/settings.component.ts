@@ -65,11 +65,3 @@ export class SettingsComponent implements OnInit, OnDestroy {
     });
   }
 }
-// "institute_name": "Universidad De Oriente",
-// "institute_abbreviation": "UDO",
-// "institute_logo": "",
-// "description": "",
-// "start_time": "07:00",
-// "end_time": "16:05",
-// "interval": 5,
-// "duration": 45
