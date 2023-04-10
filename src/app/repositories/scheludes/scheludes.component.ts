@@ -26,6 +26,36 @@ import { SchedulesService } from './scheludes.service';
 export class ScheludesComponent implements OnInit, OnDestroy {
   form!: FormGroup;
 
+  horario = [
+    {
+      hora: '07:00',
+      lunes: 'Matemáticas',
+      martes: '',
+      miercoles: 'Historia',
+      jueves: '',
+      viernes: '',
+    },
+    {
+      hora: '08:40',
+      lunes: 'Física',
+      martes: '',
+      miercoles: 'Historia',
+      jueves: 'Química',
+      viernes: '',
+    },
+    {
+      hora: '11:00',
+      lunes: 'Física',
+      martes: 'Inglés',
+      miercoles: 'Historia',
+      jueves: 'Química',
+      viernes: '',
+    },
+    // ...
+  ];
+
+  dias = ['hora', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes'];
+
   departments: Array<DepartmentVM> = [];
   subjects: Array<SubjectVM> = [];
   semesters: Array<SemesterVM> = SEMESTERS;

@@ -31,6 +31,7 @@ import {
   RemoveScheduleService,
   UpdateScheduleService,
 } from './use-cases';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [ScheludesComponent, FormComponent],
@@ -48,6 +49,7 @@ import {
     MatAutocompleteModule,
     MatSelectModule,
     ReactiveFormsModule,
+    MatTableModule,
   ],
   providers: [
     SchedulesService,
