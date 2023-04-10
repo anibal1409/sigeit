@@ -5,6 +5,7 @@ import { TableDataVM, TableService } from 'src/app/common';
 
 import { DepartmentsService } from './departments.service';
 import { DepartmentItemVM } from './model';
+import { StateService } from 'src/app/common/state';
 
 @Component({
   selector: 'app-departments',
@@ -14,7 +15,8 @@ import { DepartmentItemVM } from './model';
 export class DepartmentsComponent implements OnInit, OnDestroy {
   constructor(
     private tableService: TableService,
-    private departmentsService: DepartmentsService
+    private departmentsService: DepartmentsService,
+    private stateService: StateService
   ) {}
 
   departmentsData: TableDataVM<DepartmentItemVM> = {
@@ -47,7 +49,11 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
   };
 
   sub$ = new Subscription();
+  loading = false;
+
   ngOnInit(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.sub$.add(
       this.departmentsService.getDepartments$().subscribe((departments) => {
         this.departmentsData = {
@@ -55,6 +61,8 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
           body: departments || [],
         };
         this.tableService.setData(this.departmentsData);
+        this.loading = false;
+        setTimeout(() => this.stateService.setLoading(this.loading), 500);
       })
     );
   }

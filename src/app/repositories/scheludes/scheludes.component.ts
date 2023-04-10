@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
-import { Subscription } from 'rxjs';
+import { Observable, Subscription, map, startWith } from 'rxjs';
 import {
   ConfirmModalComponent,
   OptionAction,
@@ -17,6 +17,7 @@ import { SectionVM } from '../sections';
 import { SubjectVM } from '../subjects';
 import { RowActionSchedule, ScheduleVM } from './model';
 import { SchedulesService } from './scheludes.service';
+import { StateService } from 'src/app/common/state';
 
 @Component({
   selector: 'app-scheludes',
@@ -25,6 +26,36 @@ import { SchedulesService } from './scheludes.service';
 })
 export class ScheludesComponent implements OnInit, OnDestroy {
   form!: FormGroup;
+
+  horario = [
+    {
+      hora: '07:00',
+      lunes: 'Matemáticas',
+      martes: '',
+      miercoles: 'Historia',
+      jueves: '',
+      viernes: '',
+    },
+    {
+      hora: '08:40',
+      lunes: 'Física',
+      martes: '',
+      miercoles: 'Historia',
+      jueves: 'Química',
+      viernes: '',
+    },
+    {
+      hora: '11:00',
+      lunes: 'Física',
+      martes: 'Inglés',
+      miercoles: 'Historia',
+      jueves: 'Química',
+      viernes: '',
+    },
+    // ...
+  ];
+
+  dias = ['hora', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes'];
 
   departments: Array<DepartmentVM> = [];
   subjects: Array<SubjectVM> = [];
@@ -73,14 +104,20 @@ export class ScheludesComponent implements OnInit, OnDestroy {
   scheduleId = 0;
 
   showForm = false;
+  loading = false;
 
   private sub$ = new Subscription();
+
+  filteredDepartments!: Observable<DepartmentVM[]>;
+  filteredSemesters!: Observable<SemesterVM[]>;
+  filteredSubjects!: Observable<SubjectVM[]>;
 
   constructor(
     private fb: FormBuilder,
     private tableService: TableService,
     private matDialog: MatDialog,
-    private schedulesService: SchedulesService
+    private schedulesService: SchedulesService,
+    private stateService: StateService
   ) {}
 
   ngOnInit(): void {
@@ -95,6 +132,21 @@ export class ScheludesComponent implements OnInit, OnDestroy {
       );
       console.log(intervals);
     });
+
+    if (this.semester) {
+      this.filteredSemesters = this.form.controls['semester'].valueChanges.pipe(
+        startWith<string | SemesterVM>(''),
+        map((value: any) => {
+          if (value !== null) {
+            return typeof value === 'string' ? value : value.name;
+          }
+          return '';
+        }),
+        map((name: any) => {
+          return name ? this._semesterFilter(name) : this.semesters.slice();
+        })
+      );
+    }
   }
 
   ngOnDestroy(): void {
@@ -118,7 +170,6 @@ export class ScheludesComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('semester')?.valueChanges.subscribe((semester) => {
-        console.log(semester);
         this.semester = +semester.id;
         this.loadSubjects();
       })
@@ -142,36 +193,84 @@ export class ScheludesComponent implements OnInit, OnDestroy {
   }
 
   private loadDepartments(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.sub$.add(
       this.schedulesService.getDepartaments$(1).subscribe((departaments) => {
         this.departments = departaments;
+        //
+        if (departaments) {
+          this.filteredDepartments = this.form.controls[
+            'departmentId'
+          ].valueChanges.pipe(
+            startWith<string | DepartmentVM>(''),
+            map((value: any) => {
+              if (value !== null) {
+                return typeof value === 'string' ? value : value.name;
+              }
+              return '';
+            }),
+            map((name: any) => {
+              return name
+                ? this._departmentFilter(name)
+                : this.departments.slice();
+            })
+          );
+        }
+        //
+        this.loading = false;
+        setTimeout(() => this.stateService.setLoading(this.loading), 500);
       })
     );
   }
 
   private loadSubjects(): void {
-    console.log(this.semester);
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.sub$.add(
       this.schedulesService
         .getSubjects$(+this.departmentId, +this.semester)
         .subscribe((subjects) => {
-          console.log(subjects);
           this.subjects = subjects;
+          if (subjects) {
+            this.filteredSubjects = this.form.controls[
+              'subjectId'
+            ].valueChanges.pipe(
+              startWith<string | SubjectVM>(''),
+              map((value: any) => {
+                if (value !== null) {
+                  return typeof value === 'string' ? value : value.name;
+                }
+                return '';
+              }),
+              map((name: any) => {
+                return name ? this._subjectFilter(name) : this.subjects.slice();
+              })
+            );
+          }
+          this.loading = false;
+          setTimeout(() => this.stateService.setLoading(this.loading), 500);
         })
     );
   }
 
   loadSections(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.sub$.add(
       this.schedulesService
         .getSections$(this.subjectId, this.periodId)
         .subscribe((sections) => {
           this.sections = sections;
+          this.loading = false;
+          setTimeout(() => this.stateService.setLoading(this.loading), 500);
         })
     );
   }
 
   loadSchedules(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.sub$.add(
       this.schedulesService
         .getSectionSchedules$(this.sectionId)
@@ -181,6 +280,8 @@ export class ScheludesComponent implements OnInit, OnDestroy {
             body: schedules || [],
           };
           this.tableService.setData(this.scheludeData);
+          this.loading = false;
+          setTimeout(() => this.stateService.setLoading(this.loading), 500);
         })
     );
   }
@@ -193,11 +294,11 @@ export class ScheludesComponent implements OnInit, OnDestroy {
   }
 
   displayFn(item: DepartmentVM | SubjectVM | SemesterVM | any): string {
-    if (item.section_name) {
+    if (item && item.section_name) {
       return item.section_name;
-    } else {
+    } else if (item && item.name) {
       return item.name;
-    }
+    } else return '';
   }
 
   clickOption(event: OptionAction): void {
@@ -231,5 +332,25 @@ export class ScheludesComponent implements OnInit, OnDestroy {
           .subscribe(() => {});
       }
     });
+  }
+
+  private _departmentFilter(name: string): DepartmentVM[] {
+    const filterValue = name.toLowerCase();
+    return this.departments.filter(
+      (option) => option.name.toLowerCase().indexOf(filterValue) === 0
+    );
+  }
+
+  private _semesterFilter(name: string): SemesterVM[] {
+    const filterValue = name.toLowerCase();
+    return this.semesters.filter(
+      (option) => option.name.toLowerCase().indexOf(filterValue) === 0
+    );
+  }
+  private _subjectFilter(name: string): SubjectVM[] {
+    const filterValue = name.toLowerCase();
+    return this.subjects.filter(
+      (option) => option.name.toLowerCase().indexOf(filterValue) === 0
+    );
   }
 }

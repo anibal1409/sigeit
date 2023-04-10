@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { TableDataVM, TableService } from 'src/app/common';
 import { Subscription } from 'rxjs';
 import { ClassroomsService } from './classrooms.service';
+import { StateService } from 'src/app/common/state';
 
 @Component({
   selector: 'app-classrooms',
@@ -13,7 +14,8 @@ import { ClassroomsService } from './classrooms.service';
 export class ClassroomsComponent implements OnInit, OnDestroy {
   constructor(
     private classroomsService: ClassroomsService,
-    private tableService: TableService
+    private tableService: TableService,
+    private stateService: StateService
   ) {}
 
   classroomData: TableDataVM<ClassroomVM> = {
@@ -45,8 +47,11 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
   };
 
   sub$ = new Subscription();
+  loading = false;
 
   ngOnInit(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.sub$.add(
       this.classroomsService.getClassrooms$().subscribe((classrooms) => {
         this.classroomData = {
@@ -54,6 +59,8 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
           body: classrooms || [],
         };
         this.tableService.setData(this.classroomData);
+        this.loading = false;
+        setTimeout(() => this.stateService.setLoading(this.loading), 500);
       })
     );
   }
