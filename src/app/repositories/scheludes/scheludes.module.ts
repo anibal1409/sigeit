@@ -14,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
 
 import { TableModule } from 'src/app/common';
 
@@ -60,6 +61,7 @@ import {
     MatCheckboxModule,
     FormsModule,
     SectionsModule,
+    MatTableModule,
   ],
   providers: [
     SchedulesService,

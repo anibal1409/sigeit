@@ -17,7 +17,12 @@ import {
   MatDialog,
 } from '@angular/material/dialog';
 
-import { Subscription } from 'rxjs';
+import {
+  map,
+  Observable,
+  startWith,
+  Subscription,
+} from 'rxjs';
 import {
   ConfirmModalComponent,
   OptionAction,
@@ -26,6 +31,7 @@ import {
   TableDataVM,
   TableService,
 } from 'src/app/common';
+import { StateService } from 'src/app/common/state';
 
 import { DepartmentVM } from '../departments';
 import { SubjectVM } from '../subjects/model';
@@ -44,6 +50,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
   @Output()
   closed = new EventEmitter();
   form!: FormGroup;
+  loading = false;
 
   departments: Array<DepartmentVM> = [];
   subjects: Array<SubjectVM> = [];
@@ -91,12 +98,17 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
   private sub$ = new Subscription();
 
+  filteredDepartments!: Observable<DepartmentVM[]>;
+  filteredSemesters!: Observable<SemesterVM[]>;
+  filteredSubjects!: Observable<SubjectVM[]>;
+
   constructor(
     private sectionsService: SectionsService,
     private fb: FormBuilder,
     private tableService: TableService,
     private matDialog: MatDialog,
     @Optional() @Inject(MAT_DIALOG_DATA) private data: any,
+    private stateService: StateService,
   ) {}
 
   ngOnDestroy(): void {
@@ -107,6 +119,20 @@ export class SectionsComponent implements OnInit, OnDestroy {
     console.log('init');
     this.createForm();
     this.loadDepartments();
+    if (this.semester) {
+      this.filteredSemesters = this.form.controls['semester'].valueChanges.pipe(
+        startWith<string | SemesterVM>(''),
+        map((value: any) => {
+          if (value !== null) {
+            return typeof value === 'string' ? value : value.name;
+          }
+          return '';
+        }),
+        map((name: any) => {
+          return name ? this._semesterFilter(name) : this.semesters.slice();
+        })
+      );
+    }
   }
 
   private createForm(): void {
@@ -151,24 +177,68 @@ export class SectionsComponent implements OnInit, OnDestroy {
   }
 
   private loadDepartments(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.sub$.add(
       this.sectionsService.getDepartaments$(1).subscribe((departaments) => {
         this.departments = departaments;
+        if (departaments) {
+          this.filteredDepartments = this.form.controls[
+            'departmentId'
+          ].valueChanges.pipe(
+            startWith<string | DepartmentVM>(''),
+            map((value: any) => {
+              if (value !== null) {
+                return typeof value === 'string' ? value : value.name;
+              }
+              return '';
+            }),
+            map((name: any) => {
+              return name
+                ? this._departmentFilter(name)
+                : this.departments.slice();
+            })
+          );
+        }
+        this.loading = false;
+        setTimeout(() => this.stateService.setLoading(this.loading), 500);
       })
     );
   }
 
   private loadSubjects(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.sub$.add(
       this.sectionsService
         .getSubjects$(+this.departmentId, +this.semester)
         .subscribe((subjects) => {
           this.subjects = subjects;
+          if (subjects) {
+            this.filteredSubjects = this.form.controls[
+              'subjectId'
+            ].valueChanges.pipe(
+              startWith<string | SubjectVM>(''),
+              map((value: any) => {
+                if (value !== null) {
+                  return typeof value === 'string' ? value : value.name;
+                }
+                return '';
+              }),
+              map((name: any) => {
+                return name ? this._subjectFilter(name) : this.subjects.slice();
+              })
+            );
+          }
+          this.loading = false;
+          setTimeout(() => this.stateService.setLoading(this.loading), 500);
         })
     );
   }
 
   loadSections(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.sub$.add(
       this.sectionsService
         .getSections$(this.subjectId, this.periodId)
@@ -177,12 +247,9 @@ export class SectionsComponent implements OnInit, OnDestroy {
             ...this.sectionsData,
             body: sections || [],
           };
-          this.sectionsData.body = this.sectionsData.body.map((data) =>
-            data['status'] == true
-              ? { ...data, status: 'Activo' }
-              : { ...data, status: 'Inactivo' }
-          );
           this.tableService.setData(this.sectionsData);
+          this.loading = false;
+          setTimeout(() => this.stateService.setLoading(this.loading), 500);
         })
     );
   }
@@ -234,5 +301,25 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
   clickClosed(): void {
     this.closed.emit();
+  }
+
+  private _departmentFilter(name: string): DepartmentVM[] {
+    const filterValue = name.toLowerCase();
+    return this.departments.filter(
+      (option) => option.name.toLowerCase().indexOf(filterValue) === 0
+    );
+  }
+
+  private _semesterFilter(name: string): SemesterVM[] {
+    const filterValue = name.toLowerCase();
+    return this.semesters.filter(
+      (option) => option.name.toLowerCase().indexOf(filterValue) === 0
+    );
+  }
+  private _subjectFilter(name: string): SubjectVM[] {
+    const filterValue = name.toLowerCase();
+    return this.subjects.filter(
+      (option) => option.name.toLowerCase().indexOf(filterValue) === 0
+    );
   }
 }

@@ -1,17 +1,11 @@
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
-import {
-  TableDataVM,
-  TableService,
-} from 'src/app/common';
+import { TableDataVM, TableService } from 'src/app/common';
 
 import { SchoolVM } from './model';
 import { GetSchoolsService } from './use-cases';
+import { StateService } from 'src/app/common/state';
 
 @Component({
   selector: 'app-schools',
@@ -21,7 +15,8 @@ import { GetSchoolsService } from './use-cases';
 export class SchoolsComponent implements OnInit, OnDestroy {
   constructor(
     private getSchoolsService: GetSchoolsService,
-    private tableService: TableService
+    private tableService: TableService,
+    private stateService: StateService
   ) {}
 
   schoolsData: TableDataVM<SchoolVM> = {
@@ -48,17 +43,21 @@ export class SchoolsComponent implements OnInit, OnDestroy {
   };
 
   sub$ = new Subscription();
+  loading = false;
 
   ngOnInit(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.sub$.add(
-      this.getSchoolsService.exec()
-        .subscribe((schools) => {
-          this.schoolsData = {
-            ...this.schoolsData,
-            body: schools || [],
-          };
-          this.tableService.setData(this.schoolsData);
-        })
+      this.getSchoolsService.exec().subscribe((schools) => {
+        this.schoolsData = {
+          ...this.schoolsData,
+          body: schools || [],
+        };
+        this.tableService.setData(this.schoolsData);
+        this.loading = false;
+        setTimeout(() => this.stateService.setLoading(this.loading), 500);
+      })
     );
   }
   ngOnDestroy(): void {

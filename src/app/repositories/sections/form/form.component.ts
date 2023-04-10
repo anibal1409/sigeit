@@ -14,7 +14,13 @@ import {
   Validators,
 } from '@angular/forms';
 
-import { Subscription } from 'rxjs';
+import {
+  map,
+  Observable,
+  startWith,
+  Subscription,
+} from 'rxjs';
+import { StateService } from 'src/app/common/state';
 
 import { TeacherVM } from '../../teachers/model';
 import { SectionVM } from '../model';
@@ -23,7 +29,7 @@ import { SectionsService } from '../sections.service';
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
-  styleUrls: ['./form.component.scss']
+  styleUrls: ['./form.component.scss'],
 })
 export class FormComponent implements OnInit, OnDestroy, OnChanges {
   @Input()
@@ -42,10 +48,12 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   cancel = new EventEmitter();
 
   form!: FormGroup;
+  loading = false;
 
   teachers: Array<TeacherVM> = [];
+  sections: Array<SectionVM> = [];
 
-  status: Array<{ id: boolean, name: string }> = [
+  status: Array<{ id: boolean; name: string }> = [
     {
       id: true,
       name: 'Activo',
@@ -56,17 +64,21 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     },
   ];
 
-  sections: Array<SectionVM> = [];
-
   private sub$ = new Subscription();
+
+  filteredTeachers = new Observable<TeacherVM[]>();
 
   constructor(
     private sectionsService: SectionsService,
     private fb: FormBuilder,
-  ) { }
+    private stateService: StateService
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['subjectId']?.currentValue || changes['periodId']?.currentValue) {
+    if (
+      changes['subjectId']?.currentValue ||
+      changes['periodId']?.currentValue
+    ) {
       this.loadDataForm();
       this.loadLastSection();
     }
@@ -76,23 +88,39 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     this.createForm();
     this.loadLastSection();
     this.sub$.add(
-      this.sectionsService.getTeachers$().subscribe(
-        (teachers) => {
-          this.teachers = teachers;
+      this.sectionsService.getTeachers$().subscribe((teachers) => {
+        this.teachers = teachers;
+        if (teachers) {
+          this.filteredTeachers = this.form.controls[
+            'teacherId'
+          ].valueChanges.pipe(
+            startWith<string | TeacherVM>(''),
+            map((value: any) => {
+              if (value !== null) {
+                return typeof value === 'string'
+                  ? value
+                  : `${value.last_name}, ${value.first_name}`;
+              }
+              return '';
+            }),
+            map((name: any) => {
+              return name ? this._teacherFilter(name) : this.teachers.slice();
+            })
+          );
         }
-      )
+      })
     );
     if (this.sectionId) {
       this.sub$.add(
-        this.sectionsService.findSection$(this.sectionId).subscribe(
-          (section) => {
+        this.sectionsService
+          .findSection$(this.sectionId)
+          .subscribe((section) => {
             if (section) {
               this.form.patchValue({
                 ...section,
               });
             }
-          }
-        )
+          })
       );
     }
   }
@@ -102,17 +130,23 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private loadDataForm(): void {
-    this.form?.patchValue({
-      subjectId: this.subjectId,
-      periodId: this.periodId,
-    }, { emitEvent: false });
+    this.form?.patchValue(
+      {
+        subjectId: this.subjectId,
+        periodId: this.periodId,
+      },
+      { emitEvent: false }
+    );
   }
 
   private loadLastSection(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     if (!this.sectionId) {
       this.sub$.add(
-        this.sectionsService.getSections$(this.subjectId, this.periodId).subscribe(
-          (sections) => {
+        this.sectionsService
+          .getSections$(this.subjectId, this.periodId)
+          .subscribe((sections) => {
             this.sections = sections;
             if (sections?.length) {
               const lastSection = sections?.reduce((prev, current) => {
@@ -124,8 +158,9 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
                 })
               }
             }
-          }
-        )
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
       );
     }
   }
@@ -137,7 +172,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       teacherId: [null, [Validators.required]],
       name: [1, [Validators.required]],
       status: [true, [Validators.required]],
-      capacity: [0, [Validators.required]]
+      capacity: [0, [Validators.required]],
     });
   }
 
@@ -151,16 +186,14 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       obs = this.sectionsService.createSection$(section);
     }
-    
+
     this.sub$.add(
-      obs.subscribe(
-        () => {
-          this.sectionId = 0;
-          this.form.reset();
-          this.loadDataForm();
-          this.closed.emit();
-        }
-      )
+      obs.subscribe(() => {
+        this.sectionId = 0;
+        this.form.reset();
+        this.loadDataForm();
+        this.closed.emit();
+      })
     );
   }
 
@@ -168,5 +201,20 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     this.cancel.emit();
   }
 
+  displayFn(item: TeacherVM): string {
+    if (item) {
+      if (item.last_name == '') {
+        return item.first_name;
+      } else {
+        return `${item.last_name},  ${item.first_name}`;
+      }
+    } else return '';
+  }
 
+  private _teacherFilter(name: string): TeacherVM[] {
+    const filterValue = name.toLowerCase();
+    return this.teachers.filter(
+      (option) => option.last_name.toLowerCase().indexOf(filterValue) === 0
+    );
+  }
 }

@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, finalize } from 'rxjs';
+import { StateService } from 'src/app/common/state';
 
 @Component({
   selector: 'sigeit-recovery-password',
@@ -11,8 +12,11 @@ import { Subscription, finalize } from 'rxjs';
 export class RecoveryPasswordComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
-    private _snackBar: MatSnackBar
-  ) {}
+    private _snackBar: MatSnackBar,
+    private stateService: StateService
+  ) {
+    this.stateService.setLoading(true);
+  }
 
   form!: FormGroup;
   submitDisable = true;
@@ -22,6 +26,7 @@ export class RecoveryPasswordComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.createForm();
+    setTimeout(() => this.stateService.setLoading(false), 1000);
   }
 
   ngOnDestroy(): void {

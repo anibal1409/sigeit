@@ -8,6 +8,7 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { SettingsService } from './settings.service';
+import { StateService } from 'src/app/common/state';
 
 @Component({
   selector: 'app-settings',
@@ -19,13 +20,17 @@ export class SettingsComponent implements OnInit, OnDestroy {
   closed = new EventEmitter();
   form!: FormGroup;
   sub$ = new Subscription();
+  loading = false;
 
   constructor(
     private formBuilder: FormBuilder,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
+    private stateService: StateService
   ) {}
 
   ngOnInit(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.createForm();
     this.sub$.add(
       this.settingsService.findSettings$().subscribe((settings) => {
@@ -35,6 +40,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
           },
           { emitEvent: false }
         );
+        this.loading = false;
+        setTimeout(() => this.stateService.setLoading(this.loading), 500);
       })
     );
   }
