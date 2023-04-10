@@ -193,11 +193,11 @@ export class ScheludesComponent implements OnInit, OnDestroy {
   }
 
   displayFn(item: DepartmentVM | SubjectVM | SemesterVM | any): string {
-    if (item.section_name) {
+    if (item && item.section_name) {
       return item.section_name;
-    } else {
+    } else if (item && item.name) {
       return item.name;
-    }
+    } else return '';
   }
 
   clickOption(event: OptionAction): void {
