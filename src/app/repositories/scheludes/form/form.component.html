@@ -1,6 +1,6 @@
 <form [formGroup]="form!" class="p-5">
   <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-3 align-items-end d-flex">
       <mat-form-field >
         <mat-label>Día</mat-label>
         <input 
@@ -18,7 +18,8 @@
         </mat-autocomplete>
       </mat-form-field>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 justify-content-end d-flex flex-column">
+      <mat-checkbox [formControl]="allClassroomsCtrl">Mostrar todas</mat-checkbox>
       <mat-form-field >
         <mat-label>Aula</mat-label>
         <input 
@@ -36,7 +37,7 @@
         </mat-autocomplete>
       </mat-form-field>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 align-items-end d-flex">
       <mat-form-field >
         <mat-label>Desde</mat-label>
         <input 
@@ -52,9 +53,13 @@
             {{start}}
           </mat-option>
         </mat-autocomplete>
+        
+        <mat-error *ngIf="form.get('start')?.hasError('invalidTimeRange')">
+          La hora de inicio debe ser anterior a la hora de finalización.
+        </mat-error>
       </mat-form-field>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 align-items-end d-flex">
       <mat-form-field >
         <mat-label>Hasta</mat-label>
         <input 
@@ -70,6 +75,10 @@
             {{end}}
           </mat-option>
         </mat-autocomplete>
+        
+        <mat-error *ngIf="form.get('end')?.hasError('invalidTimeRange')">
+          La hora de inicio debe ser anterior a la hora de finalización.
+        </mat-error>
       </mat-form-field>
     </div>
   </div>

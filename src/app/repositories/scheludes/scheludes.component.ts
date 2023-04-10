@@ -22,6 +22,7 @@ import {
 
 import { DepartmentVM } from '../departments';
 import { SectionVM } from '../sections';
+import { SectionsComponent } from '../sections/sections.component';
 import { SubjectVM } from '../subjects';
 import {
   RowActionSchedule,
@@ -108,6 +109,11 @@ export class ScheludesComponent implements OnInit, OnDestroy {
     this.sub$.add(
       this.form.get('departmentId')?.valueChanges.subscribe((department) => {
         this.departmentId = +department.id;
+        this.form.patchValue({
+          semester: -1,
+          subjectId: null,
+          sectionId: null,
+        });
         this.loadSubjects();
       })
     );
@@ -115,7 +121,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
     this.sub$.add(
       this.form.get('semester')?.valueChanges.subscribe((semester) => {
         console.log(semester);
-        this.semester = +semester.id;
+        this.semester = +semester?.id;
         this.loadSubjects();
       })
     );
@@ -123,15 +129,17 @@ export class ScheludesComponent implements OnInit, OnDestroy {
     this.sub$.add(
       this.form.get('subjectId')?.valueChanges.subscribe((subject) => {
         console.log(subject);
-        this.subjectId = +subject.id;
+        this.subjectId = +subject?.id;
+        this.form.patchValue({
+          sectionId: null,
+        });
         this.loadSections();
       })
     );
 
     this.sub$.add(
       this.form.get('sectionId')?.valueChanges.subscribe((section) => {
-        console.log(section);
-        this.sectionId = +section.id;
+        this.sectionId = +section?.id;
         this.loadSchedules();
       })
     );
@@ -222,6 +230,23 @@ export class ScheludesComponent implements OnInit, OnDestroy {
           .removeSchedule$(schedule?.id || 0)
           .subscribe(() => {});
       }
+    });
+  }
+
+  showListSections(): void {
+    const dialogRef = this.matDialog.open(SectionsComponent, {
+      data: {
+        periodId: this.periodId,
+        departmentId: this.departmentId,
+        semester: this.semester,
+        subjectId: this.subjectId,
+      },
+      hasBackdrop: true,
+    });
+
+    dialogRef.componentInstance.closed.subscribe((res) => {
+      dialogRef.close();
+      this.loadSections();
     });
   }
 }

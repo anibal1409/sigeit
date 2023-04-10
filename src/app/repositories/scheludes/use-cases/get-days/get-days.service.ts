@@ -17,7 +17,7 @@ export class GetDaysService {
   ) { }
 
   exec(): Observable<Array<DayVM>> {
-    return this.http.get(`http://localhost:3000/days`)
+    return this.http.get(`http://localhost:3000/days?status=true`)
       .pipe(
         map((days: any) => days.map(Day2DayVM)),
       );

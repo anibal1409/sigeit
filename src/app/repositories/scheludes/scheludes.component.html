@@ -78,6 +78,7 @@
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
+      <button (click)="showListSections()" mat-raised-button color="primary">Guardar</button>
     </div>
 
   </div>
@@ -112,6 +113,7 @@
     [sectionId]="sectionId"
     [scheduleId]="scheduleId"
     [periodId]="periodId"  
+    [departmentId]="departmentId"
     (closed)="loadSchedules(); changeShowForm(false)"
     (cancel)="changeShowForm(false)"
   >

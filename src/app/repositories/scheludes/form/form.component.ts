@@ -10,12 +10,15 @@ import {
 } from '@angular/core';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
 
+import moment from 'moment';
 import { Subscription } from 'rxjs';
 
+import { timeValidator } from '../../../common';
 import { ClassroomVM } from '../../classrooms/model';
 import { DayVM } from '../model';
 import { SchedulesService } from '../scheludes.service';
@@ -35,6 +38,9 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   @Input()
   periodId!: number;
 
+  @Input()
+  departmentId!: number;
+
   @Output()
   closed = new EventEmitter();
 
@@ -42,6 +48,9 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   cancel = new EventEmitter();
 
   form!: FormGroup;
+
+  allClassroomsCtrl = new FormControl(false);
+  allClassrooms = false;
 
   classrooms: Array<ClassroomVM> = [];
   days: Array<DayVM> = [];
@@ -58,18 +67,14 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['sectionId']?.currentValue) {
       this.loadDataForm();
+    } else if (changes['departmentId']?.currentValue) {
+      this.loadClassrooms();
     }
   }
 
   ngOnInit(): void {
     this.createForm();
-    this.sub$.add(
-      this.schedulesService.getClassrooms$().subscribe(
-        (classrooms) => {
-          this.classrooms = classrooms;
-        }
-      )
-    );
+    this.loadClassrooms();
     this.sub$.add(
       this.schedulesService.getDays$().subscribe(
         (days) => {
@@ -116,26 +121,59 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       classroomId: [null, [Validators.required]],
       dayId: [null, [Validators.required]],
       start: [null, [Validators.required]],
-      end: [null, [Validators.required]],
+      end: [null, [Validators.required, timeValidator()]],
       sectionId: [this.sectionId, [Validators.required]],
     });
+    
+
+    this.sub$.add(
+      this.allClassroomsCtrl.valueChanges.subscribe(
+        (val) => {
+          this.allClassrooms = val as boolean;
+          this.loadClassrooms();
+        }
+      )
+    );
+
+    this.sub$.add(
+      this.form.valueChanges.subscribe(
+        (values) => {
+          console.log(this.form);
+          if (this.form.valid) {
+            this.schedulesService.validateClassroomSchedules$(values).subscribe(
+              (data) => {
+                console.log(data);
+                
+
+                const horasEnChoque = data.map((horario: any) => {
+                  const start = moment.max(moment(horario.start, 'HH:mm'), moment(values.start, 'HH:mm'));
+                  const end = moment.min(moment(horario.end, 'HH:mm'), moment(values.end, 'HH:mm'));
+                  return ` ${start.format('HH:mm')} - ${end.format('HH:mm')} (${horario.section?.subject?.name} - ${horario.section?.name})`;
+                });
+
+                console.log(`El horario establecido presenta choques con los siguentes horarios:${horasEnChoque}`);
+              }
+            );
+          }
+        }
+      )
+    );
   }
 
   save(): void {
-    const section = this.form.value;
-    let obs;    
-    section.name = +section.name < 10 ? `0${+section.name}` : section.name;
-    if (this.sectionId) {
-      section.id = this.sectionId;
-      obs = this.schedulesService.updateSchedule$(section);
+    const schedule = this.form.value;
+    let obs;
+    if (this.scheduleId) {
+      schedule.id = this.scheduleId;
+      obs = this.schedulesService.updateSchedule$(schedule);
     } else {
-      obs = this.schedulesService.createSchedule$(section);
+      obs = this.schedulesService.createSchedule$(schedule);
     }
     
     this.sub$.add(
       obs.subscribe(
         () => {
-          this.sectionId = 0;
+          this.scheduleId = 0;
           this.form.reset();
           this.loadDataForm();
           this.closed.emit();
@@ -146,6 +184,22 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
   clickCancel(): void {
     this.cancel.emit();
+  }
+
+  private loadClassrooms(): void {
+    console.log((!this.allClassrooms && this.departmentId) as any);
+    
+    this.sub$.add(
+      this.schedulesService.getClassrooms$((!this.allClassrooms && this.departmentId) as any).subscribe(
+        (classrooms) => {
+          this.classrooms = classrooms;
+        }
+      )
+    );
+  }
+
+  displayFn(item: ClassroomVM | DayVM | any): string {
+    return item?.name;
   }
 
 }

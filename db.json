@@ -1,42 +1,42 @@
 {
-  "users": [{
-    "id": 1,
-    "first_name": "Anibal",
-    "last_name": "Fariñas",
-    "id_document": 99299356,
-    "email": "afarinas@gmail.com",
-    "birthday_date": "01/01/1950",
-    "password": "12345678",
-    "role": "Profesor",
-    "departmentId": 1,
-    "status": true
-  },
-  {
-    "id": 2,
-    "first_name": "Administrador",
-    "last_name": "Sigeit",
-    "id_document": 122956356,
-    "email": "admin.sigeit@gmail.com",
-    "birthday_date": "01/01/1950",
-    "password": "10345678",
-    "role": "Administrador",
-    "departmentId": 1,
-    "status": true
-
-  },
-  {
-    "id": 3,
-    "first_name": "John",
-    "last_name": "Doe",
-    "id_document": 3928533,
-    "email": "jdoe@gmail.com",
-    "birthday_date": "01/01/1950",
-    "password": "aaassfasf",
-    "role": "Colaborador",
-    "departmentId": 2,
-    "status": true
-
-  }],
+  "users": [
+    {
+      "id": 1,
+      "first_name": "Anibal",
+      "last_name": "Fariñas",
+      "id_document": 99299356,
+      "email": "afarinas@gmail.com",
+      "birthday_date": "01/01/1950",
+      "password": "12345678",
+      "role": "Profesor",
+      "departmentId": 1,
+      "status": true
+    },
+    {
+      "id": 2,
+      "first_name": "Administrador",
+      "last_name": "Sigeit",
+      "id_document": 122956356,
+      "email": "admin.sigeit@gmail.com",
+      "birthday_date": "01/01/1950",
+      "password": "10345678",
+      "role": "Administrador",
+      "departmentId": 1,
+      "status": true
+    },
+    {
+      "id": 3,
+      "first_name": "John",
+      "last_name": "Doe",
+      "id_document": 3928533,
+      "email": "jdoe@gmail.com",
+      "birthday_date": "01/01/1950",
+      "password": "aaassfasf",
+      "role": "Colaborador",
+      "departmentId": 2,
+      "status": true
+    }
+  ],
   "careers": [
     {
       "id": 0,
@@ -270,37 +270,44 @@
     {
       "id": 1,
       "name": "Lunes",
-      "abbreviation": 1
+      "abbreviation": 1,
+      "status": true
     },
     {
       "id": 2,
       "name": "Martes",
-      "abbreviation": 2
+      "abbreviation": 2,
+      "status": true
     },
     {
       "id": 3,
       "name": "Miercoles",
-      "abbreviation": 3
+      "abbreviation": 3,
+      "status": true
     },
     {
       "id": 4,
       "name": "Jueves",
-      "abbreviation": 4
+      "abbreviation": 4,
+      "status": true
     },
     {
       "id": 5,
       "name": "Viernes",
-      "abbreviation": 5
+      "abbreviation": 5,
+      "status": true
     },
     {
       "id": 6,
       "name": "Sabado",
-      "abbreviation": "Sab"
+      "abbreviation": "Sab",
+      "status": false
     },
     {
       "id": 7,
       "name": "Domingo",
-      "abbreviation": "Dom"
+      "abbreviation": "Dom",
+      "status": false
     }
   ],
   "subject_carrer": [
@@ -2520,6 +2527,60 @@
       "status": true,
       "capacity": 30,
       "id": 26
+    },
+    {
+      "subjectId": 15,
+      "periodId": 3,
+      "teacherId": 32,
+      "name": "01",
+      "status": true,
+      "capacity": 20,
+      "id": 27
+    },
+    {
+      "subjectId": 16,
+      "periodId": 3,
+      "teacherId": 2,
+      "name": "01",
+      "status": true,
+      "capacity": 20,
+      "id": 28
+    },
+    {
+      "subjectId": 16,
+      "periodId": 3,
+      "teacherId": 2,
+      "name": "02",
+      "status": true,
+      "capacity": 20,
+      "id": 29
+    },
+    {
+      "subjectId": 16,
+      "periodId": 3,
+      "teacherId": 2,
+      "name": "03",
+      "status": true,
+      "capacity": 30,
+      "id": 30
+    },
+    {
+      "subjectId": 16,
+      "periodId": 3,
+      "teacherId": 2,
+      "name": "04",
+      "status": true,
+      "capacity": 20,
+      "id": 31
+    },
+    {
+      "subjectId": 16,
+      "periodId": 3,
+      "teacherId": 2,
+      "name": "05",
+      "status": true,
+      "capacity": 20,
+      "id": 32
     }
   ],
   "schedules": [
@@ -2754,6 +2815,30 @@
       "start": "09:30",
       "end": "11:55",
       "sectionId": 20
+    },
+    {
+      "classroomId": 12,
+      "dayId": 1,
+      "start": "10:20",
+      "end": "11:55",
+      "sectionId": 25,
+      "id": 31
+    },
+    {
+      "classroomId": 12,
+      "dayId": 1,
+      "start": "12:00",
+      "end": "12:45",
+      "sectionId": 25,
+      "id": 32
+    },
+    {
+      "classroomId": 12,
+      "dayId": 2,
+      "start": "07:00",
+      "end": "07:45",
+      "sectionId": 27,
+      "id": 33
     }
   ]
 }

@@ -1,14 +1,21 @@
 import {
   Component,
+  EventEmitter,
+  Inject,
   OnDestroy,
   OnInit,
+  Optional,
+  Output,
 } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+} from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 import {
@@ -33,7 +40,9 @@ import { SectionsService } from './sections.service';
   templateUrl: './sections.component.html',
   styleUrls: ['./sections.component.scss'],
 })
-export class SectionsComponent implements OnInit, OnDestroy {
+export class SectionsComponent implements OnInit, OnDestroy {  
+  @Output()
+  closed = new EventEmitter();
   form!: FormGroup;
 
   departments: Array<DepartmentVM> = [];
@@ -86,7 +95,8 @@ export class SectionsComponent implements OnInit, OnDestroy {
     private sectionsService: SectionsService,
     private fb: FormBuilder,
     private tableService: TableService,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    @Optional() @Inject(MAT_DIALOG_DATA) private data: any,
   ) {}
 
   ngOnDestroy(): void {
@@ -94,6 +104,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    console.log('init');
     this.createForm();
     this.loadDepartments();
   }
@@ -128,6 +139,15 @@ export class SectionsComponent implements OnInit, OnDestroy {
         this.loadSections();
       })
     );
+
+    console.log(this.data);
+    if (this.data) {
+      this.periodId = this.data.periodId;
+      this.form.patchValue({
+        ...this.data,
+      });
+      this.loadSubjects();
+    }
   }
 
   private loadDepartments(): void {
@@ -209,5 +229,10 @@ export class SectionsComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+
+  clickClosed(): void {
+    this.closed.emit();
   }
 }
