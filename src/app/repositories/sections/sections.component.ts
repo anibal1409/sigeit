@@ -16,6 +16,7 @@ import { DepartmentVM } from '../departments';
 import { SubjectVM } from '../subjects/model';
 import { RowActionSection, SectionVM } from './model';
 import { SectionsService } from './sections.service';
+import { StateService } from 'src/app/common/state';
 
 @Component({
   selector: 'app-sections',
@@ -24,6 +25,7 @@ import { SectionsService } from './sections.service';
 })
 export class SectionsComponent implements OnInit, OnDestroy {
   form!: FormGroup;
+  loading = false;
 
   departments: Array<DepartmentVM> = [];
   subjects: Array<SubjectVM> = [];
@@ -79,7 +81,8 @@ export class SectionsComponent implements OnInit, OnDestroy {
     private sectionsService: SectionsService,
     private fb: FormBuilder,
     private tableService: TableService,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    private stateService: StateService
   ) {}
 
   ngOnDestroy(): void {
@@ -138,6 +141,8 @@ export class SectionsComponent implements OnInit, OnDestroy {
   }
 
   private loadDepartments(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.sub$.add(
       this.sectionsService.getDepartaments$(1).subscribe((departaments) => {
         this.departments = departaments;
@@ -159,11 +164,15 @@ export class SectionsComponent implements OnInit, OnDestroy {
             })
           );
         }
+        this.loading = false;
+        setTimeout(() => this.stateService.setLoading(this.loading), 500);
       })
     );
   }
 
   private loadSubjects(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.sub$.add(
       this.sectionsService
         .getSubjects$(+this.departmentId, +this.semester)
@@ -185,11 +194,15 @@ export class SectionsComponent implements OnInit, OnDestroy {
               })
             );
           }
+          this.loading = false;
+          setTimeout(() => this.stateService.setLoading(this.loading), 500);
         })
     );
   }
 
   loadSections(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.sub$.add(
       this.sectionsService
         .getSections$(this.subjectId, this.periodId)
@@ -198,12 +211,9 @@ export class SectionsComponent implements OnInit, OnDestroy {
             ...this.sectionsData,
             body: sections || [],
           };
-          this.sectionsData.body = this.sectionsData.body.map((data) =>
-            data['status'] == true
-              ? { ...data, status: 'Activo' }
-              : { ...data, status: 'Inactivo' }
-          );
           this.tableService.setData(this.sectionsData);
+          this.loading = false;
+          setTimeout(() => this.stateService.setLoading(this.loading), 500);
         })
     );
   }

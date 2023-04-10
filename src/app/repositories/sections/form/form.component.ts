@@ -15,6 +15,7 @@ import { Observable, Subscription, map, startWith } from 'rxjs';
 import { TeacherVM } from '../../teachers/model';
 import { SectionVM } from '../model';
 import { SectionsService } from '../sections.service';
+import { StateService } from 'src/app/common/state';
 
 @Component({
   selector: 'app-form',
@@ -38,8 +39,10 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   cancel = new EventEmitter();
 
   form!: FormGroup;
+  loading = false;
 
   teachers: Array<TeacherVM> = [];
+  sections: Array<SectionVM> = [];
 
   status: Array<{ id: boolean; name: string }> = [
     {
@@ -52,15 +55,14 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     },
   ];
 
-  sections: Array<SectionVM> = [];
-
   private sub$ = new Subscription();
 
   filteredTeachers = new Observable<TeacherVM[]>();
 
   constructor(
     private sectionsService: SectionsService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private stateService: StateService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -129,6 +131,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private loadLastSection(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     if (!this.sectionId) {
       this.sub$.add(
         this.sectionsService
@@ -147,6 +151,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
                 });
               }
             }
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
           })
       );
     }

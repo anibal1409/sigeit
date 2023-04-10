@@ -9,15 +9,14 @@ import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { CareersModule } from './repositories/careers/careers.module';
 import { ClassroomsModule } from './repositories/classrooms/classrooms.module';
-import {
-  DepartmentsModule,
-} from './repositories/departments/departments.module';
+import { DepartmentsModule } from './repositories/departments/departments.module';
 import { PeriodsModule } from './repositories/periods/periods.module';
 import { SchoolsModule } from './repositories/schools/schools.module';
 import { SettingsModule } from './repositories/settings/settings.module';
 import { SubjectsModule } from './repositories/subjects/subjects.module';
 import { TeachersModule } from './repositories/teachers/teachers.module';
 import { WelcomeComponent } from './repositories/welcome/welcome.component';
+import { StateModule } from './common/state';
 
 @NgModule({
   declarations: [AppComponent, WelcomeComponent],
@@ -25,6 +24,7 @@ import { WelcomeComponent } from './repositories/welcome/welcome.component';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    StateModule,
     AuthModule,
     SubjectsModule,
     ClassroomsModule,

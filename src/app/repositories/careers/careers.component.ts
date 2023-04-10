@@ -4,6 +4,7 @@ import { CareerItemVM, CareerVM } from './model';
 import { TableDataVM, TableService } from 'src/app/common';
 import { Subscription } from 'rxjs';
 import { CareersService } from './careers.service';
+import { StateService } from 'src/app/common/state';
 
 @Component({
   selector: 'app-careers',
@@ -13,10 +14,12 @@ import { CareersService } from './careers.service';
 export class CareersComponent implements OnInit, OnDestroy {
   constructor(
     private careersService: CareersService,
-    private tableService: TableService
+    private tableService: TableService,
+    private stateService: StateService
   ) {}
 
   sub$ = new Subscription();
+  loading = false;
   careersData: TableDataVM<CareerItemVM> = {
     headers: [
       {
@@ -48,6 +51,8 @@ export class CareersComponent implements OnInit, OnDestroy {
   };
 
   ngOnInit(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.sub$.add(
       this.careersService.getCareers$().subscribe((careers) => {
         this.careersData = {
@@ -56,6 +61,8 @@ export class CareersComponent implements OnInit, OnDestroy {
         };
 
         this.tableService.setData(this.careersData);
+        this.loading = false;
+        setTimeout(() => this.stateService.setLoading(this.loading), 500);
       })
     );
   }

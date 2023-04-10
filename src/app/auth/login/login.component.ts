@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription, finalize } from 'rxjs';
+import { StateService } from 'src/app/common/state';
 
 @Component({
   selector: 'sigeit-login',
@@ -11,10 +12,11 @@ import { Subscription, finalize } from 'rxjs';
 export class LoginComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
-
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private stateService: StateService
   ) {
+    this.stateService.setLoading(true);
     return;
   }
   form!: FormGroup;
@@ -25,6 +27,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   private sub$ = new Subscription();
   ngOnInit(): void {
     this.createForm();
+    setTimeout(() => this.stateService.setLoading(false), 1000);
   }
 
   ngOnDestroy(): void {

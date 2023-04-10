@@ -17,6 +17,7 @@ import { SectionVM } from '../sections';
 import { SubjectVM } from '../subjects';
 import { RowActionSchedule, ScheduleVM } from './model';
 import { SchedulesService } from './scheludes.service';
+import { StateService } from 'src/app/common/state';
 
 @Component({
   selector: 'app-scheludes',
@@ -103,6 +104,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
   scheduleId = 0;
 
   showForm = false;
+  loading = false;
 
   private sub$ = new Subscription();
 
@@ -114,7 +116,8 @@ export class ScheludesComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private tableService: TableService,
     private matDialog: MatDialog,
-    private schedulesService: SchedulesService
+    private schedulesService: SchedulesService,
+    private stateService: StateService
   ) {}
 
   ngOnInit(): void {
@@ -190,6 +193,8 @@ export class ScheludesComponent implements OnInit, OnDestroy {
   }
 
   private loadDepartments(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.sub$.add(
       this.schedulesService.getDepartaments$(1).subscribe((departaments) => {
         this.departments = departaments;
@@ -213,11 +218,15 @@ export class ScheludesComponent implements OnInit, OnDestroy {
           );
         }
         //
+        this.loading = false;
+        setTimeout(() => this.stateService.setLoading(this.loading), 500);
       })
     );
   }
 
   private loadSubjects(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.sub$.add(
       this.schedulesService
         .getSubjects$(+this.departmentId, +this.semester)
@@ -239,21 +248,29 @@ export class ScheludesComponent implements OnInit, OnDestroy {
               })
             );
           }
+          this.loading = false;
+          setTimeout(() => this.stateService.setLoading(this.loading), 500);
         })
     );
   }
 
   loadSections(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.sub$.add(
       this.schedulesService
         .getSections$(this.subjectId, this.periodId)
         .subscribe((sections) => {
           this.sections = sections;
+          this.loading = false;
+          setTimeout(() => this.stateService.setLoading(this.loading), 500);
         })
     );
   }
 
   loadSchedules(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.sub$.add(
       this.schedulesService
         .getSectionSchedules$(this.sectionId)
@@ -263,6 +280,8 @@ export class ScheludesComponent implements OnInit, OnDestroy {
             body: schedules || [],
           };
           this.tableService.setData(this.scheludeData);
+          this.loading = false;
+          setTimeout(() => this.stateService.setLoading(this.loading), 500);
         })
     );
   }

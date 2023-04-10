@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { TableDataVM, TableService } from 'src/app/common';
 import { Subscription } from 'rxjs';
 import { PeriodsService } from './periods.service';
+import { StateService } from 'src/app/common/state';
 
 @Component({
   selector: 'app-periods',
@@ -13,7 +14,8 @@ import { PeriodsService } from './periods.service';
 export class PeriodsComponent implements OnInit, OnDestroy {
   constructor(
     private periodsService: PeriodsService,
-    private tableService: TableService
+    private tableService: TableService,
+    private stateService: StateService
   ) {}
 
   periodsData: TableDataVM<PeriodVM> = {
@@ -44,8 +46,11 @@ export class PeriodsComponent implements OnInit, OnDestroy {
   };
 
   sub$ = new Subscription();
+  loading = false;
 
   ngOnInit(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.sub$.add(
       this.periodsService.getPeriods$().subscribe((periods) => {
         this.periodsData = {
@@ -53,6 +58,8 @@ export class PeriodsComponent implements OnInit, OnDestroy {
           body: periods || [],
         };
         this.tableService.setData(this.periodsData);
+        this.loading = false;
+        setTimeout(() => this.stateService.setLoading(this.loading), 500);
       })
     );
   }

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { TableDataVM, TableService } from 'src/app/common';
 import { Subscription } from 'rxjs';
 import { SubjectsService } from './subjects.service';
+import { StateService } from 'src/app/common/state';
 
 @Component({
   selector: 'app-subjects',
@@ -13,7 +14,8 @@ import { SubjectsService } from './subjects.service';
 export class SubjectsComponent implements OnInit, OnDestroy {
   constructor(
     private subjectsService: SubjectsService,
-    private tableService: TableService
+    private tableService: TableService,
+    private stateService: StateService
   ) {}
 
   subjectsData: TableDataVM<SubjectVM> = {
@@ -60,8 +62,11 @@ export class SubjectsComponent implements OnInit, OnDestroy {
   };
 
   sub$ = new Subscription();
+  loading = false;
 
   ngOnInit(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.sub$.add(
       this.subjectsService.getSubjects$().subscribe((subjects) => {
         this.subjectsData = {
@@ -69,6 +74,8 @@ export class SubjectsComponent implements OnInit, OnDestroy {
           body: subjects || [],
         };
         this.tableService.setData(this.subjectsData);
+        this.loading = false;
+        setTimeout(() => this.stateService.setLoading(this.loading), 500);
       })
     );
   }

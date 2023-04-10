@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { TableDataVM, TableService } from '../../common';
 
 import { UserVM } from './model';
+import { StateService } from 'src/app/common/state';
 
 @Component({
   selector: 'sigeit-users',
@@ -57,15 +58,20 @@ export class UsersComponent implements OnInit, OnDestroy {
     options: [],
   };
 
+  loading = false;
+
   sub$ = new Subscription();
   constructor(
     private tableService: TableService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private stateService: StateService
   ) {
     return;
   }
 
   ngOnInit(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.sub$.add(
       this.usersService.getUsers$().subscribe((users: UserVM[] | null) => {
         console.log(users);
@@ -75,6 +81,8 @@ export class UsersComponent implements OnInit, OnDestroy {
         };
 
         this.tableService.setData(this.usersData);
+        this.loading = false;
+        setTimeout(() => this.stateService.setLoading(this.loading), 500);
       })
     );
   }
