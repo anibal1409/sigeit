@@ -41,7 +41,7 @@ export const SEMESTERS = [
   },
   {
     id: 10,
-    name: 'Ultimo Semestre',
+    name: 'Décimo Semestre',
   },
   {
     id: 55,

@@ -13,12 +13,12 @@ import { ClassroomItemVM } from '../model';
 export class GetClassroomsService {
   constructor(
     private httpClient: HttpClient
-  ) {}
+  ) { }
 
-  exec(): Observable<Array<ClassroomItemVM>> {
-    return this.httpClient.get('http://localhost:3000/classrooms?_expand=department&_sort=name&_order=asc')
-    .pipe(
-      map((classrooms: any) => classrooms.map(Classroom2ClassroomItemVM)
-    ));
+  exec(departmentId?: number): Observable<Array<ClassroomItemVM>> {
+    return this.httpClient.get('http://localhost:3000/classrooms?_expand=department&_sort=name&_order=asc' + (!!departmentId ? `&departmentId=${departmentId}` : ''))
+      .pipe(
+        map((classrooms: any) => classrooms.map(Classroom2ClassroomItemVM)
+        ));
   }
 }

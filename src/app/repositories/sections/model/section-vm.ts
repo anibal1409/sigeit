@@ -5,7 +5,7 @@ export interface SectionVM {
   subjectId: number;
   periodId: number;
   teacherId: number;
-  section_name: string;
+  name: string;
   status: boolean | string;
   capacity: number;
   teacher?: TeacherVM;

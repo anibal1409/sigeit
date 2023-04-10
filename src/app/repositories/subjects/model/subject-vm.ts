@@ -7,5 +7,5 @@ export interface SubjectVM {
   status: boolean | string;
   semester: number;
   type_curriculum: string;
-  department_id: number;
+  departmentId: number;
 }

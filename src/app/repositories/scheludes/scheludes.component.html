@@ -85,10 +85,11 @@
           [displayWith]="displayFn"
         >
           <mat-option *ngFor="let section of sections" [value]="section">
-            {{ section.section_name }}
+            {{section.name}}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
+      <button (click)="showListSections()" mat-raised-button color="primary">Guardar</button>
     </div>
   </div>
 </form>
@@ -142,7 +143,21 @@
     color="primary"
     aria-label="Agregar horario"
     class="btn-fixed"
+    (click)="changeShowForm(true)"
   >
     <mat-icon>add</mat-icon>
   </button>
 </div>
+
+
+<ng-container *ngIf="showForm">
+  <app-form
+    [sectionId]="sectionId"
+    [scheduleId]="scheduleId"
+    [periodId]="periodId"  
+    [departmentId]="departmentId"
+    (closed)="loadSchedules(); changeShowForm(false)"
+    (cancel)="changeShowForm(false)"
+  >
+  </app-form>
+</ng-container>

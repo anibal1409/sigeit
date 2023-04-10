@@ -1,8 +1,21 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
-import { Observable, Subscription, map, startWith } from 'rxjs';
+import {
+  map,
+  Observable,
+  startWith,
+  Subscription,
+} from 'rxjs';
 import {
   ConfirmModalComponent,
   OptionAction,
@@ -11,13 +24,17 @@ import {
   TableDataVM,
   TableService,
 } from 'src/app/common';
+import { StateService } from 'src/app/common/state';
 
 import { DepartmentVM } from '../departments';
 import { SectionVM } from '../sections';
+import { SectionsComponent } from '../sections/sections.component';
 import { SubjectVM } from '../subjects';
-import { RowActionSchedule, ScheduleVM } from './model';
+import {
+  RowActionSchedule,
+  ScheduleVM,
+} from './model';
 import { SchedulesService } from './scheludes.service';
-import { StateService } from 'src/app/common/state';
 
 @Component({
   selector: 'app-scheludes',
@@ -68,18 +85,12 @@ export class ScheludesComponent implements OnInit, OnDestroy {
         columnDef: 'id_classroom',
         header: 'Aula',
         cell: (element: { [key: string]: string }) =>
-          `${element['id_classroom']}`,
+          `${(element['classroom'] as any)?.name}`,
       },
       {
         columnDef: 'day',
         header: 'Dia',
-        cell: (element: { [key: string]: string }) => `${element['day']}`,
-      },
-      {
-        columnDef: 'id_section',
-        header: 'Seccion',
-        cell: (element: { [key: string]: string }) =>
-          `${element['id_section']}`,
+        cell: (element: { [key: string]: string }) => `${(element['day'] as any)?.name}`,
       },
       {
         columnDef: 'start',
@@ -123,30 +134,6 @@ export class ScheludesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createForm();
     this.loadDepartments();
-    this.schedulesService.findPeriod$(this.periodId).subscribe((period) => {
-      const intervals = this.schedulesService.generateTimeIntervals(
-        period.start_time,
-        period.end_time,
-        period.duration,
-        period.interval
-      );
-      console.log(intervals);
-    });
-
-    if (this.semester) {
-      this.filteredSemesters = this.form.controls['semester'].valueChanges.pipe(
-        startWith<string | SemesterVM>(''),
-        map((value: any) => {
-          if (value !== null) {
-            return typeof value === 'string' ? value : value.name;
-          }
-          return '';
-        }),
-        map((name: any) => {
-          return name ? this._semesterFilter(name) : this.semesters.slice();
-        })
-      );
-    }
   }
 
   ngOnDestroy(): void {
@@ -164,13 +151,19 @@ export class ScheludesComponent implements OnInit, OnDestroy {
     this.sub$.add(
       this.form.get('departmentId')?.valueChanges.subscribe((department) => {
         this.departmentId = +department.id;
+        this.form.patchValue({
+          semester: -1,
+          subjectId: null,
+          sectionId: null,
+        });
         this.loadSubjects();
       })
     );
 
     this.sub$.add(
       this.form.get('semester')?.valueChanges.subscribe((semester) => {
-        this.semester = +semester.id;
+        console.log(semester);
+        this.semester = +semester?.id;
         this.loadSubjects();
       })
     );
@@ -178,15 +171,17 @@ export class ScheludesComponent implements OnInit, OnDestroy {
     this.sub$.add(
       this.form.get('subjectId')?.valueChanges.subscribe((subject) => {
         console.log(subject);
-        this.subjectId = +subject.id;
+        this.subjectId = +subject?.id;
+        this.form.patchValue({
+          sectionId: null,
+        });
         this.loadSections();
       })
     );
 
     this.sub$.add(
       this.form.get('sectionId')?.valueChanges.subscribe((section) => {
-        console.log(section);
-        this.sectionId = +section.id;
+        this.sectionId = +section?.id;
         this.loadSchedules();
       })
     );
@@ -294,11 +289,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
   }
 
   displayFn(item: DepartmentVM | SubjectVM | SemesterVM | any): string {
-    if (item && item.section_name) {
-      return item.section_name;
-    } else if (item && item.name) {
-      return item.name;
-    } else return '';
+    return item?.name;
   }
 
   clickOption(event: OptionAction): void {
@@ -331,6 +322,23 @@ export class ScheludesComponent implements OnInit, OnDestroy {
           .removeSchedule$(schedule?.id || 0)
           .subscribe(() => {});
       }
+    });
+  }
+
+  showListSections(): void {
+    const dialogRef = this.matDialog.open(SectionsComponent, {
+      data: {
+        periodId: this.periodId,
+        departmentId: this.departmentId,
+        semester: this.semester,
+        subjectId: this.subjectId,
+      },
+      hasBackdrop: true,
+    });
+
+    dialogRef.componentInstance.closed.subscribe((res) => {
+      dialogRef.close();
+      this.loadSections();
     });
   }
 

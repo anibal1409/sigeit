@@ -10,6 +10,6 @@ export function Subject2SubjectVM(subject: any): SubjectVM {
     status: subject?.status ? 'Activo' : 'Inactivo',
     type_curriculum: subject?.type_curriculum,
     id: subject?.id,
-    department_id: subject?.department_id,
+    departmentId: subject?.departmentId,
   };
 }

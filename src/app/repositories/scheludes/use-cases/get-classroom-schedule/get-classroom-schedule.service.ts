@@ -7,17 +7,20 @@ import {
 } from 'rxjs';
 
 import { Schedule2ScheduleItemVM } from '../../mappers';
-import { ScheduleItemVM } from '../../model';
+import {
+  ScheduleItemVM,
+  ScheduleVM,
+} from '../../model';
 
 @Injectable()
-export class GetSectionsSchedulesService {
+export class GetClassroomScheduleService {
 
   constructor(
     private http: HttpClient
   ) { }
 
-  exec(sectionId: number): Observable<Array<ScheduleItemVM>> {
-    return this.http.get(`http://localhost:3000/schedules?sectionId=${sectionId}&_expand=classroom&_expand=day`)
+  exec(schedule: ScheduleVM): Observable<Array<ScheduleItemVM>> {
+    return this.http.get(`http://localhost:3000/schedules?classroomId=${schedule.classroomId}&dayId=${schedule.dayId}&_expand=classroom&_expand=day&_expand=section`)
       .pipe(
         map((schedules: any) => schedules.map(Schedule2ScheduleItemVM)),
       );

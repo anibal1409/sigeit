@@ -1,8 +1,28 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Output,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+} from '@angular/material/dialog';
 
-import { Observable, Subscription, map, startWith } from 'rxjs';
+import {
+  map,
+  Observable,
+  startWith,
+  Subscription,
+} from 'rxjs';
 import {
   ConfirmModalComponent,
   OptionAction,
@@ -11,19 +31,24 @@ import {
   TableDataVM,
   TableService,
 } from 'src/app/common';
+import { StateService } from 'src/app/common/state';
 
 import { DepartmentVM } from '../departments';
 import { SubjectVM } from '../subjects/model';
-import { RowActionSection, SectionVM } from './model';
+import {
+  RowActionSection,
+  SectionVM,
+} from './model';
 import { SectionsService } from './sections.service';
-import { StateService } from 'src/app/common/state';
 
 @Component({
   selector: 'app-sections',
   templateUrl: './sections.component.html',
   styleUrls: ['./sections.component.scss'],
 })
-export class SectionsComponent implements OnInit, OnDestroy {
+export class SectionsComponent implements OnInit, OnDestroy {  
+  @Output()
+  closed = new EventEmitter();
   form!: FormGroup;
   loading = false;
 
@@ -34,10 +59,10 @@ export class SectionsComponent implements OnInit, OnDestroy {
   sectionsData: TableDataVM<SectionVM> = {
     headers: [
       {
-        columnDef: 'section_name',
+        columnDef: 'name',
         header: 'Sección',
         cell: (element: { [key: string]: string }) =>
-          `${element['section_name']}`,
+          `${element['name']}`,
       },
       {
         columnDef: 'id_teacher',
@@ -82,7 +107,8 @@ export class SectionsComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private tableService: TableService,
     private matDialog: MatDialog,
-    private stateService: StateService
+    @Optional() @Inject(MAT_DIALOG_DATA) private data: any,
+    private stateService: StateService,
   ) {}
 
   ngOnDestroy(): void {
@@ -90,6 +116,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    console.log('init');
     this.createForm();
     this.loadDepartments();
     if (this.semester) {
@@ -138,6 +165,15 @@ export class SectionsComponent implements OnInit, OnDestroy {
         this.loadSections();
       })
     );
+
+    console.log(this.data);
+    if (this.data) {
+      this.periodId = this.data.periodId;
+      this.form.patchValue({
+        ...this.data,
+      });
+      this.loadSubjects();
+    }
   }
 
   private loadDepartments(): void {
@@ -246,7 +282,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
       data: {
         message: {
           title: 'Eliminar Sección',
-          body: `¿Está seguro que desea eliminar la sección <strong>${section.section_name}</strong>?`,
+          body: `¿Está seguro que desea eliminar la sección <strong>${section.name}</strong>?`,
         },
       },
       hasBackdrop: true,
@@ -260,6 +296,11 @@ export class SectionsComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+
+  clickClosed(): void {
+    this.closed.emit();
   }
 
   private _departmentFilter(name: string): DepartmentVM[] {
