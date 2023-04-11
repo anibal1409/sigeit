@@ -81,6 +81,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     this.loadLastSection();
     this.sub$.add(
       this.sectionsService.getTeachers$().subscribe((teachers) => {
+        this.loading = true;
+        this.stateService.setLoading(this.loading);
         this.teachers = teachers;
         if (teachers) {
           this.filteredTeachers = this.form.controls[
@@ -100,6 +102,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
             })
           );
         }
+        this.loading = false;
+        setTimeout(() => this.stateService.setLoading(this.loading), 200);
       })
     );
     if (this.sectionId) {
