@@ -1,7 +1,19 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Subscription, finalize } from 'rxjs';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
+
+import { Subscription } from 'rxjs';
 import { StateService } from 'src/app/common/state';
 
 @Component({
@@ -54,5 +66,9 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.submitDisable = !this.form.valid;
       })
     );
+  }
+
+  submit(): void {
+    this.router.navigate(['dashboard']);
   }
 }
