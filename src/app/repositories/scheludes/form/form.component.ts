@@ -19,7 +19,6 @@ import moment from 'moment';
 import {
   Observable,
   Subscription,
-  forkJoin,
   lastValueFrom,
   map,
   of,
@@ -30,6 +29,7 @@ import { timeValidator } from '../../../common';
 import { ClassroomVM } from '../../classrooms/model';
 import { DayVM, ScheduleVM } from '../model';
 import { SchedulesService } from '../scheludes.service';
+import { StateService } from 'src/app/common/state';
 
 @Component({
   selector: 'app-form',
@@ -54,6 +54,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
   @Output()
   cancel = new EventEmitter();
+  submitDisabled = true;
 
   form!: FormGroup;
 
@@ -71,10 +72,13 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   filteredClassrooms!: Observable<ClassroomVM[]>;
 
   private sub$ = new Subscription();
+  loading = false;
+  title = '';
 
   constructor(
     private schedulesService: SchedulesService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private stateService: StateService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -131,6 +135,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       })
     );
     if (this.scheduleId) {
+      this.title = 'Editar Horario';
       this.sub$.add(
         this.schedulesService
           .findSchedule$(this.sectionId)
@@ -142,6 +147,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
             }
           })
       );
+    } else {
+      this.title = 'Crear Horario';
     }
   }
 
@@ -218,8 +225,15 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
               console.log(
                 `El horario establecido presenta choques con los siguentes horarios:${horasEnChoque}`
               );
+              console.log(this.form);
             });
         }
+      })
+    );
+
+    this.sub$.add(
+      this.form.valueChanges.subscribe(() => {
+        this.submitDisabled = this.form.invalid;
       })
     );
   }
@@ -249,6 +263,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private loadClassrooms(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.sub$.add(
       this.schedulesService
         .getClassrooms$((!this.allClassrooms && this.departmentId) as any)
@@ -272,6 +288,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
               })
             );
           }
+          this.loading = false;
+          setTimeout(() => this.stateService.setLoading(this.loading), 200);
         })
     );
   }
