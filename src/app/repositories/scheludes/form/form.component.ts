@@ -23,6 +23,7 @@ import {
   lastValueFrom,
   map,
   of,
+  startWith,
 } from 'rxjs';
 
 import { timeValidator } from '../../../common';
@@ -66,6 +67,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
   obs_startInterval!: Observable<Array<{ hour: string; status: boolean }>>;
   obs_endInterval!: Observable<Array<{ hour: string; status: boolean }>>;
+  filteredDays!: Observable<DayVM[]>;
+  filteredClassrooms!: Observable<ClassroomVM[]>;
 
   private sub$ = new Subscription();
 
@@ -88,6 +91,20 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     this.sub$.add(
       this.schedulesService.getDays$().subscribe((days) => {
         this.days = days;
+        if (this.days) {
+          this.filteredDays = this.form.controls['dayId'].valueChanges.pipe(
+            startWith<string | DayVM>(''),
+            map((value: any) => {
+              if (value !== null) {
+                return typeof value === 'string' ? value : value.name;
+              }
+              return '';
+            }),
+            map((name: any) => {
+              return name ? this._daysFilter(name) : this.days.slice();
+            })
+          );
+        }
       })
     );
     this.sub$.add(
@@ -183,11 +200,16 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
                   moment(horario.end, 'HH:mm'),
                   moment(values.end, 'HH:mm')
                 );
-                const disableResult = await this.disableHours(start, end);
+                const { resetInit, resetEnd } = await this.disableHours(
+                  start,
+                  end
+                );
 
-                if (disableResult) {
-                  this.form.controls['end'].setValue('');
+                if (resetInit) {
                   this.form.controls['start'].setValue('');
+                }
+                if (resetEnd) {
+                  this.form.controls['end'].setValue('');
                 }
                 return ` ${start.format('HH:mm')} - ${end.format('HH:mm')} (${
                   horario.section?.subject?.name
@@ -232,6 +254,24 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
         .getClassrooms$((!this.allClassrooms && this.departmentId) as any)
         .subscribe((classrooms) => {
           this.classrooms = classrooms;
+          if (this.classrooms) {
+            this.filteredClassrooms = this.form.controls[
+              'classroomId'
+            ].valueChanges.pipe(
+              startWith<string | ClassroomVM>(''),
+              map((value: any) => {
+                if (value !== null) {
+                  return typeof value === 'string' ? value : value.name;
+                }
+                return '';
+              }),
+              map((name: any) => {
+                return name
+                  ? this._classroomsFilter(name)
+                  : this.classrooms.slice();
+              })
+            );
+          }
         })
     );
   }
@@ -241,7 +281,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   async disableHours(start: any, end: any) {
-    let resetFlag = false;
+    let resetInit = false;
+    let resetEnd = false;
     this.obs_startInterval = of(
       await lastValueFrom(
         this.obs_startInterval.pipe(
@@ -254,7 +295,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
                 moment(block.hour, 'HH:mm').isBefore(end)
               ) {
                 block.status = true;
-                resetFlag = true;
+                resetInit = true;
               } else {
                 block.status = false;
               }
@@ -264,7 +305,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
         )
       )
     );
-
+    console.log('wip');
     this.obs_endInterval = of(
       await lastValueFrom(
         this.obs_endInterval.pipe(
@@ -277,7 +318,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
                 moment(block.hour, 'HH:mm').isAfter(start)
               ) {
                 block.status = true;
-                resetFlag = true;
+                resetEnd = true;
                 console.log();
               } else {
                 block.status = false;
@@ -288,7 +329,20 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
         )
       )
     );
-    return resetFlag;
+    return { resetInit, resetEnd };
+  }
+
+  private _daysFilter(name: string): DayVM[] {
+    const filterValue = name.toLowerCase();
+    return this.days.filter(
+      (option) => option.name.toLowerCase().indexOf(filterValue) === 0
+    );
+  }
+  private _classroomsFilter(name: string): ClassroomVM[] {
+    const filterValue = name.toLowerCase();
+    return this.classrooms.filter(
+      (option) => option.name.toLowerCase().indexOf(filterValue) === 0
+    );
   }
 
   displayHours(item: ClassroomVM | DayVM | any): string {

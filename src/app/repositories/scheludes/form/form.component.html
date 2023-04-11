@@ -12,7 +12,7 @@
           [matAutocomplete]="autoDay"
         >
         <mat-autocomplete #autoDay="matAutocomplete" [displayWith]="displayFn">
-          <mat-option *ngFor="let day of days" [value]="day">
+          <mat-option *ngFor="let day of filteredDays | async" [value]="day">
             {{day.name}}
           </mat-option>
         </mat-autocomplete>
@@ -31,7 +31,7 @@
           [matAutocomplete]="autoClassroom"
         >
         <mat-autocomplete #autoClassroom="matAutocomplete" [displayWith]="displayFn">
-          <mat-option *ngFor="let classroom of classrooms" [value]="classroom">
+          <mat-option *ngFor="let classroom of filteredClassrooms | async" [value]="classroom">
             {{classroom.name}}
           </mat-option>
         </mat-autocomplete>
