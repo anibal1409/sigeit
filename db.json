@@ -2583,25 +2583,9 @@
       "id": 32
     },
     {
-      "subjectId": 17,
+      "subjectId": 18,
       "periodId": 3,
-      "teacherId": {
-        "id": 2,
-        "id_document": 23539583,
-        "first_name": "Anibal",
-        "last_name": "Fariñas",
-        "email": "afarinas@gmail.com",
-        "status": "Activo",
-        "department": {
-          "abbreviation": "DIS",
-          "schoolId": 1,
-          "logo": "",
-          "name": "Ingeniería de Sistemas",
-          "status": "Activo",
-          "description": "",
-          "id": 1
-        }
-      },
+      "teacherId": 25,
       "name": "01",
       "status": true,
       "capacity": 20,

@@ -1,16 +1,31 @@
 import {
   Component,
   EventEmitter,
+  HostBinding,
   Inject,
+  Input,
   OnDestroy,
   OnInit,
   Optional,
   Output,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+} from '@angular/material/dialog';
 
-import { map, Observable, of, startWith, Subscription } from 'rxjs';
+import {
+  map,
+  Observable,
+  of,
+  startWith,
+  Subscription,
+} from 'rxjs';
 import {
   ConfirmModalComponent,
   OptionAction,
@@ -23,7 +38,10 @@ import { StateService } from 'src/app/common/state';
 
 import { DepartmentVM } from '../departments';
 import { SubjectVM } from '../subjects/model';
-import { RowActionSection, SectionVM } from './model';
+import {
+  RowActionSection,
+  SectionVM,
+} from './model';
 import { SectionsService } from './sections.service';
 
 @Component({
@@ -32,6 +50,9 @@ import { SectionsService } from './sections.service';
   styleUrls: ['./sections.component.scss'],
 })
 export class SectionsComponent implements OnInit, OnDestroy {
+  @Input()
+  @HostBinding('class.modal') modal = false;
+
   @Output()
   closed = new EventEmitter();
   form!: FormGroup;
@@ -98,6 +119,12 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.sub$.unsubscribe();
+    this.modal = false;
+    this.sectionsData = {
+      ...this.sectionsData,
+      body: [],
+    };
+    this.tableService.setData(this.sectionsData);
   }
 
   ngOnInit(): void {
@@ -159,6 +186,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
       this.form.patchValue({
         ...this.data,
       });
+      this.modal = true;
       this.loadSubjects();
     }
 
@@ -240,7 +268,6 @@ export class SectionsComponent implements OnInit, OnDestroy {
             ...this.sectionsData,
             body: sections || [],
           };
-          console.log(this.sectionsData);
           this.tableService.setData(this.sectionsData);
           this.loading = false;
           setTimeout(() => this.stateService.setLoading(this.loading), 500);

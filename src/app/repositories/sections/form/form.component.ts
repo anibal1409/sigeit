@@ -8,9 +8,20 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 
-import { map, Observable, of, startWith, Subscription } from 'rxjs';
+import {
+  finalize,
+  map,
+  Observable,
+  of,
+  startWith,
+  Subscription,
+} from 'rxjs';
 import { StateService } from 'src/app/common/state';
 
 import { TeacherVM } from '../../teachers/model';
@@ -67,12 +78,15 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
     if (
       changes['subjectId']?.currentValue ||
       changes['periodId']?.currentValue
     ) {
       this.loadDataForm();
       this.loadLastSection();
+    } else if (changes['sectionId']?.currentValue) {
+      this.loadSection();
     }
   }
 
@@ -106,6 +120,21 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
         setTimeout(() => this.stateService.setLoading(this.loading), 200);
       })
     );
+    this.loadSection();
+    this.sub$.add(
+      this.form.get('teacherId')?.valueChanges.subscribe((teacher) => {
+        if (teacher && teacher.id) {
+          this.filteredTeachers = of(this.teachers);
+        }
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.sub$.unsubscribe();
+  }
+
+  private loadSection(): void {
     if (this.sectionId) {
       this.title = 'Editar Sección';
       this.sub$.add(
@@ -122,17 +151,6 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       this.title = 'Crear Sección';
     }
-    this.sub$.add(
-      this.form.get('teacherId')?.valueChanges.subscribe((teacher) => {
-        if (teacher && teacher.id) {
-          this.filteredTeachers = of(this.teachers);
-        }
-      })
-    );
-  }
-
-  ngOnDestroy(): void {
-    this.sub$.unsubscribe();
   }
 
   private loadDataForm(): void {
@@ -146,15 +164,22 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private loadLastSection(): void {
-    this.loading = true;
-    this.stateService.setLoading(this.loading);
     if (!this.sectionId) {
+      this.loading = true;
+      this.stateService.setLoading(this.loading);
       this.sub$.add(
         this.sectionsService
           .getSections$(this.subjectId, this.periodId)
+          .pipe(
+            finalize(
+              () => {
+                this.loading = false;
+                this.stateService.setLoading(this.loading);
+              }
+            )
+          )
           .subscribe((sections) => {
             this.sections = sections;
-
             if (sections?.length) {
               const lastSection = sections?.reduce((prev, current) => {
                 return +prev.name > +current.name ? prev : current;
@@ -168,8 +193,6 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
           })
       );
     }
-    this.loading = false;
-    setTimeout(() => this.stateService.setLoading(this.loading), 200);
   }
 
   private createForm(): void {
@@ -191,6 +214,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
   save(): void {
     const section = this.form.value;
+    section.subjectId = section?.subjectId?.id || section?.subjectId;
+    section.teacherId = section?.teacherId?.id || section?.teacherId;
     let obs;
     section.name = +section.name < 10 ? `0${+section.name}` : section.name;
     if (this.sectionId) {

@@ -1,8 +1,22 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
-import { map, Observable, of, startWith, Subscription } from 'rxjs';
+import {
+  map,
+  Observable,
+  of,
+  startWith,
+  Subscription,
+} from 'rxjs';
 import {
   ConfirmModalComponent,
   OptionAction,
@@ -17,7 +31,10 @@ import { DepartmentVM } from '../departments';
 import { SectionVM } from '../sections';
 import { SectionsComponent } from '../sections/sections.component';
 import { SubjectVM } from '../subjects';
-import { RowActionSchedule, ScheduleVM } from './model';
+import {
+  RowActionSchedule,
+  ScheduleVM,
+} from './model';
 import { SchedulesService } from './scheludes.service';
 
 @Component({
@@ -139,6 +156,11 @@ export class ScheludesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.sub$.unsubscribe();
+    this.scheludeData = {
+      ...this.scheludeData,
+      body: [],
+    };
+    this.tableService.setData(this.scheludeData);
   }
 
   private createForm(): void {
