@@ -1,94 +1,132 @@
-<form [formGroup]="form!" class="p-5">
-  <div class="row">
-    <div class="col-md-3 align-items-end d-flex">
-      <mat-form-field >
-        <mat-label>Día</mat-label>
-        <input 
-          type="text"
-          placeholder="Seleccione un día"
-          aria-label="Día"
-          matInput
-          formControlName="dayId"
-          [matAutocomplete]="autoDay"
-        >
-        <mat-autocomplete #autoDay="matAutocomplete" [displayWith]="displayFn">
-          <mat-option *ngFor="let day of filteredDays | async" [value]="day">
-            {{day.name}}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
-    </div>
-    <div class="col-md-3 justify-content-end d-flex flex-column">
-      <mat-checkbox [formControl]="allClassroomsCtrl">Mostrar todas</mat-checkbox>
-      <mat-form-field >
-        <mat-label>Aula</mat-label>
-        <input 
-          type="text"
-          placeholder="Seleccione un aula"
-          aria-label="Aula"
-          matInput
-          formControlName="classroomId"
-          [matAutocomplete]="autoClassroom"
-        >
-        <mat-autocomplete #autoClassroom="matAutocomplete" [displayWith]="displayFn">
-          <mat-option *ngFor="let classroom of filteredClassrooms | async" [value]="classroom">
-            {{classroom.name}}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
-    </div>
-    <div class="col-md-3 align-items-end d-flex">
-      <mat-form-field >
-        <mat-label>Desde</mat-label>
-        <input 
-          type="text"
-          placeholder="Seleccione una hora"
-          aria-label="Desde"
-          matInput
-          formControlName="start"
-          [matAutocomplete]="autoStart"
-        >
-        <mat-autocomplete #autoStart="matAutocomplete" [displayWith]="displayHours">
-          <mat-option *ngFor="let start of obs_startInterval | async" [value]="start" [disabled]="start.status">
-            {{start.hour}}
-          </mat-option>
-        </mat-autocomplete>
-        
-        <mat-error *ngIf="form.get('start')?.hasError('invalidTimeRange')">
-          La hora de inicio debe ser anterior a la hora de finalización.
-        </mat-error>
-      </mat-form-field>
-    </div>
-    <div class="col-md-3 align-items-end d-flex">
-      <mat-form-field >
-        <mat-label>Hasta</mat-label>
-        <input 
-          type="text"
-          placeholder="Seleccione una hora"
-          aria-label="Hasta"
-          matInput
-          formControlName="end"
-          [matAutocomplete]="autoEnd"
-        >
-        <mat-autocomplete #autoEnd="matAutocomplete" [displayWith]="displayHours">
-          <mat-option *ngFor="let end of obs_endInterval | async" [value]="end" [disabled]="end.status">
-            {{end.hour}} 
-          </mat-option>
-        </mat-autocomplete>
-        
-        <mat-error *ngIf="form.get('end')?.hasError('invalidTimeRange')">
-          La hora de inicio debe ser anterior a la hora de finalización.
-        </mat-error>
-      </mat-form-field>
-    </div>
-  </div>
+<div class="mat-container">
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="form!" class="p-2">
+        <div class="row">
+          <div class="col-md-3 align-items-end d-flex">
+            <mat-form-field>
+              <mat-label>Día</mat-label>
+              <input
+                type="text"
+                placeholder="Seleccione un día"
+                aria-label="Día"
+                matInput
+                formControlName="dayId"
+                [matAutocomplete]="autoDay"
+              />
+              <mat-autocomplete
+                #autoDay="matAutocomplete"
+                [displayWith]="displayFn"
+              >
+                <mat-option
+                  *ngFor="let day of filteredDays | async"
+                  [value]="day"
+                >
+                  {{ day.name }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3 justify-content-end d-flex flex-column">
+            <mat-checkbox [formControl]="allClassroomsCtrl"
+              >Mostrar todas</mat-checkbox
+            >
+            <mat-form-field>
+              <mat-label>Aula</mat-label>
+              <input
+                type="text"
+                placeholder="Seleccione un aula"
+                aria-label="Aula"
+                matInput
+                formControlName="classroomId"
+                [matAutocomplete]="autoClassroom"
+              />
+              <mat-autocomplete
+                #autoClassroom="matAutocomplete"
+                [displayWith]="displayFn"
+              >
+                <mat-option
+                  *ngFor="let classroom of filteredClassrooms | async"
+                  [value]="classroom"
+                >
+                  {{ classroom.name }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3 align-items-end d-flex">
+            <mat-form-field>
+              <mat-label>Desde</mat-label>
+              <input
+                type="text"
+                placeholder="Seleccione una hora"
+                aria-label="Desde"
+                matInput
+                formControlName="start"
+                [matAutocomplete]="autoStart"
+              />
+              <mat-autocomplete
+                #autoStart="matAutocomplete"
+                [displayWith]="displayHours"
+              >
+                <mat-option
+                  *ngFor="let start of obs_startInterval | async"
+                  [value]="start"
+                  [disabled]="start.status"
+                >
+                  {{ start.hour }}
+                </mat-option>
+              </mat-autocomplete>
 
-  <div class="row">
-    <div class="col">
-      <button (click)="save()" mat-raised-button color="primary">Guardar</button>
-    </div>
-    <div class="col">
-      <button (click)="clickCancel()" mat-raised-button>Cancelar</button>
-    </div>
-  </div>
-</form>
+              <mat-error
+                *ngIf="form.get('start')?.hasError('invalidTimeRange')"
+              >
+                La hora de inicio debe ser anterior a la hora de finalización.
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3 align-items-end d-flex">
+            <mat-form-field>
+              <mat-label>Hasta</mat-label>
+              <input
+                type="text"
+                placeholder="Seleccione una hora"
+                aria-label="Hasta"
+                matInput
+                formControlName="end"
+                [matAutocomplete]="autoEnd"
+              />
+              <mat-autocomplete
+                #autoEnd="matAutocomplete"
+                [displayWith]="displayHours"
+              >
+                <mat-option
+                  *ngFor="let end of obs_endInterval | async"
+                  [value]="end"
+                  [disabled]="end.status"
+                >
+                  {{ end.hour }}
+                </mat-option>
+              </mat-autocomplete>
+
+              <mat-error *ngIf="form.get('end')?.hasError('invalidTimeRange')">
+                La hora de inicio debe ser anterior a la hora de finalización.
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <button (click)="save()" mat-raised-button color="primary">
+              Guardar
+            </button>
+          </div>
+          <div class="col">
+            <button (click)="clickCancel()" mat-raised-button>Cancelar</button>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
