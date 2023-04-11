@@ -17,19 +17,18 @@ import {
 
 import moment from 'moment';
 import {
-  Observable,
-  Subscription,
-  lastValueFrom,
   map,
+  Observable,
   of,
   startWith,
+  Subscription,
 } from 'rxjs';
+import { StateService } from 'src/app/common/state';
 
 import { timeValidator } from '../../../common';
 import { ClassroomVM } from '../../classrooms/model';
-import { DayVM, ScheduleVM } from '../model';
+import { DayVM } from '../model';
 import { SchedulesService } from '../scheludes.service';
-import { StateService } from 'src/app/common/state';
 
 @Component({
   selector: 'app-form',
@@ -66,8 +65,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   startIntervals: Array<string> = [];
   endIntervals: Array<string> = [];
 
-  obs_startInterval!: Observable<Array<{ hour: string; status: boolean }>>;
-  obs_endInterval!: Observable<Array<{ hour: string; status: boolean }>>;
+  obs_startInterval!: Observable<Array<string>>;
+  obs_endInterval!: Observable<Array<string>>;
   filteredDays!: Observable<DayVM[]>;
   filteredClassrooms!: Observable<ClassroomVM[]>;
 
@@ -79,10 +78,12 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     private schedulesService: SchedulesService,
     private fb: FormBuilder,
     private stateService: StateService
-  ) {}
+  ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['sectionId']?.currentValue) {
+    if (changes['sectionId']?.currentValue || changes['periodId']?.currentValue) {
+      console.log(this.sectionId, this.periodId);
+      
       this.loadDataForm();
     } else if (changes['departmentId']?.currentValue) {
       this.loadClassrooms();
@@ -124,12 +125,12 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
         this.obs_startInterval = of(
           this.startIntervals.map((interval) => {
-            return { hour: interval, status: false };
+            return interval;
           })
         );
         this.obs_endInterval = of(
           this.endIntervals.map((interval) => {
-            return { hour: interval, status: false };
+            return interval;
           })
         );
       })
@@ -175,6 +176,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     this.form?.patchValue(
       {
         sectionId: this.sectionId,
+        periodId: this.periodId,
       },
       { emitEvent: false }
     );
@@ -187,6 +189,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       start: [null, [Validators.required]],
       end: [null, [Validators.required, timeValidator()]],
       sectionId: [this.sectionId, [Validators.required]],
+      periodId: [this.periodId, [Validators.required]]
     });
 
     this.sub$.add(
@@ -198,22 +201,17 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
     this.sub$.add(
       this.form.valueChanges.subscribe((values) => {
-        let readableValues!: ScheduleVM;
-        if (!!values.start && !!values.end) {
-          readableValues = {
-            ...values,
-            start: values.start.hour,
-            end: values.end.hour,
-          };
-        }
-        values = readableValues;
-
         if (this.form.valid) {
+          const data = {
+            ...values,
+            classroomId: values?.classroomId?.id || values?.classroomId,
+            dayId: values?.dayId?.id || values?.dayId
+          };
           this.schedulesService
-            .validateClassroomSchedules$(values)
+            .validateClassroomSchedules$(data)
             .subscribe((data) => {
               console.log(data);
-              const horasEnChoque = data.map(async (horario: any) => {
+              const horasEnChoque = data.map((horario: any) => {
                 const start = moment.max(
                   moment(horario.start, 'HH:mm'),
                   moment(values.start, 'HH:mm')
@@ -222,25 +220,12 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
                   moment(horario.end, 'HH:mm'),
                   moment(values.end, 'HH:mm')
                 );
-                const { resetInit, resetEnd } = await this.disableHours(
-                  start,
-                  end
-                );
-
-                if (resetInit) {
-                  this.form.controls['start'].setValue('');
-                }
-                if (resetEnd) {
-                  this.form.controls['end'].setValue('');
-                }
-                return ` ${start.format('HH:mm')} - ${end.format('HH:mm')} (${
-                  horario.section?.subject?.name
-                } - ${horario.section?.name})`;
+                return ` ${start.format('HH:mm')} - ${end.format('HH:mm')} (${horario.section?.subject?.name
+                  } - ${horario.section?.name})`;
               });
               console.log(
                 `El horario establecido presenta choques con los siguentes horarios:${horasEnChoque}`
               );
-              console.log(this.form);
             });
         }
       })
@@ -255,6 +240,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
   save(): void {
     const schedule = this.form.value;
+    schedule.classroomId = schedule.classroomId?.id || schedule.classroomId;
+    schedule.dayId = schedule.dayId?.id || schedule.dayId;
     let obs;
     if (this.scheduleId) {
       schedule.id = this.scheduleId;
@@ -285,6 +272,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
         .getClassrooms$((!this.allClassrooms && this.departmentId) as any)
         .subscribe((classrooms) => {
           this.classrooms = classrooms;
+
           if (this.classrooms) {
             this.filteredClassrooms = this.form.controls[
               'classroomId'
@@ -311,58 +299,6 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
   displayFn(item: ClassroomVM | DayVM | any): string {
     return item?.name;
-  }
-
-  async disableHours(start: any, end: any) {
-    let resetInit = false;
-    let resetEnd = false;
-    this.obs_startInterval = of(
-      await lastValueFrom(
-        this.obs_startInterval.pipe(
-          map((time) => {
-            console.log(time);
-            return time.map((block) => {
-              if (
-                (moment(block.hour, 'HH:mm').isAfter(start) ||
-                  block.hour == start.format('HH:mm')) &&
-                moment(block.hour, 'HH:mm').isBefore(end)
-              ) {
-                block.status = true;
-                resetInit = true;
-              } else {
-                block.status = false;
-              }
-              return block;
-            });
-          })
-        )
-      )
-    );
-    console.log('wip');
-    this.obs_endInterval = of(
-      await lastValueFrom(
-        this.obs_endInterval.pipe(
-          map((time) => {
-            console.log(time);
-            return time.map((block) => {
-              if (
-                (moment(block.hour, 'HH:mm').isBefore(end) ||
-                  block.hour == end.format('HH:mm')) &&
-                moment(block.hour, 'HH:mm').isAfter(start)
-              ) {
-                block.status = true;
-                resetEnd = true;
-                console.log();
-              } else {
-                block.status = false;
-              }
-              return block;
-            });
-          })
-        )
-      )
-    );
-    return { resetInit, resetEnd };
   }
 
   private _daysFilter(name: string): DayVM[] {

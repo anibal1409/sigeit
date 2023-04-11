@@ -1,3 +1,28 @@
+:host {
+  .modal {
+    #modal-header {
+      display: initial !important;
+    }
+  }
+  #modal-title {
+    font-size: 2rem;
+    margin-top: 1rem;
+  }
+  
+  #modal-header {
+    justify-content: space-between;
+    display: none !important;
+  }
+  
+  #modal-close-button {
+    top: 0.35rem;
+    width: 2rem;
+    height: 2rem;
+  }
+  mat-form-field {
+    width: 100%;
+  }
+}
 .mat-container {
   padding: 1.5rem;
   box-sizing: border-box;

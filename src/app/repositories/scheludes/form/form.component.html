@@ -82,9 +82,8 @@
                 <mat-option
                   *ngFor="let start of obs_startInterval | async"
                   [value]="start"
-                  [disabled]="start.status"
                 >
-                  {{ start.hour }}
+                  {{ start }}
                 </mat-option>
               </mat-autocomplete>
 
@@ -116,9 +115,8 @@
                 <mat-option
                   *ngFor="let end of obs_endInterval | async"
                   [value]="end"
-                  [disabled]="end.status"
                 >
-                  {{ end.hour }}
+                  {{ end }}
                 </mat-option>
               </mat-autocomplete>
 
@@ -133,7 +131,7 @@
         </div>
 
         <div class="row">
-          <div class="col">
+          <div class="col d-flex justify-content-end">
             <button
               (click)="save()"
               mat-raised-button
