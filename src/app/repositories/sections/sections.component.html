@@ -34,7 +34,7 @@
                   [displayWith]="displayFn"
                 >
                   <mat-option
-                    *ngFor="let department of departments"
+                    *ngFor="let department of filteredDepartments | async"
                     [value]="department"
                   >
                     {{ department.name }}
@@ -63,7 +63,7 @@
                   [displayWith]="displayFn"
                 >
                   <mat-option
-                    *ngFor="let semester of semesters"
+                    *ngFor="let semester of filteredSemesters | async"
                     [value]="semester"
                   >
                     {{ semester.name }}
@@ -92,7 +92,7 @@
                   [displayWith]="displayFn"
                 >
                   <mat-option
-                    *ngFor="let subject of subjects"
+                    *ngFor="let subject of filteredSubjects | async"
                     [value]="subject"
                   >
                     ({{ subject.code }}) {{ subject.name }}

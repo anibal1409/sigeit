@@ -29,7 +29,7 @@ import {
 @NgModule({
   declarations: [SectionsComponent, FormComponent],
   imports: [
-    CommonModule, 
+    CommonModule,
     SectionsRoutingModule,
     ReactiveFormsModule,
     MatInputModule,

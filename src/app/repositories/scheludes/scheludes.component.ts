@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
-import { map, Observable, startWith, Subscription } from 'rxjs';
+import { map, Observable, of, startWith, Subscription } from 'rxjs';
 import {
   ConfirmModalComponent,
   OptionAction,
@@ -101,6 +101,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
 
   showForm = false;
   loading = false;
+  reload = true;
 
   private sub$ = new Subscription();
   submitDisabled = true;
@@ -150,6 +151,9 @@ export class ScheludesComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('departmentId')?.valueChanges.subscribe((department) => {
+        if (department && department.id) {
+          this.filteredDepartments = of(this.departments);
+        }
         this.departmentId = +department.id;
         this.form.patchValue({
           semester: -1,
@@ -162,6 +166,9 @@ export class ScheludesComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('semester')?.valueChanges.subscribe((semester) => {
+        if (semester && semester.id) {
+          this.filteredSemesters = of(this.semesters);
+        }
         this.semester = +semester?.id;
         this.loadSubjects();
       })
@@ -169,6 +176,9 @@ export class ScheludesComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('subjectId')?.valueChanges.subscribe((subject) => {
+        if (subject && subject.id) {
+          this.filteredSubjects = of(this.subjects);
+        }
         this.subjectId = +subject?.id;
         this.form.patchValue({
           sectionId: null,
@@ -191,8 +201,10 @@ export class ScheludesComponent implements OnInit, OnDestroy {
   }
 
   private loadDepartments(): void {
-    this.loading = true;
-    this.stateService.setLoading(this.loading);
+    if (!this.departmentId) {
+      this.loading = true;
+      this.stateService.setLoading(this.loading);
+    }
     this.sub$.add(
       this.schedulesService.getDepartaments$(1).subscribe((departaments) => {
         this.departments = departaments;
@@ -277,12 +289,11 @@ export class ScheludesComponent implements OnInit, OnDestroy {
             ...this.scheludeData,
             body: schedules || [],
           };
-          console.log(this.scheludeData);
           this.tableService.setData(this.scheludeData);
-          this.loading = false;
-          setTimeout(() => this.stateService.setLoading(this.loading), 500);
         })
     );
+    this.loading = false;
+    setTimeout(() => this.stateService.setLoading(this.loading), 500);
   }
 
   changeShowForm(showForm: boolean): void {
