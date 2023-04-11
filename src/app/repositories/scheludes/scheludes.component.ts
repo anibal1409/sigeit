@@ -151,46 +151,49 @@ export class ScheludesComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('departmentId')?.valueChanges.subscribe((department) => {
-        if (department && department.id) {
-          this.filteredDepartments = of(this.departments);
-        }
         this.departmentId = +department.id;
         this.form.patchValue({
           semester: -1,
           subjectId: null,
           sectionId: null,
         });
-        this.loadSubjects();
+        if (department && department.id) {
+          this.filteredDepartments = of(this.departments);
+          this.loadSubjects();
+        }
       })
     );
 
     this.sub$.add(
       this.form.get('semester')?.valueChanges.subscribe((semester) => {
+        this.semester = +semester?.id;
+
         if (semester && semester.id) {
           this.filteredSemesters = of(this.semesters);
+          this.loadSubjects();
         }
-        this.semester = +semester?.id;
-        this.loadSubjects();
       })
     );
 
     this.sub$.add(
       this.form.get('subjectId')?.valueChanges.subscribe((subject) => {
-        if (subject && subject.id) {
-          this.filteredSubjects = of(this.subjects);
-        }
         this.subjectId = +subject?.id;
         this.form.patchValue({
           sectionId: null,
         });
-        this.loadSections();
+        if (subject && subject.id) {
+          this.filteredSubjects = of(this.subjects);
+          this.loadSections();
+        }
       })
     );
 
     this.sub$.add(
       this.form.get('sectionId')?.valueChanges.subscribe((section) => {
         this.sectionId = +section?.id;
-        this.loadSchedules();
+        if (section && section.id) {
+          this.loadSchedules();
+        }
       })
     );
     this.sub$.add(
