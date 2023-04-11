@@ -25,6 +25,9 @@
                   {{ day.name }}
                 </mat-option>
               </mat-autocomplete>
+              <mat-error *ngIf="form.controls['dayId'].hasError('required')"
+                >Campo Requerido</mat-error
+              >
             </mat-form-field>
           </div>
           <div class="col-md-3 justify-content-end d-flex flex-column">
@@ -52,6 +55,10 @@
                   {{ classroom.name }}
                 </mat-option>
               </mat-autocomplete>
+              <mat-error
+                *ngIf="form.controls['classroomId'].hasError('required')"
+                >Campo Requerido</mat-error
+              >
             </mat-form-field>
           </div>
           <div class="col-md-3 align-items-end d-flex">
@@ -83,6 +90,9 @@
               >
                 La hora de inicio debe ser anterior a la hora de finalización.
               </mat-error>
+              <mat-error *ngIf="form.controls['start'].hasError('required')"
+                >Campo Requerido</mat-error
+              >
             </mat-form-field>
           </div>
           <div class="col-md-3 align-items-end d-flex">
@@ -112,13 +122,21 @@
               <mat-error *ngIf="form.get('end')?.hasError('invalidTimeRange')">
                 La hora de inicio debe ser anterior a la hora de finalización.
               </mat-error>
+              <mat-error *ngIf="form.controls['end'].hasError('required')"
+                >Campo Requerido</mat-error
+              >
             </mat-form-field>
           </div>
         </div>
 
         <div class="row">
           <div class="col">
-            <button (click)="save()" mat-raised-button color="primary">
+            <button
+              (click)="save()"
+              mat-raised-button
+              color="primary"
+              [disabled]="submitDisabled || loading"
+            >
               Guardar
             </button>
           </div>

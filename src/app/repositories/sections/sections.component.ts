@@ -81,6 +81,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
   showForm = false;
 
   private sub$ = new Subscription();
+  submitDisabled = true;
 
   filteredDepartments!: Observable<DepartmentVM[]>;
   filteredSemesters!: Observable<SemesterVM[]>;
@@ -122,7 +123,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       departmentId: [null, [Validators.required]],
       subjectId: [null, [Validators.required]],
-      semester: [-1, [Validators.required]],
+      semester: [null, [Validators.required]],
     });
 
     this.sub$.add(
@@ -153,6 +154,12 @@ export class SectionsComponent implements OnInit, OnDestroy {
       });
       this.loadSubjects();
     }
+
+    this.sub$.add(
+      this.form.valueChanges.subscribe(() => {
+        this.submitDisabled = this.form.invalid;
+      })
+    );
   }
 
   private loadDepartments(): void {

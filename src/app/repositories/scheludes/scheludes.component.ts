@@ -103,6 +103,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
   loading = false;
 
   private sub$ = new Subscription();
+  submitDisabled = true;
 
   filteredDepartments!: Observable<DepartmentVM[]>;
   filteredSemesters!: Observable<SemesterVM[]>;
@@ -143,7 +144,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       departmentId: [null, [Validators.required]],
       subjectId: [null, [Validators.required]],
-      semester: [-1, [Validators.required]],
+      semester: [null, [Validators.required]],
       sectionId: [null, [Validators.required]],
     });
 
@@ -180,6 +181,11 @@ export class ScheludesComponent implements OnInit, OnDestroy {
       this.form.get('sectionId')?.valueChanges.subscribe((section) => {
         this.sectionId = +section?.id;
         this.loadSchedules();
+      })
+    );
+    this.sub$.add(
+      this.form.valueChanges.subscribe(() => {
+        this.submitDisabled = this.form.invalid;
       })
     );
   }

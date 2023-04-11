@@ -21,7 +21,11 @@
           >
             {{ department.name }}
           </mat-option>
+          
         </mat-autocomplete>
+        <mat-error *ngIf="form.controls['departmentId'].hasError('required')"
+        >Campo Requerido</mat-error
+      >
       </mat-form-field>
     </div>
 
@@ -44,6 +48,9 @@
             {{ semester.name }}
           </mat-option>
         </mat-autocomplete>
+        <mat-error *ngIf="form.controls['semester'].hasError('required')"
+        >Campo Requerido</mat-error
+      >
       </mat-form-field>
     </div>
 
@@ -66,6 +73,9 @@
             ({{ subject.code }}) {{ subject.name }}
           </mat-option>
         </mat-autocomplete>
+        <mat-error *ngIf="form.controls['subjectId'].hasError('required')"
+        >Campo Requerido</mat-error
+      >
       </mat-form-field>
     </div>
 
@@ -88,8 +98,11 @@
             {{section.name}}
           </mat-option>
         </mat-autocomplete>
+        <mat-error *ngIf="form.controls['sectionId'].hasError('required')"
+        >Campo Requerido</mat-error
+      >
       </mat-form-field>
-      <button (click)="showListSections()" mat-raised-button color="primary">Guardar</button>
+      <button (click)="showListSections()" mat-raised-button color="primary" [disabled]="submitDisabled || loading">Guardar</button>
     </div>
   </div>
 </form>

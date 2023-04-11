@@ -8,18 +8,9 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import {
-  map,
-  Observable,
-  startWith,
-  Subscription,
-} from 'rxjs';
+import { map, Observable, startWith, Subscription } from 'rxjs';
 import { StateService } from 'src/app/common/state';
 
 import { TeacherVM } from '../../teachers/model';
@@ -67,6 +58,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   private sub$ = new Subscription();
 
   filteredTeachers = new Observable<TeacherVM[]>();
+  submitDisabled = true;
 
   constructor(
     private sectionsService: SectionsService,
@@ -150,16 +142,16 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
             this.sections = sections;
             if (sections?.length) {
               const lastSection = sections?.reduce((prev, current) => {
-                return (+prev.name > +current.name) ? prev : current;
+                return +prev.name > +current.name ? prev : current;
               });
               if (lastSection) {
                 this.form.patchValue({
                   name: +lastSection.name + 1,
-                })
+                });
               }
             }
             this.loading = false;
-            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+            setTimeout(() => this.stateService.setLoading(this.loading), 200);
           })
       );
     }
@@ -170,15 +162,21 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       subjectId: [this.subjectId, [Validators.required]],
       periodId: [this.periodId, [Validators.required]],
       teacherId: [null, [Validators.required]],
-      name: [1, [Validators.required]],
+      name: [1, [Validators.required, Validators.min(0)]],
       status: [true, [Validators.required]],
-      capacity: [0, [Validators.required]],
+      capacity: [0, [Validators.required, Validators.min(1)]],
     });
+
+    this.sub$.add(
+      this.form.valueChanges.subscribe(() => {
+        this.submitDisabled = this.form.invalid;
+      })
+    );
   }
 
   save(): void {
     const section = this.form.value;
-    let obs;    
+    let obs;
     section.name = +section.name < 10 ? `0${+section.name}` : section.name;
     if (this.sectionId) {
       section.id = this.sectionId;

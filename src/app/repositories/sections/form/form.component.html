@@ -12,6 +12,12 @@
                 formControlName="name"
                 placeholder="1"
               />
+              <mat-error *ngIf="form.controls['name'].hasError('required')"
+                >Campo Requerido</mat-error
+              >
+              <mat-error *ngIf="form.controls['name'].hasError('min')"
+              >Valor Invalido</mat-error
+            >
             </mat-form-field>
           </div>
           <div class="col-md-2">
@@ -23,6 +29,12 @@
                 formControlName="capacity"
                 placeholder="1"
               />
+              <mat-error *ngIf="form.controls['capacity'].hasError('required')"
+                >Campo Requerido</mat-error
+              >
+              <mat-error *ngIf="form.controls['capacity'].hasError('min')"
+                >Valor Invalido</mat-error
+              >
             </mat-form-field>
           </div>
           <div class="col-md-5">
@@ -48,6 +60,9 @@
                   {{ teacher.first_name }}
                 </mat-option>
               </mat-autocomplete>
+              <mat-error *ngIf="form.controls['teacherId'].hasError('required')"
+                >Campo Requerido</mat-error
+              >
             </mat-form-field>
           </div>
           <div class="col-md-3">
@@ -58,13 +73,21 @@
                   statu.name
                 }}</mat-option>
               </mat-select>
+              <mat-error *ngIf="form.controls['status'].hasError('required')"
+                >Campo Requerido</mat-error
+              >
             </mat-form-field>
           </div>
         </div>
 
         <div class="row">
           <div class="col">
-            <button (click)="save()" mat-raised-button color="primary">
+            <button
+              (click)="save()"
+              mat-raised-button
+              color="primary"
+              [disabled]="submitDisabled || loading"
+            >
               Guardar
             </button>
           </div>
