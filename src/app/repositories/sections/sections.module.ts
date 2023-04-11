@@ -25,7 +25,6 @@ import {
   RemoveSectionService,
   UpdateSectionService,
 } from './use-cases';
-import { NgxSelectModule } from 'ngx-select-ex';
 
 @NgModule({
   declarations: [SectionsComponent, FormComponent],
@@ -42,7 +41,6 @@ import { NgxSelectModule } from 'ngx-select-ex';
     TableModule,
     MatAutocompleteModule,
     MatSelectModule,
-    NgxSelectModule,
   ],
   providers: [
     SectionsService,

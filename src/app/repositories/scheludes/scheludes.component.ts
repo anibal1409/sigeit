@@ -201,10 +201,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
   }
 
   private loadDepartments(): void {
-    console.log('load dep');
-
     if (!this.departmentId) {
-      console.log('load dep on select');
       this.loading = true;
       this.stateService.setLoading(this.loading);
     }
