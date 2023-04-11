@@ -150,6 +150,21 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       this.title = 'Crear Horario';
     }
+    this.sub$.add(
+      this.form.get('dayId')?.valueChanges.subscribe((day) => {
+        if (day && day.id) {
+          this.filteredDays = of(this.days);
+        }
+      })
+    );
+
+    this.sub$.add(
+      this.form.get('classroomId')?.valueChanges.subscribe((classroom) => {
+        if (classroom && classroom.id) {
+          this.filteredClassrooms = of(this.classrooms);
+        }
+      })
+    );
   }
 
   ngOnDestroy(): void {

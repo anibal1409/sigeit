@@ -10,7 +10,7 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 
-import { map, Observable, startWith, Subscription } from 'rxjs';
+import { map, Observable, of, startWith, Subscription } from 'rxjs';
 import {
   ConfirmModalComponent,
   OptionAction,
@@ -128,6 +128,9 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('departmentId')?.valueChanges.subscribe((department) => {
+        if (department && department.id) {
+          this.filteredDepartments = of(this.departments);
+        }
         this.departmentId = +department.id;
         this.loadSubjects();
       })
@@ -135,6 +138,9 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('semester')?.valueChanges.subscribe((semester) => {
+        if (semester && semester.id) {
+          this.filteredSemesters = of(this.semesters);
+        }
         this.semester = +semester.id;
         this.loadSubjects();
       })
@@ -142,6 +148,9 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('subjectId')?.valueChanges.subscribe((subject) => {
+        if (subject && subject.id) {
+          this.filteredSubjects = of(this.subjects);
+        }
         this.subjectId = +subject.id;
         this.loadSections();
       })
