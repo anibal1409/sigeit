@@ -103,20 +103,18 @@ export class SectionsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createForm();
     this.loadDepartments();
-    if (this.semester) {
-      this.filteredSemesters = this.form.controls['semester'].valueChanges.pipe(
-        startWith<string | SemesterVM>(''),
-        map((value: any) => {
-          if (value !== null) {
-            return typeof value === 'string' ? value : value.name;
-          }
-          return '';
-        }),
-        map((name: any) => {
-          return name ? this._semesterFilter(name) : this.semesters.slice();
-        })
-      );
-    }
+    this.filteredSemesters = this.form.controls['semester'].valueChanges.pipe(
+      startWith<string | SemesterVM>(''),
+      map((value: any) => {
+        if (value !== null) {
+          return typeof value === 'string' ? value : value.name;
+        }
+        return '';
+      }),
+      map((name: any) => {
+        return name ? this._semesterFilter(name) : this.semesters.slice();
+      })
+    );
   }
 
   private createForm(): void {
@@ -242,6 +240,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
             ...this.sectionsData,
             body: sections || [],
           };
+          console.log(this.sectionsData);
           this.tableService.setData(this.sectionsData);
           this.loading = false;
           setTimeout(() => this.stateService.setLoading(this.loading), 500);
