@@ -11,8 +11,8 @@
           formControlName="dayId"
           [matAutocomplete]="autoDay"
         >
-        <mat-autocomplete #autoDay="matAutocomplete">
-          <mat-option *ngFor="let day of days" [value]="day.id">
+        <mat-autocomplete #autoDay="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let day of days" [value]="day">
             {{day.name}}
           </mat-option>
         </mat-autocomplete>
@@ -30,8 +30,8 @@
           formControlName="classroomId"
           [matAutocomplete]="autoClassroom"
         >
-        <mat-autocomplete #autoClassroom="matAutocomplete">
-          <mat-option *ngFor="let classroom of classrooms" [value]="classroom.id">
+        <mat-autocomplete #autoClassroom="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let classroom of classrooms" [value]="classroom">
             {{classroom.name}}
           </mat-option>
         </mat-autocomplete>
@@ -48,9 +48,9 @@
           formControlName="start"
           [matAutocomplete]="autoStart"
         >
-        <mat-autocomplete #autoStart="matAutocomplete">
-          <mat-option *ngFor="let start of startIntervals" [value]="start">
-            {{start}}
+        <mat-autocomplete #autoStart="matAutocomplete" [displayWith]="displayHours">
+          <mat-option *ngFor="let start of obs_startInterval | async" [value]="start" [disabled]="start.status">
+            {{start.hour}}
           </mat-option>
         </mat-autocomplete>
         
@@ -70,9 +70,9 @@
           formControlName="end"
           [matAutocomplete]="autoEnd"
         >
-        <mat-autocomplete #autoEnd="matAutocomplete">
-          <mat-option *ngFor="let end of endIntervals" [value]="end">
-            {{end}}
+        <mat-autocomplete #autoEnd="matAutocomplete" [displayWith]="displayHours">
+          <mat-option *ngFor="let end of obs_endInterval | async" [value]="end" [disabled]="end.status">
+            {{end.hour}} 
           </mat-option>
         </mat-autocomplete>
         

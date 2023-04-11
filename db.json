@@ -2839,6 +2839,33 @@
       "end": "07:45",
       "sectionId": 27,
       "id": 33
+    },
+    {
+      "classroomId": {
+        "id": 20,
+        "name": "A-00",
+        "type": "VIRTUAL",
+        "departmentId": 1,
+        "status": true,
+        "department": {
+          "abbreviation": "DIS",
+          "schoolId": 1,
+          "logo": "",
+          "name": "Ingeniería de Sistemas",
+          "status": "Activo",
+          "description": "",
+          "id": 1
+        }
+      },
+      "dayId": {
+        "abbreviation": 1,
+        "id": 1,
+        "name": "Lunes"
+      },
+      "start": "07:00",
+      "end": "07:45",
+      "sectionId": 1,
+      "id": 34
     }
   ]
 }

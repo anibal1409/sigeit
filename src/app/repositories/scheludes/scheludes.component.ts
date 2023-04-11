@@ -1,21 +1,8 @@
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
-import {
-  map,
-  Observable,
-  startWith,
-  Subscription,
-} from 'rxjs';
+import { map, Observable, startWith, Subscription } from 'rxjs';
 import {
   ConfirmModalComponent,
   OptionAction,
@@ -30,10 +17,7 @@ import { DepartmentVM } from '../departments';
 import { SectionVM } from '../sections';
 import { SectionsComponent } from '../sections/sections.component';
 import { SubjectVM } from '../subjects';
-import {
-  RowActionSchedule,
-  ScheduleVM,
-} from './model';
+import { RowActionSchedule, ScheduleVM } from './model';
 import { SchedulesService } from './scheludes.service';
 
 @Component({
@@ -90,7 +74,8 @@ export class ScheludesComponent implements OnInit, OnDestroy {
       {
         columnDef: 'day',
         header: 'Dia',
-        cell: (element: { [key: string]: string }) => `${(element['day'] as any)?.name}`,
+        cell: (element: { [key: string]: string }) =>
+          `${(element['day'] as any)?.name}`,
       },
       {
         columnDef: 'start',
@@ -111,7 +96,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
   departmentId = 0;
   semester = -1;
   subjectId = 0;
-  sectionId = 0;
+  sectionId = 1;
   scheduleId = 0;
 
   showForm = false;
@@ -134,6 +119,20 @@ export class ScheludesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createForm();
     this.loadDepartments();
+    if (this.semesters) {
+      this.filteredSemesters = this.form.controls['semester'].valueChanges.pipe(
+        startWith<string | SemesterVM>(''),
+        map((value: any) => {
+          if (value !== null) {
+            return typeof value === 'string' ? value : value.name;
+          }
+          return '';
+        }),
+        map((name: any) => {
+          return name ? this._semesterFilter(name) : this.semesters.slice();
+        })
+      );
+    }
   }
 
   ngOnDestroy(): void {
@@ -162,7 +161,6 @@ export class ScheludesComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('semester')?.valueChanges.subscribe((semester) => {
-        console.log(semester);
         this.semester = +semester?.id;
         this.loadSubjects();
       })
@@ -170,7 +168,6 @@ export class ScheludesComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('subjectId')?.valueChanges.subscribe((subject) => {
-        console.log(subject);
         this.subjectId = +subject?.id;
         this.form.patchValue({
           sectionId: null,
@@ -274,6 +271,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
             ...this.scheludeData,
             body: schedules || [],
           };
+          console.log(this.scheludeData);
           this.tableService.setData(this.scheludeData);
           this.loading = false;
           setTimeout(() => this.stateService.setLoading(this.loading), 500);
@@ -351,10 +349,12 @@ export class ScheludesComponent implements OnInit, OnDestroy {
 
   private _semesterFilter(name: string): SemesterVM[] {
     const filterValue = name.toLowerCase();
-    return this.semesters.filter(
+    const data = this.semesters.filter(
       (option) => option.name.toLowerCase().indexOf(filterValue) === 0
     );
+    return data;
   }
+
   private _subjectFilter(name: string): SubjectVM[] {
     const filterValue = name.toLowerCase();
     return this.subjects.filter(

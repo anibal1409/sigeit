@@ -1,23 +1,11 @@
 import { Injectable } from '@angular/core';
 
 import moment from 'moment';
-import {
-  forkJoin,
-  map,
-  mergeMap,
-  Observable,
-  of,
-} from 'rxjs';
+import { forkJoin, map, mergeMap, Observable, of } from 'rxjs';
 
-import {
-  ClassroomVM,
-  GetClassroomsService,
-} from '../classrooms';
+import { ClassroomVM, GetClassroomsService } from '../classrooms';
 import { DepartmentVM } from '../departments';
-import {
-  FindPeriodService,
-  PeriodVM,
-} from '../periods';
+import { FindPeriodService, PeriodVM } from '../periods';
 import {
   GetDepartamentsBySchoolService,
   GetSubjectsByDepartmentService,
@@ -26,15 +14,8 @@ import {
 } from '../sections';
 import { SubjectVM } from '../subjects';
 import { FindSubjectService } from '../subjects/use-cases';
-import {
-  GetTeachersService,
-  TeacherItemVM,
-} from '../teachers';
-import {
-  DayVM,
-  ScheduleItemVM,
-  ScheduleVM,
-} from './model';
+import { GetTeachersService, TeacherItemVM } from '../teachers';
+import { DayVM, ScheduleItemVM, ScheduleVM } from './model';
 import {
   CreateScheduleService,
   FindScheduleService,
@@ -47,7 +28,6 @@ import {
 
 @Injectable()
 export class SchedulesService {
-
   constructor(
     private getDepartamentsService: GetDepartamentsBySchoolService,
     private GetSubjectsByDepartmentService: GetSubjectsByDepartmentService,
@@ -62,18 +42,24 @@ export class SchedulesService {
     private getClassroomsService: GetClassroomsService,
     private getDaysService: GetDaysService,
     private getClassroomScheduleService: GetClassroomScheduleService,
-    private findSubjectService: FindSubjectService,
-  ) { }
+    private findSubjectService: FindSubjectService
+  ) {}
 
   getDepartaments$(idSchool: number): Observable<Array<DepartmentVM>> {
     return this.getDepartamentsService.exec(idSchool);
   }
 
-  getSubjects$(departmentId: number, semester: number): Observable<Array<SubjectVM>> {
+  getSubjects$(
+    departmentId: number,
+    semester: number
+  ): Observable<Array<SubjectVM>> {
     return this.GetSubjectsByDepartmentService.exec(departmentId, semester);
   }
 
-  getSections$(subjectId: number, periodId: number): Observable<Array<SectionItemVM>> {
+  getSections$(
+    subjectId: number,
+    periodId: number
+  ): Observable<Array<SectionItemVM>> {
     return this.getSubjectSectionsService.exec(subjectId, periodId);
   }
 
@@ -97,7 +83,12 @@ export class SchedulesService {
     return this.removeScheduleService.exec(scheduleId);
   }
 
-  generateTimeIntervals(startTime: string, endTime: string, duration: number, interval: number): any[] {
+  generateTimeIntervals(
+    startTime: string,
+    endTime: string,
+    duration: number,
+    interval: number
+  ): any[] {
     const intervals = [];
     let currentTime = moment(startTime, 'HH:mm');
     const endTimeMoment = moment(endTime, 'HH:mm');
@@ -105,7 +96,7 @@ export class SchedulesService {
     while (currentTime.isBefore(endTimeMoment)) {
       intervals.push({
         start: currentTime.format('HH:mm'),
-        end: currentTime.add(duration, 'minutes').format('HH:mm')
+        end: currentTime.add(duration, 'minutes').format('HH:mm'),
       });
       currentTime.add(interval, 'minutes');
     }
@@ -113,8 +104,14 @@ export class SchedulesService {
     return intervals;
   }
 
-  generateTimeIntervalsStartEnd(startTime: string, endTime: string, duration: number, interval: number): {start: Array<string>; end: Array<string>} {
-    const start = [], end = [];
+  generateTimeIntervalsStartEnd(
+    startTime: string,
+    endTime: string,
+    duration: number,
+    interval: number
+  ): { start: Array<string>; end: Array<string> } {
+    const start = [],
+      end = [];
     let currentTime = moment(startTime, 'HH:mm');
     const endTimeMoment = moment(endTime, 'HH:mm');
 
@@ -156,7 +153,7 @@ export class SchedulesService {
   //           const end2 = moment(schedule.end, 'HH:mm');
   //           return start1.isSameOrBefore(end2) && end1.isSameOrAfter(start2);
   //         });
-          
+
   //         const horasEnChoque = horariosEnChoque.map(horario => {
   //           const start = moment.max(moment(horario.start, 'HH:mm'), moment(scheduleVm.start, 'HH:mm'));
   //           const end = moment.min(moment(horario.end, 'HH:mm'), moment(scheduleVm.end, 'HH:mm'));
@@ -164,8 +161,7 @@ export class SchedulesService {
   //         });
 
   //         console.log(horariosEnChoque);
-          
-          
+
   //         console.log(`Horas en choque: ${horasEnChoque}`);
   //         return horariosEnChoque;
   //       }
@@ -174,36 +170,35 @@ export class SchedulesService {
   // }
 
   validateClassroomSchedules$(scheduleVm: ScheduleVM): Observable<any> {
-    return this.getClassroomScheduleService.exec(scheduleVm)
-    .pipe(
-      mergeMap(
-        (schedules) => {
-          const horariosEnChoque = schedules.filter(schedule => {
-            const start1 = moment(scheduleVm.start, 'HH:mm');
-            const end1 = moment(scheduleVm.end, 'HH:mm');
-            const start2 = moment(schedule.start, 'HH:mm');
-            const end2 = moment(schedule.end, 'HH:mm');
-            return start1.isSameOrBefore(end2) && end1.isSameOrAfter(start2);
-          });
-  
-          if (horariosEnChoque.length === 0) {
-            return of([]);
-          }
-  
-          const scheduleObservables = horariosEnChoque.map(schedule => {
-            return this.findSubjectService.exec(schedule?.section?.subjectId || 0).pipe(
-              map(subject => {
+    return this.getClassroomScheduleService.exec(scheduleVm).pipe(
+      mergeMap((schedules) => {
+        const horariosEnChoque = schedules.filter((schedule) => {
+          const start1 = moment(scheduleVm.start, 'HH:mm');
+          const end1 = moment(scheduleVm.end, 'HH:mm');
+          const start2 = moment(schedule.start, 'HH:mm');
+          const end2 = moment(schedule.end, 'HH:mm');
+          return start1.isSameOrBefore(end2) && end1.isSameOrAfter(start2);
+        });
+
+        if (horariosEnChoque.length === 0) {
+          return of([]);
+        }
+
+        const scheduleObservables = horariosEnChoque.map((schedule) => {
+          return this.findSubjectService
+            .exec(schedule?.section?.subjectId || 0)
+            .pipe(
+              map((subject) => {
                 if (schedule.section) {
-                  schedule.section.subject = subject
+                  schedule.section.subject = subject;
                 }
                 return schedule;
               })
             );
-          });
-  
-          return forkJoin(scheduleObservables);
-        }
-      )
+        });
+
+        return forkJoin(scheduleObservables);
+      })
     );
   }
 }
