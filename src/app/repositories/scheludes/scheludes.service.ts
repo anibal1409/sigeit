@@ -1,11 +1,23 @@
 import { Injectable } from '@angular/core';
 
 import moment from 'moment';
-import { forkJoin, map, mergeMap, Observable, of } from 'rxjs';
+import {
+  forkJoin,
+  map,
+  mergeMap,
+  Observable,
+  of,
+} from 'rxjs';
 
-import { ClassroomVM, GetClassroomsService } from '../classrooms';
+import {
+  ClassroomVM,
+  GetClassroomsService,
+} from '../classrooms';
 import { DepartmentVM } from '../departments';
-import { FindPeriodService, PeriodVM } from '../periods';
+import {
+  FindPeriodService,
+  PeriodVM,
+} from '../periods';
 import {
   GetDepartamentsBySchoolService,
   GetSubjectsByDepartmentService,
@@ -14,8 +26,15 @@ import {
 } from '../sections';
 import { SubjectVM } from '../subjects';
 import { FindSubjectService } from '../subjects/use-cases';
-import { GetTeachersService, TeacherItemVM } from '../teachers';
-import { DayVM, ScheduleItemVM, ScheduleVM } from './model';
+import {
+  GetTeachersService,
+  TeacherItemVM,
+} from '../teachers';
+import {
+  DayVM,
+  ScheduleItemVM,
+  ScheduleVM,
+} from './model';
 import {
   CreateScheduleService,
   FindScheduleService,
@@ -139,35 +158,6 @@ export class SchedulesService {
   getDays$(): Observable<Array<DayVM>> {
     return this.getDaysService.exec();
   }
-
-  // validateClassroomSchedules$(scheduleVm: ScheduleVM): Observable<any> {
-  //   return this.getClassroomScheduleService.exec(scheduleVm)
-  //   .pipe(
-  //     map(
-  //       (schedules) => {
-  //         console.log(schedules);
-  //         const horariosEnChoque = schedules.filter(schedule => {
-  //           const start1 = moment(scheduleVm.start, 'HH:mm');
-  //           const end1 = moment(scheduleVm.end, 'HH:mm');
-  //           const start2 = moment(schedule.start, 'HH:mm');
-  //           const end2 = moment(schedule.end, 'HH:mm');
-  //           return start1.isSameOrBefore(end2) && end1.isSameOrAfter(start2);
-  //         });
-
-  //         const horasEnChoque = horariosEnChoque.map(horario => {
-  //           const start = moment.max(moment(horario.start, 'HH:mm'), moment(scheduleVm.start, 'HH:mm'));
-  //           const end = moment.min(moment(horario.end, 'HH:mm'), moment(scheduleVm.end, 'HH:mm'));
-  //           return `${start.format('HH:mm')} - ${end.format('HH:mm')}`;
-  //         });
-
-  //         console.log(horariosEnChoque);
-
-  //         console.log(`Horas en choque: ${horasEnChoque}`);
-  //         return horariosEnChoque;
-  //       }
-  //     )
-  //   )
-  // }
 
   validateClassroomSchedules$(scheduleVm: ScheduleVM): Observable<any> {
     return this.getClassroomScheduleService.exec(scheduleVm).pipe(

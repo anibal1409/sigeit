@@ -2581,272 +2581,17 @@
       "status": true,
       "capacity": 20,
       "id": 32
-    }
-  ],
-  "schedules": [
-    {
-      "id": 1,
-      "classroomId": 20,
-      "dayId": 3,
-      "start": "10:20",
-      "end": "12:45",
-      "sectionId": 1
     },
     {
-      "id": 2,
-      "classroomId": 17,
-      "dayId": 1,
-      "start": "07:00",
-      "end": "09:25",
-      "sectionId": 2
-    },
-    {
-      "id": 3,
-      "classroomId": 20,
-      "dayId": 2,
-      "start": "07:00",
-      "end": "09:25",
-      "sectionId": 3
-    },
-    {
-      "id": 4,
-      "classroomId": 14,
-      "dayId": 2,
-      "start": "09:30",
-      "end": "11:05",
-      "sectionId": 4
-    },
-    {
-      "id": 5,
-      "classroomId": 20,
-      "dayId": 4,
-      "start": "09:30",
-      "end": "11:05",
-      "sectionId": 4
-    },
-    {
-      "id": 6,
-      "classroomId": 14,
-      "dayId": 3,
-      "start": "08:40",
-      "end": "10:15",
-      "sectionId": 5
-    },
-    {
-      "id": 7,
-      "classroomId": 20,
-      "dayId": 5,
-      "start": "09:30",
-      "end": "11:05",
-      "sectionId": 5
-    },
-    {
-      "id": 8,
-      "classroomId": 14,
-      "dayId": 2,
-      "start": "07:00",
-      "end": "09:25",
-      "sectionId": 6
-    },
-    {
-      "id": 9,
-      "classroomId": 20,
-      "dayId": 4,
-      "start": "11:10",
-      "end": "12:45",
-      "sectionId": 6
-    },
-    {
-      "id": 10,
-      "classroomId": 15,
-      "dayId": 3,
-      "start": "07:00",
-      "end": "08:35",
-      "sectionId": 7
-    },
-    {
-      "id": 11,
-      "classroomId": 20,
-      "dayId": 4,
-      "start": "07:00",
-      "end": "09:25",
-      "sectionId": 7
-    },
-    {
-      "id": 12,
-      "classroomId": 17,
-      "dayId": 3,
-      "start": "08:40",
-      "end": "10:15",
-      "sectionId": 8
-    },
-    {
-      "id": 13,
-      "classroomId": 20,
-      "dayId": 5,
-      "start": "08:40",
-      "end": "11:05",
-      "sectionId": 8
-    },
-    {
-      "id": 14,
-      "classroomId": 18,
-      "dayId": 2,
-      "start": "08:40",
-      "end": "10:15",
-      "sectionId": 9
-    },
-    {
-      "id": 15,
-      "classroomId": 20,
-      "dayId": 4,
-      "start": "09:30",
-      "end": "11:55",
-      "sectionId": 9
-    },
-    {
-      "id": 16,
-      "classroomId": 20,
-      "dayId": 3,
-      "start": "08:40",
-      "end": "11:05",
-      "sectionId": 10
-    },
-    {
-      "id": 17,
-      "classroomId": 17,
-      "dayId": 5,
-      "start": "08:40",
-      "end": "10:15",
-      "sectionId": 10
-    },
-    {
-      "id": 18,
-      "classroomId": 19,
-      "dayId": 1,
-      "start": "07:50",
-      "end": "10:15",
-      "sectionId": 11
-    },
-    {
-      "id": 19,
-      "classroomId": 19,
-      "dayId": 2,
-      "start": "07:00",
-      "end": "09:25",
-      "sectionId": 12
-    },
-    {
-      "id": 20,
-      "classroomId": 20,
-      "dayId": 1,
-      "start": "09:30",
-      "end": "11:55",
-      "sectionId": 13
-    },
-    {
-      "id": 22,
-      "classroomId": 15,
-      "dayId": 2,
-      "start": "09:30",
-      "end": "11:55",
-      "sectionId": 14
-    },
-    {
-      "id": 23,
-      "classroomId": 13,
-      "dayId": 1,
-      "start": "07:00",
-      "end": "08:35",
-      "sectionId": 15
-    },
-    {
-      "id": 24,
-      "classroomId": 20,
-      "dayId": 2,
-      "start": "07:00",
-      "end": "08:35",
-      "sectionId": 15
-    },
-    {
-      "classroomId": 12,
-      "dayId": 1,
-      "start": "07:00",
-      "end": "09:25",
-      "sectionId": 25,
-      "id": 25
-    },
-    {
-      "classroomId": 19,
-      "dayId": 1,
-      "start": "07:00",
-      "end": "07:45",
-      "sectionId": 26,
-      "id": 26
-    },
-    {
-      "id": 27,
-      "classroomId": 17,
-      "dayId": 3,
-      "start": "07:00",
-      "end": "08:35",
-      "sectionId": 17
-    },
-    {
-      "id": 28,
-      "classroomId": 20,
-      "dayId": 5,
-      "start": "07:00",
-      "end": "08:35",
-      "sectionId": 18
-    },
-    {
-      "id": 29,
-      "classroomId": 19,
-      "dayId": 3,
-      "start": "07:00",
-      "end": "09:25",
-      "sectionId": 19
-    },
-    {
-      "id": 30,
-      "classroomId": 20,
-      "dayId": 3,
-      "start": "09:30",
-      "end": "11:55",
-      "sectionId": 20
-    },
-    {
-      "classroomId": 12,
-      "dayId": 1,
-      "start": "10:20",
-      "end": "11:55",
-      "sectionId": 25,
-      "id": 31
-    },
-    {
-      "classroomId": 12,
-      "dayId": 1,
-      "start": "12:00",
-      "end": "12:45",
-      "sectionId": 25,
-      "id": 32
-    },
-    {
-      "classroomId": 12,
-      "dayId": 2,
-      "start": "07:00",
-      "end": "07:45",
-      "sectionId": 27,
-      "id": 33
-    },
-    {
-      "classroomId": {
-        "id": 20,
-        "name": "A-00",
-        "type": "VIRTUAL",
-        "departmentId": 1,
-        "status": true,
+      "subjectId": 17,
+      "periodId": 3,
+      "teacherId": {
+        "id": 2,
+        "id_document": 23539583,
+        "first_name": "Anibal",
+        "last_name": "Fariñas",
+        "email": "afarinas@gmail.com",
+        "status": "Activo",
         "department": {
           "abbreviation": "DIS",
           "schoolId": 1,
@@ -2857,15 +2602,318 @@
           "id": 1
         }
       },
-      "dayId": {
-        "abbreviation": 1,
-        "id": 1,
-        "name": "Lunes"
-      },
+      "name": "01",
+      "status": true,
+      "capacity": 20,
+      "id": 33
+    }
+  ],
+  "schedules": [
+    {
+      "id": 1,
+      "classroomId": 20,
+      "dayId": 3,
+      "start": "10:20",
+      "end": "12:45",
+      "sectionId": 1,
+      "periodId": 2
+    },
+    {
+      "id": 2,
+      "classroomId": 17,
+      "dayId": 1,
+      "start": "07:00",
+      "end": "09:25",
+      "sectionId": 2,
+      "periodId": 2
+    },
+    {
+      "id": 3,
+      "classroomId": 20,
+      "dayId": 2,
+      "start": "07:00",
+      "end": "09:25",
+      "sectionId": 3,
+      "periodId": 2
+    },
+    {
+      "id": 4,
+      "classroomId": 14,
+      "dayId": 2,
+      "start": "09:30",
+      "end": "11:05",
+      "sectionId": 4,
+      "periodId": 2
+    },
+    {
+      "id": 5,
+      "classroomId": 20,
+      "dayId": 4,
+      "start": "09:30",
+      "end": "11:05",
+      "sectionId": 4,
+      "periodId": 2
+    },
+    {
+      "id": 6,
+      "classroomId": 14,
+      "dayId": 3,
+      "start": "08:40",
+      "end": "10:15",
+      "sectionId": 5,
+      "periodId": 2
+    },
+    {
+      "id": 7,
+      "classroomId": 20,
+      "dayId": 5,
+      "start": "09:30",
+      "end": "11:05",
+      "sectionId": 5,
+      "periodId": 2
+    },
+    {
+      "id": 8,
+      "classroomId": 14,
+      "dayId": 2,
+      "start": "07:00",
+      "end": "09:25",
+      "sectionId": 6,
+      "periodId": 2
+    },
+    {
+      "id": 9,
+      "classroomId": 20,
+      "dayId": 4,
+      "start": "11:10",
+      "end": "12:45",
+      "sectionId": 6,
+      "periodId": 2
+    },
+    {
+      "id": 10,
+      "classroomId": 15,
+      "dayId": 3,
+      "start": "07:00",
+      "end": "08:35",
+      "sectionId": 7,
+      "periodId": 2
+    },
+    {
+      "id": 11,
+      "classroomId": 20,
+      "dayId": 4,
+      "start": "07:00",
+      "end": "09:25",
+      "sectionId": 7,
+      "periodId": 2
+    },
+    {
+      "id": 12,
+      "classroomId": 17,
+      "dayId": 3,
+      "start": "08:40",
+      "end": "10:15",
+      "sectionId": 8,
+      "periodId": 2
+    },
+    {
+      "id": 13,
+      "classroomId": 20,
+      "dayId": 5,
+      "start": "08:40",
+      "end": "11:05",
+      "sectionId": 8,
+      "periodId": 2
+    },
+    {
+      "id": 14,
+      "classroomId": 18,
+      "dayId": 2,
+      "start": "08:40",
+      "end": "10:15",
+      "sectionId": 9,
+      "periodId": 2
+    },
+    {
+      "id": 15,
+      "classroomId": 20,
+      "dayId": 4,
+      "start": "09:30",
+      "end": "11:55",
+      "sectionId": 9,
+      "periodId": 2
+    },
+    {
+      "id": 16,
+      "classroomId": 20,
+      "dayId": 3,
+      "start": "08:40",
+      "end": "11:05",
+      "sectionId": 10,
+      "periodId": 2
+    },
+    {
+      "id": 17,
+      "classroomId": 17,
+      "dayId": 5,
+      "start": "08:40",
+      "end": "10:15",
+      "sectionId": 10,
+      "periodId": 2
+    },
+    {
+      "id": 18,
+      "classroomId": 19,
+      "dayId": 1,
+      "start": "07:50",
+      "end": "10:15",
+      "sectionId": 11,
+      "periodId": 2
+    },
+    {
+      "id": 19,
+      "classroomId": 19,
+      "dayId": 2,
+      "start": "07:00",
+      "end": "09:25",
+      "sectionId": 12,
+      "periodId": 2
+    },
+    {
+      "id": 20,
+      "classroomId": 20,
+      "dayId": 1,
+      "start": "09:30",
+      "end": "11:55",
+      "sectionId": 13,
+      "periodId": 2
+    },
+    {
+      "id": 22,
+      "classroomId": 15,
+      "dayId": 2,
+      "start": "09:30",
+      "end": "11:55",
+      "sectionId": 14,
+      "periodId": 2
+    },
+    {
+      "id": 23,
+      "classroomId": 13,
+      "dayId": 1,
+      "start": "07:00",
+      "end": "08:35",
+      "sectionId": 15,
+      "periodId": 2
+    },
+    {
+      "id": 24,
+      "classroomId": 20,
+      "dayId": 2,
+      "start": "07:00",
+      "end": "08:35",
+      "sectionId": 15,
+      "periodId": 2
+    },
+    {
+      "classroomId": 12,
+      "dayId": 1,
+      "start": "07:00",
+      "end": "09:25",
+      "sectionId": 25,
+      "periodId": 3,
+      "id": 25
+    },
+    {
+      "classroomId": 19,
+      "dayId": 1,
       "start": "07:00",
       "end": "07:45",
-      "sectionId": 1,
+      "sectionId": 26,
+      "periodId": 3,
+      "id": 26
+    },
+    {
+      "id": 27,
+      "classroomId": 17,
+      "dayId": 3,
+      "start": "07:00",
+      "end": "08:35",
+      "sectionId": 17,
+      "periodId": 3
+    },
+    {
+      "id": 28,
+      "classroomId": 20,
+      "dayId": 5,
+      "start": "07:00",
+      "end": "08:35",
+      "sectionId": 18,
+      "periodId": 3
+    },
+    {
+      "id": 29,
+      "classroomId": 19,
+      "dayId": 3,
+      "start": "07:00",
+      "end": "09:25",
+      "sectionId": 19,
+      "periodId": 3
+    },
+    {
+      "id": 30,
+      "classroomId": 20,
+      "dayId": 3,
+      "start": "09:30",
+      "end": "11:55",
+      "sectionId": 20,
+      "periodId": 3
+    },
+    {
+      "classroomId": 12,
+      "dayId": 1,
+      "start": "10:20",
+      "end": "11:55",
+      "sectionId": 25,
+      "periodId": 3,
+      "id": 31
+    },
+    {
+      "classroomId": 12,
+      "dayId": 1,
+      "start": "12:00",
+      "end": "12:45",
+      "sectionId": 25,
+      "periodId": 3,
+      "id": 32
+    },
+    {
+      "classroomId": 12,
+      "dayId": 2,
+      "start": "07:00",
+      "end": "07:45",
+      "sectionId": 27,
+      "periodId": 3,
+      "id": 33
+    },
+    {
+      "classroomId": 18,
+      "dayId": 1,
+      "start": "07:00",
+      "end": "08:35",
+      "sectionId": 28,
+      "periodId": 3,
       "id": 34
+    },
+    {
+      "classroomId": 18,
+      "dayId": 4,
+      "start": "07:00",
+      "end": "08:35",
+      "sectionId": 28,
+      "periodId": 3,
+      "id": 35
     }
   ]
 }

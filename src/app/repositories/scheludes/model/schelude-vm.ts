@@ -5,4 +5,5 @@ export interface ScheduleVM {
   start: Date | string;
   end: Date | string;
   sectionId: number;
+  periodId: number;
 }

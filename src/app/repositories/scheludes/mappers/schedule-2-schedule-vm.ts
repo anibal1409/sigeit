@@ -8,5 +8,6 @@ export function Schedule2ScheduleVM(schedule: any): ScheduleVM {
     sectionId: schedule?.sectionId,
     start: schedule?.start,
     id: schedule?.id,
+    periodId: schedule?.periodId,
   };
 }
