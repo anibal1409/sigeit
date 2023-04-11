@@ -19,7 +19,6 @@ import moment from 'moment';
 import {
   Observable,
   Subscription,
-  forkJoin,
   lastValueFrom,
   map,
   of,
@@ -74,6 +73,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
   private sub$ = new Subscription();
   loading = false;
+  title = '';
 
   constructor(
     private schedulesService: SchedulesService,
@@ -135,6 +135,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       })
     );
     if (this.scheduleId) {
+      this.title = 'Editar Horario';
       this.sub$.add(
         this.schedulesService
           .findSchedule$(this.sectionId)
@@ -146,6 +147,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
             }
           })
       );
+    } else {
+      this.title = 'Crear Horario';
     }
   }
 

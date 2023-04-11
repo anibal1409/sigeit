@@ -1,5 +1,8 @@
 <div class="mat-container">
   <mat-card>
+    <mat-card-header
+      ><mat-card-title>{{ title }}</mat-card-title></mat-card-header
+    >
     <mat-card-content>
       <form [formGroup]="form!" class="p-2">
         <div class="row">
@@ -16,8 +19,8 @@
                 >Campo Requerido</mat-error
               >
               <mat-error *ngIf="form.controls['name'].hasError('min')"
-              >Valor Invalido</mat-error
-            >
+                >Valor Invalido</mat-error
+              >
             </mat-form-field>
           </div>
           <div class="col-md-2">

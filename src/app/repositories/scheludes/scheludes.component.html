@@ -1,113 +1,135 @@
-<form [formGroup]="form!" class="p-5">
-  <div class="row">
-    <div class="col-md-4 col-12">
-      <mat-form-field>
-        <mat-label>Departamento</mat-label>
-        <input
-          type="text"
-          placeholder="Seleccione un departamento"
-          aria-label="departamento"
-          matInput
-          formControlName="departmentId"
-          [matAutocomplete]="autoDepartments"
-        />
-        <mat-autocomplete
-          #autoDepartments="matAutocomplete"
-          [displayWith]="displayFn"
-        >
-          <mat-option
-            *ngFor="let department of filteredDepartments | async"
-            [value]="department"
-          >
-            {{ department.name }}
-          </mat-option>
-          
-        </mat-autocomplete>
-        <mat-error *ngIf="form.controls['departmentId'].hasError('required')"
-        >Campo Requerido</mat-error
-      >
-      </mat-form-field>
-    </div>
 
-    <div class="col-md-2 col-12">
-      <mat-form-field>
-        <mat-label>Semestre</mat-label>
-        <input
-          type="text"
-          placeholder="Seleccione un semestre"
-          aria-label="Semestre"
-          matInput
-          formControlName="semester"
-          [matAutocomplete]="autoSemester"
-        />
-        <mat-autocomplete
-          #autoSemester="matAutocomplete"
-          [displayWith]="displayFn"
-        >
-          <mat-option *ngFor="let semester of filteredSemesters | async" [value]="semester">
-            {{ semester.name }}
-          </mat-option>
-        </mat-autocomplete>
-        <mat-error *ngIf="form.controls['semester'].hasError('required')"
-        >Campo Requerido</mat-error
-      >
-      </mat-form-field>
-    </div>
 
-    <div class="col-md-4 col-12">
-      <mat-form-field>
-        <mat-label>Asignatura</mat-label>
-        <input
-          type="text"
-          placeholder="Seleccione una asignatura"
-          aria-label="Asignatura"
-          matInput
-          formControlName="subjectId"
-          [matAutocomplete]="autoSubjects"
-        />
-        <mat-autocomplete
-          #autoSubjects="matAutocomplete"
-          [displayWith]="displayFn"
-        >
-          <mat-option *ngFor="let subject of filteredSubjects | async" [value]="subject">
-            ({{ subject.code }}) {{ subject.name }}
-          </mat-option>
-        </mat-autocomplete>
-        <mat-error *ngIf="form.controls['subjectId'].hasError('required')"
-        >Campo Requerido</mat-error
-      >
-      </mat-form-field>
-    </div>
+<div class="mat-container">
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="form!" class="p-2">
+        <div class="row">
+          <div class="col-md-4 col-12">
+            <mat-form-field>
+              <mat-label>Departamento</mat-label>
+              <input
+                type="text"
+                placeholder="Seleccione un departamento"
+                aria-label="departamento"
+                matInput
+                formControlName="departmentId"
+                [matAutocomplete]="autoDepartments"
+              />
+              <mat-autocomplete
+                #autoDepartments="matAutocomplete"
+                [displayWith]="displayFn"
+              >
+                <mat-option
+                  *ngFor="let department of filteredDepartments | async"
+                  [value]="department"
+                >
+                  {{ department.name }}
+                </mat-option>
+              </mat-autocomplete>
+              <mat-error
+                *ngIf="form.controls['departmentId'].hasError('required')"
+                >Campo Requerido</mat-error
+              >
+            </mat-form-field>
+          </div>
 
-    <div class="col-md-2 col-12">
-      <mat-form-field>
-        <mat-label>Sección</mat-label>
-        <input
-          type="text"
-          placeholder="Seleccione una sección"
-          aria-label="Sección"
-          matInput
-          formControlName="sectionId"
-          [matAutocomplete]="autoSections"
-        />
-        <mat-autocomplete
-          #autoSections="matAutocomplete"
-          [displayWith]="displayFn"
-        >
-          <mat-option *ngFor="let section of sections" [value]="section">
-            {{section.name}}
-          </mat-option>
-        </mat-autocomplete>
-        <mat-error *ngIf="form.controls['sectionId'].hasError('required')"
-        >Campo Requerido</mat-error
-      >
-      </mat-form-field>
-      <button (click)="showListSections()" mat-raised-button color="primary" [disabled]="submitDisabled || loading">Guardar</button>
-    </div>
-  </div>
-</form>
+          <div class="col-md-2 col-12">
+            <mat-form-field>
+              <mat-label>Semestre</mat-label>
+              <input
+                type="text"
+                placeholder="Seleccione un semestre"
+                aria-label="Semestre"
+                matInput
+                formControlName="semester"
+                [matAutocomplete]="autoSemester"
+              />
+              <mat-autocomplete
+                #autoSemester="matAutocomplete"
+                [displayWith]="displayFn"
+              >
+                <mat-option
+                  *ngFor="let semester of filteredSemesters | async"
+                  [value]="semester"
+                >
+                  {{ semester.name }}
+                </mat-option>
+              </mat-autocomplete>
+              <mat-error *ngIf="form.controls['semester'].hasError('required')"
+                >Campo Requerido</mat-error
+              >
+            </mat-form-field>
+          </div>
 
-<div class="container">
+          <div class="col-md-4 col-12">
+            <mat-form-field>
+              <mat-label>Asignatura</mat-label>
+              <input
+                type="text"
+                placeholder="Seleccione una asignatura"
+                aria-label="Asignatura"
+                matInput
+                formControlName="subjectId"
+                [matAutocomplete]="autoSubjects"
+              />
+              <mat-autocomplete
+                #autoSubjects="matAutocomplete"
+                [displayWith]="displayFn"
+              >
+                <mat-option
+                  *ngFor="let subject of filteredSubjects | async"
+                  [value]="subject"
+                >
+                  ({{ subject.code }}) {{ subject.name }}
+                </mat-option>
+              </mat-autocomplete>
+              <mat-error *ngIf="form.controls['subjectId'].hasError('required')"
+                >Campo Requerido</mat-error
+              >
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-2 col-12">
+            <mat-form-field>
+              <mat-label>Sección</mat-label>
+              <input
+                type="text"
+                placeholder="Seleccione una sección"
+                aria-label="Sección"
+                matInput
+                formControlName="sectionId"
+                [matAutocomplete]="autoSections"
+              />
+              <mat-autocomplete
+                #autoSections="matAutocomplete"
+                [displayWith]="displayFn"
+              >
+                <mat-option *ngFor="let section of sections" [value]="section">
+                  {{ section.name }}
+                </mat-option>
+              </mat-autocomplete>
+              <mat-error *ngIf="form.controls['sectionId'].hasError('required')"
+                >Campo Requerido</mat-error
+              >
+            </mat-form-field>
+            <button
+              (click)="showListSections()"
+              mat-raised-button
+              color="primary"
+              [disabled]="submitDisabled || loading"
+            >
+              Guardar
+            </button>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+
+<div class="mat-container">
   <mat-card>
     <mat-card-header> </mat-card-header>
     <mat-card-content>
@@ -162,12 +184,11 @@
   </button>
 </div>
 
-
 <ng-container *ngIf="showForm">
   <app-form
     [sectionId]="sectionId"
     [scheduleId]="scheduleId"
-    [periodId]="periodId"  
+    [periodId]="periodId"
     [departmentId]="departmentId"
     (closed)="loadSchedules(); changeShowForm(false)"
     (cancel)="changeShowForm(false)"

@@ -59,7 +59,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
   filteredTeachers = new Observable<TeacherVM[]>();
   submitDisabled = true;
-
+  title = '';
   constructor(
     private sectionsService: SectionsService,
     private fb: FormBuilder,
@@ -103,6 +103,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       })
     );
     if (this.sectionId) {
+      this.title = 'Editar Sección';
       this.sub$.add(
         this.sectionsService
           .findSection$(this.sectionId)
@@ -114,6 +115,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
             }
           })
       );
+    } else {
+      this.title = 'Crear Sección';
     }
   }
 
@@ -132,6 +135,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private loadLastSection(): void {
+    console.log('start loading');
     this.loading = true;
     this.stateService.setLoading(this.loading);
     if (!this.sectionId) {
@@ -142,6 +146,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
             this.sections = sections;
             if (sections?.length) {
               const lastSection = sections?.reduce((prev, current) => {
+                console.count('end loading');
                 return +prev.name > +current.name ? prev : current;
               });
               if (lastSection) {
@@ -150,6 +155,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
                 });
               }
             }
+
             this.loading = false;
             setTimeout(() => this.stateService.setLoading(this.loading), 200);
           })
