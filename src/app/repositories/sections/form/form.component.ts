@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { map, Observable, startWith, Subscription } from 'rxjs';
+import { map, Observable, of, startWith, Subscription } from 'rxjs';
 import { StateService } from 'src/app/common/state';
 
 import { TeacherVM } from '../../teachers/model';
@@ -118,6 +118,13 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       this.title = 'Crear Sección';
     }
+    this.sub$.add(
+      this.form.get('teacherId')?.valueChanges.subscribe((teacher) => {
+        if (teacher && teacher.id) {
+          this.filteredTeachers = of(this.teachers);
+        }
+      })
+    );
   }
 
   ngOnDestroy(): void {
@@ -135,7 +142,6 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private loadLastSection(): void {
-    console.log('start loading');
     this.loading = true;
     this.stateService.setLoading(this.loading);
     if (!this.sectionId) {
@@ -144,9 +150,9 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
           .getSections$(this.subjectId, this.periodId)
           .subscribe((sections) => {
             this.sections = sections;
+
             if (sections?.length) {
               const lastSection = sections?.reduce((prev, current) => {
-                console.count('end loading');
                 return +prev.name > +current.name ? prev : current;
               });
               if (lastSection) {
@@ -155,12 +161,11 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
                 });
               }
             }
-
-            this.loading = false;
-            setTimeout(() => this.stateService.setLoading(this.loading), 200);
           })
       );
     }
+    this.loading = false;
+    setTimeout(() => this.stateService.setLoading(this.loading), 200);
   }
 
   private createForm(): void {
