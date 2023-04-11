@@ -7,22 +7,10 @@ import {
   Optional,
   Output,
 } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import {
-  MAT_DIALOG_DATA,
-  MatDialog,
-} from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 
-import {
-  map,
-  Observable,
-  startWith,
-  Subscription,
-} from 'rxjs';
+import { map, Observable, startWith, Subscription } from 'rxjs';
 import {
   ConfirmModalComponent,
   OptionAction,
@@ -35,10 +23,7 @@ import { StateService } from 'src/app/common/state';
 
 import { DepartmentVM } from '../departments';
 import { SubjectVM } from '../subjects/model';
-import {
-  RowActionSection,
-  SectionVM,
-} from './model';
+import { RowActionSection, SectionVM } from './model';
 import { SectionsService } from './sections.service';
 
 @Component({
@@ -46,7 +31,7 @@ import { SectionsService } from './sections.service';
   templateUrl: './sections.component.html',
   styleUrls: ['./sections.component.scss'],
 })
-export class SectionsComponent implements OnInit, OnDestroy {  
+export class SectionsComponent implements OnInit, OnDestroy {
   @Output()
   closed = new EventEmitter();
   form!: FormGroup;
@@ -61,8 +46,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
       {
         columnDef: 'name',
         header: 'Sección',
-        cell: (element: { [key: string]: string }) =>
-          `${element['name']}`,
+        cell: (element: { [key: string]: string }) => `${element['name']}`,
       },
       {
         columnDef: 'id_teacher',
@@ -108,7 +92,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
     private tableService: TableService,
     private matDialog: MatDialog,
     @Optional() @Inject(MAT_DIALOG_DATA) private data: any,
-    private stateService: StateService,
+    private stateService: StateService
   ) {}
 
   ngOnDestroy(): void {
@@ -116,7 +100,6 @@ export class SectionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log('init');
     this.createForm();
     this.loadDepartments();
     if (this.semester) {
@@ -144,7 +127,6 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('departmentId')?.valueChanges.subscribe((department) => {
-        console.log(department);
         this.departmentId = +department.id;
         this.loadSubjects();
       })
@@ -152,7 +134,6 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('semester')?.valueChanges.subscribe((semester) => {
-        console.log(semester);
         this.semester = +semester.id;
         this.loadSubjects();
       })
@@ -160,13 +141,11 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('subjectId')?.valueChanges.subscribe((subject) => {
-        console.log(subject);
         this.subjectId = +subject.id;
         this.loadSections();
       })
     );
 
-    console.log(this.data);
     if (this.data) {
       this.periodId = this.data.periodId;
       this.form.patchValue({
@@ -297,7 +276,6 @@ export class SectionsComponent implements OnInit, OnDestroy {
       }
     });
   }
-
 
   clickClosed(): void {
     this.closed.emit();

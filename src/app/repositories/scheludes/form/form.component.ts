@@ -16,22 +16,30 @@ import {
 } from '@angular/forms';
 
 import moment from 'moment';
-import { Subscription } from 'rxjs';
+import {
+  Observable,
+  Subscription,
+  forkJoin,
+  lastValueFrom,
+  map,
+  of,
+  startWith,
+} from 'rxjs';
 
 import { timeValidator } from '../../../common';
 import { ClassroomVM } from '../../classrooms/model';
-import { DayVM } from '../model';
+import { DayVM, ScheduleVM } from '../model';
 import { SchedulesService } from '../scheludes.service';
 
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
-  styleUrls: ['./form.component.scss']
+  styleUrls: ['./form.component.scss'],
 })
 export class FormComponent implements OnInit, OnDestroy, OnChanges {
   @Input()
   sectionId!: number;
-  
+
   @Input()
   scheduleId!: number;
 
@@ -57,12 +65,17 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   startIntervals: Array<string> = [];
   endIntervals: Array<string> = [];
 
+  obs_startInterval!: Observable<Array<{ hour: string; status: boolean }>>;
+  obs_endInterval!: Observable<Array<{ hour: string; status: boolean }>>;
+  filteredDays!: Observable<DayVM[]>;
+  filteredClassrooms!: Observable<ClassroomVM[]>;
+
   private sub$ = new Subscription();
 
   constructor(
     private schedulesService: SchedulesService,
-    private fb: FormBuilder,
-  ) { }
+    private fb: FormBuilder
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['sectionId']?.currentValue) {
@@ -76,32 +89,58 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     this.createForm();
     this.loadClassrooms();
     this.sub$.add(
-      this.schedulesService.getDays$().subscribe(
-        (days) => {
-          this.days = days;
+      this.schedulesService.getDays$().subscribe((days) => {
+        this.days = days;
+        if (this.days) {
+          this.filteredDays = this.form.controls['dayId'].valueChanges.pipe(
+            startWith<string | DayVM>(''),
+            map((value: any) => {
+              if (value !== null) {
+                return typeof value === 'string' ? value : value.name;
+              }
+              return '';
+            }),
+            map((name: any) => {
+              return name ? this._daysFilter(name) : this.days.slice();
+            })
+          );
         }
-      )
+      })
     );
     this.sub$.add(
-      this.schedulesService.findPeriod$(this.periodId).subscribe(
-        (period) => {
-          const intervals = this.schedulesService.generateTimeIntervalsStartEnd(period.start_time, period.end_time, period.duration, period.interval);
-          this.startIntervals = intervals.start;
-          this.endIntervals =  intervals.end;
-        }
-      )
+      this.schedulesService.findPeriod$(this.periodId).subscribe((period) => {
+        const intervals = this.schedulesService.generateTimeIntervalsStartEnd(
+          period.start_time,
+          period.end_time,
+          period.duration,
+          period.interval
+        );
+        this.startIntervals = intervals.start;
+        this.endIntervals = intervals.end;
+
+        this.obs_startInterval = of(
+          this.startIntervals.map((interval) => {
+            return { hour: interval, status: false };
+          })
+        );
+        this.obs_endInterval = of(
+          this.endIntervals.map((interval) => {
+            return { hour: interval, status: false };
+          })
+        );
+      })
     );
     if (this.scheduleId) {
       this.sub$.add(
-        this.schedulesService.findSchedule$(this.sectionId).subscribe(
-          (schedule) => {
+        this.schedulesService
+          .findSchedule$(this.sectionId)
+          .subscribe((schedule) => {
             if (schedule) {
               this.form.patchValue({
                 ...schedule,
               });
             }
-          }
-        )
+          })
       );
     }
   }
@@ -111,9 +150,12 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private loadDataForm(): void {
-    this.form?.patchValue({
-      sectionId: this.sectionId,
-    }, { emitEvent: false });
+    this.form?.patchValue(
+      {
+        sectionId: this.sectionId,
+      },
+      { emitEvent: false }
+    );
   }
 
   private createForm(): void {
@@ -124,39 +166,61 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       end: [null, [Validators.required, timeValidator()]],
       sectionId: [this.sectionId, [Validators.required]],
     });
-    
 
     this.sub$.add(
-      this.allClassroomsCtrl.valueChanges.subscribe(
-        (val) => {
-          this.allClassrooms = val as boolean;
-          this.loadClassrooms();
-        }
-      )
+      this.allClassroomsCtrl.valueChanges.subscribe((val) => {
+        this.allClassrooms = val as boolean;
+        this.loadClassrooms();
+      })
     );
 
     this.sub$.add(
-      this.form.valueChanges.subscribe(
-        (values) => {
-          console.log(this.form);
-          if (this.form.valid) {
-            this.schedulesService.validateClassroomSchedules$(values).subscribe(
-              (data) => {
-                console.log(data);
-                
-
-                const horasEnChoque = data.map((horario: any) => {
-                  const start = moment.max(moment(horario.start, 'HH:mm'), moment(values.start, 'HH:mm'));
-                  const end = moment.min(moment(horario.end, 'HH:mm'), moment(values.end, 'HH:mm'));
-                  return ` ${start.format('HH:mm')} - ${end.format('HH:mm')} (${horario.section?.subject?.name} - ${horario.section?.name})`;
-                });
-
-                console.log(`El horario establecido presenta choques con los siguentes horarios:${horasEnChoque}`);
-              }
-            );
-          }
+      this.form.valueChanges.subscribe((values) => {
+        let readableValues!: ScheduleVM;
+        if (!!values.start && !!values.end) {
+          readableValues = {
+            ...values,
+            start: values.start.hour,
+            end: values.end.hour,
+          };
         }
-      )
+        values = readableValues;
+
+        if (this.form.valid) {
+          this.schedulesService
+            .validateClassroomSchedules$(values)
+            .subscribe((data) => {
+              console.log(data);
+              const horasEnChoque = data.map(async (horario: any) => {
+                const start = moment.max(
+                  moment(horario.start, 'HH:mm'),
+                  moment(values.start, 'HH:mm')
+                );
+                const end = moment.min(
+                  moment(horario.end, 'HH:mm'),
+                  moment(values.end, 'HH:mm')
+                );
+                const { resetInit, resetEnd } = await this.disableHours(
+                  start,
+                  end
+                );
+
+                if (resetInit) {
+                  this.form.controls['start'].setValue('');
+                }
+                if (resetEnd) {
+                  this.form.controls['end'].setValue('');
+                }
+                return ` ${start.format('HH:mm')} - ${end.format('HH:mm')} (${
+                  horario.section?.subject?.name
+                } - ${horario.section?.name})`;
+              });
+              console.log(
+                `El horario establecido presenta choques con los siguentes horarios:${horasEnChoque}`
+              );
+            });
+        }
+      })
     );
   }
 
@@ -169,16 +233,14 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       obs = this.schedulesService.createSchedule$(schedule);
     }
-    
+
     this.sub$.add(
-      obs.subscribe(
-        () => {
-          this.scheduleId = 0;
-          this.form.reset();
-          this.loadDataForm();
-          this.closed.emit();
-        }
-      )
+      obs.subscribe(() => {
+        this.scheduleId = 0;
+        this.form.reset();
+        this.loadDataForm();
+        this.closed.emit();
+      })
     );
   }
 
@@ -187,14 +249,30 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private loadClassrooms(): void {
-    console.log((!this.allClassrooms && this.departmentId) as any);
-    
     this.sub$.add(
-      this.schedulesService.getClassrooms$((!this.allClassrooms && this.departmentId) as any).subscribe(
-        (classrooms) => {
+      this.schedulesService
+        .getClassrooms$((!this.allClassrooms && this.departmentId) as any)
+        .subscribe((classrooms) => {
           this.classrooms = classrooms;
-        }
-      )
+          if (this.classrooms) {
+            this.filteredClassrooms = this.form.controls[
+              'classroomId'
+            ].valueChanges.pipe(
+              startWith<string | ClassroomVM>(''),
+              map((value: any) => {
+                if (value !== null) {
+                  return typeof value === 'string' ? value : value.name;
+                }
+                return '';
+              }),
+              map((name: any) => {
+                return name
+                  ? this._classroomsFilter(name)
+                  : this.classrooms.slice();
+              })
+            );
+          }
+        })
     );
   }
 
@@ -202,4 +280,72 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     return item?.name;
   }
 
+  async disableHours(start: any, end: any) {
+    let resetInit = false;
+    let resetEnd = false;
+    this.obs_startInterval = of(
+      await lastValueFrom(
+        this.obs_startInterval.pipe(
+          map((time) => {
+            console.log(time);
+            return time.map((block) => {
+              if (
+                (moment(block.hour, 'HH:mm').isAfter(start) ||
+                  block.hour == start.format('HH:mm')) &&
+                moment(block.hour, 'HH:mm').isBefore(end)
+              ) {
+                block.status = true;
+                resetInit = true;
+              } else {
+                block.status = false;
+              }
+              return block;
+            });
+          })
+        )
+      )
+    );
+    console.log('wip');
+    this.obs_endInterval = of(
+      await lastValueFrom(
+        this.obs_endInterval.pipe(
+          map((time) => {
+            console.log(time);
+            return time.map((block) => {
+              if (
+                (moment(block.hour, 'HH:mm').isBefore(end) ||
+                  block.hour == end.format('HH:mm')) &&
+                moment(block.hour, 'HH:mm').isAfter(start)
+              ) {
+                block.status = true;
+                resetEnd = true;
+                console.log();
+              } else {
+                block.status = false;
+              }
+              return block;
+            });
+          })
+        )
+      )
+    );
+    return { resetInit, resetEnd };
+  }
+
+  private _daysFilter(name: string): DayVM[] {
+    const filterValue = name.toLowerCase();
+    return this.days.filter(
+      (option) => option.name.toLowerCase().indexOf(filterValue) === 0
+    );
+  }
+  private _classroomsFilter(name: string): ClassroomVM[] {
+    const filterValue = name.toLowerCase();
+    return this.classrooms.filter(
+      (option) => option.name.toLowerCase().indexOf(filterValue) === 0
+    );
+  }
+
+  displayHours(item: ClassroomVM | DayVM | any): string {
+    return item?.hour;
+  }
 }

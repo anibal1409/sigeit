@@ -10,19 +10,10 @@ import {
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import {
-  MatTable,
-  MatTableDataSource,
-} from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 
-import {
-  OptionAction,
-  RowOptionVM,
-  TableDataVM,
-} from './model';
-import {
-  TableService,
-} from './table.service'; /** Constants used to fill up our data base. */
+import { OptionAction, RowOptionVM, TableDataVM } from './model';
+import { TableService } from './table.service'; /** Constants used to fill up our data base. */
 
 @Component({
   selector: 'sigeit-table',
@@ -84,7 +75,6 @@ export class TableComponent implements AfterViewInit, OnInit {
         (c: any) => c.columnDef
       );
     });
-    console.log(this.incomingData);
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
