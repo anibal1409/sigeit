@@ -8,7 +8,7 @@ export function Section2SectionVM(section: any): SectionVM {
     subjectId: section?.subjectId,
     teacherId: section?.teacherId,
     name: section?.name,
-    status: section?.status,
+    status: section?.status ? 'Activo' : 'Inactivo',
     id: section?.id,
     teacher: Teacher2TeacherVM(section?.teacher),
   };
