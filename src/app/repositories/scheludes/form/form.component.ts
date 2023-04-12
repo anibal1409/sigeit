@@ -317,6 +317,6 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   displayHours(item: ClassroomVM | DayVM | any): string {
-    return item?.hour;
+    return item?.hour || item;
   }
 }
