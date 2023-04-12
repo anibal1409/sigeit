@@ -120,14 +120,15 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
         setTimeout(() => this.stateService.setLoading(this.loading), 200);
       })
     );
-    this.loadSection();
     this.sub$.add(
       this.form.get('teacherId')?.valueChanges.subscribe((teacherId) => {
         if (teacherId && teacherId?.id) {
           this.filteredTeachers = of(this.teachers);
+          this.loadSection();
         }
       })
     );
+    this.loadSection();
   }
 
   ngOnDestroy(): void {
@@ -142,12 +143,21 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
           .findSection$(this.sectionId)
           .subscribe((section) => {
             if (section) {
+              console.log(this.teachers);
+              console.log(section.teacherId);
+              
+              console.log(this.teachers.find(
+                (teacher) => teacher.id == section.teacherId
+              ));
+              
               this.form.patchValue({
                 ...section,
-                teacher: this.teachers.find(
+                teacherId: this.teachers.find(
                   (teacher) => teacher.id == section.teacherId
                 ),
-              });
+              }, {emitEvent: false});
+              console.log(this.form.value);
+              
             }
           })
       );
@@ -201,7 +211,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       subjectId: [this.subjectId, [Validators.required]],
       periodId: [this.periodId, [Validators.required]],
       teacherId: [null, [Validators.required]],
-      name: [1, [Validators.required, Validators.min(0)]],
+      name: ['01', [Validators.required, Validators.min(0)]],
       status: [true, [Validators.required]],
       capacity: [0, [Validators.required, Validators.min(1)]],
     });
