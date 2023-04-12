@@ -12,7 +12,15 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 
-import { finalize, map, Observable, of, startWith, Subscription } from 'rxjs';
+import {
+  finalize,
+  lastValueFrom,
+  map,
+  Observable,
+  of,
+  startWith,
+  Subscription,
+} from 'rxjs';
 import {
   ConfirmModalComponent,
   OptionAction,
@@ -27,6 +35,7 @@ import { DepartmentVM } from '../departments';
 import { SubjectVM } from '../subjects/model';
 import { RowActionSection, SectionVM } from './model';
 import { SectionsService } from './sections.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-sections',
@@ -93,13 +102,18 @@ export class SectionsComponent implements OnInit, OnDestroy {
   filteredSemesters!: Observable<SemesterVM[]>;
   filteredSubjects!: Observable<SubjectVM[]>;
 
+  queryParamsList!: { [key: string]: string };
+  readingFromParams = false;
+
   constructor(
     private sectionsService: SectionsService,
     private fb: FormBuilder,
     private tableService: TableService,
     private matDialog: MatDialog,
     @Optional() @Inject(MAT_DIALOG_DATA) private data: any,
-    private stateService: StateService
+    private stateService: StateService,
+    private activatedRouter: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnDestroy(): void {
@@ -114,7 +128,16 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.createForm();
+    this.loadFormParams();
     this.loadDepartments();
+    this.sub$.add(
+      this.activatedRouter.queryParams.subscribe((params) => {
+        localStorage.setItem(
+          'sigeit_section_params',
+          JSON.stringify({ ...params })
+        );
+      })
+    );
     this.filteredSemesters = this.form.controls['semester'].valueChanges.pipe(
       startWith<string | SemesterVM>(''),
       map((value: any) => {
@@ -141,6 +164,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
         this.departmentId = +department.id;
         if (department && department.id) {
           this.filteredDepartments = of(this.departments);
+          this.addParams('departmentId', department.id);
           this.loadSubjects();
         }
       })
@@ -151,6 +175,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
         this.semester = +semester.id;
         if (semester && semester.id) {
           this.filteredSemesters = of(this.semesters);
+          this.addParams('semesterId', semester.id);
           this.loadSubjects();
         }
       })
@@ -161,6 +186,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
         this.subjectId = +subject.id;
         if (subject && subject.id) {
           this.filteredSubjects = of(this.subjects);
+          this.addParams('subjectId', subject.id);
           this.loadSections();
         }
       })
@@ -320,6 +346,52 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
   clickClosed(): void {
     this.closed.emit();
+  }
+
+  private async loadFormParams(): Promise<void> {
+    this.queryParamsList = JSON.parse(
+      localStorage.getItem('sigeit_section_params') as string
+    );
+
+    if (Object.keys(this.queryParamsList).length !== 0) {
+      this.readingFromParams = true;
+      let { sectionId, departmentId, semesterId, subjectId } =
+        this.queryParamsList;
+      let lastDepartment, lastSection, lastSemester, lastSubject;
+      if (departmentId) {
+        lastDepartment = (
+          await lastValueFrom(this.sectionsService.getDepartaments$(1))
+        ).find((dept) => dept.id == +departmentId);
+
+        if (semesterId) {
+          lastSemester = this.semesters.find(
+            (semestr) => semestr.id == +semesterId
+          );
+
+          if (subjectId) {
+            lastSubject = (
+              await lastValueFrom(
+                this.sectionsService.getSubjects$(+departmentId, +semesterId)
+              )
+            ).find((subj) => subj.id == +subjectId);
+          }
+        }
+
+        this.form.patchValue({
+          sectionId: lastSection || '',
+          subjectId: lastSubject || '',
+          departmentId: lastDepartment || '',
+          semester: lastSemester || '',
+        });
+        this.readingFromParams = false;
+        this.router.navigate([], { queryParams: {} });
+      }
+    }
+  }
+
+  private addParams(key: string, value: string): void {
+    this.queryParamsList[key] = value;
+    this.router.navigate([], { queryParams: this.queryParamsList });
   }
 
   private _departmentFilter(name: string): DepartmentVM[] {
