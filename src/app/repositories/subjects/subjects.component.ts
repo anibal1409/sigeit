@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SubjectVM } from './model';
 import { HttpClient } from '@angular/common/http';
 import { TableDataVM, TableService } from 'src/app/common';
-import { Subscription } from 'rxjs';
+import { Subscription, finalize } from 'rxjs';
 import { SubjectsService } from './subjects.service';
 import { StateService } from 'src/app/common/state';
 
@@ -68,15 +68,21 @@ export class SubjectsComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.stateService.setLoading(this.loading);
     this.sub$.add(
-      this.subjectsService.getSubjects$().subscribe((subjects) => {
-        this.subjectsData = {
-          ...this.subjectsData,
-          body: subjects || [],
-        };
-        this.tableService.setData(this.subjectsData);
-        this.loading = false;
-        setTimeout(() => this.stateService.setLoading(this.loading), 500);
-      })
+      this.subjectsService
+        .getSubjects$()
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
+        .subscribe((subjects) => {
+          this.subjectsData = {
+            ...this.subjectsData,
+            body: subjects || [],
+          };
+          this.tableService.setData(this.subjectsData);
+        })
     );
   }
   ngOnDestroy(): void {

@@ -1,22 +1,8 @@
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
-import {
-  map,
-  Observable,
-  of,
-  startWith,
-  Subscription,
-} from 'rxjs';
+import { finalize, map, Observable, of, startWith, Subscription } from 'rxjs';
 import {
   ConfirmModalComponent,
   OptionAction,
@@ -31,10 +17,7 @@ import { DepartmentVM } from '../departments';
 import { SectionVM } from '../sections';
 import { SectionsComponent } from '../sections/sections.component';
 import { SubjectVM } from '../subjects';
-import {
-  RowActionSchedule,
-  ScheduleVM,
-} from './model';
+import { RowActionSchedule, ScheduleVM } from './model';
 import { SchedulesService } from './scheludes.service';
 
 @Component({
@@ -231,31 +214,36 @@ export class ScheludesComponent implements OnInit, OnDestroy {
       this.stateService.setLoading(this.loading);
     }
     this.sub$.add(
-      this.schedulesService.getDepartaments$(1).subscribe((departaments) => {
-        this.departments = departaments;
-        //
-        if (departaments) {
-          this.filteredDepartments = this.form.controls[
-            'departmentId'
-          ].valueChanges.pipe(
-            startWith<string | DepartmentVM>(''),
-            map((value: any) => {
-              if (value !== null) {
-                return typeof value === 'string' ? value : value.name;
-              }
-              return '';
-            }),
-            map((name: any) => {
-              return name
-                ? this._departmentFilter(name)
-                : this.departments.slice();
-            })
-          );
-        }
-        //
-        this.loading = false;
-        setTimeout(() => this.stateService.setLoading(this.loading), 500);
-      })
+      this.schedulesService
+        .getDepartaments$(1)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
+        .subscribe((departaments) => {
+          this.departments = departaments;
+          //
+          if (departaments) {
+            this.filteredDepartments = this.form.controls[
+              'departmentId'
+            ].valueChanges.pipe(
+              startWith<string | DepartmentVM>(''),
+              map((value: any) => {
+                if (value !== null) {
+                  return typeof value === 'string' ? value : value.name;
+                }
+                return '';
+              }),
+              map((name: any) => {
+                return name
+                  ? this._departmentFilter(name)
+                  : this.departments.slice();
+              })
+            );
+          }
+        })
     );
   }
 
@@ -265,6 +253,12 @@ export class ScheludesComponent implements OnInit, OnDestroy {
     this.sub$.add(
       this.schedulesService
         .getSubjects$(+this.departmentId, +this.semester)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
         .subscribe((subjects) => {
           this.subjects = subjects;
           if (subjects) {
@@ -283,8 +277,6 @@ export class ScheludesComponent implements OnInit, OnDestroy {
               })
             );
           }
-          this.loading = false;
-          setTimeout(() => this.stateService.setLoading(this.loading), 500);
         })
     );
   }
@@ -295,10 +287,14 @@ export class ScheludesComponent implements OnInit, OnDestroy {
     this.sub$.add(
       this.schedulesService
         .getSections$(this.subjectId, this.periodId)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
         .subscribe((sections) => {
           this.sections = sections;
-          this.loading = false;
-          setTimeout(() => this.stateService.setLoading(this.loading), 500);
         })
     );
   }
@@ -309,6 +305,12 @@ export class ScheludesComponent implements OnInit, OnDestroy {
     this.sub$.add(
       this.schedulesService
         .getSectionSchedules$(this.sectionId)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
         .subscribe((schedules) => {
           this.scheludeData = {
             ...this.scheludeData,
@@ -317,8 +319,6 @@ export class ScheludesComponent implements OnInit, OnDestroy {
           this.tableService.setData(this.scheludeData);
         })
     );
-    this.loading = false;
-    setTimeout(() => this.stateService.setLoading(this.loading), 500);
   }
 
   changeShowForm(showForm: boolean): void {

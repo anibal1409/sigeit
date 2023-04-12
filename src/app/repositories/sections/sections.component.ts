@@ -9,23 +9,10 @@ import {
   Optional,
   Output,
 } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import {
-  MAT_DIALOG_DATA,
-  MatDialog,
-} from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 
-import {
-  map,
-  Observable,
-  of,
-  startWith,
-  Subscription,
-} from 'rxjs';
+import { finalize, map, Observable, of, startWith, Subscription } from 'rxjs';
 import {
   ConfirmModalComponent,
   OptionAction,
@@ -38,10 +25,7 @@ import { StateService } from 'src/app/common/state';
 
 import { DepartmentVM } from '../departments';
 import { SubjectVM } from '../subjects/model';
-import {
-  RowActionSection,
-  SectionVM,
-} from './model';
+import { RowActionSection, SectionVM } from './model';
 import { SectionsService } from './sections.service';
 
 @Component({
@@ -51,7 +35,8 @@ import { SectionsService } from './sections.service';
 })
 export class SectionsComponent implements OnInit, OnDestroy {
   @Input()
-  @HostBinding('class.modal') modal = false;
+  @HostBinding('class.modal')
+  modal = false;
 
   @Output()
   closed = new EventEmitter();
@@ -201,29 +186,35 @@ export class SectionsComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.stateService.setLoading(this.loading);
     this.sub$.add(
-      this.sectionsService.getDepartaments$(1).subscribe((departaments) => {
-        this.departments = departaments;
-        if (departaments) {
-          this.filteredDepartments = this.form.controls[
-            'departmentId'
-          ].valueChanges.pipe(
-            startWith<string | DepartmentVM>(''),
-            map((value: any) => {
-              if (value !== null) {
-                return typeof value === 'string' ? value : value.name;
-              }
-              return '';
-            }),
-            map((name: any) => {
-              return name
-                ? this._departmentFilter(name)
-                : this.departments.slice();
-            })
-          );
-        }
-        this.loading = false;
-        setTimeout(() => this.stateService.setLoading(this.loading), 500);
-      })
+      this.sectionsService
+        .getDepartaments$(1)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
+        .subscribe((departaments) => {
+          this.departments = departaments;
+          if (departaments) {
+            this.filteredDepartments = this.form.controls[
+              'departmentId'
+            ].valueChanges.pipe(
+              startWith<string | DepartmentVM>(''),
+              map((value: any) => {
+                if (value !== null) {
+                  return typeof value === 'string' ? value : value.name;
+                }
+                return '';
+              }),
+              map((name: any) => {
+                return name
+                  ? this._departmentFilter(name)
+                  : this.departments.slice();
+              })
+            );
+          }
+        })
     );
   }
 
@@ -233,6 +224,12 @@ export class SectionsComponent implements OnInit, OnDestroy {
     this.sub$.add(
       this.sectionsService
         .getSubjects$(+this.departmentId, +this.semester)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
         .subscribe((subjects) => {
           this.subjects = subjects;
           if (subjects) {
@@ -251,8 +248,6 @@ export class SectionsComponent implements OnInit, OnDestroy {
               })
             );
           }
-          this.loading = false;
-          setTimeout(() => this.stateService.setLoading(this.loading), 500);
         })
     );
   }
@@ -263,14 +258,18 @@ export class SectionsComponent implements OnInit, OnDestroy {
     this.sub$.add(
       this.sectionsService
         .getSections$(this.subjectId, this.periodId)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
         .subscribe((sections) => {
           this.sectionsData = {
             ...this.sectionsData,
             body: sections || [],
           };
           this.tableService.setData(this.sectionsData);
-          this.loading = false;
-          setTimeout(() => this.stateService.setLoading(this.loading), 500);
         })
     );
   }

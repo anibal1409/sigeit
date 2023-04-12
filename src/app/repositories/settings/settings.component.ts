@@ -6,7 +6,7 @@ import {
   Output,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subscription, finalize } from 'rxjs';
 import { SettingsService } from './settings.service';
 import { StateService } from 'src/app/common/state';
 
@@ -33,16 +33,22 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.stateService.setLoading(this.loading);
     this.createForm();
     this.sub$.add(
-      this.settingsService.findSettings$().subscribe((settings) => {
-        this.form.patchValue(
-          {
-            ...settings,
-          },
-          { emitEvent: false }
-        );
-        this.loading = false;
-        setTimeout(() => this.stateService.setLoading(this.loading), 500);
-      })
+      this.settingsService
+        .findSettings$()
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
+        .subscribe((settings) => {
+          this.form.patchValue(
+            {
+              ...settings,
+            },
+            { emitEvent: false }
+          );
+        })
     );
   }
 

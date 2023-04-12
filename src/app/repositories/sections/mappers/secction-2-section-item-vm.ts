@@ -7,5 +7,6 @@ export function Section2SectionItemVM(section: any): SectionItemVM {
   return {
     ...sectionVM,
     subject: Subject2SubjectItemVM(section?.subject),
+    status: section?.status ? 'Activo' : 'Inactivo',
   };
 }

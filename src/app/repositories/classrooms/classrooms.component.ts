@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ClassroomVM } from './model';
 import { HttpClient } from '@angular/common/http';
 import { TableDataVM, TableService } from 'src/app/common';
-import { Subscription } from 'rxjs';
+import { Subscription, finalize } from 'rxjs';
 import { ClassroomsService } from './classrooms.service';
 import { StateService } from 'src/app/common/state';
 
@@ -53,15 +53,21 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.stateService.setLoading(this.loading);
     this.sub$.add(
-      this.classroomsService.getClassrooms$().subscribe((classrooms) => {
-        this.classroomData = {
-          ...this.classroomData,
-          body: classrooms || [],
-        };
-        this.tableService.setData(this.classroomData);
-        this.loading = false;
-        setTimeout(() => this.stateService.setLoading(this.loading), 500);
-      })
+      this.classroomsService
+        .getClassrooms$()
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
+        .subscribe((classrooms) => {
+          this.classroomData = {
+            ...this.classroomData,
+            body: classrooms || [],
+          };
+          this.tableService.setData(this.classroomData);
+        })
     );
   }
   ngOnDestroy(): void {
