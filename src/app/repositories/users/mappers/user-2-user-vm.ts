@@ -1,4 +1,7 @@
-import { UserVM, RowActionUser } from '../model';
+import {
+  RowActionUser,
+  UserVM,
+} from '../model';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function User2UserVM(user: any): UserVM {
@@ -11,7 +14,7 @@ export function User2UserVM(user: any): UserVM {
     email: user.email,
     status: user.status ? 'Activo' : 'Inactivo',
     password: user.password,
-    id_department: user.id_department,
+    departmentId: user.departmentId,
     role: user.role,
     options: {
       options: [

@@ -113,8 +113,9 @@ export class ScheludesComponent implements OnInit, OnDestroy {
   departmentId = 0;
   semester = -1;
   subjectId = 0;
-  sectionId = 1;
+  sectionId = 0;
   scheduleId = 0;
+  teacherId = 0;
 
   showForm = false;
   loading = false;
@@ -212,6 +213,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('sectionId')?.valueChanges.subscribe((section) => {
+        this.teacherId = +section?.teacherId;
         this.sectionId = +section?.id;
         if (section && section.id) {
           this.loadSchedules();

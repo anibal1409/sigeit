@@ -38,6 +38,7 @@ import {
   GetClassroomScheduleService,
   GetDaysService,
   GetSectionsSchedulesService,
+  GetTeacherSectionsService,
   RemoveScheduleService,
   UpdateScheduleService,
 } from './use-cases';
@@ -79,6 +80,7 @@ import {
     GetDaysService,
     GetClassroomScheduleService,
     FindSubjectService,
+    GetTeacherSectionsService,
   ],
 })
 export class ScheludesModule {}

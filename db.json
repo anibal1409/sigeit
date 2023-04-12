@@ -2590,6 +2590,24 @@
       "status": true,
       "capacity": 20,
       "id": 33
+    },
+    {
+      "subjectId": 40,
+      "periodId": 3,
+      "teacherId": 2,
+      "name": "01",
+      "status": true,
+      "capacity": 20,
+      "id": 34
+    },
+    {
+      "subjectId": 40,
+      "periodId": 3,
+      "teacherId": 2,
+      "name": "02",
+      "status": true,
+      "capacity": 20,
+      "id": 35
     }
   ],
   "schedules": [
@@ -2898,6 +2916,15 @@
       "sectionId": 28,
       "periodId": 3,
       "id": 35
+    },
+    {
+      "classroomId": 20,
+      "dayId": 1,
+      "start": "07:00",
+      "end": "08:35",
+      "sectionId": 25,
+      "periodId": 3,
+      "id": 36
     }
   ]
 }

@@ -10,7 +10,7 @@ export interface UserVM {
   status: boolean | string;
   birthday_date: Date | string;
   password: string;
-  id_department: number;
+  departmentId: number;
   role: string;
   options?: {
     options?: Array<RowOptionVM<RowActionUser>>;

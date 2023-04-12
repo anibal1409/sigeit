@@ -27,7 +27,11 @@ import { StateService } from 'src/app/common/state';
 
 import { timeValidator } from '../../../common';
 import { ClassroomVM } from '../../classrooms/model';
-import { DayVM } from '../model';
+import { SectionItemVM } from '../../sections';
+import {
+  DayVM,
+  ScheduleItemVM,
+} from '../model';
 import { SchedulesService } from '../scheludes.service';
 
 @Component({
@@ -47,6 +51,9 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input()
   departmentId!: number;
+
+  @Input()
+  teacherId!: number;
 
   @Output()
   closed = new EventEmitter();
@@ -73,6 +80,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   private sub$ = new Subscription();
   loading = false;
   title = '';
+  classroomScheduleClash = '';
+  teacherScheduleClash = '';
 
   constructor(
     private schedulesService: SchedulesService,
@@ -82,8 +91,6 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['sectionId']?.currentValue || changes['periodId']?.currentValue) {
-      console.log(this.sectionId, this.periodId);
-      
       this.loadDataForm();
     } else if (changes['departmentId']?.currentValue) {
       this.loadClassrooms();
@@ -201,33 +208,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
     this.sub$.add(
       this.form.valueChanges.subscribe((values) => {
-        if (this.form.valid) {
-          const data = {
-            ...values,
-            classroomId: values?.classroomId?.id || values?.classroomId,
-            dayId: values?.dayId?.id || values?.dayId
-          };
-          this.schedulesService
-            .validateClassroomSchedules$(data)
-            .subscribe((data) => {
-              console.log(data);
-              const horasEnChoque = data.map((horario: any) => {
-                const start = moment.max(
-                  moment(horario.start, 'HH:mm'),
-                  moment(values.start, 'HH:mm')
-                );
-                const end = moment.min(
-                  moment(horario.end, 'HH:mm'),
-                  moment(values.end, 'HH:mm')
-                );
-                return ` ${start.format('HH:mm')} - ${end.format('HH:mm')} (${horario.section?.subject?.name
-                  } - ${horario.section?.name})`;
-              });
-              console.log(
-                `El horario establecido presenta choques con los siguentes horarios:${horasEnChoque}`
-              );
-            });
-        }
+        this.validateClassroomSchedules(values);
+        this.validateTeacherSchedules(values);
       })
     );
 
@@ -236,6 +218,62 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
         this.submitDisabled = this.form.invalid;
       })
     );
+  }
+
+  private validateClassroomSchedules(values: any): void {
+    if (this.form.valid && values?.classroomId?.type !== 'VIRTUAL') {
+      const data = {
+        ...values,
+        classroomId: values?.classroomId?.id || values?.classroomId,
+        dayId: values?.dayId?.id || values?.dayId
+      };
+      this.schedulesService
+        .validateClassroomSchedules$(data)
+        .subscribe((data) => {
+          console.log(data);
+          const collapsedSchedules = data.map((schedule: ScheduleItemVM) => {
+            const start = moment(schedule.start, 'HH:mm');
+            const end = moment(schedule.end, 'HH:mm');
+            return `<li>${start.format('HH:mm')} - ${end.format('HH:mm')} (${schedule.section?.subject?.name
+              } - ${schedule.section?.name})</li>`;
+          });
+
+          if (collapsedSchedules?.length) {
+            this.classroomScheduleClash = `El horario establecido presenta choques en el aula en los siguentes horarios:<ul>${collapsedSchedules}</ul>`.replace(/,/g, '');
+          }
+        });
+    }
+  }
+
+  private validateTeacherSchedules(values: any): void {
+    if (this.form.valid) {
+      const data = {
+        ...values,
+        classroomId: values?.classroomId?.id || values?.classroomId,
+        dayId: values?.dayId?.id || values?.dayId
+      };
+      this.sub$.add(
+        this.schedulesService.validateTeacherSchedules$(data, this.teacherId, this.periodId).subscribe(
+          (sections: Array<SectionItemVM>) => {
+            console.log(sections);
+            const collapsedSchedules = sections.map((section: SectionItemVM) => {
+              return section.schedules?.map(
+                (schedule: ScheduleItemVM) => {
+                  const start = moment(schedule.start, 'HH:mm');
+                  const end = moment(schedule.end, 'HH:mm');
+                  return `<li>${start.format('HH:mm')} - ${end.format('HH:mm')} (${section?.subject?.name
+                    } - ${section?.name})</li>`;
+                }
+              );
+            });
+
+            if (collapsedSchedules?.length) {
+              this.teacherScheduleClash = `El horario establecido presenta choques en el profesor <strong>${sections[0].teacher?.last_name} ${sections[0].teacher?.first_name}</strong> en los siguentes horarios:<ul>${collapsedSchedules}</ul>`.replace(/,/g, '');
+            }
+          }
+        )
+      );
+    }
   }
 
   save(): void {

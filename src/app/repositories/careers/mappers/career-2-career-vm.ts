@@ -6,7 +6,7 @@ export function Career2CareerVM(Career: any): CareerVM {
     name: Career?.name,
     description: Career?.description,
     abbreviation: Career?.abbreviation,
-    id_department: Career?.id_department,
+    departmentId: Career?.departmentId,
     logo: Career?.logo,
     status: Career?.status ? 'Activo' : 'Inactivo',
   };

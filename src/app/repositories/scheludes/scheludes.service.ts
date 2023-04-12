@@ -41,6 +41,7 @@ import {
   GetClassroomScheduleService,
   GetDaysService,
   GetSectionsSchedulesService,
+  GetTeacherSectionsService,
   RemoveScheduleService,
   UpdateScheduleService,
 } from './use-cases';
@@ -61,7 +62,8 @@ export class SchedulesService {
     private getClassroomsService: GetClassroomsService,
     private getDaysService: GetDaysService,
     private getClassroomScheduleService: GetClassroomScheduleService,
-    private findSubjectService: FindSubjectService
+    private findSubjectService: FindSubjectService,
+    private getTeacherSectionsService: GetTeacherSectionsService,
   ) {}
 
   getDepartaments$(idSchool: number): Observable<Array<DepartmentVM>> {
@@ -162,7 +164,7 @@ export class SchedulesService {
   validateClassroomSchedules$(scheduleVm: ScheduleVM): Observable<any> {
     return this.getClassroomScheduleService.exec(scheduleVm).pipe(
       mergeMap((schedules) => {
-        const horariosEnChoque = schedules.filter((schedule) => {
+        const collapsedSchedules = schedules.filter((schedule) => {
           const start1 = moment(scheduleVm.start, 'HH:mm');
           const end1 = moment(scheduleVm.end, 'HH:mm');
           const start2 = moment(schedule.start, 'HH:mm');
@@ -170,11 +172,11 @@ export class SchedulesService {
           return start1.isSameOrBefore(end2) && end1.isSameOrAfter(start2);
         });
 
-        if (horariosEnChoque.length === 0) {
+        if (collapsedSchedules.length === 0) {
           return of([]);
         }
 
-        const scheduleObservables = horariosEnChoque.map((schedule) => {
+        const scheduleObservables = collapsedSchedules.map((schedule) => {
           return this.findSubjectService
             .exec(schedule?.section?.subjectId || 0)
             .pipe(
@@ -190,5 +192,38 @@ export class SchedulesService {
         return forkJoin(scheduleObservables);
       })
     );
+  }
+
+
+  validateTeacherSchedules$(scheduleVm: ScheduleVM, teacherId: number, periodId: number): Observable<any>{
+    return this.getTeacherSectionsService.exec(scheduleVm,teacherId, periodId)
+      .pipe(
+        map(
+          (sections: Array<SectionItemVM>) => {
+            const start1 = moment(scheduleVm.start, 'HH:mm');
+            const end1 = moment(scheduleVm.end, 'HH:mm');
+            const collapsedSchedules = sections.filter((section) => {
+              console.log(section.schedules?.filter(
+                (schedule) => {
+                  const start2 = moment(schedule.start, 'HH:mm');
+                  const end2 = moment(schedule.end, 'HH:mm');
+                  console.log(start1.isSameOrBefore(end2) && end1.isSameOrAfter(start2));
+                  return start1.isSameOrBefore(end2) && end1.isSameOrAfter(start2);
+                }
+              )?.length);
+              
+              return section.schedules?.filter(
+                (schedule) => {
+                  const start2 = moment(schedule.start, 'HH:mm');
+                  const end2 = moment(schedule.end, 'HH:mm');
+                  return start1.isSameOrBefore(end2) && end1.isSameOrAfter(start2);
+                }
+              )?.length;
+            });
+
+            return collapsedSchedules;
+          }
+        )
+      );
   }
 }

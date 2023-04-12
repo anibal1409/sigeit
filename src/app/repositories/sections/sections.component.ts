@@ -51,7 +51,7 @@ import { SectionsService } from './sections.service';
 })
 export class SectionsComponent implements OnInit, OnDestroy {
   @Input()
-  @HostBinding('class.modal') modal = false;
+  @HostBinding('class.app-modal') modal = false;
 
   @Output()
   closed = new EventEmitter();
