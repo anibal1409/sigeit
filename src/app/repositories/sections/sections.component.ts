@@ -96,7 +96,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
   showForm = false;
 
   private sub$ = new Subscription();
-  submitDisabled = true;
+  addDisabled = true;
 
   filteredDepartments!: Observable<DepartmentVM[]>;
   filteredSemesters!: Observable<SemesterVM[]>;
@@ -203,7 +203,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.valueChanges.subscribe(() => {
-        this.submitDisabled = this.form.invalid;
+        this.addDisabled = this.form.invalid;
       })
     );
   }
