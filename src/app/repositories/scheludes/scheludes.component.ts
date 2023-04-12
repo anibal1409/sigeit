@@ -75,6 +75,12 @@ export class ScheludesComponent implements OnInit, OnDestroy {
   scheludeData: TableDataVM<ScheduleVM> = {
     headers: [
       {
+        columnDef: 'id_section',
+        header: 'Sección',
+        cell: (element: { [key: string]: string }) =>
+          `${(element['section'] as any)?.name}`,
+      },
+      {
         columnDef: 'id_classroom',
         header: 'Aula',
         cell: (element: { [key: string]: string }) =>
@@ -208,7 +214,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
     );
 
     this.sub$.add(
-      this.form.get('subjectId')?.valueChanges.subscribe((subject) => {
+      this.form.get('subjectId')?.valueChanges.subscribe(async (subject) => {
         this.subjectId = +subject?.id;
         if (!this.readingFromParams) {
           this.form.patchValue({
@@ -216,8 +222,16 @@ export class ScheludesComponent implements OnInit, OnDestroy {
           });
         }
         if (subject && subject.id) {
+          const allSectionsData = await lastValueFrom(
+            this.schedulesService.getSubjectSchedules$(subject.id)
+          );
+          this.tableService.setData({
+            ...this.scheludeData,
+            body: allSectionsData,
+          });
           this.filteredSubjects = of(this.subjects);
           this.addParams('subjectId', subject.id);
+
           this.loadSections();
         }
       })

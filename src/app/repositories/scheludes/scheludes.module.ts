@@ -1,10 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import {
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -40,6 +37,7 @@ import {
   GetSectionsSchedulesService,
   RemoveScheduleService,
   UpdateScheduleService,
+  GetSubjectSchedulesService,
 } from './use-cases';
 
 @NgModule({
@@ -71,6 +69,7 @@ import {
     GetTeachersService,
     FindPeriodService,
     GetSectionsSchedulesService,
+    GetSubjectSchedulesService,
     CreateScheduleService,
     FindScheduleService,
     RemoveScheduleService,

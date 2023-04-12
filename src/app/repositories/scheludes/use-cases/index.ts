@@ -5,3 +5,4 @@ export * from './remove-schedule';
 export * from './update-schedule';
 export * from './get-days';
 export * from './get-classroom-schedule';
+export * from './get-subject-schedules';
