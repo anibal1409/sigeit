@@ -25,6 +25,8 @@ import {
   GetSectionsSchedulesService,
   RemoveScheduleService,
   UpdateScheduleService,
+  GetAllClassroomSchedulesService,
+  GetAllDaySchedulesService,
 } from './use-cases';
 
 @Injectable()
@@ -44,7 +46,9 @@ export class SchedulesService {
     private getClassroomsService: GetClassroomsService,
     private getDaysService: GetDaysService,
     private getClassroomScheduleService: GetClassroomScheduleService,
-    private findSubjectService: FindSubjectService
+    private findSubjectService: FindSubjectService,
+    private getAllClassroomSechedulesService: GetAllClassroomSchedulesService,
+    private getAllDaySchedulesService: GetAllDaySchedulesService
   ) {}
 
   getDepartaments$(idSchool: number): Observable<Array<DepartmentVM>> {
@@ -87,6 +91,14 @@ export class SchedulesService {
 
   getSubjectSchedules$(subjectId: number): Observable<ScheduleItemVM[]> {
     return this.getSubjectSchedules.exec(subjectId);
+  }
+
+  getAllClassroomSchedules$(subjectId: number): Observable<ScheduleItemVM[]> {
+    return this.getAllClassroomSechedulesService.exec(subjectId);
+  }
+
+  getAllDaySchedules$(subjectId: number): Observable<ScheduleItemVM[]> {
+    return this.getAllDaySchedulesService.exec(subjectId);
   }
 
   generateTimeIntervals(
