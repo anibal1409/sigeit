@@ -92,8 +92,6 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       changes['sectionId']?.currentValue ||
       changes['periodId']?.currentValue
     ) {
-      console.log(this.sectionId, this.periodId);
-
       this.loadDataForm();
     } else if (changes['departmentId']?.currentValue) {
       this.loadClassrooms();
