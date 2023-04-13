@@ -118,12 +118,14 @@
   </mat-card>
 </div>
 
-
 <div class="mat-container">
   <mat-card>
     <mat-card-header> </mat-card-header>
     <mat-card-content>
-      <sigeit-table emptyMessage="No hay horarios para mostrar"></sigeit-table>
+      <sigeit-table
+        emptyMessage="No hay horarios para mostrar"
+        (clickOption)="clickOption($event)"
+      ></sigeit-table>
     </mat-card-content>
   </mat-card>
 
@@ -162,13 +164,12 @@
     <tr mat-row *matRowDef="let row; columns: dias"></tr>
   </table> -->
 
-  
   <button
     mat-fab
     matTooltip="Gestionar secciones"
     color="primary"
     aria-label="Gestionar secciones"
-    class="btn-fixed btn-secitons" 
+    class="btn-fixed btn-secitons"
     (click)="showListSections()"
     [disabled]="!subjectId || loading"
   >
@@ -182,6 +183,7 @@
     aria-label="Agregar horario"
     class="btn-fixed"
     (click)="changeShowForm(true)"
+    [disabled]="addDisabled || loading"
   >
     <mat-icon>add</mat-icon>
   </button>

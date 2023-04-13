@@ -1,19 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
-import { map, Observable } from 'rxjs';
-
+import { Observable, map } from 'rxjs';
 import { Schedule2ScheduleItemVM } from '../../mappers';
 import { ScheduleItemVM } from '../../model';
 
-@Injectable()
-export class GetSectionsSchedulesService {
+@Injectable({
+  providedIn: 'root',
+})
+export class GetAllDaySchedulesService {
   constructor(private http: HttpClient) {}
 
-  exec(sectionId: number): Observable<Array<ScheduleItemVM>> {
+  exec(dayId: number): Observable<Array<ScheduleItemVM>> {
     return this.http
       .get(
-        `http://localhost:3000/schedules?sectionId=${sectionId}&_expand=classroom&_expand=day&_expand=section`
+        `http://localhost:3000/schedules?dayId=${dayId}&_expand=classroom&_expand=section`
       )
       .pipe(map((schedules: any) => schedules.map(Schedule2ScheduleItemVM)));
   }

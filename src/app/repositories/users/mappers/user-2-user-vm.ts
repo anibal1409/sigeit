@@ -12,7 +12,7 @@ export function User2UserVM(user: any): UserVM {
     id_document: user.id_document,
     birthday_date: user.birthday_date,
     email: user.email,
-    status: user.status ? 'Activo' : 'Inactivo',
+    status: user.status,
     password: user.password,
     departmentId: user.departmentId,
     role: user.role,

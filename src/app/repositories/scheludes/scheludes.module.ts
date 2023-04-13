@@ -28,6 +28,9 @@ import {
 import { SectionsModule } from '../sections/sections.module';
 import { FindSubjectService } from '../subjects/use-cases';
 import { GetTeachersService } from '../teachers';
+import {
+  DaysSchedulesComponent,
+} from './days-schedules/days-schedules.component';
 import { FormComponent } from './form/form.component';
 import { ScheludesRoutingModule } from './scheludes-routing.module';
 import { ScheludesComponent } from './scheludes.component';
@@ -35,14 +38,16 @@ import { SchedulesService } from './scheludes.service';
 import {
   CreateScheduleService,
   FindScheduleService,
+  GetAllClassroomSchedulesService,
+  GetAllDaySchedulesService,
   GetClassroomScheduleService,
   GetDaysService,
   GetSectionsSchedulesService,
+  GetSubjectSchedulesService,
   GetTeacherSectionsService,
   RemoveScheduleService,
   UpdateScheduleService,
 } from './use-cases';
-import { DaysSchedulesComponent } from './days-schedules/days-schedules.component';
 
 @NgModule({
   declarations: [ScheludesComponent, FormComponent, DaysSchedulesComponent],
@@ -73,6 +78,7 @@ import { DaysSchedulesComponent } from './days-schedules/days-schedules.componen
     GetTeachersService,
     FindPeriodService,
     GetSectionsSchedulesService,
+    GetSubjectSchedulesService,
     CreateScheduleService,
     FindScheduleService,
     RemoveScheduleService,
@@ -82,6 +88,8 @@ import { DaysSchedulesComponent } from './days-schedules/days-schedules.componen
     GetClassroomScheduleService,
     FindSubjectService,
     GetTeacherSectionsService,
+    GetAllClassroomSchedulesService,
+    GetAllDaySchedulesService,
   ],
 })
 export class ScheludesModule {}

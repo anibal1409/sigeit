@@ -38,9 +38,12 @@ import {
 import {
   CreateScheduleService,
   FindScheduleService,
+  GetAllClassroomSchedulesService,
+  GetAllDaySchedulesService,
   GetClassroomScheduleService,
   GetDaysService,
   GetSectionsSchedulesService,
+  GetSubjectSchedulesService,
   GetTeacherSectionsService,
   RemoveScheduleService,
   UpdateScheduleService,
@@ -55,6 +58,7 @@ export class SchedulesService {
     private getTeachersService: GetTeachersService,
     private findPeriodService: FindPeriodService,
     private getSectionsSchedulesService: GetSectionsSchedulesService,
+    private getSubjectSchedules: GetSubjectSchedulesService,
     private createScheduleService: CreateScheduleService,
     private findScheduleService: FindScheduleService,
     private removeScheduleService: RemoveScheduleService,
@@ -64,6 +68,8 @@ export class SchedulesService {
     private getClassroomScheduleService: GetClassroomScheduleService,
     private findSubjectService: FindSubjectService,
     private getTeacherSectionsService: GetTeacherSectionsService,
+    private getAllClassroomSechedulesService: GetAllClassroomSchedulesService,
+    private getAllDaySchedulesService: GetAllDaySchedulesService,
   ) {}
 
   getDepartaments$(idSchool: number): Observable<Array<DepartmentVM>> {
@@ -102,6 +108,18 @@ export class SchedulesService {
 
   removeSchedule$(scheduleId: number): Observable<number> {
     return this.removeScheduleService.exec(scheduleId);
+  }
+
+  getSubjectSchedules$(subjectId: number): Observable<ScheduleItemVM[]> {
+    return this.getSubjectSchedules.exec(subjectId);
+  }
+
+  getAllClassroomSchedules$(subjectId: number): Observable<ScheduleItemVM[]> {
+    return this.getAllClassroomSechedulesService.exec(subjectId);
+  }
+
+  getAllDaySchedules$(subjectId: number): Observable<ScheduleItemVM[]> {
+    return this.getAllDaySchedulesService.exec(subjectId);
   }
 
   generateTimeIntervals(

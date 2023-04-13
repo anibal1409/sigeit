@@ -127,6 +127,7 @@
       aria-label="Agregar seccion"
       class="btn-fixed"
       (click)="changeShowForm(true)"
+      [disabled]="addDisabled || loading"
     >
       <mat-icon>add</mat-icon>
     </button>

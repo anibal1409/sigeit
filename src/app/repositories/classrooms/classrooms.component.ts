@@ -4,7 +4,10 @@ import {
   OnInit,
 } from '@angular/core';
 
-import { Subscription } from 'rxjs';
+import {
+  finalize,
+  Subscription,
+} from 'rxjs';
 import {
   TableDataVM,
   TableService,
@@ -61,15 +64,21 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.stateService.setLoading(this.loading);
     this.sub$.add(
-      this.classroomsService.getClassrooms$().subscribe((classrooms) => {
-        this.classroomData = {
-          ...this.classroomData,
-          body: classrooms || [],
-        };
-        this.tableService.setData(this.classroomData);
-        this.loading = false;
-        setTimeout(() => this.stateService.setLoading(this.loading), 500);
-      })
+      this.classroomsService
+        .getClassrooms$()
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
+        .subscribe((classrooms) => {
+          this.classroomData = {
+            ...this.classroomData,
+            body: classrooms || [],
+          };
+          this.tableService.setData(this.classroomData);
+        })
     );
   }
   ngOnDestroy(): void {

@@ -4,7 +4,10 @@ import {
   OnInit,
 } from '@angular/core';
 
-import { Subscription } from 'rxjs';
+import {
+  finalize,
+  Subscription,
+} from 'rxjs';
 import {
   TableDataVM,
   TableService,
@@ -62,16 +65,22 @@ export class CareersComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.stateService.setLoading(this.loading);
     this.sub$.add(
-      this.careersService.getCareers$().subscribe((careers) => {
-        this.careersData = {
-          ...this.careersData,
-          body: careers || [],
-        };
+      this.careersService
+        .getCareers$()
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
+        .subscribe((careers) => {
+          this.careersData = {
+            ...this.careersData,
+            body: careers || [],
+          };
 
-        this.tableService.setData(this.careersData);
-        this.loading = false;
-        setTimeout(() => this.stateService.setLoading(this.loading), 500);
-      })
+          this.tableService.setData(this.careersData);
+        })
     );
   }
   ngOnDestroy(): void {

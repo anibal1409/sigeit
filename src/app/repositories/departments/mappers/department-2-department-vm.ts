@@ -6,7 +6,7 @@ export function Department2DepartmentVM(department: any): DepartmentVM {
     schoolId: department?.schoolId,
     logo: department?.logo,
     name: department?.name,
-    status: department?.status ? 'Activo' : 'Inactivo',
+    status: department?.status,
     description: department?.description,
     id: department?.id,
   };
