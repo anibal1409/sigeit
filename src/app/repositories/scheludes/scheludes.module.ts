@@ -38,6 +38,8 @@ import {
   RemoveScheduleService,
   UpdateScheduleService,
   GetSubjectSchedulesService,
+  GetAllClassroomSchedulesService,
+  GetAllDaySchedulesService,
 } from './use-cases';
 
 @NgModule({
@@ -78,6 +80,8 @@ import {
     GetDaysService,
     GetClassroomScheduleService,
     FindSubjectService,
+    GetAllClassroomSchedulesService,
+    GetAllDaySchedulesService,
   ],
 })
 export class ScheludesModule {}
