@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UsersService } from './users.service';
-import { Subscription } from 'rxjs';
+import { Subscription, finalize } from 'rxjs';
 import { TableDataVM, TableService } from '../../common';
 
 import { UserVM } from './model';
@@ -73,17 +73,22 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.stateService.setLoading(this.loading);
     this.sub$.add(
-      this.usersService.getUsers$().subscribe((users: UserVM[] | null) => {
-        console.log(users);
-        this.usersData = {
-          ...this.usersData,
-          body: (users as any) || [],
-        };
+      this.usersService
+        .getUsers$()
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
+        .subscribe((users: UserVM[] | null) => {
+          this.usersData = {
+            ...this.usersData,
+            body: (users as any) || [],
+          };
 
-        this.tableService.setData(this.usersData);
-        this.loading = false;
-        setTimeout(() => this.stateService.setLoading(this.loading), 500);
-      })
+          this.tableService.setData(this.usersData);
+        })
     );
   }
 

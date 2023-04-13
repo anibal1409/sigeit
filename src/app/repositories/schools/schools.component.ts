@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import { Subscription } from 'rxjs';
+import { Subscription, finalize } from 'rxjs';
 import { TableDataVM, TableService } from 'src/app/common';
 
 import { SchoolVM } from './model';
@@ -49,15 +49,21 @@ export class SchoolsComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.stateService.setLoading(this.loading);
     this.sub$.add(
-      this.getSchoolsService.exec().subscribe((schools) => {
-        this.schoolsData = {
-          ...this.schoolsData,
-          body: schools || [],
-        };
-        this.tableService.setData(this.schoolsData);
-        this.loading = false;
-        setTimeout(() => this.stateService.setLoading(this.loading), 500);
-      })
+      this.getSchoolsService
+        .exec()
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
+        .subscribe((schools) => {
+          this.schoolsData = {
+            ...this.schoolsData,
+            body: schools || [],
+          };
+          this.tableService.setData(this.schoolsData);
+        })
     );
   }
   ngOnDestroy(): void {

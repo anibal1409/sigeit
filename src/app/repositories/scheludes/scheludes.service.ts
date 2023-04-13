@@ -1,23 +1,11 @@
 import { Injectable } from '@angular/core';
 
 import moment from 'moment';
-import {
-  forkJoin,
-  map,
-  mergeMap,
-  Observable,
-  of,
-} from 'rxjs';
+import { forkJoin, map, mergeMap, Observable, of } from 'rxjs';
 
-import {
-  ClassroomVM,
-  GetClassroomsService,
-} from '../classrooms';
+import { ClassroomVM, GetClassroomsService } from '../classrooms';
 import { DepartmentVM } from '../departments';
-import {
-  FindPeriodService,
-  PeriodVM,
-} from '../periods';
+import { FindPeriodService, PeriodVM } from '../periods';
 import {
   GetDepartamentsBySchoolService,
   GetSubjectsByDepartmentService,
@@ -26,20 +14,14 @@ import {
 } from '../sections';
 import { SubjectVM } from '../subjects';
 import { FindSubjectService } from '../subjects/use-cases';
-import {
-  GetTeachersService,
-  TeacherItemVM,
-} from '../teachers';
-import {
-  DayVM,
-  ScheduleItemVM,
-  ScheduleVM,
-} from './model';
+import { GetTeachersService, TeacherItemVM } from '../teachers';
+import { DayVM, ScheduleItemVM, ScheduleVM } from './model';
 import {
   CreateScheduleService,
   FindScheduleService,
   GetClassroomScheduleService,
   GetDaysService,
+  GetSubjectSchedulesService,
   GetSectionsSchedulesService,
   RemoveScheduleService,
   UpdateScheduleService,
@@ -54,6 +36,7 @@ export class SchedulesService {
     private getTeachersService: GetTeachersService,
     private findPeriodService: FindPeriodService,
     private getSectionsSchedulesService: GetSectionsSchedulesService,
+    private getSubjectSchedules: GetSubjectSchedulesService,
     private createScheduleService: CreateScheduleService,
     private findScheduleService: FindScheduleService,
     private removeScheduleService: RemoveScheduleService,
@@ -100,6 +83,10 @@ export class SchedulesService {
 
   removeSchedule$(scheduleId: number): Observable<number> {
     return this.removeScheduleService.exec(scheduleId);
+  }
+
+  getSubjectSchedules$(subjectId: number): Observable<ScheduleItemVM[]> {
+    return this.getSubjectSchedules.exec(subjectId);
   }
 
   generateTimeIntervals(

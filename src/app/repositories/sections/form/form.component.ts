@@ -83,31 +83,37 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     this.createForm();
     this.loadLastSection();
     this.sub$.add(
-      this.sectionsService.getTeachers$().subscribe((teachers) => {
-        this.loading = true;
-        this.stateService.setLoading(this.loading);
-        this.teachers = teachers;
-        if (teachers) {
-          this.filteredTeachers = this.form.controls[
-            'teacher'
-          ].valueChanges.pipe(
-            startWith<string | TeacherVM>(''),
-            map((value: any) => {
-              if (value !== null) {
-                return typeof value === 'string'
-                  ? value
-                  : `${value.last_name}, ${value.first_name}`;
-              }
-              return '';
-            }),
-            map((name: any) => {
-              return name ? this._teacherFilter(name) : this.teachers.slice();
-            })
-          );
-        }
-        this.loading = false;
-        setTimeout(() => this.stateService.setLoading(this.loading), 200);
-      })
+      this.sectionsService
+        .getTeachers$()
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
+        .subscribe((teachers) => {
+          this.loading = true;
+          this.stateService.setLoading(this.loading);
+          this.teachers = teachers;
+          if (teachers) {
+            this.filteredTeachers = this.form.controls[
+              'teacher'
+            ].valueChanges.pipe(
+              startWith<string | TeacherVM>(''),
+              map((value: any) => {
+                if (value !== null) {
+                  return typeof value === 'string'
+                    ? value
+                    : `${value.last_name}, ${value.first_name}`;
+                }
+                return '';
+              }),
+              map((name: any) => {
+                return name ? this._teacherFilter(name) : this.teachers.slice();
+              })
+            );
+          }
+        })
     );
     this.loadSection();
     this.sub$.add(
@@ -234,7 +240,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       if (item.last_name == '') {
         return item.first_name;
       } else {
-        return `${item.last_name},  ${item.first_name}`;
+        return `${item.last_name}, ${item.first_name}`;
       }
     } else return '';
   }

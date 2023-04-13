@@ -6,7 +6,7 @@ export function School2SchoolVM(school: any): SchoolVM {
     description: school?.description,
     logo: school?.logo,
     name: school?.name,
-    status: school?.status ? 'Activo' : 'Inactivo',
+    status: school?.status,
     id: school?.id,
   };
 }

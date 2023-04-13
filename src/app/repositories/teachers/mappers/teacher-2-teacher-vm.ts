@@ -8,6 +8,6 @@ export function Teacher2TeacherVM(Teacher: any): TeacherVM {
     last_name: Teacher?.last_name,
     email: Teacher?.email,
     id_department: Teacher?.id_department,
-    status: Teacher?.status ? 'Activo' : 'Inactivo',
+    status: Teacher?.status,
   };
 }

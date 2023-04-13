@@ -1,16 +1,10 @@
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
 import {
+  finalize,
+  lastValueFrom,
   map,
   Observable,
   of,
@@ -31,11 +25,9 @@ import { DepartmentVM } from '../departments';
 import { SectionVM } from '../sections';
 import { SectionsComponent } from '../sections/sections.component';
 import { SubjectVM } from '../subjects';
-import {
-  RowActionSchedule,
-  ScheduleVM,
-} from './model';
+import { RowActionSchedule, ScheduleVM } from './model';
 import { SchedulesService } from './scheludes.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-scheludes',
@@ -83,6 +75,12 @@ export class ScheludesComponent implements OnInit, OnDestroy {
   scheludeData: TableDataVM<ScheduleVM> = {
     headers: [
       {
+        columnDef: 'id_section',
+        header: 'Sección',
+        cell: (element: { [key: string]: string }) =>
+          `${(element['section'] as any)?.name}`,
+      },
+      {
         columnDef: 'id_classroom',
         header: 'Aula',
         cell: (element: { [key: string]: string }) =>
@@ -121,23 +119,37 @@ export class ScheludesComponent implements OnInit, OnDestroy {
   reload = true;
 
   private sub$ = new Subscription();
-  submitDisabled = true;
+  addDisabled = true;
 
   filteredDepartments!: Observable<DepartmentVM[]>;
   filteredSemesters!: Observable<SemesterVM[]>;
   filteredSubjects!: Observable<SubjectVM[]>;
+
+  queryParamsList!: { [key: string]: string };
+  readingFromParams = false;
 
   constructor(
     private fb: FormBuilder,
     private tableService: TableService,
     private matDialog: MatDialog,
     private schedulesService: SchedulesService,
-    private stateService: StateService
+    private stateService: StateService,
+    private activatedRouter: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.createForm();
+    this.loadFormParams();
     this.loadDepartments();
+    this.sub$.add(
+      this.activatedRouter.queryParams.subscribe((params) => {
+        localStorage.setItem(
+          'sigeit_schedule_params',
+          JSON.stringify({ ...params })
+        );
+      })
+    );
     if (this.semesters) {
       this.filteredSemesters = this.form.controls['semester'].valueChanges.pipe(
         startWith<string | SemesterVM>(''),
@@ -174,13 +186,16 @@ export class ScheludesComponent implements OnInit, OnDestroy {
     this.sub$.add(
       this.form.get('departmentId')?.valueChanges.subscribe((department) => {
         this.departmentId = +department.id;
-        this.form.patchValue({
-          semester: -1,
-          subjectId: null,
-          sectionId: null,
-        });
+        if (!this.readingFromParams) {
+          this.form.patchValue({
+            semester: -1,
+            subjectId: null,
+            sectionId: null,
+          });
+        }
         if (department && department.id) {
           this.filteredDepartments = of(this.departments);
+          this.addParams('departmentId', department.id);
           this.loadSubjects();
         }
       })
@@ -192,19 +207,31 @@ export class ScheludesComponent implements OnInit, OnDestroy {
 
         if (semester && semester.id) {
           this.filteredSemesters = of(this.semesters);
+          this.addParams('semesterId', semester.id);
           this.loadSubjects();
         }
       })
     );
 
     this.sub$.add(
-      this.form.get('subjectId')?.valueChanges.subscribe((subject) => {
+      this.form.get('subjectId')?.valueChanges.subscribe(async (subject) => {
         this.subjectId = +subject?.id;
-        this.form.patchValue({
-          sectionId: null,
-        });
+        if (!this.readingFromParams) {
+          this.form.patchValue({
+            sectionId: null,
+          });
+        }
         if (subject && subject.id) {
+          const allSectionsData = await lastValueFrom(
+            this.schedulesService.getSubjectSchedules$(subject.id)
+          );
+          this.tableService.setData({
+            ...this.scheludeData,
+            body: allSectionsData,
+          });
           this.filteredSubjects = of(this.subjects);
+          this.addParams('subjectId', subject.id);
+
           this.loadSections();
         }
       })
@@ -214,13 +241,14 @@ export class ScheludesComponent implements OnInit, OnDestroy {
       this.form.get('sectionId')?.valueChanges.subscribe((section) => {
         this.sectionId = +section?.id;
         if (section && section.id) {
+          this.addParams('sectionId', section.id);
           this.loadSchedules();
         }
       })
     );
     this.sub$.add(
       this.form.valueChanges.subscribe(() => {
-        this.submitDisabled = this.form.invalid;
+        this.addDisabled = this.form.invalid;
       })
     );
   }
@@ -231,31 +259,35 @@ export class ScheludesComponent implements OnInit, OnDestroy {
       this.stateService.setLoading(this.loading);
     }
     this.sub$.add(
-      this.schedulesService.getDepartaments$(1).subscribe((departaments) => {
-        this.departments = departaments;
-        //
-        if (departaments) {
-          this.filteredDepartments = this.form.controls[
-            'departmentId'
-          ].valueChanges.pipe(
-            startWith<string | DepartmentVM>(''),
-            map((value: any) => {
-              if (value !== null) {
-                return typeof value === 'string' ? value : value.name;
-              }
-              return '';
-            }),
-            map((name: any) => {
-              return name
-                ? this._departmentFilter(name)
-                : this.departments.slice();
-            })
-          );
-        }
-        //
-        this.loading = false;
-        setTimeout(() => this.stateService.setLoading(this.loading), 500);
-      })
+      this.schedulesService
+        .getDepartaments$(1)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
+        .subscribe((departaments) => {
+          this.departments = departaments;
+          if (departaments) {
+            this.filteredDepartments = this.form.controls[
+              'departmentId'
+            ].valueChanges.pipe(
+              startWith<string | DepartmentVM>(''),
+              map((value: any) => {
+                if (value !== null) {
+                  return typeof value === 'string' ? value : value.name;
+                }
+                return '';
+              }),
+              map((name: any) => {
+                return name
+                  ? this._departmentFilter(name)
+                  : this.departments.slice();
+              })
+            );
+          }
+        })
     );
   }
 
@@ -265,6 +297,12 @@ export class ScheludesComponent implements OnInit, OnDestroy {
     this.sub$.add(
       this.schedulesService
         .getSubjects$(+this.departmentId, +this.semester)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
         .subscribe((subjects) => {
           this.subjects = subjects;
           if (subjects) {
@@ -283,22 +321,24 @@ export class ScheludesComponent implements OnInit, OnDestroy {
               })
             );
           }
-          this.loading = false;
-          setTimeout(() => this.stateService.setLoading(this.loading), 500);
         })
     );
   }
 
-  loadSections(): void {
+  private loadSections(): void {
     this.loading = true;
     this.stateService.setLoading(this.loading);
     this.sub$.add(
       this.schedulesService
         .getSections$(this.subjectId, this.periodId)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
         .subscribe((sections) => {
           this.sections = sections;
-          this.loading = false;
-          setTimeout(() => this.stateService.setLoading(this.loading), 500);
         })
     );
   }
@@ -309,6 +349,12 @@ export class ScheludesComponent implements OnInit, OnDestroy {
     this.sub$.add(
       this.schedulesService
         .getSectionSchedules$(this.sectionId)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
         .subscribe((schedules) => {
           this.scheludeData = {
             ...this.scheludeData,
@@ -317,8 +363,6 @@ export class ScheludesComponent implements OnInit, OnDestroy {
           this.tableService.setData(this.scheludeData);
         })
     );
-    this.loading = false;
-    setTimeout(() => this.stateService.setLoading(this.loading), 500);
   }
 
   changeShowForm(showForm: boolean): void {
@@ -349,7 +393,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
       data: {
         message: {
           title: 'Eliminar Sección',
-          body: `¿Está seguro que desea eliminar la sección <strong>${schedule}</strong>?`,
+          body: `¿Está seguro que desea eliminar el horario desde las <strong>${schedule.start}</strong> hasta las <strong>${schedule.end}</strong>?`,
         },
       },
       hasBackdrop: true,
@@ -360,7 +404,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
       if (res) {
         this.schedulesService
           .removeSchedule$(schedule?.id || 0)
-          .subscribe(() => {});
+          .subscribe(() => this.loadSections());
       }
     });
   }
@@ -380,6 +424,59 @@ export class ScheludesComponent implements OnInit, OnDestroy {
       dialogRef.close();
       this.loadSections();
     });
+  }
+
+  private async loadFormParams(): Promise<void> {
+    this.queryParamsList = JSON.parse(
+      localStorage.getItem('sigeit_schedule_params') as string
+    );
+
+    if (Object.keys(this.queryParamsList).length !== 0) {
+      this.readingFromParams = true;
+      let { sectionId, departmentId, semesterId, subjectId } =
+        this.queryParamsList;
+      let lastDepartment, lastSection, lastSemester, lastSubject;
+      if (departmentId) {
+        lastDepartment = (
+          await lastValueFrom(this.schedulesService.getDepartaments$(1))
+        ).find((dept) => dept.id == +departmentId);
+
+        if (semesterId) {
+          lastSemester = this.semesters.find(
+            (semestr) => semestr.id == +semesterId
+          );
+
+          if (subjectId) {
+            lastSubject = (
+              await lastValueFrom(
+                this.schedulesService.getSubjects$(+departmentId, +semesterId)
+              )
+            ).find((subj) => subj.id == +subjectId);
+            if (subjectId) {
+              lastSection = (
+                await lastValueFrom(
+                  this.schedulesService.getSections$(+subjectId, this.periodId)
+                )
+              ).find((sect) => sect.id == +sectionId);
+            }
+          }
+        }
+      }
+
+      this.form.patchValue({
+        sectionId: lastSection || '',
+        subjectId: lastSubject || '',
+        departmentId: lastDepartment || '',
+        semester: lastSemester || '',
+      });
+      this.readingFromParams = false;
+      this.router.navigate([], { queryParams: {} });
+    }
+  }
+
+  private addParams(key: string, value: string): void {
+    this.queryParamsList[key] = value;
+    this.router.navigate([], { queryParams: this.queryParamsList });
   }
 
   private _departmentFilter(name: string): DepartmentVM[] {

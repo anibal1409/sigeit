@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PeriodVM } from './model';
 import { HttpClient } from '@angular/common/http';
 import { TableDataVM, TableService } from 'src/app/common';
-import { Subscription } from 'rxjs';
+import { Subscription, finalize } from 'rxjs';
 import { PeriodsService } from './periods.service';
 import { StateService } from 'src/app/common/state';
 
@@ -52,15 +52,21 @@ export class PeriodsComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.stateService.setLoading(this.loading);
     this.sub$.add(
-      this.periodsService.getPeriods$().subscribe((periods) => {
-        this.periodsData = {
-          ...this.periodsData,
-          body: periods || [],
-        };
-        this.tableService.setData(this.periodsData);
-        this.loading = false;
-        setTimeout(() => this.stateService.setLoading(this.loading), 500);
-      })
+      this.periodsService
+        .getPeriods$()
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
+        .subscribe((periods) => {
+          this.periodsData = {
+            ...this.periodsData,
+            body: periods || [],
+          };
+          this.tableService.setData(this.periodsData);
+        })
     );
   }
   ngOnDestroy(): void {

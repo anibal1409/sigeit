@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CareerItemVM, CareerVM } from './model';
 import { TableDataVM, TableService } from 'src/app/common';
-import { Subscription } from 'rxjs';
+import { Subscription, finalize } from 'rxjs';
 import { CareersService } from './careers.service';
 import { StateService } from 'src/app/common/state';
 
@@ -54,16 +54,22 @@ export class CareersComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.stateService.setLoading(this.loading);
     this.sub$.add(
-      this.careersService.getCareers$().subscribe((careers) => {
-        this.careersData = {
-          ...this.careersData,
-          body: careers || [],
-        };
+      this.careersService
+        .getCareers$()
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
+        .subscribe((careers) => {
+          this.careersData = {
+            ...this.careersData,
+            body: careers || [],
+          };
 
-        this.tableService.setData(this.careersData);
-        this.loading = false;
-        setTimeout(() => this.stateService.setLoading(this.loading), 500);
-      })
+          this.tableService.setData(this.careersData);
+        })
     );
   }
   ngOnDestroy(): void {

@@ -7,5 +7,6 @@ export function Teacher2TeacherItemVM(teacher: any): TeacherItemVM {
   return {
     ...teacherVM,
     department: Department2DepartmentVM(teacher?.department),
+    status: teacher?.status ? 'Activo' : 'Inactivo',
   };
 }

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import { Subscription } from 'rxjs';
+import { Subscription, finalize } from 'rxjs';
 import { TableDataVM, TableService } from 'src/app/common';
 
 import { DepartmentsService } from './departments.service';
@@ -55,15 +55,21 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.stateService.setLoading(this.loading);
     this.sub$.add(
-      this.departmentsService.getDepartments$().subscribe((departments) => {
-        this.departmentsData = {
-          ...this.departmentsData,
-          body: departments || [],
-        };
-        this.tableService.setData(this.departmentsData);
-        this.loading = false;
-        setTimeout(() => this.stateService.setLoading(this.loading), 500);
-      })
+      this.departmentsService
+        .getDepartments$()
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
+        .subscribe((departments) => {
+          this.departmentsData = {
+            ...this.departmentsData,
+            body: departments || [],
+          };
+          this.tableService.setData(this.departmentsData);
+        })
     );
   }
 

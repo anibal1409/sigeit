@@ -7,5 +7,6 @@ export function User2UserItemVM(user: any): UserItemVM {
   return {
     ...userVM,
     department: Department2DepartmentVM(user?.department),
+    status: user.status ? 'Activo' : 'Inactivo',
   };
 }

@@ -17,18 +17,21 @@ import {
 
 import moment from 'moment';
 import {
+  finalize,
   map,
   Observable,
   of,
   startWith,
   Subscription,
+  tap,
 } from 'rxjs';
 import { StateService } from 'src/app/common/state';
 
-import { timeValidator } from '../../../common';
+import { ConfirmModalComponent, timeValidator } from '../../../common';
 import { ClassroomVM } from '../../classrooms/model';
 import { DayVM } from '../model';
 import { SchedulesService } from '../scheludes.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-form',
@@ -70,6 +73,9 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   filteredDays!: Observable<DayVM[]>;
   filteredClassrooms!: Observable<ClassroomVM[]>;
 
+  crashWarning = false;
+  crashMessage = 'El horario a inscribir presenta los siguientes choques: <br>';
+
   private sub$ = new Subscription();
   loading = false;
   title = '';
@@ -77,13 +83,17 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   constructor(
     private schedulesService: SchedulesService,
     private fb: FormBuilder,
-    private stateService: StateService
-  ) { }
+    private stateService: StateService,
+    private matDialog: MatDialog
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['sectionId']?.currentValue || changes['periodId']?.currentValue) {
+    if (
+      changes['sectionId']?.currentValue ||
+      changes['periodId']?.currentValue
+    ) {
       console.log(this.sectionId, this.periodId);
-      
+
       this.loadDataForm();
     } else if (changes['departmentId']?.currentValue) {
       this.loadClassrooms();
@@ -189,7 +199,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       start: [null, [Validators.required]],
       end: [null, [Validators.required, timeValidator()]],
       sectionId: [this.sectionId, [Validators.required]],
-      periodId: [this.periodId, [Validators.required]]
+      periodId: [this.periodId, [Validators.required]],
     });
 
     this.sub$.add(
@@ -202,16 +212,25 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     this.sub$.add(
       this.form.valueChanges.subscribe((values) => {
         if (this.form.valid) {
+          this.loading = true;
+          this.stateService.setLoading(this.loading);
           const data = {
             ...values,
             classroomId: values?.classroomId?.id || values?.classroomId,
-            dayId: values?.dayId?.id || values?.dayId
+            dayId: values?.dayId?.id || values?.dayId,
           };
           this.schedulesService
             .validateClassroomSchedules$(data)
+            .pipe(
+              finalize(() => {
+                setTimeout(() => {
+                  this.loading = false;
+                  this.stateService.setLoading(this.loading);
+                }, 300);
+              })
+            )
             .subscribe((data) => {
-              console.log(data);
-              const horasEnChoque = data.map((horario: any) => {
+              data.map((horario: any) => {
                 const start = moment.max(
                   moment(horario.start, 'HH:mm'),
                   moment(values.start, 'HH:mm')
@@ -220,12 +239,20 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
                   moment(horario.end, 'HH:mm'),
                   moment(values.end, 'HH:mm')
                 );
-                return ` ${start.format('HH:mm')} - ${end.format('HH:mm')} (${horario.section?.subject?.name
-                  } - ${horario.section?.name})`;
+                this.crashMessage =
+                  this.crashMessage +
+                  ` <strong>${start.format('HH:mm')} - ${end.format(
+                    'HH:mm'
+                  )} (${horario.section?.subject?.name} - ${
+                    horario.section?.name
+                  })</strong>`;
               });
-              console.log(
-                `El horario establecido presenta choques con los siguentes horarios:${horasEnChoque}`
-              );
+
+              if (data.length !== 0) {
+                this.crashWarning = true;
+              } else {
+                this.crashWarning = false;
+              }
             });
         }
       })
@@ -236,6 +263,31 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
         this.submitDisabled = this.form.invalid;
       })
     );
+  }
+
+  saveWarning(): void {
+    if (this.crashWarning) {
+      const dialogRef = this.matDialog.open(ConfirmModalComponent, {
+        data: {
+          message: {
+            title: 'Choque de Horas',
+            body: this.crashMessage + '<br><br><h5>¿Desea continuar?</h5>',
+          },
+        },
+        hasBackdrop: true,
+      });
+
+      dialogRef.componentInstance.closed.subscribe((res: any) => {
+        dialogRef.close();
+        this.crashMessage =
+          'El horario a inscribir presenta los siguientes choques: <br>';
+        if (res) {
+          this.save();
+        }
+      });
+    } else {
+      this.save();
+    }
   }
 
   save(): void {
@@ -270,6 +322,12 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     this.sub$.add(
       this.schedulesService
         .getClassrooms$((!this.allClassrooms && this.departmentId) as any)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
         .subscribe((classrooms) => {
           this.classrooms = classrooms;
 
@@ -291,8 +349,6 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
               })
             );
           }
-          this.loading = false;
-          setTimeout(() => this.stateService.setLoading(this.loading), 200);
         })
     );
   }
@@ -315,6 +371,6 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   displayHours(item: ClassroomVM | DayVM | any): string {
-    return item?.hour;
+    return item?.hour || item;
   }
 }

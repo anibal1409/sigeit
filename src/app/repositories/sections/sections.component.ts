@@ -9,17 +9,12 @@ import {
   Optional,
   Output,
 } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import {
-  MAT_DIALOG_DATA,
-  MatDialog,
-} from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 
 import {
+  finalize,
+  lastValueFrom,
   map,
   Observable,
   of,
@@ -38,11 +33,9 @@ import { StateService } from 'src/app/common/state';
 
 import { DepartmentVM } from '../departments';
 import { SubjectVM } from '../subjects/model';
-import {
-  RowActionSection,
-  SectionVM,
-} from './model';
+import { RowActionSection, SectionVM } from './model';
 import { SectionsService } from './sections.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-sections',
@@ -51,7 +44,8 @@ import { SectionsService } from './sections.service';
 })
 export class SectionsComponent implements OnInit, OnDestroy {
   @Input()
-  @HostBinding('class.modal') modal = false;
+  @HostBinding('class.modal')
+  modal = false;
 
   @Output()
   closed = new EventEmitter();
@@ -102,11 +96,14 @@ export class SectionsComponent implements OnInit, OnDestroy {
   showForm = false;
 
   private sub$ = new Subscription();
-  submitDisabled = true;
+  addDisabled = true;
 
   filteredDepartments!: Observable<DepartmentVM[]>;
   filteredSemesters!: Observable<SemesterVM[]>;
   filteredSubjects!: Observable<SubjectVM[]>;
+
+  queryParamsList!: { [key: string]: string };
+  readingFromParams = false;
 
   constructor(
     private sectionsService: SectionsService,
@@ -114,7 +111,9 @@ export class SectionsComponent implements OnInit, OnDestroy {
     private tableService: TableService,
     private matDialog: MatDialog,
     @Optional() @Inject(MAT_DIALOG_DATA) private data: any,
-    private stateService: StateService
+    private stateService: StateService,
+    private activatedRouter: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnDestroy(): void {
@@ -129,7 +128,16 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.createForm();
+    this.loadFormParams();
     this.loadDepartments();
+    this.sub$.add(
+      this.activatedRouter.queryParams.subscribe((params) => {
+        localStorage.setItem(
+          'sigeit_section_params',
+          JSON.stringify({ ...params })
+        );
+      })
+    );
     this.filteredSemesters = this.form.controls['semester'].valueChanges.pipe(
       startWith<string | SemesterVM>(''),
       map((value: any) => {
@@ -156,6 +164,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
         this.departmentId = +department.id;
         if (department && department.id) {
           this.filteredDepartments = of(this.departments);
+          this.addParams('departmentId', department.id);
           this.loadSubjects();
         }
       })
@@ -166,6 +175,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
         this.semester = +semester.id;
         if (semester && semester.id) {
           this.filteredSemesters = of(this.semesters);
+          this.addParams('semesterId', semester.id);
           this.loadSubjects();
         }
       })
@@ -176,6 +186,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
         this.subjectId = +subject.id;
         if (subject && subject.id) {
           this.filteredSubjects = of(this.subjects);
+          this.addParams('subjectId', subject.id);
           this.loadSections();
         }
       })
@@ -192,7 +203,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.valueChanges.subscribe(() => {
-        this.submitDisabled = this.form.invalid;
+        this.addDisabled = this.form.invalid;
       })
     );
   }
@@ -201,29 +212,35 @@ export class SectionsComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.stateService.setLoading(this.loading);
     this.sub$.add(
-      this.sectionsService.getDepartaments$(1).subscribe((departaments) => {
-        this.departments = departaments;
-        if (departaments) {
-          this.filteredDepartments = this.form.controls[
-            'departmentId'
-          ].valueChanges.pipe(
-            startWith<string | DepartmentVM>(''),
-            map((value: any) => {
-              if (value !== null) {
-                return typeof value === 'string' ? value : value.name;
-              }
-              return '';
-            }),
-            map((name: any) => {
-              return name
-                ? this._departmentFilter(name)
-                : this.departments.slice();
-            })
-          );
-        }
-        this.loading = false;
-        setTimeout(() => this.stateService.setLoading(this.loading), 500);
-      })
+      this.sectionsService
+        .getDepartaments$(1)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
+        .subscribe((departaments) => {
+          this.departments = departaments;
+          if (departaments) {
+            this.filteredDepartments = this.form.controls[
+              'departmentId'
+            ].valueChanges.pipe(
+              startWith<string | DepartmentVM>(''),
+              map((value: any) => {
+                if (value !== null) {
+                  return typeof value === 'string' ? value : value.name;
+                }
+                return '';
+              }),
+              map((name: any) => {
+                return name
+                  ? this._departmentFilter(name)
+                  : this.departments.slice();
+              })
+            );
+          }
+        })
     );
   }
 
@@ -233,6 +250,12 @@ export class SectionsComponent implements OnInit, OnDestroy {
     this.sub$.add(
       this.sectionsService
         .getSubjects$(+this.departmentId, +this.semester)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
         .subscribe((subjects) => {
           this.subjects = subjects;
           if (subjects) {
@@ -251,8 +274,6 @@ export class SectionsComponent implements OnInit, OnDestroy {
               })
             );
           }
-          this.loading = false;
-          setTimeout(() => this.stateService.setLoading(this.loading), 500);
         })
     );
   }
@@ -263,14 +284,18 @@ export class SectionsComponent implements OnInit, OnDestroy {
     this.sub$.add(
       this.sectionsService
         .getSections$(this.subjectId, this.periodId)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
         .subscribe((sections) => {
           this.sectionsData = {
             ...this.sectionsData,
             body: sections || [],
           };
           this.tableService.setData(this.sectionsData);
-          this.loading = false;
-          setTimeout(() => this.stateService.setLoading(this.loading), 500);
         })
     );
   }
@@ -321,6 +346,52 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
   clickClosed(): void {
     this.closed.emit();
+  }
+
+  private async loadFormParams(): Promise<void> {
+    this.queryParamsList = JSON.parse(
+      localStorage.getItem('sigeit_section_params') as string
+    );
+
+    if (Object.keys(this.queryParamsList).length !== 0) {
+      this.readingFromParams = true;
+      let { sectionId, departmentId, semesterId, subjectId } =
+        this.queryParamsList;
+      let lastDepartment, lastSection, lastSemester, lastSubject;
+      if (departmentId) {
+        lastDepartment = (
+          await lastValueFrom(this.sectionsService.getDepartaments$(1))
+        ).find((dept) => dept.id == +departmentId);
+
+        if (semesterId) {
+          lastSemester = this.semesters.find(
+            (semestr) => semestr.id == +semesterId
+          );
+
+          if (subjectId) {
+            lastSubject = (
+              await lastValueFrom(
+                this.sectionsService.getSubjects$(+departmentId, +semesterId)
+              )
+            ).find((subj) => subj.id == +subjectId);
+          }
+        }
+
+        this.form.patchValue({
+          sectionId: lastSection || '',
+          subjectId: lastSubject || '',
+          departmentId: lastDepartment || '',
+          semester: lastSemester || '',
+        });
+        this.readingFromParams = false;
+        this.router.navigate([], { queryParams: {} });
+      }
+    }
+  }
+
+  private addParams(key: string, value: string): void {
+    this.queryParamsList[key] = value;
+    this.router.navigate([], { queryParams: this.queryParamsList });
   }
 
   private _departmentFilter(name: string): DepartmentVM[] {

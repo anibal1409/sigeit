@@ -5,5 +5,6 @@ export function Period2PeriodItemVM(period: any): PeriodItemVM {
   const periodVM = Period2PeriodVM(period);
   return {
     ...periodVM,
+    status: period?.status ? 'Activo' : 'Inactivo',
   };
 }
