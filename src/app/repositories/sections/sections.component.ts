@@ -355,9 +355,8 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
     if (Object.keys(this.queryParamsList).length !== 0) {
       this.readingFromParams = true;
-      let { sectionId, departmentId, semesterId, subjectId } =
-        this.queryParamsList;
-      let lastDepartment, lastSection, lastSemester, lastSubject;
+      let { departmentId, semesterId, subjectId } = this.queryParamsList;
+      let lastDepartment, lastSemester, lastSubject;
       if (departmentId) {
         lastDepartment = (
           await lastValueFrom(this.sectionsService.getDepartaments$(1))
@@ -378,7 +377,6 @@ export class SectionsComponent implements OnInit, OnDestroy {
         }
 
         this.form.patchValue({
-          sectionId: lastSection || '',
           subjectId: lastSubject || '',
           departmentId: lastDepartment || '',
           semester: lastSemester || '',

@@ -215,12 +215,6 @@ export class ScheludesComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('subjectId')?.valueChanges.subscribe(async (subject) => {
-        this.subjectId = +subject?.id;
-        if (!this.readingFromParams) {
-          this.form.patchValue({
-            sectionId: null,
-          });
-        }
         if (subject && subject.id) {
           const allSectionsData = await lastValueFrom(
             this.schedulesService.getSubjectSchedules$(subject.id)
@@ -229,9 +223,21 @@ export class ScheludesComponent implements OnInit, OnDestroy {
             ...this.scheludeData,
             body: allSectionsData,
           });
+        }
+      })
+    );
+
+    this.sub$.add(
+      this.form.get('subjectId')?.valueChanges.subscribe((subject) => {
+        this.subjectId = +subject?.id;
+        if (!this.readingFromParams) {
+          this.form.patchValue({
+            sectionId: null,
+          });
+        }
+        if (subject && subject.id) {
           this.filteredSubjects = of(this.subjects);
           this.addParams('subjectId', subject.id);
-
           this.loadSections();
         }
       })
@@ -461,16 +467,15 @@ export class ScheludesComponent implements OnInit, OnDestroy {
             }
           }
         }
+        this.form.patchValue({
+          sectionId: lastSection || '',
+          subjectId: lastSubject || '',
+          departmentId: lastDepartment || '',
+          semester: lastSemester || '',
+        });
+        this.readingFromParams = false;
+        this.router.navigate([], { queryParams: {} });
       }
-
-      this.form.patchValue({
-        sectionId: lastSection || '',
-        subjectId: lastSubject || '',
-        departmentId: lastDepartment || '',
-        semester: lastSemester || '',
-      });
-      this.readingFromParams = false;
-      this.router.navigate([], { queryParams: {} });
     }
   }
 
