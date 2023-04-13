@@ -1,0 +1,14 @@
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th *ngFor="let dia of dias">{{dia}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let hora of horas; let i = index">
+      <th>{{hora}}</th>
+      <td *ngFor="let asignatura of matriz[i]">{{asignatura}}</td>
+    </tr>
+  </tbody>
+</table>

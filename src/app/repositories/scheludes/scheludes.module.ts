@@ -42,9 +42,10 @@ import {
   RemoveScheduleService,
   UpdateScheduleService,
 } from './use-cases';
+import { DaysSchedulesComponent } from './days-schedules/days-schedules.component';
 
 @NgModule({
-  declarations: [ScheludesComponent, FormComponent],
+  declarations: [ScheludesComponent, FormComponent, DaysSchedulesComponent],
   imports: [
     CommonModule,
     ScheludesRoutingModule,
