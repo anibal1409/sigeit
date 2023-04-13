@@ -2934,6 +2934,33 @@
       "sectionId": 0,
       "periodId": 3,
       "id": 39
+    },
+    {
+      "classroomId": 12,
+      "dayId": 2,
+      "start": "07:00",
+      "end": "07:45",
+      "sectionId": 25,
+      "periodId": 3,
+      "id": 40
+    },
+    {
+      "classroomId": 12,
+      "dayId": 2,
+      "start": "07:00",
+      "end": "07:45",
+      "sectionId": 27,
+      "periodId": 3,
+      "id": 41
+    },
+    {
+      "classroomId": 12,
+      "dayId": 1,
+      "start": "07:00",
+      "end": "08:35",
+      "sectionId": 27,
+      "periodId": 3,
+      "id": 42
     }
   ]
 }

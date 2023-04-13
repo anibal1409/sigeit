@@ -132,12 +132,14 @@
 
         <div class="row">
           <div class="col d-flex justify-content-end">
+            
             <button
-              (click)="save()"
+              (click)="saveWarning()"
               mat-raised-button
-              color="primary"
+              [color]="crashWarning ? 'accent' : 'primary'"
               [disabled]="submitDisabled || loading"
             >
+            <mat-icon *ngIf="crashWarning">report_problem</mat-icon>
               Guardar
             </button>
           </div>

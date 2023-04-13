@@ -16,13 +16,22 @@ import {
 } from '@angular/forms';
 
 import moment from 'moment';
-import { finalize, map, Observable, of, startWith, Subscription } from 'rxjs';
+import {
+  finalize,
+  map,
+  Observable,
+  of,
+  startWith,
+  Subscription,
+  tap,
+} from 'rxjs';
 import { StateService } from 'src/app/common/state';
 
-import { timeValidator } from '../../../common';
+import { ConfirmModalComponent, timeValidator } from '../../../common';
 import { ClassroomVM } from '../../classrooms/model';
 import { DayVM } from '../model';
 import { SchedulesService } from '../scheludes.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-form',
@@ -64,6 +73,9 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   filteredDays!: Observable<DayVM[]>;
   filteredClassrooms!: Observable<ClassroomVM[]>;
 
+  crashWarning = false;
+  crashMessage = 'El horario a inscribir presenta los siguientes choques: <br>';
+
   private sub$ = new Subscription();
   loading = false;
   title = '';
@@ -71,7 +83,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   constructor(
     private schedulesService: SchedulesService,
     private fb: FormBuilder,
-    private stateService: StateService
+    private stateService: StateService,
+    private matDialog: MatDialog
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -199,6 +212,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     this.sub$.add(
       this.form.valueChanges.subscribe((values) => {
         if (this.form.valid) {
+          this.loading = true;
+          this.stateService.setLoading(this.loading);
           const data = {
             ...values,
             classroomId: values?.classroomId?.id || values?.classroomId,
@@ -206,9 +221,16 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
           };
           this.schedulesService
             .validateClassroomSchedules$(data)
+            .pipe(
+              finalize(() => {
+                setTimeout(() => {
+                  this.loading = false;
+                  this.stateService.setLoading(this.loading);
+                }, 300);
+              })
+            )
             .subscribe((data) => {
-              console.log(data);
-              const horasEnChoque = data.map((horario: any) => {
+              data.map((horario: any) => {
                 const start = moment.max(
                   moment(horario.start, 'HH:mm'),
                   moment(values.start, 'HH:mm')
@@ -217,13 +239,20 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
                   moment(horario.end, 'HH:mm'),
                   moment(values.end, 'HH:mm')
                 );
-                return ` ${start.format('HH:mm')} - ${end.format('HH:mm')} (${
-                  horario.section?.subject?.name
-                } - ${horario.section?.name})`;
+                this.crashMessage =
+                  this.crashMessage +
+                  ` <strong>${start.format('HH:mm')} - ${end.format(
+                    'HH:mm'
+                  )} (${horario.section?.subject?.name} - ${
+                    horario.section?.name
+                  })</strong>`;
               });
-              console.log(
-                `El horario establecido presenta choques con los siguentes horarios:${horasEnChoque}`
-              );
+
+              if (data.length !== 0) {
+                this.crashWarning = true;
+              } else {
+                this.crashWarning = false;
+              }
             });
         }
       })
@@ -234,6 +263,31 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
         this.submitDisabled = this.form.invalid;
       })
     );
+  }
+
+  saveWarning(): void {
+    if (this.crashWarning) {
+      const dialogRef = this.matDialog.open(ConfirmModalComponent, {
+        data: {
+          message: {
+            title: 'Choque de Horas',
+            body: this.crashMessage + '<br><br><h5>¿Desea continuar?</h5>',
+          },
+        },
+        hasBackdrop: true,
+      });
+
+      dialogRef.componentInstance.closed.subscribe((res: any) => {
+        dialogRef.close();
+        this.crashMessage =
+          'El horario a inscribir presenta los siguientes choques: <br>';
+        if (res) {
+          this.save();
+        }
+      });
+    } else {
+      this.save();
+    }
   }
 
   save(): void {
