@@ -1,6 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+
+import {
+  map,
+  Observable,
+} from 'rxjs';
+
 import { Schedule2ScheduleItemVM } from '../../mappers';
 import { ScheduleItemVM } from '../../model';
 
