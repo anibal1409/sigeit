@@ -36,14 +36,14 @@ export class ClassroomsSchedulesComponent implements OnInit, OnDestroy, OnChange
   endIntervals: Array<string> = [];
   classrooms: Array<ClassroomVM> = [];
   days: Array<DayVM> = [];
-  dataScheduleByDay: any[][] = this.startIntervals.map(() => this.classrooms.map(() => {return {text: ''};}));
+  dataScheduleByDay: any[][] = this.startIntervals.map(() => this.classrooms.map(() => { return { text: '' }; }));
   dataSourceByDay: any[] = [];
   displayedColumnsByDay: string[] = ['hora'];
-  
+
   filteredDays!: Observable<DayVM[]>;
   dayCtrl = new FormControl();
 
-  
+
   allClassroomsCtrl = new FormControl(false);
   allClassrooms = false;
 
@@ -55,7 +55,7 @@ export class ClassroomsSchedulesComponent implements OnInit, OnDestroy, OnChange
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['departmentId']?.currentValue) {
+    if (changes['departmentId']?.currentValue) {
       this.loadClassrooms();
     }
   }
@@ -69,6 +69,15 @@ export class ClassroomsSchedulesComponent implements OnInit, OnDestroy, OnChange
     this.loadIntervals();
     this.subDay();
     this.subClassrooms();
+    this.subChangeSchedules()
+  }
+
+  private subChangeSchedules(): void {
+    this.sub$.add(
+      this.schedulesService.changeSchedules$().subscribe(
+        () => this.loadScheduleDay()
+      )
+    );
   }
 
   private loadDays(): void {
@@ -150,7 +159,7 @@ export class ClassroomsSchedulesComponent implements OnInit, OnDestroy, OnChange
           classrooms.forEach(classroom => {
             this.displayedColumnsByDay.push(classroom.name);
           });
-          
+
           this.loadScheduleDay();
         })
     );
@@ -163,17 +172,17 @@ export class ClassroomsSchedulesComponent implements OnInit, OnDestroy, OnChange
         this.schedulesService.getAllDaySchedules$(dayId, this.periodId).subscribe(
           (schedules) => {
             console.log(schedules);
-            
-            this.dataScheduleByDay = this.startIntervals.map(() => this.classrooms.map(() => {return {text: ''};}));
+
+            this.dataScheduleByDay = this.startIntervals.map(() => this.classrooms.map(() => { return { text: '' }; }));
             console.log(this.dataScheduleByDay);
-            
+
             schedules.forEach(schedule => {
               const classroomIndex = this.classrooms.findIndex((classroom) => classroom.id === schedule.classroomId);
               const startIndex = this.startIntervals.indexOf(schedule.start);
               const endIndex = this.endIntervals.indexOf(schedule.end);
-        
+
               console.log(schedule, classroomIndex, startIndex, endIndex);
-              
+
               for (let i = startIndex; i <= endIndex; i++) {
                 if (this.dataScheduleByDay[i][classroomIndex]?.text) {
                   this.dataScheduleByDay[i][classroomIndex].text = 'Varias';
@@ -182,7 +191,7 @@ export class ClassroomsSchedulesComponent implements OnInit, OnDestroy, OnChange
                 }
               }
             });
-            
+
             console.log(this.dataScheduleByDay);
             this.dataSourceByDay = this.startIntervals.map((hora, index) => {
               const row: any = { hora };

@@ -36,14 +36,14 @@ export class DaysSchedulesComponent implements OnInit, OnDestroy, OnChanges {
   endIntervals: Array<string> = [];
   classrooms: Array<ClassroomVM> = [];
   days: Array<DayVM> = [];
-  dataScheduleByClassroom: any[][] = this.startIntervals.map(() => this.days.map(() => {return {text: ''};}));
+  dataScheduleByClassroom: any[][] = this.startIntervals.map(() => this.days.map(() => { return { text: '' }; }));
   dataSourceByClassroom: any[] = [];
   displayedColumnsByClassroom: string[] = ['hora'];
-  
+
   filteredClassrooms!: Observable<ClassroomVM[]>;
   classroomCtrl = new FormControl();
 
-  
+
   allClassroomsCtrl = new FormControl(false);
   allClassrooms = false;
 
@@ -55,7 +55,7 @@ export class DaysSchedulesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['departmentId']?.currentValue) {
+    if (changes['departmentId']?.currentValue) {
       this.loadClassrooms();
     }
   }
@@ -67,6 +67,15 @@ export class DaysSchedulesComponent implements OnInit, OnDestroy, OnChanges {
     this.loadDays();
     this.loadIntervals();
     this.subClassrooms();
+    this.subChangeSchedules();
+  }
+
+  private subChangeSchedules(): void {
+    this.sub$.add(
+      this.schedulesService.changeSchedules$().subscribe(
+        () => this.loadSchedulesClassroom()
+      )
+    );
   }
 
   private loadDays(): void {
@@ -104,13 +113,13 @@ export class DaysSchedulesComponent implements OnInit, OnDestroy, OnChanges {
       this.sub$.add(
         this.schedulesService.getAllClassroomSchedules$(classroomId, this.periodId).subscribe(
           (schedules) => {
-            this.dataScheduleByClassroom = this.startIntervals.map(() => this.days.map(() => {return {text: ''};}));
-            
+            this.dataScheduleByClassroom = this.startIntervals.map(() => this.days.map(() => { return { text: '' }; }));
+
             schedules.forEach(schedule => {
               const dayIndex = this.days.findIndex((day) => day.id === schedule.dayId);
               const startIndex = this.startIntervals.indexOf(schedule.start);
               const endIndex = this.endIntervals.indexOf(schedule.end);
-              
+
               for (let i = startIndex; i <= endIndex; i++) {
                 if (this.dataScheduleByClassroom[i][dayIndex]?.text) {
                   this.dataScheduleByClassroom[i][dayIndex].text = 'Varias';
@@ -167,8 +176,8 @@ export class DaysSchedulesComponent implements OnInit, OnDestroy, OnChanges {
       this.schedulesService
         .getClassrooms$((!this.allClassrooms && this.departmentId) as any)
         .subscribe((classrooms) => {
-          this.classrooms = classrooms;          
-          
+          this.classrooms = classrooms;
+
           if (this.classrooms?.length) {
             this.filteredClassrooms = this.classroomCtrl.valueChanges.pipe(
               startWith<string | ClassroomVM>(''),

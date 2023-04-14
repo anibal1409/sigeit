@@ -38,9 +38,6 @@
   <ng-container *ngFor="let day of days" [matColumnDef]="day.name">
     <mat-header-cell *matHeaderCellDef>{{day.name}}</mat-header-cell>
     <mat-cell *matCellDef="let row">
-      {{
-        day.name
-      }}
       {{row[day.name]?.text || ''}}
     </mat-cell>
   </ng-container>

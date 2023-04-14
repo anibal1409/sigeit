@@ -2997,6 +2997,15 @@
       "sectionId": 27,
       "periodId": 3,
       "id": 44
+    },
+    {
+      "classroomId": 13,
+      "dayId": 1,
+      "start": "07:00",
+      "end": "08:35",
+      "sectionId": 29,
+      "periodId": 3,
+      "id": 45
     }
   ]
 }

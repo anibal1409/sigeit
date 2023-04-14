@@ -7,6 +7,8 @@ import {
   mergeMap,
   Observable,
   of,
+  Subject,
+  tap,
 } from 'rxjs';
 
 import {
@@ -51,6 +53,9 @@ import {
 
 @Injectable()
 export class SchedulesService {
+
+  private _changeSchedules = new Subject<boolean>();
+
   constructor(
     private getDepartamentsService: GetDepartamentsBySchoolService,
     private GetSubjectsByDepartmentService: GetSubjectsByDepartmentService,
@@ -70,7 +75,7 @@ export class SchedulesService {
     private getTeacherSectionsService: GetTeacherSectionsService,
     private getAllClassroomSechedulesService: GetAllClassroomSchedulesService,
     private getAllDaySchedulesService: GetAllDaySchedulesService,
-  ) {}
+  ) { }
 
   getDepartaments$(idSchool: number): Observable<Array<DepartmentVM>> {
     return this.getDepartamentsService.exec(idSchool);
@@ -95,7 +100,10 @@ export class SchedulesService {
   }
 
   createSchedule$(schedule: ScheduleVM): Observable<ScheduleItemVM> {
-    return this.createScheduleService.exec(schedule);
+    return this.createScheduleService.exec(schedule)
+      .pipe(
+        tap(() => this.setChangeSchedule())
+      );
   }
 
   findSchedule$(scheduleId: number): Observable<ScheduleVM> {
@@ -103,11 +111,17 @@ export class SchedulesService {
   }
 
   updateSchedule$(schedule: ScheduleVM): Observable<ScheduleItemVM> {
-    return this.updateScheduleService.exec(schedule);
+    return this.updateScheduleService.exec(schedule)
+      .pipe(
+        tap(() => this.setChangeSchedule())
+      );
   }
 
   removeSchedule$(scheduleId: number): Observable<number> {
-    return this.removeScheduleService.exec(scheduleId);
+    return this.removeScheduleService.exec(scheduleId)
+      .pipe(
+        tap(() => this.setChangeSchedule())
+      );
   }
 
   getSubjectSchedules$(subjectId: number, periodId: number): Observable<ScheduleItemVM[]> {
@@ -213,23 +227,15 @@ export class SchedulesService {
   }
 
 
-  validateTeacherSchedules$(scheduleVm: ScheduleVM, teacherId: number, periodId: number): Observable<any>{
-    return this.getTeacherSectionsService.exec(scheduleVm,teacherId, periodId)
+  validateTeacherSchedules$(scheduleVm: ScheduleVM, teacherId: number, periodId: number): Observable<any> {
+    return this.getTeacherSectionsService.exec(scheduleVm, teacherId, periodId)
       .pipe(
         map(
           (sections: Array<SectionItemVM>) => {
             const start1 = moment(scheduleVm.start, 'HH:mm');
             const end1 = moment(scheduleVm.end, 'HH:mm');
             const collapsedSchedules = sections.filter((section) => {
-              console.log(section.schedules?.filter(
-                (schedule) => {
-                  const start2 = moment(schedule.start, 'HH:mm');
-                  const end2 = moment(schedule.end, 'HH:mm');
-                  console.log(start1.isSameOrBefore(end2) && end1.isSameOrAfter(start2));
-                  return start1.isSameOrBefore(end2) && end1.isSameOrAfter(start2);
-                }
-              )?.length);
-              
+
               return section.schedules?.filter(
                 (schedule) => {
                   const start2 = moment(schedule.start, 'HH:mm');
@@ -243,5 +249,13 @@ export class SchedulesService {
           }
         )
       );
+  }
+
+  private setChangeSchedule(): void {
+    this._changeSchedules.next(true);
+  }
+
+  changeSchedules$(): Observable<boolean> {
+    return this._changeSchedules.asObservable();
   }
 }
