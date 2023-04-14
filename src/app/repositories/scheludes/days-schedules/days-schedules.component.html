@@ -23,7 +23,7 @@
 <mat-checkbox [formControl]="allClassroomsCtrl"> Mostrar todas </mat-checkbox>
 <div class="mat-container" *ngIf="dataSourceByClassroom.length">
   <mat-card>
-    <mat-card-content>
+    <mat-card-content class="mat-card-content">
       <mat-table [dataSource]="dataSourceByClassroom" class="mat-table">
         <ng-container matColumnDef="hora">
           <mat-header-cell *matHeaderCellDef>Hora/Dia</mat-header-cell>
