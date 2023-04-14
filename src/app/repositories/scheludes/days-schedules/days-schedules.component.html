@@ -8,10 +8,7 @@
     [formControl]="classroomCtrl"
     [matAutocomplete]="autoClassroom"
   />
-  <mat-autocomplete
-    #autoClassroom="matAutocomplete"
-    [displayWith]="displayFn"
-  >
+  <mat-autocomplete #autoClassroom="matAutocomplete" [displayWith]="displayFn">
     <mat-option
       *ngFor="let classroom of filteredClassrooms | async"
       [value]="classroom"
@@ -19,29 +16,36 @@
       {{ classroom.name }}
     </mat-option>
   </mat-autocomplete>
-  <mat-error
-    *ngIf="classroomCtrl.hasError('required')"
+  <mat-error *ngIf="classroomCtrl.hasError('required')"
     >Campo Requerido</mat-error
   >
 </mat-form-field>
-<mat-checkbox 
-  [formControl]="allClassroomsCtrl"
->
-  Mostrar todas
-</mat-checkbox>
-<mat-table [dataSource]="dataSourceByClassroom">
-  <ng-container matColumnDef="hora">
-    <mat-header-cell *matHeaderCellDef>Hora/Dia</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{row.hora}}</mat-cell>
-  </ng-container>
+<mat-checkbox [formControl]="allClassroomsCtrl"> Mostrar todas </mat-checkbox>
+<div class="mat-container" *ngIf="dataSourceByClassroom.length">
+  <mat-card>
+    <mat-card-content>
+      <mat-table [dataSource]="dataSourceByClassroom" class="mat-table">
+        <ng-container matColumnDef="hora">
+          <mat-header-cell *matHeaderCellDef>Hora/Dia</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{ row.hora }}</mat-cell>
+        </ng-container>
 
-  <ng-container *ngFor="let day of days" [matColumnDef]="day.name">
-    <mat-header-cell *matHeaderCellDef>{{day.name}}</mat-header-cell>
-    <mat-cell *matCellDef="let row">
-      {{row[day.name]?.text || ''}}
-    </mat-cell>
-  </ng-container>
+        <ng-container *ngFor="let day of days" [matColumnDef]="day.name">
+          <mat-header-cell *matHeaderCellDef>{{ day.name }}</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            {{ row[day.name]?.text || "" }}
+          </mat-cell>
+        </ng-container>
 
-  <mat-header-row *matHeaderRowDef="displayedColumnsByClassroom"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumnsByClassroom;"></mat-row>
-</mat-table>
+        <mat-header-row
+          *matHeaderRowDef="displayedColumnsByClassroom"
+        ></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumnsByClassroom">
+        </mat-row>
+      </mat-table>
+    </mat-card-content>
+  </mat-card>
+</div>
+<div class="mat-container empty-table" *ngIf="!dataSourceByClassroom.length">
+  Seleccione un aula para visualizar el itinerario
+</div>

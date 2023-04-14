@@ -1,0 +1,38 @@
+mat-form-field {
+  margin-left: 2rem;
+}
+.mat-container {
+  margin: 1.5rem;
+}
+mat-column {
+  width: max-content;
+}
+
+mat-row > .mat-column-hora {
+  background-color: rgb(67, 146, 237);
+  color: white;
+  font-weight: 800;
+}
+
+.mat-mdc-header-cell {
+  background-color: rgb(67, 146, 237);
+  color: white;
+  font-weight: 800;
+}
+
+mat-card-content {
+  overflow-x: scroll;
+  padding: 0;
+}
+mat-table {
+  width: max-content;
+}
+
+.empty-table {
+  padding: 1.5rem;
+  text-align: center;
+  background: white;
+  margin: 1.5rem;
+  font-size: 1.4rem;
+  font-weight: 100;
+}
