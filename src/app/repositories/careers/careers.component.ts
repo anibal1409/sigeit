@@ -1,10 +1,21 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CareerItemVM, CareerVM } from './model';
-import { TableDataVM, TableService } from 'src/app/common';
-import { Subscription, finalize } from 'rxjs';
-import { CareersService } from './careers.service';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+
+import {
+  finalize,
+  Subscription,
+} from 'rxjs';
+import {
+  TableDataVM,
+  TableService,
+} from 'src/app/common';
 import { StateService } from 'src/app/common/state';
+
+import { CareersService } from './careers.service';
+import { CareerItemVM } from './model';
 
 @Component({
   selector: 'app-careers',
@@ -34,7 +45,7 @@ export class CareersComponent implements OnInit, OnDestroy {
           `${element['abbreviation']}`,
       },
       {
-        columnDef: 'id_department',
+        columnDef: 'departmentId',
         header: 'Departamento',
         cell: (element: { [key: string]: string }) => {
           return `${(element['department'] as any).name}`;

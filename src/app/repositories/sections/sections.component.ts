@@ -9,8 +9,19 @@ import {
   Optional,
   Output,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+} from '@angular/material/dialog';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
 
 import {
   finalize,
@@ -33,9 +44,11 @@ import { StateService } from 'src/app/common/state';
 
 import { DepartmentVM } from '../departments';
 import { SubjectVM } from '../subjects/model';
-import { RowActionSection, SectionVM } from './model';
+import {
+  RowActionSection,
+  SectionVM,
+} from './model';
 import { SectionsService } from './sections.service';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-sections',
@@ -44,8 +57,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class SectionsComponent implements OnInit, OnDestroy {
   @Input()
-  @HostBinding('class.modal')
-  modal = false;
+  @HostBinding('class.app-modal') modal = false;
 
   @Output()
   closed = new EventEmitter();
@@ -359,7 +371,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
       localStorage.getItem('sigeit_section_params') as string
     );
 
-    if (Object.keys(this.queryParamsList).length !== 0) {
+    if (Object?.keys(this.queryParamsList)?.length) {
       this.readingFromParams = true;
       let { departmentId, semesterId, subjectId } = this.queryParamsList;
       let lastDepartment, lastSemester, lastSubject;

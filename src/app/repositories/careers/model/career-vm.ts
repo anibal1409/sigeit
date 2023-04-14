@@ -3,7 +3,7 @@ export interface CareerVM {
   name: string;
   description?: string;
   status: boolean | string;
-  id_department: number;
+  departmentId: number;
   logo: string;
   abbreviation: string;
 }

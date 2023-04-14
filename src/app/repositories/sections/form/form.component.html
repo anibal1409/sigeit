@@ -48,7 +48,7 @@
                 placeholder="Seleccione un profesor"
                 aria-label="profesor"
                 matInput
-                formControlName="teacher"
+                formControlName="teacherId"
                 [matAutocomplete]="autoTeacher"
               />
               <mat-autocomplete
@@ -63,7 +63,7 @@
                   {{ teacher.first_name }}
                 </mat-option>
               </mat-autocomplete>
-              <mat-error *ngIf="form.controls['teacher'].hasError('required')"
+              <mat-error *ngIf="form.controls['teacherId'].hasError('required')"
                 >Campo Requerido</mat-error
               >
             </mat-form-field>

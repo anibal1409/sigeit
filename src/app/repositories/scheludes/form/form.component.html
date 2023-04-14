@@ -1,3 +1,6 @@
+<div *ngIf="classroomScheduleClash" [innerHTML]="classroomScheduleClash" class="text-danger font-weight-bold px-5 parpadeo"></div>
+<div *ngIf="teacherScheduleClash" [innerHTML]="teacherScheduleClash" class="text-danger font-weight-bold px-5 parpadeo"></div>
+
 <div class="mat-container">
   <mat-card>
     <mat-card-header>
@@ -77,7 +80,6 @@
               />
               <mat-autocomplete
                 #autoStart="matAutocomplete"
-                [displayWith]="displayHours"
               >
                 <mat-option
                   *ngFor="let start of obs_startInterval | async"
@@ -110,7 +112,6 @@
               />
               <mat-autocomplete
                 #autoEnd="matAutocomplete"
-                [displayWith]="displayHours"
               >
                 <mat-option
                   *ngFor="let end of obs_endInterval | async"
@@ -132,7 +133,6 @@
 
         <div class="row">
           <div class="col d-flex justify-content-end">
-            
             <button
               (click)="saveWarning()"
               mat-raised-button

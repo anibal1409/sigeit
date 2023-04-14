@@ -295,3 +295,19 @@ body {
   right: 2rem;
   z-index: 500;
 }
+
+.parpadeo {
+  animation: parpadeo 5s linear infinite;
+}
+
+@keyframes parpadeo {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

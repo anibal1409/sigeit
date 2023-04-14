@@ -1,7 +1,7 @@
 :host {
-  .modal {
+  &.app-modal {
     #modal-header {
-      display: initial !important;
+      display: flex !important;
     }
   }
   #modal-title {

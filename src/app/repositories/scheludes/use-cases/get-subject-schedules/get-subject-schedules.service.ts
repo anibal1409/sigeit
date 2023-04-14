@@ -1,6 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+
+import {
+  map,
+  Observable,
+} from 'rxjs';
+
 import { Schedule2ScheduleItemVM } from '../../mappers';
 import { ScheduleItemVM } from '../../model';
 
@@ -16,10 +21,10 @@ const daySort = {
 export class GetSubjectSchedulesService {
   constructor(private http: HttpClient) {}
 
-  exec(subjectId: number): Observable<Array<ScheduleItemVM>> {
+  exec(subjectId: number, periodId: number): Observable<Array<ScheduleItemVM>> {
     return this.http
       .get(
-        `http://localhost:3000/schedules?_expand=section&_expand=day&_expand=classroom`
+        `http://localhost:3000/schedules?periodId=${periodId}&_expand=section&_expand=day&_expand=classroom`
       )
       .pipe(
         map((schedules: any) => schedules.map(Schedule2ScheduleItemVM)),

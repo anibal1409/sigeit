@@ -1,10 +1,21 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ClassroomVM } from './model';
-import { HttpClient } from '@angular/common/http';
-import { TableDataVM, TableService } from 'src/app/common';
-import { Subscription, finalize } from 'rxjs';
-import { ClassroomsService } from './classrooms.service';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+
+import {
+  finalize,
+  Subscription,
+} from 'rxjs';
+import {
+  TableDataVM,
+  TableService,
+} from 'src/app/common';
 import { StateService } from 'src/app/common/state';
+
+import { ClassroomsService } from './classrooms.service';
+import { ClassroomVM } from './model';
 
 @Component({
   selector: 'app-classrooms',
@@ -31,7 +42,7 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
         cell: (element: { [key: string]: string }) => `${element['type']}`,
       },
       {
-        columnDef: 'id_department',
+        columnDef: 'departmentId',
         header: 'Departamento',
         cell: (element: { [key: string]: string }) =>
           `${(element['department'] as any).name}`,

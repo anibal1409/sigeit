@@ -1,10 +1,21 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UsersService } from './users.service';
-import { Subscription, finalize } from 'rxjs';
-import { TableDataVM, TableService } from '../../common';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 
-import { UserVM } from './model';
+import {
+  finalize,
+  Subscription,
+} from 'rxjs';
 import { StateService } from 'src/app/common/state';
+
+import {
+  TableDataVM,
+  TableService,
+} from '../../common';
+import { UserVM } from './model';
+import { UsersService } from './users.service';
 
 @Component({
   selector: 'sigeit-users',
@@ -42,7 +53,7 @@ export class UsersComponent implements OnInit, OnDestroy {
         cell: (element: { [key: string]: string }) => `${element['email']}`,
       },
       {
-        columnDef: 'id_department',
+        columnDef: 'departmentId',
         header: 'Departamento',
         cell: (element: { [key: string]: string }) =>
           `${(element['department'] as any).name}`,

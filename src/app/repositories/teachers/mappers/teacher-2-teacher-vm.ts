@@ -7,7 +7,7 @@ export function Teacher2TeacherVM(Teacher: any): TeacherVM {
     first_name: Teacher?.first_name,
     last_name: Teacher?.last_name,
     email: Teacher?.email,
-    id_department: Teacher?.id_department,
+    departmentId: Teacher?.departmentId,
     status: Teacher?.status,
   };
 }

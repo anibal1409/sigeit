@@ -1,6 +1,18 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
 
 import {
   finalize,
@@ -25,9 +37,11 @@ import { DepartmentVM } from '../departments';
 import { SectionVM } from '../sections';
 import { SectionsComponent } from '../sections/sections.component';
 import { SubjectVM } from '../subjects';
-import { RowActionSchedule, ScheduleVM } from './model';
+import {
+  RowActionSchedule,
+  ScheduleVM,
+} from './model';
 import { SchedulesService } from './scheludes.service';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-scheludes',
@@ -111,12 +125,14 @@ export class ScheludesComponent implements OnInit, OnDestroy {
   departmentId = 0;
   semester = -1;
   subjectId = 0;
-  sectionId = 1;
+  sectionId = 0;
   scheduleId = 0;
+  teacherId = 0;
 
   showForm = false;
   loading = false;
   reload = true;
+  showTableSchedules = false;
 
   private sub$ = new Subscription();
   addDisabled = true;
@@ -217,7 +233,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
       this.form.get('subjectId')?.valueChanges.subscribe(async (subject) => {
         if (subject && subject.id) {
           const allSectionsData = await lastValueFrom(
-            this.schedulesService.getSubjectSchedules$(subject.id)
+            this.schedulesService.getSubjectSchedules$(subject.id, this.periodId)
           );
           this.tableService.setData({
             ...this.scheludeData,
@@ -245,6 +261,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('sectionId')?.valueChanges.subscribe((section) => {
+        this.teacherId = +section?.teacherId;
         this.sectionId = +section?.id;
         if (section && section.id) {
           this.addParams('sectionId', section.id);
