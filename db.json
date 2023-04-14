@@ -270,31 +270,31 @@
     {
       "id": 1,
       "name": "Lunes",
-      "abbreviation": 1,
+      "abbreviation": "Lun",
       "status": true
     },
     {
       "id": 2,
       "name": "Martes",
-      "abbreviation": 2,
+      "abbreviation": "Mar",
       "status": true
     },
     {
       "id": 3,
       "name": "Miercoles",
-      "abbreviation": 3,
+      "abbreviation": "Mie",
       "status": true
     },
     {
       "id": 4,
       "name": "Jueves",
-      "abbreviation": 4,
+      "abbreviation": "Jue",
       "status": true
     },
     {
       "id": 5,
       "name": "Viernes",
-      "abbreviation": 5,
+      "abbreviation": "Vie",
       "status": true
     },
     {

@@ -26,7 +26,10 @@ import {
   GetSubjectSectionsService,
   SectionItemVM,
 } from '../sections';
-import { SubjectVM } from '../subjects';
+import {
+  SubjectItemVM,
+  SubjectVM,
+} from '../subjects';
 import { FindSubjectService } from '../subjects/use-cases';
 import {
   GetTeachersService,
@@ -44,6 +47,7 @@ import {
   GetAllDaySchedulesService,
   GetClassroomScheduleService,
   GetDaysService,
+  GetSectionsSchedulesSemesterService,
   GetSectionsSchedulesService,
   GetSubjectSchedulesService,
   GetTeacherSectionsService,
@@ -58,7 +62,7 @@ export class SchedulesService {
 
   constructor(
     private getDepartamentsService: GetDepartamentsBySchoolService,
-    private GetSubjectsByDepartmentService: GetSubjectsByDepartmentService,
+    private getSubjectsByDepartmentService: GetSubjectsByDepartmentService,
     private getSubjectSectionsService: GetSubjectSectionsService,
     private getTeachersService: GetTeachersService,
     private findPeriodService: FindPeriodService,
@@ -75,6 +79,7 @@ export class SchedulesService {
     private getTeacherSectionsService: GetTeacherSectionsService,
     private getAllClassroomSechedulesService: GetAllClassroomSchedulesService,
     private getAllDaySchedulesService: GetAllDaySchedulesService,
+    private getSectionsSchedulesSemesterService: GetSectionsSchedulesSemesterService,
   ) { }
 
   getDepartaments$(idSchool: number): Observable<Array<DepartmentVM>> {
@@ -85,7 +90,7 @@ export class SchedulesService {
     departmentId: number,
     semester: number
   ): Observable<Array<SubjectVM>> {
-    return this.GetSubjectsByDepartmentService.exec(departmentId, semester);
+    return this.getSubjectsByDepartmentService.exec(departmentId, semester);
   }
 
   getSections$(
@@ -257,5 +262,9 @@ export class SchedulesService {
 
   changeSchedules$(): Observable<boolean> {
     return this._changeSchedules.asObservable();
+  }
+
+  getSectionsSchedulesSemesterService$(departmentId: number, periodId: number): Observable<Array<SubjectItemVM>> {
+    return this.getSectionsSchedulesSemesterService.exec(departmentId, periodId);
   }
 }

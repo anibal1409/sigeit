@@ -180,6 +180,17 @@
   </button>
 </div>
 
+<div class="w-100 d-flex justify-content-end px-4">
+  <button
+    (click)="showTableSchedules = !showTableSchedules"
+    mat-raised-button
+    [color]="'accent'"
+    [routerLink]="['semesters']" 
+  >
+    Mostrar horarios planificados por semestre
+  </button>
+</div>
+
 
 <ng-container *ngIf="showTableSchedules && departmentId">
   <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center" animationDuration="0ms">
@@ -198,6 +209,8 @@
     </mat-tab>
   </mat-tab-group>
 </ng-container>
+
+
 
 
 

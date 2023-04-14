@@ -9,3 +9,4 @@ export * from './get-teacher-sections';
 export * from './get-subject-schedules';
 export * from './get-all-classroom-schedules';
 export * from './get-all-day-schedules';
+export * from './get-sections-schedules-semester';

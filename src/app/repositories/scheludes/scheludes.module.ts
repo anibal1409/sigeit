@@ -36,6 +36,9 @@ import {
   DaysSchedulesComponent,
 } from './days-schedules/days-schedules.component';
 import { FormComponent } from './form/form.component';
+import {
+  SchedulesSemestersComponent,
+} from './schedules-semesters/schedules-semesters.component';
 import { ScheludesRoutingModule } from './scheludes-routing.module';
 import { ScheludesComponent } from './scheludes.component';
 import { SchedulesService } from './scheludes.service';
@@ -46,6 +49,7 @@ import {
   GetAllDaySchedulesService,
   GetClassroomScheduleService,
   GetDaysService,
+  GetSectionsSchedulesSemesterService,
   GetSectionsSchedulesService,
   GetSubjectSchedulesService,
   GetTeacherSectionsService,
@@ -54,7 +58,7 @@ import {
 } from './use-cases';
 
 @NgModule({
-  declarations: [ScheludesComponent, FormComponent, DaysSchedulesComponent, ClassroomsSchedulesComponent],
+  declarations: [ScheludesComponent, FormComponent, DaysSchedulesComponent, ClassroomsSchedulesComponent, SchedulesSemestersComponent],
   imports: [
     CommonModule,
     ScheludesRoutingModule,
@@ -95,6 +99,7 @@ import {
     GetTeacherSectionsService,
     GetAllClassroomSchedulesService,
     GetAllDaySchedulesService,
+    GetSectionsSchedulesSemesterService,
   ],
 })
-export class ScheludesModule {}
+export class ScheludesModule { }

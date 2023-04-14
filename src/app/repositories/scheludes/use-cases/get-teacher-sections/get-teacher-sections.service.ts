@@ -6,6 +6,7 @@ import {
   map,
   mergeMap,
   Observable,
+  of,
 } from 'rxjs';
 
 import {
@@ -41,7 +42,7 @@ export class GetTeacherSectionsService {
               }
             );
 
-            return forkJoin(scheduleObservables);
+            return sections?.length ? forkJoin(scheduleObservables) : of([]);
           }
         ),
       );
