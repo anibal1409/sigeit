@@ -1,21 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import {
-  map,
-  Observable,
-} from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 import { Schedule2ScheduleItemVM } from '../../mappers';
 import { ScheduleItemVM } from '../../model';
-
-const daySort = {
-  Lunes: 1,
-  Martes: 2,
-  Miercoles: 3,
-  Jueves: 4,
-  Viernes: 5,
-};
 
 @Injectable()
 export class GetSubjectSchedulesService {
@@ -42,15 +31,9 @@ export class GetSubjectSchedulesService {
                   return -1;
                 } else {
                   if (prev.day?.name && next.day?.name) {
-                    if (
-                      daySort[prev.day.name as keyof typeof daySort] >
-                      daySort[next.day.name as keyof typeof daySort]
-                    ) {
+                    if (prev.day.id > next.day.id) {
                       return 1;
-                    } else if (
-                      daySort[prev.day.name as keyof typeof daySort] <
-                      daySort[next.day.name as keyof typeof daySort]
-                    ) {
+                    } else if (prev.day.id < next.day.id) {
                       return -1;
                     } else {
                       if (prev.start > next.start) {

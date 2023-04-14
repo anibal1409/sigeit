@@ -1,18 +1,7 @@
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import {
-  ActivatedRoute,
-  Router,
-} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import {
   finalize,
@@ -37,10 +26,7 @@ import { DepartmentVM } from '../departments';
 import { SectionVM } from '../sections';
 import { SectionsComponent } from '../sections/sections.component';
 import { SubjectVM } from '../subjects';
-import {
-  RowActionSchedule,
-  ScheduleVM,
-} from './model';
+import { RowActionSchedule, ScheduleVM } from './model';
 import { SchedulesService } from './scheludes.service';
 
 @Component({
@@ -183,6 +169,8 @@ export class ScheludesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    localStorage.setItem('sigeit_schedule_params', JSON.stringify({}));
+
     this.sub$.unsubscribe();
     this.scheludeData = {
       ...this.scheludeData,
@@ -233,7 +221,10 @@ export class ScheludesComponent implements OnInit, OnDestroy {
       this.form.get('subjectId')?.valueChanges.subscribe(async (subject) => {
         if (subject && subject.id) {
           const allSectionsData = await lastValueFrom(
-            this.schedulesService.getSubjectSchedules$(subject.id, this.periodId)
+            this.schedulesService.getSubjectSchedules$(
+              subject.id,
+              this.periodId
+            )
           );
           this.tableService.setData({
             ...this.scheludeData,

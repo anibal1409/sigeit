@@ -1,0 +1,25 @@
+#modal-close-button {
+  width: 2rem;
+  height: 2rem;
+}
+
+.mat-header {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 2rem;
+  margin-top: 2rem;
+  margin-right: 2rem;
+}
+
+.mat-container {
+  margin: 1.5rem;
+}
+table {
+  width: 100%;
+  table-layout: fixed;
+  overflow-y: scroll;
+}
+
+mat-column {
+  width: max-content;
+}

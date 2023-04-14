@@ -9,19 +9,9 @@ import {
   Optional,
   Output,
 } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import {
-  MAT_DIALOG_DATA,
-  MatDialog,
-} from '@angular/material/dialog';
-import {
-  ActivatedRoute,
-  Router,
-} from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import {
   finalize,
@@ -44,10 +34,7 @@ import { StateService } from 'src/app/common/state';
 
 import { DepartmentVM } from '../departments';
 import { SubjectVM } from '../subjects/model';
-import {
-  RowActionSection,
-  SectionVM,
-} from './model';
+import { RowActionSection, SectionVM } from './model';
 import { SectionsService } from './sections.service';
 
 @Component({
@@ -57,7 +44,8 @@ import { SectionsService } from './sections.service';
 })
 export class SectionsComponent implements OnInit, OnDestroy {
   @Input()
-  @HostBinding('class.app-modal') modal = false;
+  @HostBinding('class.app-modal')
+  modal = false;
 
   @Output()
   closed = new EventEmitter();
@@ -129,6 +117,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnDestroy(): void {
+    localStorage.setItem('sigeit_section_params', JSON.stringify({}));
     this.sub$.unsubscribe();
     this.modal = false;
     this.sectionsData = {
@@ -176,10 +165,10 @@ export class SectionsComponent implements OnInit, OnDestroy {
         this.departmentId = +department.id;
         if (department && department.id) {
           this.filteredDepartments = of(this.departments);
-          if (Object.keys(this.data).length == 0) {
+          if (!this.data) {
             this.addParams('departmentId', department.id);
-            this.loadSubjects();
           }
+          this.loadSubjects();
         }
       })
     );
@@ -189,7 +178,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
         this.semester = +semester.id;
         if (semester && semester.id) {
           this.filteredSemesters = of(this.semesters);
-          if (Object.keys(this.data).length == 0) {
+          if (!this.data) {
             this.addParams('semesterId', semester.id);
           }
           this.loadSubjects();
@@ -202,7 +191,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
         this.subjectId = +subject.id;
         if (subject && subject.id) {
           this.filteredSubjects = of(this.subjects);
-          if (Object.keys(this.data).length == 0) {
+          if (!this.data) {
             this.addParams('subjectId', subject.id);
           }
           this.loadSections();

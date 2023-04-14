@@ -2,9 +2,11 @@ import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { Subscription } from 'rxjs';
+import { Subscription, finalize } from 'rxjs';
 
 import { SchedulesService } from '../scheludes.service';
+import { Router } from '@angular/router';
+import { StateService } from 'src/app/common/state';
 
 export class Group {
   level = 0;
@@ -19,10 +21,9 @@ export class Group {
 @Component({
   selector: 'app-schedules-semesters',
   templateUrl: './schedules-semesters.component.html',
-  styleUrls: ['./schedules-semesters.component.scss']
+  styleUrls: ['./schedules-semesters.component.scss'],
 })
 export class SchedulesSemestersComponent {
-
   title = 'Grid Grouping';
 
   public dataSource = new MatTableDataSource<any | Group>([]);
@@ -41,74 +42,98 @@ export class SchedulesSemestersComponent {
     {
       field: 'teacherName',
       text: 'Profesor',
-    }
+    },
   ];
   groupsByField = 'semester';
 
   private sub$ = new Subscription();
+  loading = false;
 
   constructor(
     private schedulesService: SchedulesService,
+    private router: Router,
+    private stateService: StateService
   ) {
-    this.columns = [{
-      field: 'code',
-      text: 'Codigo',
-    }, {
-      field: 'name',
-      text: 'Asignatura',
-    }, {
-      field: 'sectionName',
-      text: 'Seccion',
-    }, {
-      field: 'dayName',
-      text: 'Dia',
-    }, {
-      field: 'classroomName',
-      text: 'Aula',
-    }, {
-      field: 'start',
-      text: 'Desde',
-    }, {
-      field: 'end',
-      text: 'Hasta',
-    }, {
-      field: 'documentTeacher',
-      text: 'Profesor',
-    }, {
-      field: 'teacherName',
-      text: 'Nombre',
-    }, {
-      field: 'capacity',
-      text: 'Capacidad',
-    },];
-    this.displayedColumns = this.columns.map(column => column.field);
+    this.columns = [
+      {
+        field: 'code',
+        text: 'Codigo',
+      },
+      {
+        field: 'name',
+        text: 'Asignatura',
+      },
+      {
+        field: 'sectionName',
+        text: 'Seccion',
+      },
+      {
+        field: 'dayName',
+        text: 'Dia',
+      },
+      {
+        field: 'classroomName',
+        text: 'Aula',
+      },
+      {
+        field: 'start',
+        text: 'Desde',
+      },
+      {
+        field: 'end',
+        text: 'Hasta',
+      },
+      {
+        field: 'documentTeacher',
+        text: 'Profesor',
+      },
+      {
+        field: 'teacherName',
+        text: 'Nombre',
+      },
+      {
+        field: 'capacity',
+        text: 'Capacidad',
+      },
+    ];
+    this.displayedColumns = this.columns.map((column) => column.field);
     this.groupByColumns = ['semester'];
   }
 
   ngOnInit() {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.sub$.add(
-      this.schedulesService.getSectionsSchedulesSemesterService$(1, 3).subscribe(
-        (subjects) => {
+      this.schedulesService
+        .getSectionsSchedulesSemesterService$(1, 3)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            this.stateService.setLoading(this.loading);
+          })
+        )
+        .subscribe((subjects) => {
           console.log(subjects);
-          
-        this._alldata = subjects;
-        this.dataSource.data = this.addGroups(this._alldata, this.groupByColumns);
-        this.dataSource.filterPredicate = this.customFilterPredicate.bind(this);
-        this.dataSource.filter = performance.now().toString();
-        }
-      )
+
+          this._alldata = subjects;
+          this.dataSource.data = this.addGroups(
+            this._alldata,
+            this.groupByColumns
+          );
+          this.dataSource.filterPredicate =
+            this.customFilterPredicate.bind(this);
+          this.dataSource.filter = performance.now().toString();
+        })
     );
 
     this.sub$.add(
-      this.groupByCtrl.valueChanges.subscribe(
-        (field) => {
-          if (field) {
-            this.unGroupBy(this.groupsByField);
-            this.groupBy(field);
-            this.groupsByField = field;
-          }
+      this.groupByCtrl.valueChanges.subscribe((field) => {
+        if (field) {
+          this.unGroupBy(this.groupsByField);
+          this.groupBy(field);
+          this.groupsByField = field;
         }
-      )
+      })
     );
   }
 
@@ -118,7 +143,11 @@ export class SchedulesSemestersComponent {
     this.dataSource.filter = performance.now().toString();
   }
 
-  checkGroupByColumn(field: any, add: any ) {
+  navigateBack(): void {
+    this.router.navigate(['/dashboard/scheludes']);
+  }
+
+  checkGroupByColumn(field: any, add: any) {
     let found = null;
     for (const column of this.groupByColumns) {
       if (column === field) {
@@ -130,7 +159,7 @@ export class SchedulesSemestersComponent {
         this.groupByColumns.splice(found, 1);
       }
     } else {
-      if ( add ) {
+      if (add) {
         this.groupByColumns.push(field);
       }
     }
@@ -144,24 +173,22 @@ export class SchedulesSemestersComponent {
 
   // below is for grid row grouping
   customFilterPredicate(data: any | Group, filter: string): boolean {
-    return (data instanceof Group) ? data.visible : this.getDataRowVisible(data);
+    return data instanceof Group ? data.visible : this.getDataRowVisible(data);
   }
 
   getDataRowVisible(data: any): boolean {
-    const groupRows = this.dataSource.data.filter(
-      (row: Array<any>) => {
-        if (!(row instanceof Group)) {
-          return false;
-        }
-        let match = true;
-        this.groupByColumns.forEach((column: any) => {
-          if (!row[column] || !data[column] || row[column] !== data[column]) {
-            match = false;
-          }
-        });
-        return match;
+    const groupRows = this.dataSource.data.filter((row: Array<any>) => {
+      if (!(row instanceof Group)) {
+        return false;
       }
-    );
+      let match = true;
+      this.groupByColumns.forEach((column: any) => {
+        if (!row[column] || !data[column] || row[column] !== data[column]) {
+          match = false;
+        }
+      });
+      return match;
+    });
 
     if (groupRows.length === 0) {
       return true;
@@ -181,36 +208,49 @@ export class SchedulesSemestersComponent {
     return this.getSublevel(data, 0, groupByColumns, rootGroup);
   }
 
-  getSublevel(data: any[], level: number, groupByColumns: string[], parent: Group): any[] {
+  getSublevel(
+    data: any[],
+    level: number,
+    groupByColumns: string[],
+    parent: Group
+  ): any[] {
     if (level >= groupByColumns.length) {
       return data;
     }
     const groups = this.uniqueBy(
-      data.map(
-        row => {
-          const result: any = new Group();
-          result.level = level + 1;
-          result.parent = parent;
-          for (let i = 0; i <= level; i++) {
-            const field = this.groupsBy.find((item) => item.field === groupByColumns[i]);
-            result[groupByColumns[i]] = row[groupByColumns[i]];
-            result['name'] = field?.text;
-          }
-          
-          return result;
+      data.map((row) => {
+        const result: any = new Group();
+        result.level = level + 1;
+        result.parent = parent;
+        for (let i = 0; i <= level; i++) {
+          const field = this.groupsBy.find(
+            (item) => item.field === groupByColumns[i]
+          );
+          result[groupByColumns[i]] = row[groupByColumns[i]];
+          result['name'] = field?.text;
         }
-      ),
-      JSON.stringify);
+
+        return result;
+      }),
+      JSON.stringify
+    );
 
     const currentColumn = groupByColumns[level];
     let subGroups: any = [];
     groups.forEach((group: any) => {
-      const rowsInGroup = data.filter(row => group[currentColumn] === row[currentColumn]);
+      const rowsInGroup = data.filter(
+        (row) => group[currentColumn] === row[currentColumn]
+      );
       group.totalCounts = rowsInGroup.length;
-      const subGroup = this.getSublevel(rowsInGroup, level + 1, groupByColumns, group);
+      const subGroup = this.getSublevel(
+        rowsInGroup,
+        level + 1,
+        groupByColumns,
+        group
+      );
       subGroup.unshift(group);
       subGroups = subGroups.concat(subGroup);
-    });    
+    });
     return subGroups;
   }
 
@@ -227,20 +267,20 @@ export class SchedulesSemestersComponent {
   }
 
   equalPrevious(schedule: any, field: string): boolean {
-    let equal =  false;
-    const index = this._alldata.findIndex((item) => item.scheduleId ===  schedule.scheduleId);
+    let equal = false;
+    const index = this._alldata.findIndex(
+      (item) => item.scheduleId === schedule.scheduleId
+    );
     const fields = ['dayName', 'classroomName', 'start', 'end'];
     if (index > 0) {
       const scheduleData = this._alldata[index - 1];
-      equal = 
-        (schedule[field] === scheduleData[field] && 
-        schedule.sectionName === scheduleData.sectionName && 
-        !fields.includes(field) && 
-        schedule.code === scheduleData.code) || 
-        (
-          schedule.code === scheduleData.code && field === 'code' ||
-          schedule.name === scheduleData.name && field === 'name'
-        );
+      equal =
+        (schedule[field] === scheduleData[field] &&
+          schedule.sectionName === scheduleData.sectionName &&
+          !fields.includes(field) &&
+          schedule.code === scheduleData.code) ||
+        (schedule.code === scheduleData.code && field === 'code') ||
+        (schedule.name === scheduleData.name && field === 'name');
     }
 
     return equal;
@@ -249,5 +289,4 @@ export class SchedulesSemestersComponent {
   print(...data: any): void {
     console.log(data);
   }
-
 }

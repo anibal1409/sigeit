@@ -1,4 +1,3 @@
-
 <mat-form-field>
   <mat-label>Día</mat-label>
   <input
@@ -9,36 +8,44 @@
     [formControl]="dayCtrl"
     [matAutocomplete]="autoDay"
   />
-  <mat-autocomplete
-    #autoDay="matAutocomplete"
-    [displayWith]="displayFn"
-  >
-    <mat-option
-      *ngFor="let day of filteredDays | async"
-      [value]="day"
-    >
+  <mat-autocomplete #autoDay="matAutocomplete" [displayWith]="displayFn">
+    <mat-option *ngFor="let day of filteredDays | async" [value]="day">
       {{ day.name }}
     </mat-option>
   </mat-autocomplete>
 </mat-form-field>
-<mat-checkbox 
-  [formControl]="allClassroomsCtrl"
->
+<mat-checkbox [formControl]="allClassroomsCtrl">
   Mostrar todas las aulas
 </mat-checkbox>
-<mat-table [dataSource]="dataSourceByDay">
-  <ng-container matColumnDef="hora">
-    <mat-header-cell *matHeaderCellDef>Hora/Aula</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{row.hora}}</mat-cell>
-  </ng-container>
+<div class="mat-container" *ngIf="dataSourceByDay.length">
+  <mat-card>
+    <mat-card-content class="mat-card-content">
+      <mat-table [dataSource]="dataSourceByDay">
+        <ng-container matColumnDef="hora">
+          <mat-header-cell *matHeaderCellDef>Hora/Aula</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{ row.hora }}</mat-cell>
+        </ng-container>
 
-  <ng-container *ngFor="let classroom of classrooms" [matColumnDef]="classroom.name">
-    <mat-header-cell *matHeaderCellDef>{{classroom.name}}</mat-header-cell>
-    <mat-cell *matCellDef="let row">
-      {{row[classroom.name]?.text || ''}}
-    </mat-cell>
-  </ng-container>
+        <ng-container
+          *ngFor="let classroom of classrooms"
+          [matColumnDef]="classroom.name"
+        >
+          <mat-header-cell *matHeaderCellDef>{{
+            classroom.name
+          }}</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            {{ row[classroom.name]?.text || "" }}
+          </mat-cell>
+        </ng-container>
 
-  <mat-header-row *matHeaderRowDef="displayedColumnsByDay"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumnsByDay;"></mat-row>
-</mat-table>
+        <mat-header-row
+          *matHeaderRowDef="displayedColumnsByDay"
+        ></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumnsByDay"></mat-row>
+      </mat-table>
+    </mat-card-content>
+  </mat-card>
+</div>
+<div class="mat-container empty-table" *ngIf="!dataSourceByDay.length">
+  Seleccione un dia para visualizar el itinerario
+</div>
