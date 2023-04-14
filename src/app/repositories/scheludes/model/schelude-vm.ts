@@ -2,8 +2,8 @@ export interface ScheduleVM {
   id?: number;
   classroomId: number;
   dayId: number;
-  start: Date | string;
-  end: Date | string;
+  start: string;
+  end: string;
   sectionId: number;
   periodId: number;
 }

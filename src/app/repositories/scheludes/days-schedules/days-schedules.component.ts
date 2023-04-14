@@ -1,40 +1,191 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
+import { FormControl } from '@angular/forms';
+
+import {
+  map,
+  Observable,
+  of,
+  startWith,
+  Subscription,
+} from 'rxjs';
+
+import { ClassroomVM } from '../../classrooms';
+import { DayVM } from '../model';
+import { SchedulesService } from '../scheludes.service';
 
 @Component({
   selector: 'app-days-schedules',
   templateUrl: './days-schedules.component.html',
   styleUrls: ['./days-schedules.component.scss']
 })
-export class DaysSchedulesComponent {
-  horarios = [
-    { horaInicio: '07:00', horaFin: '09:25', dia: 'Lunes', aula: 'A1', asignatura: 'Matemáticas' },
-    { horaInicio: '10:20', horaFin: '11:55', dia: 'Lunes', aula: 'A2', asignatura: 'Física' },
-    { horaInicio: '07:00', horaFin: '10:15', dia: 'Miércoles', aula: 'A3', asignatura: 'Programación' },
-    { horaInicio: '10:20', horaFin: '11:55', dia: 'Miércoles', aula: 'A4', asignatura: 'Base de datos' },
-    { horaInicio: '14:25', horaFin: '16:05', dia: 'Viernes', aula: 'A5', asignatura: 'Inglés' },
-  ];
-  dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
-  horas = ['07:00', '07:50', '8:40', '09:30', '10:20', '11:05', '12:00', '12:45', '13:35', '14:25', '16:10', '16:50'];
-  matriz: string[][] = this.horas.map(() => this.dias.map(() => ''));
-  constructor() {
-    this.horarios.forEach(horario => {
-      const diaIndex = this.dias.indexOf(horario.dia);
-      const horaInicioIndex = this.horas.indexOf(horario.horaInicio);
-      const horaFinIndex = this.horas.indexOf(horario.horaFin);
-      
-      for (let i = horaInicioIndex; i < horaFinIndex; i++) {
-        this.matriz[i][diaIndex] = `${horario.asignatura}\n${horario.aula}`;
-      }
-    });
-    this.horarios.forEach(horario => {
-      const fila = this.dias.indexOf(horario.dia);
-      const colInicio = this.horas.indexOf(horario.horaInicio);
-      const colFin = this.horas.indexOf(horario.horaFin);
-    
-      for (let i = colInicio; i < colFin; i++) {
-        this.matriz[i][fila] = `${horario.asignatura}\n${horario.aula}`;
-      }
-    });
+export class DaysSchedulesComponent implements OnInit, OnDestroy, OnChanges {
+  @Input()
+  periodId!: number;
+
+  @Input()
+  departmentId!: number;
+
+  startIntervals: Array<string> = [];
+  endIntervals: Array<string> = [];
+  classrooms: Array<ClassroomVM> = [];
+  days: Array<DayVM> = [];
+  dataScheduleByClassroom: any[][] = this.startIntervals.map(() => this.days.map(() => {return {text: ''};}));
+  dataSourceByClassroom: any[] = [];
+  displayedColumnsByClassroom: string[] = ['hora'];
+  
+  filteredClassrooms!: Observable<ClassroomVM[]>;
+  classroomCtrl = new FormControl();
+
+  
+  allClassroomsCtrl = new FormControl(false);
+  allClassrooms = false;
+
+  private sub$ = new Subscription();
+
+  constructor(
+    private schedulesService: SchedulesService,
+  ) {
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['departmentId']?.currentValue) {
+      this.loadClassrooms();
+    }
+  }
+  ngOnDestroy(): void {
+    this.sub$.unsubscribe();
+  }
+
+  ngOnInit(): void {
+    this.loadDays();
+    this.loadIntervals();
+    this.subClassrooms();
+  }
+
+  private loadDays(): void {
+    this.sub$.add(
+      this.schedulesService.getDays$().subscribe((days) => {
+        this.days = days;
+        this.displayedColumnsByClassroom = ['hora'];
+        days.forEach(day => {
+          this.displayedColumnsByClassroom.push(day.name);
+        });
+      })
+    );
+  }
+
+  private loadIntervals(): void {
+    this.sub$.add(
+      this.schedulesService.findPeriod$(this.periodId).subscribe((period) => {
+        const intervals = this.schedulesService.generateTimeIntervalsStartEnd(
+          period.start_time,
+          period.end_time,
+          period.duration,
+          period.interval
+        );
+        this.startIntervals = intervals.start;
+        this.endIntervals = intervals.end;
+
+        this.loadSchedulesClassroom();
+      })
+    );
+  }
+
+  private loadSchedulesClassroom(): void {
+    const classroomId = this.classroomCtrl.value?.id;
+    if (classroomId) {
+      this.sub$.add(
+        this.schedulesService.getAllClassroomSchedules$(classroomId, this.periodId).subscribe(
+          (schedules) => {
+            this.dataScheduleByClassroom = this.startIntervals.map(() => this.days.map(() => {return {text: ''};}));
+            
+            schedules.forEach(schedule => {
+              const dayIndex = this.days.findIndex((day) => day.id === schedule.dayId);
+              const startIndex = this.startIntervals.indexOf(schedule.start);
+              const endIndex = this.endIntervals.indexOf(schedule.end);
+              
+              for (let i = startIndex; i <= endIndex; i++) {
+                if (this.dataScheduleByClassroom[i][dayIndex]?.text) {
+                  this.dataScheduleByClassroom[i][dayIndex].text = 'Varias';
+                } else {
+                  this.dataScheduleByClassroom[i][dayIndex].text = `${schedule.section?.name} - ${schedule.section?.subject?.name}`;
+                }
+              }
+            });
+
+            this.dataSourceByClassroom = this.startIntervals.map((hora, index) => {
+              const row: any = { hora };
+              this.days.forEach((day, dayIndex) => {
+                row[day.name] = this.dataScheduleByClassroom[index][dayIndex];
+              });
+              return row;
+            });
+          }
+        )
+      );
+    }
+  }
+
+  displayFn(item: ClassroomVM | DayVM | any): string {
+    return item?.name;
+  }
+
+  private subClassrooms(): void {
+    this.sub$.add(
+      this.classroomCtrl?.valueChanges.subscribe((classroom) => {
+        if (classroom && classroom.id) {
+          this.filteredClassrooms = of(this.classrooms);
+          this.loadSchedulesClassroom();
+        }
+      })
+    );
+
+    this.sub$.add(
+      this.allClassroomsCtrl.valueChanges.subscribe((val) => {
+        this.allClassrooms = val as boolean;
+        this.loadClassrooms();
+      })
+    );
+  }
+
+  private _classroomsFilter(name: string): ClassroomVM[] {
+    const filterValue = name.toLowerCase();
+    return this.classrooms.filter(
+      (option) => option.name.toLowerCase().indexOf(filterValue) === 0
+    );
+  }
+
+  private loadClassrooms(): void {
+    this.sub$.add(
+      this.schedulesService
+        .getClassrooms$((!this.allClassrooms && this.departmentId) as any)
+        .subscribe((classrooms) => {
+          this.classrooms = classrooms;          
+          
+          if (this.classrooms?.length) {
+            this.filteredClassrooms = this.classroomCtrl.valueChanges.pipe(
+              startWith<string | ClassroomVM>(''),
+              map((value: any) => {
+                if (value !== null) {
+                  return typeof value === 'string' ? value : value.name;
+                }
+                return '';
+              }),
+              map((name: any) => {
+                return name
+                  ? this._classroomsFilter(name)
+                  : this.classrooms.slice();
+              })
+            );
+          }
+        })
+    );
+  }
 }

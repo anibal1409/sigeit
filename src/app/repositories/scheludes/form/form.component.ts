@@ -230,6 +230,9 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private validateClassroomSchedules(values: any): void {
+    this.crashWarning = false;
+    this.classroomScheduleClash = '';
+    this.crashMessage = '';
     if (this.form.valid && values?.classroomId?.type !== 'VIRTUAL') {
       const data = {
         ...values,
@@ -254,7 +257,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
               } - ${schedule.section?.name})</li>`;
           });
 
-          if (data.length !== 0) {
+          if (data?.length) {
             this.crashWarning = true;
           } else {
             this.crashWarning = false;
@@ -268,6 +271,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private validateTeacherSchedules(values: any): void {
+    this.teacherScheduleClash = '';
     if (this.form.valid) {
       const data = {
         ...values,

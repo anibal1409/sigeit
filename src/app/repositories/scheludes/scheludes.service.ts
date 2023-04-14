@@ -110,16 +110,16 @@ export class SchedulesService {
     return this.removeScheduleService.exec(scheduleId);
   }
 
-  getSubjectSchedules$(subjectId: number): Observable<ScheduleItemVM[]> {
-    return this.getSubjectSchedules.exec(subjectId);
+  getSubjectSchedules$(subjectId: number, periodId: number): Observable<ScheduleItemVM[]> {
+    return this.getSubjectSchedules.exec(subjectId, periodId);
   }
 
-  getAllClassroomSchedules$(subjectId: number): Observable<ScheduleItemVM[]> {
-    return this.getAllClassroomSechedulesService.exec(subjectId);
+  getAllClassroomSchedules$(classroomId: number, periodId: number): Observable<ScheduleItemVM[]> {
+    return this.getAllClassroomSechedulesService.exec(classroomId, periodId);
   }
 
-  getAllDaySchedules$(subjectId: number): Observable<ScheduleItemVM[]> {
-    return this.getAllDaySchedulesService.exec(subjectId);
+  getAllDaySchedules$(dayId: number, periodId: number): Observable<ScheduleItemVM[]> {
+    return this.getAllDaySchedulesService.exec(dayId, periodId);
   }
 
   generateTimeIntervals(

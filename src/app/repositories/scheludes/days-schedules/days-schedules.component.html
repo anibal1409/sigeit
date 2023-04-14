@@ -1,14 +1,50 @@
-<table>
-  <thead>
-    <tr>
-      <th></th>
-      <th *ngFor="let dia of dias">{{dia}}</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let hora of horas; let i = index">
-      <th>{{hora}}</th>
-      <td *ngFor="let asignatura of matriz[i]">{{asignatura}}</td>
-    </tr>
-  </tbody>
-</table>
+<mat-form-field>
+  <mat-label>Aula</mat-label>
+  <input
+    type="text"
+    placeholder="Seleccione un aula"
+    aria-label="Aula"
+    matInput
+    [formControl]="classroomCtrl"
+    [matAutocomplete]="autoClassroom"
+  />
+  <mat-autocomplete
+    #autoClassroom="matAutocomplete"
+    [displayWith]="displayFn"
+  >
+    <mat-option
+      *ngFor="let classroom of filteredClassrooms | async"
+      [value]="classroom"
+    >
+      {{ classroom.name }}
+    </mat-option>
+  </mat-autocomplete>
+  <mat-error
+    *ngIf="classroomCtrl.hasError('required')"
+    >Campo Requerido</mat-error
+  >
+</mat-form-field>
+<mat-checkbox 
+  [formControl]="allClassroomsCtrl"
+>
+  Mostrar todas
+</mat-checkbox>
+<mat-table [dataSource]="dataSourceByClassroom">
+  <ng-container matColumnDef="hora">
+    <mat-header-cell *matHeaderCellDef>Hora/Dia</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.hora}}</mat-cell>
+  </ng-container>
+
+  <ng-container *ngFor="let day of days" [matColumnDef]="day.name">
+    <mat-header-cell *matHeaderCellDef>{{day.name}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      {{
+        day.name
+      }}
+      {{row[day.name]?.text || ''}}
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumnsByClassroom"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumnsByClassroom;"></mat-row>
+</mat-table>

@@ -365,7 +365,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
       localStorage.getItem('sigeit_section_params') as string
     );
 
-    if (Object.keys(this.queryParamsList).length !== 0) {
+    if (Object?.keys(this.queryParamsList)?.length) {
       this.readingFromParams = true;
       let { departmentId, semesterId, subjectId } = this.queryParamsList;
       let lastDepartment, lastSemester, lastSubject;

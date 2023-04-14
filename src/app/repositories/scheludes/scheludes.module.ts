@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
 
 import { TableModule } from 'src/app/common';
 
@@ -28,6 +29,9 @@ import {
 import { SectionsModule } from '../sections/sections.module';
 import { FindSubjectService } from '../subjects/use-cases';
 import { GetTeachersService } from '../teachers';
+import {
+  ClassroomsSchedulesComponent,
+} from './classrooms-schedules/classrooms-schedules.component';
 import {
   DaysSchedulesComponent,
 } from './days-schedules/days-schedules.component';
@@ -50,7 +54,7 @@ import {
 } from './use-cases';
 
 @NgModule({
-  declarations: [ScheludesComponent, FormComponent, DaysSchedulesComponent],
+  declarations: [ScheludesComponent, FormComponent, DaysSchedulesComponent, ClassroomsSchedulesComponent],
   imports: [
     CommonModule,
     ScheludesRoutingModule,
@@ -69,6 +73,7 @@ import {
     FormsModule,
     SectionsModule,
     MatTableModule,
+    MatTabsModule,
   ],
   providers: [
     SchedulesService,

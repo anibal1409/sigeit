@@ -2608,6 +2608,15 @@
       "status": true,
       "capacity": 20,
       "id": 35
+    },
+    {
+      "subjectId": 17,
+      "periodId": 3,
+      "teacherId": 2,
+      "name": "01",
+      "status": true,
+      "capacity": 20,
+      "id": 36
     }
   ],
   "schedules": [
@@ -2945,15 +2954,6 @@
       "id": 38
     },
     {
-      "classroomId": 20,
-      "dayId": 1,
-      "start": "07:00",
-      "end": "07:45",
-      "sectionId": 0,
-      "periodId": 3,
-      "id": 39
-    },
-    {
       "classroomId": 12,
       "dayId": 2,
       "start": "07:00",
@@ -2979,6 +2979,24 @@
       "sectionId": 27,
       "periodId": 3,
       "id": 42
+    },
+    {
+      "classroomId": 12,
+      "dayId": 3,
+      "start": "07:00",
+      "end": "09:25",
+      "sectionId": 36,
+      "periodId": 3,
+      "id": 43
+    },
+    {
+      "classroomId": 13,
+      "dayId": 4,
+      "start": "07:00",
+      "end": "09:25",
+      "sectionId": 27,
+      "periodId": 3,
+      "id": 44
     }
   ]
 }
