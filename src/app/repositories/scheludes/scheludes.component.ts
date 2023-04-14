@@ -419,9 +419,11 @@ export class ScheludesComponent implements OnInit, OnDestroy {
     const dialogRef = this.matDialog.open(SectionsComponent, {
       data: {
         periodId: this.periodId,
-        departmentId: this.departmentId,
-        semester: this.semester,
-        subjectId: this.subjectId,
+        departmentId: this.departments.find(
+          (dep) => dep.id == this.departmentId
+        ),
+        semester: this.semesters.find((sems) => sems.id == this.semester),
+        subjectId: this.subjects.find((subj) => subj.id == this.subjectId),
       },
       hasBackdrop: true,
     });
