@@ -164,8 +164,10 @@ export class SectionsComponent implements OnInit, OnDestroy {
         this.departmentId = +department.id;
         if (department && department.id) {
           this.filteredDepartments = of(this.departments);
-          this.addParams('departmentId', department.id);
-          this.loadSubjects();
+          if (Object.keys(this.data).length == 0) {
+            this.addParams('departmentId', department.id);
+            this.loadSubjects();
+          }
         }
       })
     );
@@ -175,7 +177,9 @@ export class SectionsComponent implements OnInit, OnDestroy {
         this.semester = +semester.id;
         if (semester && semester.id) {
           this.filteredSemesters = of(this.semesters);
-          this.addParams('semesterId', semester.id);
+          if (Object.keys(this.data).length == 0) {
+            this.addParams('semesterId', semester.id);
+          }
           this.loadSubjects();
         }
       })
@@ -186,7 +190,9 @@ export class SectionsComponent implements OnInit, OnDestroy {
         this.subjectId = +subject.id;
         if (subject && subject.id) {
           this.filteredSubjects = of(this.subjects);
-          this.addParams('subjectId', subject.id);
+          if (Object.keys(this.data).length == 0) {
+            this.addParams('subjectId', subject.id);
+          }
           this.loadSections();
         }
       })
