@@ -1,0 +1,37 @@
+<mat-form-field appearance="fill">
+  <mat-label>Agrupar por</mat-label>
+  <mat-select [formControl]="groupByCtrl">
+    <mat-option *ngFor="let groupBy of groupsBy" [value]="groupBy.field">{{
+      groupBy.text
+    }}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-table [dataSource]="dataSource">
+
+  <ng-container *ngFor="let column of columns; let i = index" matColumnDef="{{ column.field }}">
+    <mat-header-cell *matHeaderCellDef>{{ column.text }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <ng-container *ngIf="!equalPrevious(row, column.field)">
+        {{ row[column.field] }}
+      </ng-container>
+      
+    </mat-cell>
+  </ng-container>
+
+	<mat-header-row mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+	<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+	<!-- Group header -->
+	<ng-container matColumnDef="groupHeader">
+		<mat-cell colspan="999" *matCellDef="let group">
+      <mat-icon *ngIf="group.expanded">expand_less</mat-icon>
+      <mat-icon *ngIf="!group.expanded">expand_more</mat-icon>
+			<strong (click)="print(groupByColumns, group)">{{group.name}}  {{group[groupByColumns[group.level-1]]}}</strong>
+      </mat-cell>
+  </ng-container>
+
+  <mat-row *matRowDef="let row; columns: ['groupHeader']; when: isGroup" (click)="groupHeaderClick(row)"> </mat-row>
+
+</mat-table>
