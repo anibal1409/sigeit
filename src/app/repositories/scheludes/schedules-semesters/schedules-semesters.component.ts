@@ -1,12 +1,23 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-
-import { Subscription, finalize } from 'rxjs';
-
-import { SchedulesService } from '../scheludes.service';
 import { Router } from '@angular/router';
+
+import moment from 'moment';
+import {
+  finalize,
+  map,
+  Observable,
+  of,
+  startWith,
+  Subscription,
+} from 'rxjs';
 import { StateService } from 'src/app/common/state';
+import * as XLSX from 'xlsx';
+
+import { DepartmentVM } from '../../departments';
+import { PeriodVM } from '../../periods';
+import { SchedulesService } from '../scheludes.service';
 
 export class Group {
   level = 0;
@@ -24,11 +35,16 @@ export class Group {
   styleUrls: ['./schedules-semesters.component.scss'],
 })
 export class SchedulesSemestersComponent {
-  title = 'Grid Grouping';
+  filteredDepartments!: Observable<DepartmentVM[]>;
+  departments: Array<DepartmentVM> = [];
+  departmentCtrl = new FormControl();
+  periodId = 3;
+  period!: PeriodVM;
+  departmentId = 0;
 
-  public dataSource = new MatTableDataSource<any | Group>([]);
+  dataSource = new MatTableDataSource<any | Group>([]);
 
-  _alldata!: any[];
+  _alldata: any[] = [];
   columns: any[];
   displayedColumns: string[];
   groupByColumns: string[] = [];
@@ -101,31 +117,6 @@ export class SchedulesSemestersComponent {
   }
 
   ngOnInit() {
-    this.loading = true;
-    this.stateService.setLoading(this.loading);
-    this.sub$.add(
-      this.schedulesService
-        .getSectionsSchedulesSemesterService$(1, 3)
-        .pipe(
-          finalize(() => {
-            this.loading = false;
-            this.stateService.setLoading(this.loading);
-          })
-        )
-        .subscribe((subjects) => {
-          console.log(subjects);
-
-          this._alldata = subjects;
-          this.dataSource.data = this.addGroups(
-            this._alldata,
-            this.groupByColumns
-          );
-          this.dataSource.filterPredicate =
-            this.customFilterPredicate.bind(this);
-          this.dataSource.filter = performance.now().toString();
-        })
-    );
-
     this.sub$.add(
       this.groupByCtrl.valueChanges.subscribe((field) => {
         if (field) {
@@ -135,6 +126,92 @@ export class SchedulesSemestersComponent {
         }
       })
     );
+    this.loadDepartments();
+    this.sub$.add(
+      this.departmentCtrl?.valueChanges.subscribe((department) => {
+        this.departmentId = +department?.id;
+        if (department && department?.id) {
+          this.filteredDepartments = of(this.departments);
+          this.loadSchedules();
+        }
+      })
+    );
+    this.sub$.add(
+      this.schedulesService.findPeriod$(this.periodId).subscribe(
+        (period) => {
+          this.period = period;
+        }
+      )
+    );
+  }
+
+  private loadDepartments(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
+    this.sub$.add(
+      this.schedulesService
+        .getDepartaments$(1)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
+        .subscribe((departaments) => {
+          this.departments = departaments;
+          if (departaments) {
+            this.filteredDepartments = this.departmentCtrl.valueChanges.pipe(
+              startWith<string | DepartmentVM>(''),
+              map((value: any) => {
+                if (value !== null) {
+                  return typeof value === 'string' ? value : value.name;
+                }
+                return '';
+              }),
+              map((name: any) => {
+                return name
+                  ? this._departmentFilter(name)
+                  : this.departments.slice();
+              })
+            );
+          }
+        })
+    );
+  }
+
+  private _departmentFilter(name: string): DepartmentVM[] {
+    const filterValue = name.toLowerCase();
+    return this.departments.filter(
+      (option) => option.name.toLowerCase().indexOf(filterValue) === 0
+    );
+  }
+
+  private loadSchedules(): void {
+    if (this.periodId && this.departmentId) {
+      this.loading = true;
+      this.stateService.setLoading(this.loading);
+      this.sub$.add(
+        this.schedulesService
+          .getSectionsSchedulesSemesterService$(this.departmentId, this.periodId)
+          .pipe(
+            finalize(() => {
+              this.loading = false;
+              this.stateService.setLoading(this.loading);
+            })
+          )
+          .subscribe((subjects) => {
+            this._alldata = subjects;
+            this.dataSource.data = this.addGroups(
+              this._alldata,
+              this.groupByColumns
+            );
+            this.dataSource.filterPredicate =
+              this.customFilterPredicate.bind(this);
+            this.dataSource.filter = performance.now().toString();
+            this.mapperData();
+          })
+      );
+    }
   }
 
   groupBy(field: string) {
@@ -288,5 +365,98 @@ export class SchedulesSemestersComponent {
 
   print(...data: any): void {
     console.log(data);
+  }
+  
+  downloadFile(): void {
+    if (this._alldata?.length) {
+      let countRow = 2;
+
+      const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
+
+      const headers1 = [`PLANIFICACION ACADEMICA ${this.departmentCtrl.value?.abbreviation}-${this.period.name}`];
+      XLSX.utils.sheet_add_aoa(worksheet, [headers1], { origin: 'B' + countRow,  });
+      countRow += 2;
+      
+      const data = this.mapperData();
+      Object.keys(data).forEach(
+        (key) => {
+          const headers2 = [`${this.groupsBy[0]?.text} ${key}`];
+          XLSX.utils.sheet_add_aoa(worksheet, [headers2], { origin: 'B' + countRow });
+          countRow++;
+          const headers = ['Código', 'Asignatura', 'Sección', 'Día', 'Aula', 'Desde', 'Hasta', 'Profesor', 'Nombre', 'Capacidad'];
+          const options = {
+            origin: 'B' + countRow,
+          };
+          XLSX.utils.sheet_add_aoa(worksheet, [headers], options);
+          countRow ++;
+          const options2 = {
+            origin: 'B' + countRow,
+          };
+          XLSX.utils.sheet_add_aoa(worksheet, data[key], options2);
+          countRow += data[key].length + 1;
+        }
+      );
+      
+      const workbook: XLSX.WorkBook = { Sheets: { 'Horarios': worksheet }, SheetNames: ['Horarios'] };
+      XLSX.writeFile(workbook, `${this.period.name} planificacion academica departamento de ${this.departmentCtrl.value.name} ${moment().format('DD-MM-YYYY HH:mm')}.xlsx`);
+    }
+  }
+
+
+  // downloadFile(): void {
+  //   if (this._alldata?.length) {
+  //     let countRow = -1;
+  //     const workbook: XLSX.WorkBook = XLSX.utils.book_new();
+  //     const worksheet: XLSX.WorkSheet = XLSX.utils.sheet_add_aoa(workbook.Sheets[workbook.SheetNames[0]], []);
+
+  //     const headers1 = [`PLANIFICACION ACADEMICA ${this.departmentCtrl.value?.abbreviation}-${this.period.name}`];      
+  //     XLSX.utils.sheet_add_aoa(worksheet, [headers1], {origin: 'B' + countRow});
+  //     countRow+=2;
+  //     const data = this.mapperData();
+  //     Object.keys(data).forEach(
+  //       (key) => {
+  //         const headers2 = [`${this.groupsBy[0]?.text} ${key}`];      
+  //         XLSX.utils.sheet_add_aoa(worksheet, [headers2], {origin: 'B' + countRow});
+  //         countRow++;
+  //         const headers = ['Código', 'Asignatura', 'Sección', 'Día', 'Aula', 'Desde', 'Hasta', 'Profesor', 'Nombre', 'Capacidad'];
+  //         XLSX.utils.sheet_add_aoa(worksheet, [headers], {origin: 'B' + countRow});
+  //         countRow++;
+  //         XLSX.utils.sheet_add_aoa(worksheet, data[key], {origin: 'B' + countRow});
+  //       }
+  //     );
+
+  //     XLSX.writeFile(workbook, `${this.period.name} planificacion academica departamento de ${this.departmentCtrl.value.name} ${moment().format('DD-MM-YYYY HH:mm')}.xlsx`);
+  //   }
+  // }
+
+  displayFn(item: DepartmentVM | any): string {
+    return item?.name;
+  }
+
+  private mapperData(): any {
+    const data: any = {};
+    this.dataSource.data.forEach(
+      (schedule) => {
+        if (schedule instanceof Group && !data[(schedule as any)?.[this.groupsBy[0]?.field]]) {
+          data[(schedule as any)?.[this.groupsBy[0]?.field]] = [];
+        } else {
+          const obj: any = {
+            'Código': !this.equalPrevious(schedule, 'code') ? schedule?.code : '',
+            'Asignatura': !this.equalPrevious(schedule, 'name') ? schedule?.name : '',
+            'Sección': !this.equalPrevious(schedule, 'sectionName') ? schedule?.sectionName : '',
+            'Día': schedule?.dayName,
+            'Aula': schedule?.classroomName,
+            'Desde': schedule?.start,
+            'Hasta': schedule?.end,
+            'Profesor': !this.equalPrevious(schedule, 'documentTeacher') ? schedule?.documentTeacher : '',
+            'Nombre': !this.equalPrevious(schedule, 'teacherName') ? schedule?.teacherName : '',
+            'Capacidad': schedule?.capacity,
+          };
+          data[(schedule as any)?.[this.groupsBy[0]?.field]].push(Array.from(Object.keys(obj), key => obj[key]));
+        }
+      }
+    );
+
+    return data;
   }
 }

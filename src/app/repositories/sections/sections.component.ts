@@ -186,6 +186,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
       this.form.get('semester')?.valueChanges.subscribe((semester) => {
         if (semester && semester.id) {
           this.semester = +semester.id;
+
           if (!this.data) {
             this.addParams('semesterId', semester.id);
           }
@@ -198,6 +199,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
       this.form.get('subjectId')?.valueChanges.subscribe((subject) => {
         if (subject && subject.id) {
           this.subjectId = +subject.id;
+
           if (!this.data) {
             this.addParams('subjectId', subject.id);
           }

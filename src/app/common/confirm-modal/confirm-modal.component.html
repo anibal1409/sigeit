@@ -16,7 +16,9 @@
   >
   <mat-card-content><span [innerHTML]="message.body"></span></mat-card-content>
   <mat-card-actions
-    ><button
+    *ngIf="hiddenActions"
+  >
+    <button
       type="button"
       mat-raised-button
       color="warn"

@@ -128,30 +128,6 @@
       ></sigeit-table>
     </mat-card-content>
   </mat-card>
-
-  <button
-    mat-fab
-    matTooltip="Gestionar secciones"
-    color="primary"
-    aria-label="Gestionar secciones"
-    class="btn-fixed btn-secitons"
-    (click)="showListSections()"
-    [disabled]="!subjectId || loading"
-  >
-    <mat-icon>cast_for_education</mat-icon>
-  </button>
-
-  <button
-    mat-fab
-    matTooltip="Agregar horario"
-    color="primary"
-    aria-label="Agregar horario"
-    class="btn-fixed"
-    (click)="changeShowForm(true)"
-    [disabled]="addDisabled || loading"
-  >
-    <mat-icon>add</mat-icon>
-  </button>
 </div>
 
 
@@ -169,25 +145,15 @@
 </ng-container>
 
 
-<div class="w-100 d-flex justify-content-end px-4">
+<div class="w-100 d-flex justify-content-center px-4">
   <button
     (click)="showTableSchedules = !showTableSchedules"
     mat-raised-button
     [color]="'accent'"
     [disabled]="!departmentId || loading"
   >
+    <mat-icon>date_range</mat-icon>
     {{showTableSchedules ? 'Ocultar' : 'Mostrar'}} intinerarios
-  </button>
-</div>
-
-<div class="w-100 d-flex justify-content-end px-4">
-  <button
-    (click)="showTableSchedules = !showTableSchedules"
-    mat-raised-button
-    [color]="'accent'"
-    [routerLink]="['semesters']" 
-  >
-    Mostrar horarios planificados por semestre
   </button>
 </div>
 
@@ -209,6 +175,45 @@
     </mat-tab>
   </mat-tab-group>
 </ng-container>
+
+
+<button
+  mat-fab
+  matTooltip="Mostrar todos horarios planificados"
+  matTooltipPosition="left"
+  aria-label="Mostrar todos horarios planificados"
+  class="btn-fixed btn-schedules"
+  color="basic"
+  [routerLink]="['semesters']" 
+>
+  <mat-icon>date_range</mat-icon>
+</button>
+
+<button
+  mat-fab
+  matTooltip="Gestionar secciones"
+  matTooltipPosition="left"
+  color="primary"
+  aria-label="Gestionar secciones"
+  class="btn-fixed btn-secitons"
+  (click)="showListSections()"
+  [disabled]="!subjectId || loading"
+>
+  <mat-icon>cast_for_education</mat-icon>
+</button>
+
+<button
+  mat-fab
+  matTooltip="Agregar horario"
+  matTooltipPosition="left"
+  color="primary"
+  aria-label="Agregar horario"
+  class="btn-fixed"
+  (click)="changeShowForm(true)"
+  [disabled]="addDisabled || loading"
+>
+  <mat-icon>add</mat-icon>
+</button>
 
 
 

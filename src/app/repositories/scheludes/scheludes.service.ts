@@ -59,6 +59,7 @@ import {
 export class SchedulesService {
 
   private _changeSchedules = new Subject<boolean>();
+  teachers: Array<TeacherItemVM> = [];
 
   constructor(
     private getDepartamentsService: GetDepartamentsBySchoolService,
@@ -101,7 +102,13 @@ export class SchedulesService {
   }
 
   getTeachers$(): Observable<Array<TeacherItemVM>> {
-    return this.getTeachersService.exec();
+    return this.getTeachersService.exec()
+      .pipe(
+        tap(
+          (teachers) => this.teachers = teachers
+        )
+      )
+    ;
   }
 
   createSchedule$(schedule: ScheduleVM): Observable<ScheduleItemVM> {
@@ -134,11 +141,11 @@ export class SchedulesService {
   }
 
   getAllClassroomSchedules$(classroomId: number, periodId: number): Observable<ScheduleItemVM[]> {
-    return this.getAllClassroomSechedulesService.exec(classroomId, periodId);
+    return this.getAllClassroomSechedulesService.exec(classroomId, periodId, this.teachers);
   }
 
   getAllDaySchedules$(dayId: number, periodId: number): Observable<ScheduleItemVM[]> {
-    return this.getAllDaySchedulesService.exec(dayId, periodId);
+    return this.getAllDaySchedulesService.exec(dayId, periodId, this.teachers);
   }
 
   generateTimeIntervals(

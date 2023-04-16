@@ -1,3 +1,31 @@
+.mat-column-hora {
+  width: 2rem;
+  border-right: 1px solid currentColor;
+  padding-right: 24px;
+  text-align: center;
+}
+.mat-column-groupHeader, .mat-mdc-header-cell {
+  background-color: var(--primary-color) !important;
+  color: #FFFFFF;
+}
+.mat-column-groupHeader {
+  font-weight: 600;
+} 
+.mat-mdc-header-cell {
+  font-weight: 900;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-table {
+  mat-cell {
+    min-width: 5rem;
+  }
+}
+
+
 #modal-close-button {
   width: 2rem;
   height: 2rem;
@@ -21,5 +49,5 @@ table {
 }
 
 mat-column {
-  width: max-content;
+  min-width: 5rem;
 }
