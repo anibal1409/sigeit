@@ -312,10 +312,8 @@ export class ScheludesComponent implements OnInit, OnDestroy {
   }
 
   private loadDepartments(): void {
-    if (!this.departmentId) {
-      this.loading = true;
-      this.stateService.setLoading(this.loading);
-    }
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.sub$.add(
       this.schedulesService
         .getDepartaments$(1)
