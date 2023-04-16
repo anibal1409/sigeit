@@ -8,20 +8,37 @@ mat-column {
   width: max-content;
 }
 
+mat-header-row > mat-header-cell.mat-column-hora {
+  max-width: 7rem;
+}
+
+mat-row > mat-cell {
+  padding: 0.5rem 1rem;
+}
+
+
 mat-row > .mat-column-hora {
   background-color: rgb(67, 146, 237);
   color: white;
   font-weight: 800;
+  max-width: 7rem;
+}
+
+.mat-mdc-header-cell:not(.mat-column-hora) {
+  min-width: 10rem;
 }
 
 .mat-mdc-header-cell {
   background-color: rgb(67, 146, 237);
   color: white;
   font-weight: 800;
+  text-align: center;
+  font-size: 1rem;
 }
 
 .mat-card-content {
-    overflow-x: scroll;
+    overflow-x: auto;
+    max-width: 100%;
     padding: 0;
   }
   mat-table {

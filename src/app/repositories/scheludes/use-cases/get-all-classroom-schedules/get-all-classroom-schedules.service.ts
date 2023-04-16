@@ -10,6 +10,7 @@ import {
 } from 'rxjs';
 
 import { Subject2SubjectItemVM } from '../../../subjects';
+import { TeacherItemVM } from '../../../teachers';
 import { Schedule2ScheduleItemVM } from '../../mappers';
 import { ScheduleItemVM } from '../../model';
 
@@ -17,10 +18,10 @@ import { ScheduleItemVM } from '../../model';
 export class GetAllClassroomSchedulesService {
   constructor(private http: HttpClient) {}
 
-  exec(classroomId: number, periodId: number): Observable<any> {
+  exec(classroomId: number, periodId: number, teachers: Array<TeacherItemVM>): Observable<any> {
     return this.http
       .get(
-        `http://localhost:3000/schedules?classroomId=${classroomId}&periodId=${periodId}&_expand=day&_expand=section`
+        `http://localhost:3000/schedules?classroomId=${classroomId}&periodId=${periodId}&_expand=day&_expand=section&_expand=classroom`
       )
       .pipe(
         map((schedules: any) => schedules.map(Schedule2ScheduleItemVM)),
@@ -34,6 +35,7 @@ export class GetAllClassroomSchedulesService {
                   map((subject) => {
                     if (schedule.section) {
                       schedule.section.subject = subject;
+                      schedule.section.teacher =  teachers.find(teacher => teacher.id === schedule.section?.teacherId);
                     }
                     return schedule;
                   })

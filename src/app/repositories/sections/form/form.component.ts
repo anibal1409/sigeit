@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
@@ -43,6 +44,9 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   @Input()
   sectionId!: number;
 
+  @Input()
+  departmentId!: number;
+
   @Output()
   closed = new EventEmitter();
 
@@ -71,20 +75,23 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   filteredTeachers = new Observable<TeacherVM[]>();
   submitDisabled = true;
   title = '';
+
+  allTeachersCtrl = new FormControl(false);
+
   constructor(
     private sectionsService: SectionsService,
     private fb: FormBuilder,
     private stateService: StateService
-  ) {}
+  ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
     if (
       changes['subjectId']?.currentValue ||
       changes['periodId']?.currentValue
     ) {
       this.loadDataForm();
       this.loadLastSection();
+      this.loadTeachers();
     } else if (changes['sectionId']?.currentValue) {
       this.loadSection();
     }
@@ -93,9 +100,20 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit(): void {
     this.createForm();
     this.loadLastSection();
+    this.loadSection();
+    this.loadTeachers();
+  }
+
+  ngOnDestroy(): void {
+    this.sub$.unsubscribe();
+  }
+
+  private loadTeachers(): void {
+    this.loading = true;
+    this.stateService.setLoading(this.loading);
     this.sub$.add(
       this.sectionsService
-        .getTeachers$()
+        .getTeachers$(this.allTeachersCtrl.value ? 0 : this.departmentId)
         .pipe(
           finalize(() => {
             this.loading = false;
@@ -126,44 +144,30 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
           }
         })
     );
-    this.sub$.add(
-      this.form.get('teacherId')?.valueChanges.subscribe((teacherId) => {
-        if (teacherId && teacherId?.id) {
-          this.filteredTeachers = of(this.teachers);
-          this.loadSection();
-        }
-      })
-    );
-    this.loadSection();
-  }
-
-  ngOnDestroy(): void {
-    this.sub$.unsubscribe();
   }
 
   private loadSection(): void {
     if (this.sectionId) {
+      this.loading = true;
+      this.stateService.setLoading(this.loading);
       this.title = 'Editar Sección';
       this.sub$.add(
         this.sectionsService
           .findSection$(this.sectionId)
+          .pipe(
+            finalize(() => {
+              this.loading = false;
+              this.stateService.setLoading(this.loading);
+            })
+          )
           .subscribe((section) => {
             if (section) {
-              console.log(this.teachers);
-              console.log(section.teacherId);
-              
-              console.log(this.teachers.find(
-                (teacher) => teacher.id == section.teacherId
-              ));
-              
               this.form.patchValue({
                 ...section,
                 teacherId: this.teachers.find(
                   (teacher) => teacher.id == section.teacherId
                 ),
-              }, {emitEvent: false});
-              console.log(this.form.value);
-              
+              }, { emitEvent: false });
             }
           })
       );
@@ -226,6 +230,23 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       this.form.valueChanges.subscribe(() => {
         this.submitDisabled = this.form.invalid;
       })
+    );
+
+    this.sub$.add(
+      this.form.get('teacherId')?.valueChanges.subscribe((teacherId) => {
+        if (teacherId && teacherId?.id) {
+          this.filteredTeachers = of(this.teachers);
+          this.loadSection();
+        }
+      })
+    );
+
+    this.sub$.add(
+      this.allTeachersCtrl.valueChanges.subscribe(
+        () => {
+          this.loadTeachers();
+        }
+      )
     );
   }
 
