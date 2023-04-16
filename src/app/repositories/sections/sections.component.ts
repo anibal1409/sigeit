@@ -172,6 +172,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
           if (!this.readingFromParams) {
             this.form.patchValue({
               semester: this.semesters[0],
+              subjectId: null,
             });
           }
           if (!this.data) {
