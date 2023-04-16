@@ -1,7 +1,7 @@
 export interface ClassroomVM {
   id?: number;
   name: string;
-  type: 'LAB' | 'CLASSROOM' | 'VIRTUAL';
+  type: string;
   status: boolean | string;
   departmentId: number;
 }

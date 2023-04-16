@@ -1,18 +1,7 @@
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import {
-  ActivatedRoute,
-  Router,
-} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import {
   finalize,
@@ -37,10 +26,7 @@ import { DepartmentVM } from '../departments';
 import { SectionVM } from '../sections';
 import { SectionsComponent } from '../sections/sections.component';
 import { SubjectVM } from '../subjects';
-import {
-  RowActionSchedule,
-  ScheduleVM,
-} from './model';
+import { RowActionSchedule, ScheduleVM } from './model';
 import { SchedulesService } from './scheludes.service';
 
 @Component({
@@ -171,7 +157,11 @@ export class ScheludesComponent implements OnInit, OnDestroy {
         startWith<string | SemesterVM>(''),
         map((value: any) => {
           if (value !== null) {
-            return typeof value === 'string' ? value : value.name;
+            if (value.id) {
+              return '';
+            } else {
+              return typeof value === 'string' ? value : value.name;
+            }
           }
           return '';
         }),
@@ -180,9 +170,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
         })
       );
     }
-    this.sub$.add(
-      this.schedulesService.getTeachers$().subscribe()
-    );
+    this.sub$.add(this.schedulesService.getTeachers$().subscribe());
   }
 
   ngOnDestroy(): void {
@@ -207,18 +195,19 @@ export class ScheludesComponent implements OnInit, OnDestroy {
     this.sub$.add(
       this.form.get('departmentId')?.valueChanges.subscribe((department) => {
         this.departmentId = +department?.id;
-        if (!this.readingFromParams) {
-          this.form.patchValue({
-            semester: -1,
-            subjectId: null,
-            sectionId: null,
-          });
-        }
+
         if (department && department?.id) {
           this.filteredDepartments = of(this.departments);
           this.addParams('departmentId', department.id);
           this.loadSubjects();
           this.validateForm();
+          if (!this.readingFromParams) {
+            this.form.patchValue({
+              semester: this.semesters[0],
+              subjectId: null,
+              sectionId: null,
+            });
+          }
         }
       })
     );
@@ -229,6 +218,12 @@ export class ScheludesComponent implements OnInit, OnDestroy {
         if (semester && semester?.id) {
           this.filteredSemesters = of(this.semesters);
           this.addParams('semesterId', semester.id);
+          if (!this.readingFromParams) {
+            this.form.patchValue({
+              subjectId: null,
+              sectionId: null,
+            });
+          }
           this.loadSubjects();
         }
       })
@@ -283,31 +278,27 @@ export class ScheludesComponent implements OnInit, OnDestroy {
       this.loading = true;
       this.stateService.setLoading(this.loading);
       this.sub$.add(
-        this.schedulesService.getSubjectSchedules$(
-          this.subjectId,
-          this.periodId
-        )
-        .pipe(
-          finalize(() => {
-            this.loading = false;
-            setTimeout(() => this.stateService.setLoading(this.loading), 500);
-          })
-        )
-        .subscribe(
-          (schedules) => {
+        this.schedulesService
+          .getSubjectSchedules$(this.subjectId, this.periodId)
+          .pipe(
+            finalize(() => {
+              this.loading = false;
+              setTimeout(() => this.stateService.setLoading(this.loading), 500);
+            })
+          )
+          .subscribe((schedules) => {
             this.tableService.setData({
               ...this.scheludeData,
               body: schedules,
             });
-          }
-        )
+          })
       );
     }
   }
 
   private validateForm(): void {
     if (this.showForm) {
-      this.showForm =  false;
+      this.showForm = false;
     }
   }
 
@@ -332,7 +323,11 @@ export class ScheludesComponent implements OnInit, OnDestroy {
               startWith<string | DepartmentVM>(''),
               map((value: any) => {
                 if (value !== null) {
-                  return typeof value === 'string' ? value : value.name;
+                  if (value.id) {
+                    return '';
+                  } else {
+                    return typeof value === 'string' ? value : value.name;
+                  }
                 }
                 return '';
               }),
@@ -368,7 +363,11 @@ export class ScheludesComponent implements OnInit, OnDestroy {
               startWith<string | SubjectVM>(''),
               map((value: any) => {
                 if (value !== null) {
-                  return typeof value === 'string' ? value : value.name;
+                  if (value.id) {
+                    return '';
+                  } else {
+                    return typeof value === 'string' ? value : value.name;
+                  }
                 }
                 return '';
               }),
