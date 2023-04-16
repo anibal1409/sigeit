@@ -129,6 +129,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.createForm();
+
     this.loadFormParams();
     this.loadDepartments();
     this.sub$.add(
@@ -143,7 +144,11 @@ export class SectionsComponent implements OnInit, OnDestroy {
       startWith<string | SemesterVM>(''),
       map((value: any) => {
         if (value !== null) {
-          return typeof value === 'string' ? value : value.name;
+          if (value.id) {
+            return '';
+          } else {
+            return typeof value === 'string' ? value : value.name;
+          }
         }
         return '';
       }),
@@ -162,13 +167,11 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('departmentId')?.valueChanges.subscribe((department) => {
-        this.departmentId = +department.id;
         if (department && department.id) {
-          this.filteredDepartments = of(this.departments);
+          this.departmentId = +department.id;
           if (!this.readingFromParams) {
             this.form.patchValue({
-              semester: -1,
-              subjectId: null,
+              semester: this.semesters[0],
             });
           }
           if (!this.data) {
@@ -181,9 +184,8 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('semester')?.valueChanges.subscribe((semester) => {
-        this.semester = +semester.id;
         if (semester && semester.id) {
-          this.filteredSemesters = of(this.semesters);
+          this.semester = +semester.id;
           if (!this.data) {
             this.addParams('semesterId', semester.id);
           }
@@ -194,9 +196,8 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('subjectId')?.valueChanges.subscribe((subject) => {
-        this.subjectId = +subject.id;
         if (subject && subject.id) {
-          this.filteredSubjects = of(this.subjects);
+          this.subjectId = +subject.id;
           if (!this.data) {
             this.addParams('subjectId', subject.id);
           }
@@ -248,7 +249,11 @@ export class SectionsComponent implements OnInit, OnDestroy {
               startWith<string | DepartmentVM>(''),
               map((value: any) => {
                 if (value !== null) {
-                  return typeof value === 'string' ? value : value.name;
+                  if (value.id) {
+                    return '';
+                  } else {
+                    return typeof value === 'string' ? value : value.name;
+                  }
                 }
                 return '';
               }),
@@ -284,7 +289,11 @@ export class SectionsComponent implements OnInit, OnDestroy {
               startWith<string | SubjectVM>(''),
               map((value: any) => {
                 if (value !== null) {
-                  return typeof value === 'string' ? value : value.name;
+                  if (value.id) {
+                    return '';
+                  } else {
+                    return typeof value === 'string' ? value : value.name;
+                  }
                 }
                 return '';
               }),
