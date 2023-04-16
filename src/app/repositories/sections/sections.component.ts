@@ -187,11 +187,15 @@ export class SectionsComponent implements OnInit, OnDestroy {
       this.form.get('semester')?.valueChanges.subscribe((semester) => {
         if (semester && semester.id) {
           this.semester = +semester.id;
-
+          if (!this.readingFromParams) {
+            this.form.patchValue({
+              subjectId: null,
+            });
+          }
+          this.loadSubjects();
           if (!this.data) {
             this.addParams('semesterId', semester.id);
           }
-          this.loadSubjects();
         }
       })
     );
