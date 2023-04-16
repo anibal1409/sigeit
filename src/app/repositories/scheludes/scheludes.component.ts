@@ -1,7 +1,18 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
 
 import {
   finalize,
@@ -26,7 +37,10 @@ import { DepartmentVM } from '../departments';
 import { SectionVM } from '../sections';
 import { SectionsComponent } from '../sections/sections.component';
 import { SubjectVM } from '../subjects';
-import { RowActionSchedule, ScheduleVM } from './model';
+import {
+  RowActionSchedule,
+  ScheduleVM,
+} from './model';
 import { SchedulesService } from './scheludes.service';
 
 @Component({
@@ -201,6 +215,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
           this.filteredDepartments = of(this.departments);
           this.addParams('departmentId', department.id);
           this.loadSubjects();
+          this.validateForm();
         }
       })
     );
@@ -218,18 +233,10 @@ export class ScheludesComponent implements OnInit, OnDestroy {
     );
 
     this.sub$.add(
-      this.form.get('subjectId')?.valueChanges.subscribe(async (subject) => {
+      this.form.get('subjectId')?.valueChanges.subscribe((subject) => {
         if (subject && subject.id) {
-          const allSectionsData = await lastValueFrom(
-            this.schedulesService.getSubjectSchedules$(
-              subject.id,
-              this.periodId
-            )
-          );
-          this.tableService.setData({
-            ...this.scheludeData,
-            body: allSectionsData,
-          });
+          this.subjectId = subject.id;
+          this.loadSubjectSchedules();
         }
       })
     );
@@ -246,6 +253,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
           this.filteredSubjects = of(this.subjects);
           this.addParams('subjectId', subject.id);
           this.loadSections();
+          this.validateForm();
         }
       })
     );
@@ -257,6 +265,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
         if (section && section.id) {
           this.addParams('sectionId', section.id);
           this.loadSchedules();
+          this.validateForm();
         }
       })
     );
@@ -265,6 +274,39 @@ export class ScheludesComponent implements OnInit, OnDestroy {
         this.addDisabled = this.form.invalid;
       })
     );
+  }
+
+  private loadSubjectSchedules(): void {
+    if (this.subjectId) {
+      this.loading = true;
+      this.stateService.setLoading(this.loading);
+      this.sub$.add(
+        this.schedulesService.getSubjectSchedules$(
+          this.subjectId,
+          this.periodId
+        )
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+          })
+        )
+        .subscribe(
+          (schedules) => {
+            this.tableService.setData({
+              ...this.scheludeData,
+              body: schedules,
+            });
+          }
+        )
+      );
+    }
+  }
+
+  private validateForm(): void {
+    if (this.showForm) {
+      this.showForm =  false;
+    }
   }
 
   private loadDepartments(): void {
@@ -358,25 +400,29 @@ export class ScheludesComponent implements OnInit, OnDestroy {
   }
 
   loadSchedules(): void {
-    this.loading = true;
-    this.stateService.setLoading(this.loading);
-    this.sub$.add(
-      this.schedulesService
-        .getSectionSchedules$(this.sectionId)
-        .pipe(
-          finalize(() => {
-            this.loading = false;
-            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+    if (this.sectionId) {
+      this.loading = true;
+      this.stateService.setLoading(this.loading);
+      this.sub$.add(
+        this.schedulesService
+          .getSectionSchedules$(this.sectionId)
+          .pipe(
+            finalize(() => {
+              this.loading = false;
+              setTimeout(() => this.stateService.setLoading(this.loading), 500);
+            })
+          )
+          .subscribe((schedules) => {
+            this.scheludeData = {
+              ...this.scheludeData,
+              body: schedules || [],
+            };
+            this.tableService.setData(this.scheludeData);
           })
-        )
-        .subscribe((schedules) => {
-          this.scheludeData = {
-            ...this.scheludeData,
-            body: schedules || [],
-          };
-          this.tableService.setData(this.scheludeData);
-        })
-    );
+      );
+    } else {
+      this.loadSubjectSchedules();
+    }
   }
 
   changeShowForm(showForm: boolean): void {
@@ -393,7 +439,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
   clickOption(event: OptionAction): void {
     switch (event.option.value) {
       case RowActionSchedule.update:
-        this.sectionId = +event.data['id'];
+        this.scheduleId = +event.data['id'];
         this.changeShowForm(true);
         break;
       case RowActionSchedule.delete:
@@ -416,9 +462,17 @@ export class ScheludesComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.closed.subscribe((res) => {
       dialogRef.close();
       if (res) {
+        this.loading = true;
+        this.stateService.setLoading(this.loading);
         this.schedulesService
           .removeSchedule$(schedule?.id || 0)
-          .subscribe(() => this.loadSections());
+          .pipe(
+            finalize(() => {
+              this.loading = false;
+              setTimeout(() => this.stateService.setLoading(this.loading), 500);
+            })
+          )
+          .subscribe(() => this.loadSchedules());
       }
     });
   }

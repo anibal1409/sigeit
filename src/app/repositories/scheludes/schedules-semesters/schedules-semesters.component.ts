@@ -1,12 +1,16 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 
-import { Subscription, finalize } from 'rxjs';
+import {
+  finalize,
+  Subscription,
+} from 'rxjs';
+import { StateService } from 'src/app/common/state';
+import * as XLSX from 'xlsx';
 
 import { SchedulesService } from '../scheludes.service';
-import { Router } from '@angular/router';
-import { StateService } from 'src/app/common/state';
 
 export class Group {
   level = 0;
@@ -288,5 +292,11 @@ export class SchedulesSemestersComponent {
 
   print(...data: any): void {
     console.log(data);
+  }
+
+  downloadFile(): void {
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this._alldata);
+    const workbook: XLSX.WorkBook = { Sheets: { 'Horarios': worksheet }, SheetNames: ['Horarios'] };
+    XLSX.writeFile(workbook, 'planificacion.xlsx');
   }
 }

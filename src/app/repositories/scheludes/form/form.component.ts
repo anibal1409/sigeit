@@ -103,6 +103,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       this.loadDataForm();
     } else if (changes['departmentId']?.currentValue) {
       this.loadClassrooms();
+    }else if (changes['scheduleId']?.currentValue) {
+      this.loadSchedule();
     }
   }
 
@@ -151,22 +153,6 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
         );
       })
     );
-    if (this.scheduleId) {
-      this.title = 'Editar Horario';
-      this.sub$.add(
-        this.schedulesService
-          .findSchedule$(this.sectionId)
-          .subscribe((schedule) => {
-            if (schedule) {
-              this.form.patchValue({
-                ...schedule,
-              });
-            }
-          })
-      );
-    } else {
-      this.title = 'Crear Horario';
-    }
     this.sub$.add(
       this.form.get('dayId')?.valueChanges.subscribe((day) => {
         if (day && day.id) {
@@ -182,10 +168,34 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
         }
       })
     );
+
+    this.loadSchedule();
   }
 
   ngOnDestroy(): void {
     this.sub$.unsubscribe();
+  }
+
+
+  private loadSchedule(): void {
+    if (!!this.scheduleId && !isNaN(this.scheduleId)) {
+      this.title = 'Editar Horario';
+      this.sub$.add(
+        this.schedulesService
+          .findSchedule$(this.scheduleId)
+          .subscribe((schedule) => {
+            if (schedule) {
+              this.form.patchValue({
+                ...schedule,
+                dayId: this.days.find(day => schedule?.dayId === day.id),
+                classroomId: this.classrooms.find(classroom => schedule?.classroomId === classroom.id),
+              });
+            }
+          })
+      );
+    } else {
+      this.title = 'Crear Horario';
+    }
   }
 
   private loadDataForm(): void {
@@ -242,8 +252,9 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       this.schedulesService
         .validateClassroomSchedules$(data)
         .subscribe((data) => {
-          console.log(data);
-          const collapsedSchedules = data.map((schedule: ScheduleItemVM) => {
+          const collapsedSchedules = data
+          .filter((schedule: ScheduleItemVM) => schedule.id !== this.scheduleId)
+          .map((schedule: ScheduleItemVM) => {
             const start = moment(schedule.start, 'HH:mm');
             const end = moment(schedule.end, 'HH:mm');
             this.crashMessage =
@@ -257,13 +268,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
               } - ${schedule.section?.name})</li>`;
           });
 
-          if (data?.length) {
-            this.crashWarning = true;
-          } else {
-            this.crashWarning = false;
-          }
-
           if (collapsedSchedules?.length) {
+            this.crashWarning = true;
             this.classroomScheduleClash = `El horario establecido presenta choques en el aula en los siguentes horarios:<ul>${collapsedSchedules}</ul>`.replace(/,/g, '');
           }
         });
@@ -282,7 +288,11 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
         this.schedulesService.validateTeacherSchedules$(data, this.teacherId, this.periodId).subscribe(
           (sections: Array<SectionItemVM>) => {
             console.log(sections);
-            const collapsedSchedules = sections.map((section: SectionItemVM) => {
+            const collapsedSchedules = sections
+            .filter((section: SectionItemVM) => {
+              return section.schedules?.filter((schedule: ScheduleItemVM) => schedule.id !== this.scheduleId)?.length;
+            })
+            .map((section: SectionItemVM) => {
               return section.schedules?.map(
                 (schedule: ScheduleItemVM) => {
                   const start = moment(schedule.start, 'HH:mm');
@@ -308,7 +318,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
         data: {
           message: {
             title: 'Choque de Horas',
-            body: this.crashMessage + '<br><br><h5>¿Desea continuar?</h5>',
+            body: this.crashMessage + '<h5>Existen choques de horarios, con el horario establecido<br>¿Desea continuar?</h5>',
           },
         },
         hasBackdrop: true,

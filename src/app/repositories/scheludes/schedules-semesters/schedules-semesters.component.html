@@ -7,17 +7,32 @@
       }}</mat-option>
     </mat-select>
   </mat-form-field>
-  <button
+  
+  <div>
+    <button
+      id="modal-close-button"
+      type="button"
+      mat-fab
+      color="primary"
+      aria-label="Descargar"
+      (click)="downloadFile()"
+
+    >
+      <mat-icon>get_app</mat-icon>
+    </button>
+  
+    <button
       id="modal-close-button"
       type="button"
       mat-fab
       color="basic"
       aria-label="Close"
+      class="ml-3"
       (click)="navigateBack()"
-
     >
       <mat-icon>keyboard_backspace</mat-icon>
     </button>
+  </div>
 </div>
 <div class="mat-container">
   <mat-table [dataSource]="dataSource">

@@ -21,14 +21,15 @@
   <mat-card>
     <mat-card-content class="mat-card-content">
       <mat-table [dataSource]="dataSourceByDay">
-        <ng-container matColumnDef="hora">
+        <ng-container matColumnDef="hora"  [sticky]="true">
           <mat-header-cell *matHeaderCellDef>Hora/Aula</mat-header-cell>
           <mat-cell *matCellDef="let row">{{ row.hora }}</mat-cell>
         </ng-container>
 
         <ng-container
           *ngFor="let classroom of classrooms"
-          [matColumnDef]="classroom.name"
+          [matColumnDef]="classroom.name" 
+          [sticky]="true"
         >
           <mat-header-cell *matHeaderCellDef>{{
             classroom.name
@@ -39,7 +40,7 @@
         </ng-container>
 
         <mat-header-row
-          *matHeaderRowDef="displayedColumnsByDay"
+          *matHeaderRowDef="displayedColumnsByDay; sticky: true"
         ></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumnsByDay"></mat-row>
       </mat-table>
