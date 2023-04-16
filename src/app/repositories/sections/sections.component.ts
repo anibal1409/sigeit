@@ -165,6 +165,12 @@ export class SectionsComponent implements OnInit, OnDestroy {
         this.departmentId = +department.id;
         if (department && department.id) {
           this.filteredDepartments = of(this.departments);
+          if (!this.readingFromParams) {
+            this.form.patchValue({
+              semester: -1,
+              subjectId: null,
+            });
+          }
           if (!this.data) {
             this.addParams('departmentId', department.id);
           }
@@ -194,6 +200,11 @@ export class SectionsComponent implements OnInit, OnDestroy {
           if (!this.data) {
             this.addParams('subjectId', subject.id);
           }
+          if (!this.readingFromParams) {
+            this.form.patchValue({
+              sectionId: null,
+            });
+          }
           this.loadSections();
         }
       })
@@ -206,6 +217,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
       });
       this.modal = true;
       this.loadSubjects();
+      this.addDisabled = this.form.invalid;
     }
 
     this.sub$.add(
