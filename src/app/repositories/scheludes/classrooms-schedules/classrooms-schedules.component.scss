@@ -19,6 +19,11 @@ mat-row > .mat-column-hora {
   max-width: 7rem;
 }
 
+mat-row > mat-cell {
+  padding: 0.5rem 1rem;
+}
+
+
 .mat-mdc-header-cell:not(.mat-column-hora) {
   min-width: 10rem;
 }
@@ -28,6 +33,7 @@ mat-row > .mat-column-hora {
   color: white;
   font-weight: 800;
   text-align: center;
+  font-size: 1rem;
 }
 
 .mat-card-content {

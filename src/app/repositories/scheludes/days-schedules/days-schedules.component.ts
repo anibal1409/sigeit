@@ -6,14 +6,31 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import {
+  FormControl,
+  Validators,
+} from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 
-import { finalize, map, Observable, of, startWith, Subscription } from 'rxjs';
+import {
+  finalize,
+  map,
+  Observable,
+  of,
+  startWith,
+  Subscription,
+} from 'rxjs';
+import { StateService } from 'src/app/common/state';
 
 import { ClassroomVM } from '../../classrooms';
-import { DayVM } from '../model';
+import {
+  DayVM,
+  ScheduleItemVM,
+} from '../model';
+import {
+  ScheduleDetailsComponent,
+} from '../schedule-details/schedule-details.component';
 import { SchedulesService } from '../scheludes.service';
-import { StateService } from 'src/app/common/state';
 
 @Component({
   selector: 'app-days-schedules',
@@ -33,7 +50,7 @@ export class DaysSchedulesComponent implements OnInit, OnDestroy, OnChanges {
   days: Array<DayVM> = [];
   dataScheduleByClassroom: any[][] = this.startIntervals.map(() =>
     this.days.map(() => {
-      return { text: '' };
+      return { text: '', schedules: [] };
     })
   );
   dataSourceByClassroom: any[] = [];
@@ -50,7 +67,8 @@ export class DaysSchedulesComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(
     private schedulesService: SchedulesService,
-    private stateService: StateService
+    private stateService: StateService,
+    private matDialog: MatDialog,
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -152,10 +170,11 @@ export class DaysSchedulesComponent implements OnInit, OnDestroy, OnChanges {
           .subscribe((schedules) => {
             this.dataScheduleByClassroom = this.startIntervals.map(() =>
               this.days.map(() => {
-                return { text: '' };
+                return { text: '', schedules: [] };
               })
             );
 
+            console.log(schedules);
             schedules.forEach((schedule) => {
               const dayIndex = this.days.findIndex(
                 (day) => day.id === schedule.dayId
@@ -164,6 +183,7 @@ export class DaysSchedulesComponent implements OnInit, OnDestroy, OnChanges {
               const endIndex = this.endIntervals.indexOf(schedule.end);
 
               for (let i = startIndex; i <= endIndex; i++) {
+                this.dataScheduleByClassroom[i][dayIndex].schedules.push(schedule);
                 if (this.dataScheduleByClassroom[i][dayIndex]?.text) {
                   this.dataScheduleByClassroom[i][dayIndex].text = 'Varias';
                 } else {
@@ -251,5 +271,17 @@ export class DaysSchedulesComponent implements OnInit, OnDestroy, OnChanges {
           }
         })
     );
+  }
+
+  showScheduleDetails(schedules: Array<ScheduleItemVM>): void {
+    const dialogRef = this.matDialog.open(ScheduleDetailsComponent, {
+      data: {
+        schedules: schedules,
+      },
+    });
+
+    dialogRef.componentInstance.closed.subscribe((res) => {
+      dialogRef.close();
+    });
   }
 }

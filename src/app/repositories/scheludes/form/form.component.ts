@@ -155,7 +155,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     );
     this.sub$.add(
       this.form.get('dayId')?.valueChanges.subscribe((day) => {
-        if (day && day.id) {
+        if (day && day?.id) {
           this.filteredDays = of(this.days);
         }
       })
@@ -163,7 +163,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
     this.sub$.add(
       this.form.get('classroomId')?.valueChanges.subscribe((classroom) => {
-        if (classroom && classroom.id) {
+        if (classroom && classroom?.id) {
           this.filteredClassrooms = of(this.classrooms);
         }
       })
@@ -419,5 +419,21 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
   displayHours(item: ClassroomVM | DayVM | any): string {
     return item?.hour || item;
+  }
+
+  showSchedulesClash(): void {
+    const dialogRef = this.matDialog.open(ConfirmModalComponent, {
+      data: {
+        message: {
+          title: 'Choque de horarios',
+          body: `${this.classroomScheduleClash}<br>${this.teacherScheduleClash}`,
+        },
+      },
+      hasBackdrop: true,
+    });
+
+    dialogRef.componentInstance.closed.subscribe((res) => {
+      dialogRef.close();
+    });
   }
 }

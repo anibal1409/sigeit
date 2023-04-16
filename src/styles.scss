@@ -311,3 +311,15 @@ body {
     opacity: 1;
   }
 }
+
+.mat-mdc-header-cell, .mat-mdc-cell {
+  font-size: 1rem !important;
+}
+
+.c-pointer {
+  cursor: pointer;
+}
+
+label {
+  margin: 0 !important;
+}

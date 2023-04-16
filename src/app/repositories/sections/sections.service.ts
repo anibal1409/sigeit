@@ -52,8 +52,8 @@ export class SectionsService {
     return this.createSectionService.exec(section);
   }
 
-  getTeachers$(): Observable<Array<TeacherItemVM>> {
-    return this.getTeachersService.exec();
+  getTeachers$(departmentId?: number): Observable<Array<TeacherItemVM>> {
+    return this.getTeachersService.exec(departmentId);
   }
 
   findSection$(sectionId: number): Observable<SectionVM> {

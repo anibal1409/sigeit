@@ -180,6 +180,9 @@ export class ScheludesComponent implements OnInit, OnDestroy {
         })
       );
     }
+    this.sub$.add(
+      this.schedulesService.getTeachers$().subscribe()
+    );
   }
 
   ngOnDestroy(): void {
@@ -203,7 +206,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('departmentId')?.valueChanges.subscribe((department) => {
-        this.departmentId = +department.id;
+        this.departmentId = +department?.id;
         if (!this.readingFromParams) {
           this.form.patchValue({
             semester: -1,
@@ -211,7 +214,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
             sectionId: null,
           });
         }
-        if (department && department.id) {
+        if (department && department?.id) {
           this.filteredDepartments = of(this.departments);
           this.addParams('departmentId', department.id);
           this.loadSubjects();
@@ -223,8 +226,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
     this.sub$.add(
       this.form.get('semester')?.valueChanges.subscribe((semester) => {
         this.semester = +semester?.id;
-
-        if (semester && semester.id) {
+        if (semester && semester?.id) {
           this.filteredSemesters = of(this.semesters);
           this.addParams('semesterId', semester.id);
           this.loadSubjects();
@@ -234,8 +236,8 @@ export class ScheludesComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('subjectId')?.valueChanges.subscribe((subject) => {
-        if (subject && subject.id) {
-          this.subjectId = subject.id;
+        this.subjectId = +subject?.id;
+        if (subject && subject?.id) {
           this.loadSubjectSchedules();
         }
       })
@@ -249,7 +251,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
             sectionId: null,
           });
         }
-        if (subject && subject.id) {
+        if (subject && subject?.id) {
           this.filteredSubjects = of(this.subjects);
           this.addParams('subjectId', subject.id);
           this.loadSections();
@@ -262,7 +264,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
       this.form.get('sectionId')?.valueChanges.subscribe((section) => {
         this.teacherId = +section?.teacherId;
         this.sectionId = +section?.id;
-        if (section && section.id) {
+        if (section && section?.id) {
           this.addParams('sectionId', section.id);
           this.loadSchedules();
           this.validateForm();

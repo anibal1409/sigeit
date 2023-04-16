@@ -1,12 +1,19 @@
 :host {
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  .section-body {
+    overflow: hidden;
+  }
   &.app-modal {
     #modal-header {
       display: flex !important;
+      margin: 0 !important;
     }
   }
   #modal-title {
     font-size: 2rem;
-    margin-top: 1rem;
+    margin: 0;
   }
   
   #modal-header {

@@ -35,7 +35,9 @@
             classroom.name
           }}</mat-header-cell>
           <mat-cell *matCellDef="let row">
-            {{ row[classroom.name]?.text || "" }}
+            <span [ngClass]="{'c-pointer': row[classroom.name]?.text}" (click)="showScheduleDetails(row[classroom.name]?.schedules || []) ">
+              {{ row[classroom.name]?.text || "" }}
+            </span>
           </mat-cell>
         </ng-container>
 

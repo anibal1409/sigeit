@@ -2882,15 +2882,6 @@
       "periodId": 3
     },
     {
-      "classroomId": 12,
-      "dayId": 2,
-      "start": "07:00",
-      "end": "07:45",
-      "sectionId": 27,
-      "periodId": 3,
-      "id": 33
-    },
-    {
       "classroomId": 18,
       "dayId": 1,
       "start": "07:00",
@@ -2907,24 +2898,6 @@
       "sectionId": 28,
       "periodId": 3,
       "id": 35
-    },
-    {
-      "classroomId": 12,
-      "dayId": 2,
-      "start": "07:00",
-      "end": "07:45",
-      "sectionId": 27,
-      "periodId": 3,
-      "id": 41
-    },
-    {
-      "classroomId": 12,
-      "dayId": 1,
-      "start": "07:00",
-      "end": "08:35",
-      "sectionId": 27,
-      "periodId": 3,
-      "id": 42
     },
     {
       "classroomId": 12,

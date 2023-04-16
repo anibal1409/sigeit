@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { TableModule } from 'src/app/common';
 
@@ -36,6 +37,9 @@ import {
   DaysSchedulesComponent,
 } from './days-schedules/days-schedules.component';
 import { FormComponent } from './form/form.component';
+import {
+  ScheduleDetailsComponent,
+} from './schedule-details/schedule-details.component';
 import {
   SchedulesSemestersComponent,
 } from './schedules-semesters/schedules-semesters.component';
@@ -58,7 +62,14 @@ import {
 } from './use-cases';
 
 @NgModule({
-  declarations: [ScheludesComponent, FormComponent, DaysSchedulesComponent, ClassroomsSchedulesComponent, SchedulesSemestersComponent],
+  declarations: [
+    ScheludesComponent, 
+    FormComponent, 
+    DaysSchedulesComponent, 
+    ClassroomsSchedulesComponent, 
+    SchedulesSemestersComponent, 
+    ScheduleDetailsComponent,
+  ],
   imports: [
     CommonModule,
     ScheludesRoutingModule,
@@ -78,6 +89,7 @@ import {
     SectionsModule,
     MatTableModule,
     MatTabsModule,
+    MatTooltipModule,
   ],
   providers: [
     SchedulesService,
