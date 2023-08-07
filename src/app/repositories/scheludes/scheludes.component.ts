@@ -1,7 +1,18 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
 
 import {
   finalize,
@@ -26,7 +37,10 @@ import { DepartmentVM } from '../departments';
 import { SectionVM } from '../sections';
 import { SectionsComponent } from '../sections/sections.component';
 import { SubjectVM } from '../subjects';
-import { RowActionSchedule, ScheduleVM } from './model';
+import {
+  RowActionSchedule,
+  ScheduleVM,
+} from './model';
 import { SchedulesService } from './scheludes.service';
 
 @Component({
@@ -500,7 +514,7 @@ export class ScheludesComponent implements OnInit, OnDestroy {
       localStorage.getItem('sigeit_schedule_params') as string
     );
 
-    if (Object.keys(this.queryParamsList).length !== 0) {
+    if (!!this.queryParamsList && Object.keys(this.queryParamsList).length !== 0) {
       this.readingFromParams = true;
       let { sectionId, departmentId, semesterId, subjectId } =
         this.queryParamsList;
