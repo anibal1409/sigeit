@@ -9,16 +9,25 @@ import {
   Optional,
   Output,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+} from '@angular/material/dialog';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
 
 import {
   finalize,
   lastValueFrom,
   map,
   Observable,
-  of,
   startWith,
   Subscription,
 } from 'rxjs';
@@ -34,7 +43,10 @@ import { StateService } from 'src/app/common/state';
 
 import { DepartmentVM } from '../departments';
 import { SubjectVM } from '../subjects/model';
-import { RowActionSection, SectionVM } from './model';
+import {
+  RowActionSection,
+  SectionVM,
+} from './model';
 import { SectionsService } from './sections.service';
 
 @Component({
@@ -388,7 +400,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
       localStorage.getItem('sigeit_section_params') as string
     );
 
-    if (Object?.keys(this.queryParamsList)?.length) {
+    if (!!this.queryParamsList && Object?.keys(this.queryParamsList)?.length) {
       this.readingFromParams = true;
       let { departmentId, semesterId, subjectId } = this.queryParamsList;
       let lastDepartment, lastSemester, lastSubject;

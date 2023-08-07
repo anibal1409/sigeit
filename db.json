@@ -2617,6 +2617,33 @@
       "status": true,
       "capacity": 20,
       "id": 36
+    },
+    {
+      "subjectId": 17,
+      "periodId": 3,
+      "teacherId": 32,
+      "name": "02",
+      "status": true,
+      "capacity": 20,
+      "id": 37
+    },
+    {
+      "subjectId": 17,
+      "periodId": 3,
+      "teacherId": 32,
+      "name": "03",
+      "status": true,
+      "capacity": 20,
+      "id": 38
+    },
+    {
+      "subjectId": 18,
+      "periodId": 3,
+      "teacherId": 32,
+      "name": "02",
+      "status": true,
+      "capacity": 20,
+      "id": 39
     }
   ],
   "schedules": [
@@ -2925,6 +2952,33 @@
       "sectionId": 29,
       "periodId": 3,
       "id": 45
+    },
+    {
+      "classroomId": 12,
+      "dayId": 3,
+      "start": "07:00",
+      "end": "08:35",
+      "sectionId": 37,
+      "periodId": 3,
+      "id": 46
+    },
+    {
+      "classroomId": 13,
+      "dayId": 3,
+      "start": "07:00",
+      "end": "09:25",
+      "sectionId": 38,
+      "periodId": 3,
+      "id": 47
+    },
+    {
+      "classroomId": 12,
+      "dayId": 1,
+      "start": "07:00",
+      "end": "09:25",
+      "sectionId": 33,
+      "periodId": 3,
+      "id": 48
     }
   ]
 }

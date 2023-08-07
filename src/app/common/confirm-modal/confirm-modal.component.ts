@@ -23,7 +23,7 @@ export class ConfirmModalComponent {
   closed = new EventEmitter<boolean>();
   constructor(@Inject(MAT_DIALOG_DATA) data: { message: ModalMessageModel, hiddenActions?: boolean }) {
     this.message = data.message;
-    this.hiddenActions =data?.hiddenActions ||  false;
+    this.hiddenActions = data?.hiddenActions ||  false;
   }
 
   closeModal(option: boolean): void {
