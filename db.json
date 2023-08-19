@@ -2240,6 +2240,15 @@
       "last_name": "Bastardo",
       "status": true,
       "email": ""
+    },
+    {
+      "id": 58,
+      "departmentId": 1,
+      "id_document": "123",
+      "first_name": "Saireth",
+      "last_name": "Alvelaiz",
+      "status": true,
+      "email": ""
     }
   ],
   "sections": [
@@ -2303,7 +2312,7 @@
       "teacherId": 55,
       "name": "01",
       "status": true,
-      "capacity": 50,
+      "capacity": 40,
       "id": 7
     },
     {
@@ -2312,7 +2321,7 @@
       "teacherId": 55,
       "name": "02",
       "status": true,
-      "capacity": 50,
+      "capacity": 40,
       "id": 8
     },
     {
@@ -2321,7 +2330,7 @@
       "teacherId": 57,
       "name": "01",
       "status": true,
-      "capacity": 30,
+      "capacity": 20,
       "id": 11
     },
     {
@@ -2330,7 +2339,7 @@
       "teacherId": 57,
       "name": "02",
       "status": true,
-      "capacity": 30,
+      "capacity": 20,
       "id": 12
     },
     {
@@ -2339,7 +2348,7 @@
       "teacherId": 57,
       "name": "03",
       "status": true,
-      "capacity": 30,
+      "capacity": 20,
       "id": 13
     },
     {
@@ -2348,7 +2357,7 @@
       "teacherId": 35,
       "name": "01",
       "status": true,
-      "capacity": 30,
+      "capacity": 20,
       "id": 14
     },
     {
@@ -2357,25 +2366,25 @@
       "teacherId": 35,
       "name": "02",
       "status": true,
-      "capacity": 30,
+      "capacity": 20,
       "id": 15
     },
     {
       "subjectId": 21,
       "periodId": 4,
-      "teacherId": 32,
+      "teacherId": 58,
       "name": "01",
       "status": true,
-      "capacity": 30,
+      "capacity": 20,
       "id": 16
     },
     {
       "subjectId": 21,
       "periodId": 4,
-      "teacherId": 32,
+      "teacherId": 58,
       "name": "02",
       "status": true,
-      "capacity": 30,
+      "capacity": 20,
       "id": 17
     },
     {
@@ -2384,7 +2393,7 @@
       "teacherId": 37,
       "name": "01",
       "status": true,
-      "capacity": 30,
+      "capacity": 20,
       "id": 18
     },
     {
@@ -2393,7 +2402,7 @@
       "teacherId": 47,
       "name": "02",
       "status": true,
-      "capacity": 30,
+      "capacity": 20,
       "id": 19
     },
     {
@@ -2402,7 +2411,7 @@
       "teacherId": 47,
       "name": "03",
       "status": true,
-      "capacity": 30,
+      "capacity": 20,
       "id": 20
     },
     {
@@ -2411,7 +2420,7 @@
       "teacherId": 37,
       "name": "01",
       "status": true,
-      "capacity": 30,
+      "capacity": 20,
       "id": 21
     },
     {
@@ -2420,7 +2429,7 @@
       "teacherId": 47,
       "name": "02",
       "status": true,
-      "capacity": 30,
+      "capacity": 20,
       "id": 22
     },
     {
@@ -2429,7 +2438,7 @@
       "teacherId": 47,
       "name": "03",
       "status": true,
-      "capacity": 30,
+      "capacity": 20,
       "id": 23
     },
     {
@@ -2501,7 +2510,7 @@
       "teacherId": 55,
       "name": "01",
       "status": true,
-      "capacity": 30,
+      "capacity": 40,
       "id": 31
     },
     {
@@ -2528,17 +2537,8 @@
       "teacherId": 42,
       "name": "01",
       "status": true,
-      "capacity": 20,
+      "capacity": 40,
       "id": 34
-    },
-    {
-      "subjectId": 29,
-      "periodId": 4,
-      "teacherId": 42,
-      "name": "02",
-      "status": true,
-      "capacity": 20,
-      "id": 35
     },
     {
       "subjectId": 30,
@@ -2561,7 +2561,7 @@
     {
       "subjectId": 31,
       "periodId": 4,
-      "teacherId": 53,
+      "teacherId": 58,
       "name": "01",
       "status": true,
       "capacity": 25,
@@ -2570,7 +2570,7 @@
     {
       "subjectId": 31,
       "periodId": 4,
-      "teacherId": 32,
+      "teacherId": 58,
       "name": "02",
       "status": true,
       "capacity": 25,
@@ -2645,7 +2645,7 @@
       "teacherId": 54,
       "name": "01",
       "status": true,
-      "capacity": 30,
+      "capacity": 45,
       "id": 47
     },
     {
@@ -2654,17 +2654,8 @@
       "teacherId": 33,
       "name": "01",
       "status": true,
-      "capacity": 20,
+      "capacity": 30,
       "id": 48
-    },
-    {
-      "subjectId": 37,
-      "periodId": 4,
-      "teacherId": 33,
-      "name": "02",
-      "status": true,
-      "capacity": 20,
-      "id": 49
     },
     {
       "subjectId": 38,
@@ -2672,7 +2663,7 @@
       "teacherId": 34,
       "name": "01",
       "status": true,
-      "capacity": 30,
+      "capacity": 25,
       "id": 50
     },
     {
@@ -2681,7 +2672,7 @@
       "teacherId": 40,
       "name": "02",
       "status": true,
-      "capacity": 30,
+      "capacity": 25,
       "id": 51
     },
     {
@@ -2708,17 +2699,8 @@
       "teacherId": 34,
       "name": "01",
       "status": true,
-      "capacity": 20,
+      "capacity": 50,
       "id": 54
-    },
-    {
-      "subjectId": 40,
-      "periodId": 4,
-      "teacherId": 34,
-      "name": "02",
-      "status": true,
-      "capacity": 20,
-      "id": 55
     },
     {
       "subjectId": 41,
@@ -2759,20 +2741,11 @@
     {
       "subjectId": 43,
       "periodId": 4,
-      "teacherId": 43,
+      "teacherId": 41,
       "name": "01",
       "status": true,
-      "capacity": 20,
+      "capacity": 30,
       "id": 60
-    },
-    {
-      "subjectId": 43,
-      "periodId": 4,
-      "teacherId": 43,
-      "name": "02",
-      "status": true,
-      "capacity": 20,
-      "id": 61
     },
     {
       "subjectId": 44,
@@ -2780,7 +2753,7 @@
       "teacherId": 54,
       "name": "01",
       "status": true,
-      "capacity": 30,
+      "capacity": 50,
       "id": 62
     },
     {
@@ -2807,7 +2780,7 @@
       "teacherId": 54,
       "name": "01",
       "status": true,
-      "capacity": 30,
+      "capacity": 50,
       "id": 65
     },
     {
@@ -2825,17 +2798,8 @@
       "teacherId": 40,
       "name": "01",
       "status": true,
-      "capacity": 25,
+      "capacity": 30,
       "id": 67
-    },
-    {
-      "subjectId": 48,
-      "periodId": 4,
-      "teacherId": 40,
-      "name": "02",
-      "status": true,
-      "capacity": 25,
-      "id": 68
     },
     {
       "subjectId": 59,
@@ -2843,7 +2807,7 @@
       "teacherId": 46,
       "name": "01",
       "status": true,
-      "capacity": 10,
+      "capacity": 15,
       "id": 69
     },
     {
@@ -2852,7 +2816,7 @@
       "teacherId": 50,
       "name": "02",
       "status": true,
-      "capacity": 10,
+      "capacity": 15,
       "id": 70
     },
     {
@@ -2861,7 +2825,7 @@
       "teacherId": 50,
       "name": "03",
       "status": true,
-      "capacity": 10,
+      "capacity": 15,
       "id": 71
     },
     {
@@ -2906,17 +2870,8 @@
       "teacherId": 41,
       "name": "01",
       "status": true,
-      "capacity": 20,
+      "capacity": 30,
       "id": 76
-    },
-    {
-      "subjectId": 71,
-      "periodId": 4,
-      "teacherId": 41,
-      "name": "02",
-      "status": true,
-      "capacity": 20,
-      "id": 77
     },
     {
       "subjectId": 73,
@@ -2924,7 +2879,7 @@
       "teacherId": 37,
       "name": "01",
       "status": true,
-      "capacity": 30,
+      "capacity": 45,
       "id": 78
     },
     {
@@ -2933,7 +2888,7 @@
       "teacherId": 51,
       "name": "01",
       "status": true,
-      "capacity": 40,
+      "capacity": 50,
       "id": 79
     },
     {
@@ -2942,7 +2897,7 @@
       "teacherId": 51,
       "name": "02",
       "status": true,
-      "capacity": 40,
+      "capacity": 50,
       "id": 80
     },
     {
@@ -3011,11 +2966,38 @@
     {
       "subjectId": 21,
       "periodId": 4,
-      "teacherId": 32,
+      "teacherId": 58,
       "name": "03",
       "status": true,
       "capacity": 20,
       "id": 88
+    },
+    {
+      "subjectId": 28,
+      "periodId": 4,
+      "teacherId": 53,
+      "name": "03",
+      "status": true,
+      "capacity": 40,
+      "id": 89
+    },
+    {
+      "subjectId": 47,
+      "periodId": 4,
+      "teacherId": 40,
+      "name": "02",
+      "status": true,
+      "capacity": 30,
+      "id": 90
+    },
+    {
+      "subjectId": 66,
+      "periodId": 4,
+      "teacherId": 43,
+      "name": "02",
+      "status": true,
+      "capacity": 30,
+      "id": 91
     }
   ],
   "schedules": [
@@ -3036,24 +3018,6 @@
       "sectionId": 54,
       "periodId": 4,
       "id": 3
-    },
-    {
-      "classroomId": 12,
-      "dayId": 1,
-      "start": "12:00",
-      "end": "13:35",
-      "sectionId": 55,
-      "periodId": 4,
-      "id": 4
-    },
-    {
-      "classroomId": 12,
-      "dayId": 3,
-      "start": "12:00",
-      "end": "13:35",
-      "sectionId": 55,
-      "periodId": 4,
-      "id": 6
     },
     {
       "classroomId": 17,
@@ -3194,7 +3158,7 @@
       "classroomId": 16,
       "dayId": 2,
       "start": "07:00",
-      "end": "08:35",
+      "end": "09:25",
       "sectionId": 11,
       "periodId": 4,
       "id": 31
@@ -3243,15 +3207,6 @@
       "sectionId": 47,
       "periodId": 4,
       "id": 36
-    },
-    {
-      "classroomId": 14,
-      "dayId": 4,
-      "start": "12:50",
-      "end": "14:25",
-      "sectionId": 0,
-      "periodId": 4,
-      "id": 37
     },
     {
       "classroomId": 14,
@@ -3330,15 +3285,6 @@
       "dayId": 4,
       "start": "12:00",
       "end": "13:35",
-      "sectionId": 0,
-      "periodId": 4,
-      "id": 46
-    },
-    {
-      "classroomId": 16,
-      "dayId": 4,
-      "start": "12:00",
-      "end": "13:35",
       "sectionId": 52,
       "periodId": 4,
       "id": 47
@@ -3351,15 +3297,6 @@
       "sectionId": 53,
       "periodId": 4,
       "id": 48
-    },
-    {
-      "classroomId": 16,
-      "dayId": 4,
-      "start": "13:40",
-      "end": "15:15",
-      "sectionId": 0,
-      "periodId": 4,
-      "id": 49
     },
     {
       "classroomId": 16,
@@ -3384,15 +3321,6 @@
       "dayId": 5,
       "start": "08:40",
       "end": "10:15",
-      "sectionId": 0,
-      "periodId": 4,
-      "id": 52
-    },
-    {
-      "classroomId": 12,
-      "dayId": 5,
-      "start": "08:40",
-      "end": "10:15",
       "sectionId": 62,
       "periodId": 4,
       "id": 53
@@ -3405,15 +3333,6 @@
       "sectionId": 14,
       "periodId": 4,
       "id": 54
-    },
-    {
-      "classroomId": 15,
-      "dayId": 4,
-      "start": "09:30",
-      "end": "11:55",
-      "sectionId": 0,
-      "periodId": 4,
-      "id": 55
     },
     {
       "classroomId": 15,
@@ -3506,15 +3425,6 @@
       "id": 65
     },
     {
-      "classroomId": 18,
-      "dayId": 4,
-      "start": "08:40",
-      "end": "10:15",
-      "sectionId": 0,
-      "periodId": 4,
-      "id": 66
-    },
-    {
       "classroomId": 13,
       "dayId": 3,
       "start": "08:40",
@@ -3546,15 +3456,6 @@
       "dayId": 2,
       "start": "10:20",
       "end": "11:55",
-      "sectionId": 0,
-      "periodId": 4,
-      "id": 70
-    },
-    {
-      "classroomId": 13,
-      "dayId": 2,
-      "start": "10:20",
-      "end": "11:55",
       "sectionId": 78,
       "periodId": 4,
       "id": 71
@@ -3567,15 +3468,6 @@
       "sectionId": 19,
       "periodId": 4,
       "id": 72
-    },
-    {
-      "classroomId": 18,
-      "dayId": 4,
-      "start": "12:50",
-      "end": "14:25",
-      "sectionId": 0,
-      "periodId": 4,
-      "id": 73
     },
     {
       "classroomId": 17,
@@ -3618,18 +3510,18 @@
       "dayId": 5,
       "start": "12:50",
       "end": "14:25",
-      "sectionId": 0,
-      "periodId": 4,
-      "id": 78
-    },
-    {
-      "classroomId": 15,
-      "dayId": 5,
-      "start": "12:50",
-      "end": "14:25",
       "sectionId": 20,
       "periodId": 4,
       "id": 79
+    },
+    {
+      "classroomId": 12,
+      "dayId": 4,
+      "start": "12:00",
+      "end": "13:35",
+      "sectionId": 81,
+      "periodId": 4,
+      "id": 80
     }
   ]
 }

@@ -237,7 +237,6 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       this.form.get('teacherId')?.valueChanges.subscribe((teacherId) => {
         if (teacherId && teacherId?.id) {
           this.filteredTeachers = of(this.teachers);
-          this.loadSection();
         }
       })
     );

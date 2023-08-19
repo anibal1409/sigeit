@@ -73,7 +73,7 @@
     >
       <mat-header-cell *matHeaderCellDef>{{ column.text }} </mat-header-cell>
       <mat-cell *matCellDef="let row">
-        <ng-container *ngIf="!equalPrevious(row, column.field)">
+        <ng-container *ngIf="!equalPrevious(row, column.field, dataSource.data)">
           {{ row[column.field] }}
         </ng-container>
       </mat-cell>
@@ -91,7 +91,7 @@
         <mat-icon *ngIf="group.expanded">expand_less</mat-icon>
         <mat-icon *ngIf="!group.expanded">expand_more</mat-icon>
         <strong (click)="print(groupByColumns, group)"
-          >{{ group.name }} {{ group[groupByColumns[group.level - 1]] }}</strong
+          >{{ group.name }} {{ group[groupByColumns[group.level - 1]]  }}</strong
         >
       </mat-cell>
     </ng-container>
