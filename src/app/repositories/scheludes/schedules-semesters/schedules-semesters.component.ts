@@ -4,7 +4,13 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 
 import moment from 'moment';
-import { finalize, map, Observable, of, startWith, Subscription } from 'rxjs';
+import {
+  finalize,
+  map,
+  Observable,
+  startWith,
+  Subscription,
+} from 'rxjs';
 import { StateService } from 'src/app/common/state';
 import * as XLSX from 'xlsx';
 
@@ -31,7 +37,7 @@ export class SchedulesSemestersComponent {
   filteredDepartments!: Observable<DepartmentVM[]>;
   departments: Array<DepartmentVM> = [];
   departmentCtrl = new FormControl();
-  periodId = 3;
+  periodId = 4;
   period!: PeriodVM;
   departmentId = 0;
 

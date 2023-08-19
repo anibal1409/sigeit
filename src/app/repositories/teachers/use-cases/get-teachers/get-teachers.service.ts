@@ -6,8 +6,8 @@ import {
   Observable,
 } from 'rxjs';
 
-import { Teacher2TeacherItemVM } from '../mappers';
-import { TeacherItemVM } from '../model';
+import { Teacher2TeacherItemVM } from '../../mappers';
+import { TeacherItemVM } from '../../model';
 
 @Injectable()
 export class GetTeachersService {

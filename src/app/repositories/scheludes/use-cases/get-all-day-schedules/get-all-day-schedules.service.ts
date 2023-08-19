@@ -27,6 +27,7 @@ export class GetAllDaySchedulesService {
         map((schedules: any) => schedules.map(Schedule2ScheduleItemVM)),
         mergeMap(
           (schudules: Array<ScheduleItemVM>) => {
+            schudules = schudules.filter((x: ScheduleItemVM) => !!x?.section?.subjectId);
             const scheduleObservables = schudules.map(
               (schedule: ScheduleItemVM) => {
                 return this.http.get(`http://localhost:3000/subjects/${schedule.section?.subjectId}`)

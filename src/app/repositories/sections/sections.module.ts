@@ -22,6 +22,7 @@ import {
   CreateSectionService,
   FindSectionService,
   GetDepartamentsBySchoolService,
+  GetSetcionsService,
   GetSubjectsByDepartmentService,
   GetSubjectSectionsService,
   RemoveSectionService,
@@ -56,6 +57,7 @@ import {
     FindSectionService,
     UpdateSectionService,
     RemoveSectionService,
+    GetSetcionsService,
   ],
 })
 export class SectionsModule {}

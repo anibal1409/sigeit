@@ -10,10 +10,19 @@ import {
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import {
+  MatTable,
+  MatTableDataSource,
+} from '@angular/material/table';
 
-import { OptionAction, RowOptionVM, TableDataVM } from './model';
-import { TableService } from './table.service'; /** Constants used to fill up our data base. */
+import {
+  OptionAction,
+  RowOptionVM,
+  TableDataVM,
+} from './model';
+import {
+  TableService,
+} from './table.service'; /** Constants used to fill up our data base. */
 
 @Component({
   selector: 'sigeit-table',
@@ -51,8 +60,15 @@ export class TableComponent implements AfterViewInit, OnInit {
     this.setDataSourceAttributes();
   }
 
+  getProperty = (obj: any, path: any) => (
+    path.split('.').reduce((o: any, p: any) => o && o[p], obj)
+  )
+
   setDataSourceAttributes() {
+    console.log(this.sort);
+    
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sortingDataAccessor = (obj, property) => this.getProperty(obj, property);
     this.dataSource.sort = this.sort;
   }
   constructor(private tableService: TableService) {
@@ -82,6 +98,8 @@ export class TableComponent implements AfterViewInit, OnInit {
   }
 
   applyFilter(event: Event) {
+    console.log('applyFilter');
+    
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
     if (this.dataSource.paginator) {

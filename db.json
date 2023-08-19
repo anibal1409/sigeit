@@ -261,7 +261,7 @@
       "institute_logo": "",
       "description": "",
       "start_time": "07:00",
-      "end_time": "16:05",
+      "end_time": "16:55",
       "interval": 5,
       "duration": 45
     }
@@ -992,11 +992,23 @@
     {
       "id": 3,
       "name": "II-2022",
-      "status": true,
+      "status": false,
       "start": "2023-04-01",
       "end": "2023-08-01",
       "start_time": "07:00",
       "end_time": "16:05",
+      "interval": 5,
+      "duration": 45,
+      "stage": "FINALIZADO"
+    },
+    {
+      "id": 4,
+      "name": "I-2023",
+      "status": true,
+      "start": "2023-09-28",
+      "end": "2024-03-01",
+      "start_time": "07:00",
+      "end_time": "16:55",
       "interval": 5,
       "duration": 45,
       "stage": "POR PLANIFICAR"
@@ -2005,285 +2017,6 @@
   ],
   "teachers": [
     {
-      "id": 30,
-      "id_document": 1,
-      "first_name": "Bolivar",
-      "last_name": "Simon",
-      "status": true,
-      "email": "sbolivar@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 1,
-      "id_document": 2,
-      "first_name": "Antonio José",
-      "last_name": "De Sucre",
-      "status": true,
-      "email": "adescure@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 2,
-      "id_document": 23539583,
-      "first_name": "Anibal",
-      "last_name": "Fariñas",
-      "status": true,
-      "email": "afarinas@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 3,
-      "id_document": 3,
-      "first_name": "Francisco",
-      "last_name": "De Miranda",
-      "status": true,
-      "email": "fdemiranda@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 4,
-      "id_document": 4,
-      "first_name": "José Antonio",
-      "last_name": "Paez",
-      "status": true,
-      "email": "jpaez@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 5,
-      "id_document": 5,
-      "first_name": "Atanasio",
-      "last_name": "Giraldot",
-      "status": true,
-      "email": "agiraldot@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 6,
-      "id_document": 6,
-      "first_name": "Carlos",
-      "last_name": "Soublette",
-      "status": true,
-      "email": "csoublette@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 7,
-      "id_document": 7,
-      "first_name": "Daniel Florencio",
-      "last_name": "O' Leary",
-      "status": true,
-      "email": "dolearya@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 8,
-      "id_document": 8,
-      "first_name": "Gregor",
-      "last_name": "Mac Gregor",
-      "status": true,
-      "email": "gmacgregor@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 9,
-      "id_document": 9,
-      "first_name": "José Felix",
-      "last_name": "Ribas",
-      "status": true,
-      "email": "jribas@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 10,
-      "id_document": 10,
-      "first_name": "José Gregorio",
-      "last_name": "Monagas",
-      "status": true,
-      "email": "jgmonagas@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 11,
-      "id_document": 11,
-      "first_name": "José Antonio",
-      "last_name": "Anzoategui",
-      "status": true,
-      "email": "janzoategui@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 12,
-      "id_document": 12,
-      "first_name": "José Tadeo",
-      "last_name": "Monagas",
-      "status": true,
-      "email": "jtmonagas@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 13,
-      "id_document": 13,
-      "first_name": "Juan Bautista",
-      "last_name": "Arismendi",
-      "status": true,
-      "email": "jarismendi@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 14,
-      "id_document": 14,
-      "first_name": "Leonardo",
-      "last_name": "Infante",
-      "status": true,
-      "email": "linfante@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 15,
-      "id_document": 15,
-      "first_name": "Manuel",
-      "last_name": "Cedeño",
-      "status": true,
-      "email": "mcedeno@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 16,
-      "id_document": 16,
-      "first_name": "Manuel",
-      "last_name": "Piar",
-      "status": true,
-      "email": "mpiar@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 17,
-      "id_document": 17,
-      "first_name": "Pedro",
-      "last_name": "Camejo",
-      "status": true,
-      "email": "pcamejo@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 18,
-      "id_document": 18,
-      "first_name": "Santiago",
-      "last_name": "Mariño",
-      "status": true,
-      "email": "smarino@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 19,
-      "id_document": 19,
-      "first_name": "Rafael",
-      "last_name": "Urdaneta",
-      "status": true,
-      "email": "rurdaneta@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 20,
-      "id_document": 20,
-      "first_name": "Simon",
-      "last_name": "Rodriguez",
-      "status": true,
-      "email": "srodriguez@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 21,
-      "id_document": 21,
-      "first_name": "Cesar",
-      "last_name": "Rengifo",
-      "status": true,
-      "email": "crengifo@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 22,
-      "id_document": 22,
-      "first_name": "José María",
-      "last_name": "Vargas",
-      "status": true,
-      "email": "jvargas@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 23,
-      "id_document": 14009373,
-      "first_name": "Romulo",
-      "last_name": "Gallegos",
-      "status": true,
-      "email": "rgallegos@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 24,
-      "id_document": 24,
-      "first_name": "Andres",
-      "last_name": "Bello",
-      "status": true,
-      "email": "abello@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 25,
-      "id_document": 25,
-      "first_name": "Cipriano",
-      "last_name": "Castro",
-      "status": true,
-      "email": "ccastro@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 26,
-      "id_document": 26,
-      "first_name": "Marcos",
-      "last_name": "Perez Jimenes",
-      "status": true,
-      "email": "mperez@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 27,
-      "id_document": 227,
-      "first_name": "Antonio",
-      "last_name": "Guzmán Blanco",
-      "status": true,
-      "email": "aguzman@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 28,
-      "id_document": 28,
-      "first_name": "Luisa",
-      "last_name": "Cáceres de Arismendi",
-      "status": true,
-      "email": "lcaceres@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 29,
-      "id_document": 29,
-      "first_name": "Manuelita",
-      "last_name": "Saenz",
-      "status": true,
-      "email": "msaenz@gmail.com",
-      "departmentId": 1
-    },
-    {
-      "id": 31,
-      "id_document": 31,
-      "first_name": "Teresa",
-      "last_name": "Carreño",
-      "status": true,
-      "email": "tcarreño@gmail.com",
-      "departmentId": 1
-    },
-    {
       "id": 32,
       "id_document": 7,
       "first_name": "Por asignar profesor",
@@ -2291,694 +2024,1612 @@
       "status": true,
       "email": "",
       "departmentId": 1
+    },
+    {
+      "id": 33,
+      "departmentId": 1,
+      "id_document": "22970399",
+      "first_name": "Olvis Del Valle",
+      "last_name": "Leonett Leonett",
+      "status": true,
+      "email": ""
+    },
+    {
+      "id": 34,
+      "departmentId": 1,
+      "id_document": "23539583",
+      "first_name": "Anibal Antonio",
+      "last_name": "Fariñas Barrera",
+      "status": true,
+      "email": ""
+    },
+    {
+      "id": 35,
+      "departmentId": 1,
+      "id_document": "16573748",
+      "first_name": "Glorimar Vickarin",
+      "last_name": "Aponte Gonzalez",
+      "status": true,
+      "email": ""
+    },
+    {
+      "id": 36,
+      "departmentId": 1,
+      "id_document": "14422263",
+      "first_name": "Rogel Francisco",
+      "last_name": "Avila",
+      "status": true,
+      "email": ""
+    },
+    {
+      "id": 37,
+      "departmentId": 1,
+      "id_document": "11383348",
+      "first_name": "Frank Ramon",
+      "last_name": "Diaz Barreto",
+      "status": true,
+      "email": ""
+    },
+    {
+      "id": 38,
+      "departmentId": 1,
+      "id_document": "8353569",
+      "first_name": "Norberto",
+      "last_name": "Diaz",
+      "status": true,
+      "email": ""
+    },
+    {
+      "id": 39,
+      "departmentId": 1,
+      "id_document": "24213400",
+      "first_name": "Alex Beatriz",
+      "last_name": "Donado Madera",
+      "status": true,
+      "email": ""
+    },
+    {
+      "id": 40,
+      "departmentId": 1,
+      "id_document": "12340346",
+      "first_name": "Yamila Aurora",
+      "last_name": "Gascon Mujica",
+      "status": true,
+      "email": ""
+    },
+    {
+      "id": 41,
+      "departmentId": 1,
+      "id_document": "13894293",
+      "first_name": "Sorelis",
+      "last_name": "GÓmez Benavidez",
+      "status": true,
+      "email": ""
+    },
+    {
+      "id": 42,
+      "departmentId": 1,
+      "id_document": "21134341",
+      "first_name": "Heickel Anthony",
+      "last_name": "Loreto Blanco",
+      "status": true,
+      "email": ""
+    },
+    {
+      "id": 43,
+      "departmentId": 1,
+      "id_document": "16816960",
+      "first_name": "Jose Del Valle",
+      "last_name": "Navarro Gutierrez",
+      "status": true,
+      "email": ""
+    },
+    {
+      "id": 44,
+      "departmentId": 1,
+      "id_document": "14009373",
+      "first_name": "Alba Rocio",
+      "last_name": "Ortiz Suarez",
+      "status": true,
+      "email": ""
+    },
+    {
+      "id": 45,
+      "departmentId": 1,
+      "id_document": "9895259",
+      "first_name": "Beatriz",
+      "last_name": "Pérez ",
+      "status": true,
+      "email": ""
+    },
+    {
+      "id": 46,
+      "departmentId": 1,
+      "id_document": "8929986",
+      "first_name": "Maria Elena",
+      "last_name": "Pinto Rodriguez",
+      "status": true,
+      "email": ""
+    },
+    {
+      "id": 47,
+      "departmentId": 1,
+      "id_document": "11777433",
+      "first_name": "Orlando",
+      "last_name": "Sevilla",
+      "status": true,
+      "email": ""
+    },
+    {
+      "id": 48,
+      "departmentId": 1,
+      "id_document": "11602609",
+      "first_name": "Yazmin Del Valle",
+      "last_name": "Sieiro Patete",
+      "status": true,
+      "email": ""
+    },
+    {
+      "id": 49,
+      "departmentId": 1,
+      "id_document": "8277843",
+      "first_name": "Francys M",
+      "last_name": "Tononi M",
+      "status": true,
+      "email": ""
+    },
+    {
+      "id": 50,
+      "departmentId": 1,
+      "id_document": "14284846",
+      "first_name": "Nelsy Emilia",
+      "last_name": "Vivenes Ortiz",
+      "status": true,
+      "email": ""
+    },
+    {
+      "id": 51,
+      "departmentId": 1,
+      "id_document": "8965229",
+      "first_name": "Abdelnaser",
+      "last_name": "Yordi",
+      "status": true,
+      "email": ""
+    },
+    {
+      "id": 52,
+      "departmentId": 1,
+      "id_document": "15511946",
+      "first_name": "Marlene Alexandra",
+      "last_name": "Zerpa Zerpa",
+      "status": true,
+      "email": ""
+    },
+    {
+      "id": 53,
+      "departmentId": 1,
+      "id_document": "25242857",
+      "first_name": "Benny Isaac",
+      "last_name": "Romero Salazar",
+      "status": true,
+      "email": ""
+    },
+    {
+      "id": 54,
+      "departmentId": 1,
+      "id_document": "25286151",
+      "first_name": "Douglas Antonio",
+      "last_name": "Rico Rodriguez",
+      "status": true,
+      "email": ""
+    },
+    {
+      "id": 55,
+      "departmentId": 1,
+      "id_document": "26975642",
+      "first_name": "Octavio Francisco",
+      "last_name": "Alfonzo Espinoza",
+      "status": true,
+      "email": ""
+    },
+    {
+      "id": 57,
+      "departmentId": 1,
+      "id_document": "23900555",
+      "first_name": "José Jesús",
+      "last_name": "Bastardo",
+      "status": true,
+      "email": ""
     }
   ],
   "sections": [
     {
-      "id": 20,
-      "subjectId": 31,
-      "teacherId": 12,
-      "periodId": 2,
+      "subjectId": 11,
+      "periodId": 4,
+      "teacherId": 55,
       "name": "01",
       "status": true,
-      "capacity": 30
+      "capacity": 50,
+      "id": 1
     },
     {
-      "id": 1,
-      "subjectId": 31,
-      "teacherId": 12,
-      "periodId": 2,
+      "subjectId": 11,
+      "periodId": 4,
+      "teacherId": 55,
       "name": "02",
       "status": true,
-      "capacity": 30
+      "capacity": 50,
+      "id": 2
     },
     {
-      "id": 2,
-      "subjectId": 32,
-      "teacherId": 11,
-      "periodId": 2,
-      "name": "01",
-      "status": true,
-      "capacity": 30
-    },
-    {
-      "id": 3,
-      "subjectId": 32,
-      "teacherId": 11,
-      "periodId": 2,
-      "name": "02",
-      "status": true,
-      "capacity": 30
-    },
-    {
-      "id": 4,
-      "subjectId": 33,
-      "teacherId": 13,
-      "periodId": 2,
-      "name": "01",
-      "status": true,
-      "capacity": 30
-    },
-    {
-      "id": 5,
-      "subjectId": 33,
-      "teacherId": 13,
-      "periodId": 2,
-      "name": "02",
-      "status": true,
-      "capacity": 30
-    },
-    {
-      "id": 6,
-      "subjectId": 36,
-      "teacherId": 10,
-      "periodId": 2,
-      "name": "01",
-      "status": true,
-      "capacity": 30
-    },
-    {
-      "id": 7,
-      "subjectId": 37,
-      "teacherId": 2,
-      "periodId": 2,
-      "name": "01",
-      "status": true,
-      "capacity": 30
-    },
-    {
-      "id": 8,
-      "subjectId": 37,
-      "teacherId": 2,
-      "periodId": 2,
-      "name": "02",
-      "status": true,
-      "capacity": 30
-    },
-    {
-      "id": 9,
-      "subjectId": 38,
-      "teacherId": 14,
-      "periodId": 2,
-      "name": "01",
-      "status": true,
-      "capacity": 30
-    },
-    {
-      "id": 10,
-      "subjectId": 38,
-      "teacherId": 14,
-      "periodId": 2,
-      "name": "02",
-      "status": true,
-      "capacity": 30
-    },
-    {
-      "id": 11,
-      "subjectId": 41,
-      "teacherId": 10,
-      "periodId": 2,
-      "name": "01",
-      "status": true,
-      "capacity": 30
-    },
-    {
-      "id": 12,
-      "subjectId": 41,
-      "teacherId": 10,
-      "periodId": 2,
-      "name": "02",
-      "status": true,
-      "capacity": 30
-    },
-    {
-      "id": 13,
-      "subjectId": 42,
-      "teacherId": 30,
-      "periodId": 2,
-      "name": "01",
-      "status": true,
-      "capacity": 30
-    },
-    {
-      "id": 14,
-      "subjectId": 42,
-      "teacherId": 30,
-      "periodId": 2,
-      "name": "02",
-      "status": true,
-      "capacity": 30
-    },
-    {
-      "id": 15,
-      "subjectId": 44,
-      "teacherId": 27,
-      "periodId": 2,
-      "name": "01",
-      "status": true,
-      "capacity": 30
-    },
-    {
-      "id": 16,
-      "subjectId": 44,
-      "teacherId": 27,
-      "periodId": 2,
-      "name": "02",
-      "status": true,
-      "capacity": 30
-    },
-    {
-      "id": 17,
-      "subjectId": 45,
-      "teacherId": 28,
-      "periodId": 2,
-      "name": "01",
-      "status": true,
-      "capacity": 30
-    },
-    {
-      "id": 18,
-      "subjectId": 45,
-      "teacherId": 28,
-      "periodId": 2,
-      "name": "02",
-      "status": true,
-      "capacity": 30
-    },
-    {
-      "id": 19,
-      "subjectId": 46,
-      "teacherId": 19,
-      "periodId": 2,
-      "name": "01",
-      "status": true,
-      "capacity": 30
-    },
-    {
-      "id": 21,
-      "subjectId": 46,
-      "teacherId": 19,
-      "periodId": 2,
-      "name": "02",
-      "status": true,
-      "capacity": 30
-    },
-    {
-      "subjectId": 31,
-      "periodId": 2,
-      "teacherId": 30,
+      "subjectId": 11,
+      "periodId": 4,
+      "teacherId": 36,
       "name": "03",
       "status": true,
-      "capacity": 0,
-      "id": 22
-    },
-    {
-      "subjectId": 31,
-      "periodId": 2,
-      "teacherId": 30,
-      "name": "04",
-      "status": true,
-      "capacity": 0,
-      "id": 23
-    },
-    {
-      "subjectId": 31,
-      "periodId": 2,
-      "teacherId": 30,
-      "name": "04",
-      "status": true,
-      "capacity": 0,
-      "id": 24
-    },
-    {
-      "subjectId": 11,
-      "periodId": 3,
-      "teacherId": 1,
-      "name": "01",
-      "status": true,
-      "capacity": 20,
-      "id": 25
-    },
-    {
-      "subjectId": 11,
-      "periodId": 3,
-      "teacherId": 1,
-      "name": "02",
-      "status": true,
-      "capacity": 30,
-      "id": 26
+      "capacity": 50,
+      "id": 3
     },
     {
       "subjectId": 15,
-      "periodId": 3,
-      "teacherId": 32,
+      "periodId": 4,
+      "teacherId": 57,
       "name": "01",
       "status": true,
-      "capacity": 20,
-      "id": 27
+      "capacity": 40,
+      "id": 4
+    },
+    {
+      "subjectId": 15,
+      "periodId": 4,
+      "teacherId": 57,
+      "name": "02",
+      "status": true,
+      "capacity": 40,
+      "id": 5
+    },
+    {
+      "subjectId": 15,
+      "periodId": 4,
+      "teacherId": 36,
+      "name": "03",
+      "status": true,
+      "capacity": 40,
+      "id": 6
     },
     {
       "subjectId": 16,
-      "periodId": 3,
-      "teacherId": 2,
+      "periodId": 4,
+      "teacherId": 55,
+      "name": "01",
+      "status": true,
+      "capacity": 50,
+      "id": 7
+    },
+    {
+      "subjectId": 16,
+      "periodId": 4,
+      "teacherId": 55,
+      "name": "02",
+      "status": true,
+      "capacity": 50,
+      "id": 8
+    },
+    {
+      "subjectId": 18,
+      "periodId": 4,
+      "teacherId": 57,
+      "name": "01",
+      "status": true,
+      "capacity": 30,
+      "id": 11
+    },
+    {
+      "subjectId": 18,
+      "periodId": 4,
+      "teacherId": 57,
+      "name": "02",
+      "status": true,
+      "capacity": 30,
+      "id": 12
+    },
+    {
+      "subjectId": 18,
+      "periodId": 4,
+      "teacherId": 57,
+      "name": "03",
+      "status": true,
+      "capacity": 30,
+      "id": 13
+    },
+    {
+      "subjectId": 20,
+      "periodId": 4,
+      "teacherId": 35,
+      "name": "01",
+      "status": true,
+      "capacity": 30,
+      "id": 14
+    },
+    {
+      "subjectId": 20,
+      "periodId": 4,
+      "teacherId": 35,
+      "name": "02",
+      "status": true,
+      "capacity": 30,
+      "id": 15
+    },
+    {
+      "subjectId": 21,
+      "periodId": 4,
+      "teacherId": 32,
+      "name": "01",
+      "status": true,
+      "capacity": 30,
+      "id": 16
+    },
+    {
+      "subjectId": 21,
+      "periodId": 4,
+      "teacherId": 32,
+      "name": "02",
+      "status": true,
+      "capacity": 30,
+      "id": 17
+    },
+    {
+      "subjectId": 22,
+      "periodId": 4,
+      "teacherId": 37,
+      "name": "01",
+      "status": true,
+      "capacity": 30,
+      "id": 18
+    },
+    {
+      "subjectId": 22,
+      "periodId": 4,
+      "teacherId": 47,
+      "name": "02",
+      "status": true,
+      "capacity": 30,
+      "id": 19
+    },
+    {
+      "subjectId": 22,
+      "periodId": 4,
+      "teacherId": 47,
+      "name": "03",
+      "status": true,
+      "capacity": 30,
+      "id": 20
+    },
+    {
+      "subjectId": 23,
+      "periodId": 4,
+      "teacherId": 37,
+      "name": "01",
+      "status": true,
+      "capacity": 30,
+      "id": 21
+    },
+    {
+      "subjectId": 23,
+      "periodId": 4,
+      "teacherId": 47,
+      "name": "02",
+      "status": true,
+      "capacity": 30,
+      "id": 22
+    },
+    {
+      "subjectId": 23,
+      "periodId": 4,
+      "teacherId": 47,
+      "name": "03",
+      "status": true,
+      "capacity": 30,
+      "id": 23
+    },
+    {
+      "subjectId": 24,
+      "periodId": 4,
+      "teacherId": 39,
+      "name": "01",
+      "status": true,
+      "capacity": 25,
+      "id": 24
+    },
+    {
+      "subjectId": 24,
+      "periodId": 4,
+      "teacherId": 39,
+      "name": "02",
+      "status": true,
+      "capacity": 25,
+      "id": 25
+    },
+    {
+      "subjectId": 25,
+      "periodId": 4,
+      "teacherId": 53,
+      "name": "01",
+      "status": true,
+      "capacity": 25,
+      "id": 26
+    },
+    {
+      "subjectId": 25,
+      "periodId": 4,
+      "teacherId": 53,
+      "name": "02",
+      "status": true,
+      "capacity": 25,
+      "id": 27
+    },
+    {
+      "subjectId": 26,
+      "periodId": 4,
+      "teacherId": 41,
       "name": "01",
       "status": true,
       "capacity": 20,
       "id": 28
     },
     {
-      "subjectId": 16,
-      "periodId": 3,
-      "teacherId": 2,
+      "subjectId": 26,
+      "periodId": 4,
+      "teacherId": 41,
       "name": "02",
       "status": true,
       "capacity": 20,
       "id": 29
     },
     {
-      "subjectId": 16,
-      "periodId": 3,
-      "teacherId": 2,
+      "subjectId": 26,
+      "periodId": 4,
+      "teacherId": 35,
       "name": "03",
       "status": true,
-      "capacity": 30,
+      "capacity": 20,
       "id": 30
     },
     {
-      "subjectId": 16,
-      "periodId": 3,
-      "teacherId": 2,
-      "name": "04",
+      "subjectId": 27,
+      "periodId": 4,
+      "teacherId": 55,
+      "name": "01",
       "status": true,
-      "capacity": 20,
+      "capacity": 30,
       "id": 31
     },
     {
-      "subjectId": 16,
-      "periodId": 3,
-      "teacherId": 2,
-      "name": "05",
+      "subjectId": 28,
+      "periodId": 4,
+      "teacherId": 48,
+      "name": "01",
       "status": true,
-      "capacity": 20,
+      "capacity": 40,
       "id": 32
     },
     {
-      "subjectId": 18,
-      "periodId": 3,
-      "teacherId": 25,
-      "name": "01",
+      "subjectId": 28,
+      "periodId": 4,
+      "teacherId": 48,
+      "name": "02",
       "status": true,
-      "capacity": 20,
+      "capacity": 40,
       "id": 33
     },
     {
-      "subjectId": 40,
-      "periodId": 3,
-      "teacherId": 2,
+      "subjectId": 29,
+      "periodId": 4,
+      "teacherId": 42,
       "name": "01",
       "status": true,
       "capacity": 20,
       "id": 34
     },
     {
-      "subjectId": 40,
-      "periodId": 3,
-      "teacherId": 2,
+      "subjectId": 29,
+      "periodId": 4,
+      "teacherId": 42,
       "name": "02",
       "status": true,
       "capacity": 20,
       "id": 35
     },
     {
-      "subjectId": 17,
-      "periodId": 3,
-      "teacherId": 2,
+      "subjectId": 30,
+      "periodId": 4,
+      "teacherId": 33,
       "name": "01",
       "status": true,
       "capacity": 20,
       "id": 36
     },
     {
-      "subjectId": 17,
-      "periodId": 3,
-      "teacherId": 32,
+      "subjectId": 30,
+      "periodId": 4,
+      "teacherId": 39,
       "name": "02",
       "status": true,
       "capacity": 20,
       "id": 37
     },
     {
+      "subjectId": 31,
+      "periodId": 4,
+      "teacherId": 53,
+      "name": "01",
+      "status": true,
+      "capacity": 25,
+      "id": 38
+    },
+    {
+      "subjectId": 31,
+      "periodId": 4,
+      "teacherId": 32,
+      "name": "02",
+      "status": true,
+      "capacity": 25,
+      "id": 39
+    },
+    {
+      "subjectId": 32,
+      "periodId": 4,
+      "teacherId": 34,
+      "name": "01",
+      "status": true,
+      "capacity": 25,
+      "id": 40
+    },
+    {
+      "subjectId": 32,
+      "periodId": 4,
+      "teacherId": 50,
+      "name": "02",
+      "status": true,
+      "capacity": 25,
+      "id": 41
+    },
+    {
+      "subjectId": 33,
+      "periodId": 4,
+      "teacherId": 48,
+      "name": "01",
+      "status": true,
+      "capacity": 30,
+      "id": 42
+    },
+    {
+      "subjectId": 33,
+      "periodId": 4,
+      "teacherId": 48,
+      "name": "02",
+      "status": true,
+      "capacity": 30,
+      "id": 43
+    },
+    {
+      "subjectId": 34,
+      "periodId": 4,
+      "teacherId": 43,
+      "name": "01",
+      "status": true,
+      "capacity": 20,
+      "id": 44
+    },
+    {
+      "subjectId": 34,
+      "periodId": 4,
+      "teacherId": 43,
+      "name": "02",
+      "status": true,
+      "capacity": 20,
+      "id": 45
+    },
+    {
+      "subjectId": 35,
+      "periodId": 4,
+      "teacherId": 49,
+      "name": "01",
+      "status": true,
+      "capacity": 30,
+      "id": 46
+    },
+    {
+      "subjectId": 36,
+      "periodId": 4,
+      "teacherId": 54,
+      "name": "01",
+      "status": true,
+      "capacity": 30,
+      "id": 47
+    },
+    {
+      "subjectId": 37,
+      "periodId": 4,
+      "teacherId": 33,
+      "name": "01",
+      "status": true,
+      "capacity": 20,
+      "id": 48
+    },
+    {
+      "subjectId": 37,
+      "periodId": 4,
+      "teacherId": 33,
+      "name": "02",
+      "status": true,
+      "capacity": 20,
+      "id": 49
+    },
+    {
+      "subjectId": 38,
+      "periodId": 4,
+      "teacherId": 34,
+      "name": "01",
+      "status": true,
+      "capacity": 30,
+      "id": 50
+    },
+    {
+      "subjectId": 38,
+      "periodId": 4,
+      "teacherId": 40,
+      "name": "02",
+      "status": true,
+      "capacity": 30,
+      "id": 51
+    },
+    {
+      "subjectId": 39,
+      "periodId": 4,
+      "teacherId": 42,
+      "name": "01",
+      "status": true,
+      "capacity": 30,
+      "id": 52
+    },
+    {
+      "subjectId": 39,
+      "periodId": 4,
+      "teacherId": 42,
+      "name": "02",
+      "status": true,
+      "capacity": 30,
+      "id": 53
+    },
+    {
+      "subjectId": 40,
+      "periodId": 4,
+      "teacherId": 34,
+      "name": "01",
+      "status": true,
+      "capacity": 20,
+      "id": 54
+    },
+    {
+      "subjectId": 40,
+      "periodId": 4,
+      "teacherId": 34,
+      "name": "02",
+      "status": true,
+      "capacity": 20,
+      "id": 55
+    },
+    {
+      "subjectId": 41,
+      "periodId": 4,
+      "teacherId": 53,
+      "name": "01",
+      "status": true,
+      "capacity": 30,
+      "id": 56
+    },
+    {
+      "subjectId": 41,
+      "periodId": 4,
+      "teacherId": 53,
+      "name": "02",
+      "status": true,
+      "capacity": 30,
+      "id": 57
+    },
+    {
+      "subjectId": 42,
+      "periodId": 4,
+      "teacherId": 52,
+      "name": "01",
+      "status": true,
+      "capacity": 20,
+      "id": 58
+    },
+    {
+      "subjectId": 42,
+      "periodId": 4,
+      "teacherId": 52,
+      "name": "02",
+      "status": true,
+      "capacity": 20,
+      "id": 59
+    },
+    {
+      "subjectId": 43,
+      "periodId": 4,
+      "teacherId": 43,
+      "name": "01",
+      "status": true,
+      "capacity": 20,
+      "id": 60
+    },
+    {
+      "subjectId": 43,
+      "periodId": 4,
+      "teacherId": 43,
+      "name": "02",
+      "status": true,
+      "capacity": 20,
+      "id": 61
+    },
+    {
+      "subjectId": 44,
+      "periodId": 4,
+      "teacherId": 54,
+      "name": "01",
+      "status": true,
+      "capacity": 30,
+      "id": 62
+    },
+    {
+      "subjectId": 45,
+      "periodId": 4,
+      "teacherId": 50,
+      "name": "01",
+      "status": true,
+      "capacity": 20,
+      "id": 63
+    },
+    {
+      "subjectId": 45,
+      "periodId": 4,
+      "teacherId": 50,
+      "name": "02",
+      "status": true,
+      "capacity": 20,
+      "id": 64
+    },
+    {
+      "subjectId": 46,
+      "periodId": 4,
+      "teacherId": 54,
+      "name": "01",
+      "status": true,
+      "capacity": 30,
+      "id": 65
+    },
+    {
+      "subjectId": 47,
+      "periodId": 4,
+      "teacherId": 40,
+      "name": "01",
+      "status": true,
+      "capacity": 30,
+      "id": 66
+    },
+    {
+      "subjectId": 48,
+      "periodId": 4,
+      "teacherId": 40,
+      "name": "01",
+      "status": true,
+      "capacity": 25,
+      "id": 67
+    },
+    {
+      "subjectId": 48,
+      "periodId": 4,
+      "teacherId": 40,
+      "name": "02",
+      "status": true,
+      "capacity": 25,
+      "id": 68
+    },
+    {
+      "subjectId": 59,
+      "periodId": 4,
+      "teacherId": 46,
+      "name": "01",
+      "status": true,
+      "capacity": 10,
+      "id": 69
+    },
+    {
+      "subjectId": 59,
+      "periodId": 4,
+      "teacherId": 50,
+      "name": "02",
+      "status": true,
+      "capacity": 10,
+      "id": 70
+    },
+    {
+      "subjectId": 59,
+      "periodId": 4,
+      "teacherId": 50,
+      "name": "03",
+      "status": true,
+      "capacity": 10,
+      "id": 71
+    },
+    {
+      "subjectId": 63,
+      "periodId": 4,
+      "teacherId": 52,
+      "name": "01",
+      "status": true,
+      "capacity": 20,
+      "id": 72
+    },
+    {
+      "subjectId": 63,
+      "periodId": 4,
+      "teacherId": 52,
+      "name": "02",
+      "status": true,
+      "capacity": 20,
+      "id": 73
+    },
+    {
+      "subjectId": 66,
+      "periodId": 4,
+      "teacherId": 43,
+      "name": "01",
+      "status": true,
+      "capacity": 30,
+      "id": 74
+    },
+    {
+      "subjectId": 69,
+      "periodId": 4,
+      "teacherId": 45,
+      "name": "01",
+      "status": true,
+      "capacity": 30,
+      "id": 75
+    },
+    {
+      "subjectId": 71,
+      "periodId": 4,
+      "teacherId": 41,
+      "name": "01",
+      "status": true,
+      "capacity": 20,
+      "id": 76
+    },
+    {
+      "subjectId": 71,
+      "periodId": 4,
+      "teacherId": 41,
+      "name": "02",
+      "status": true,
+      "capacity": 20,
+      "id": 77
+    },
+    {
+      "subjectId": 73,
+      "periodId": 4,
+      "teacherId": 37,
+      "name": "01",
+      "status": true,
+      "capacity": 30,
+      "id": 78
+    },
+    {
+      "subjectId": 79,
+      "periodId": 4,
+      "teacherId": 51,
+      "name": "01",
+      "status": true,
+      "capacity": 40,
+      "id": 79
+    },
+    {
+      "subjectId": 79,
+      "periodId": 4,
+      "teacherId": 51,
+      "name": "02",
+      "status": true,
+      "capacity": 40,
+      "id": 80
+    },
+    {
+      "subjectId": 16,
+      "periodId": 4,
+      "teacherId": 34,
+      "name": "03",
+      "status": true,
+      "capacity": 40,
+      "id": 81
+    },
+    {
+      "subjectId": 15,
+      "periodId": 4,
+      "teacherId": 57,
+      "name": "04",
+      "status": true,
+      "capacity": 40,
+      "id": 82
+    },
+    {
+      "subjectId": 18,
+      "periodId": 4,
+      "teacherId": 42,
+      "name": "04",
+      "status": true,
+      "capacity": 20,
+      "id": 83
+    },
+    {
       "subjectId": 17,
-      "periodId": 3,
+      "periodId": 4,
+      "teacherId": 44,
+      "name": "01",
+      "status": true,
+      "capacity": 50,
+      "id": 84
+    },
+    {
+      "subjectId": 17,
+      "periodId": 4,
+      "teacherId": 54,
+      "name": "02",
+      "status": true,
+      "capacity": 50,
+      "id": 85
+    },
+    {
+      "subjectId": 17,
+      "periodId": 4,
+      "teacherId": 54,
+      "name": "03",
+      "status": true,
+      "capacity": 50,
+      "id": 86
+    },
+    {
+      "subjectId": 20,
+      "periodId": 4,
+      "teacherId": 39,
+      "name": "03",
+      "status": true,
+      "capacity": 20,
+      "id": 87
+    },
+    {
+      "subjectId": 21,
+      "periodId": 4,
       "teacherId": 32,
       "name": "03",
       "status": true,
       "capacity": 20,
-      "id": 38
-    },
-    {
-      "subjectId": 18,
-      "periodId": 3,
-      "teacherId": 32,
-      "name": "02",
-      "status": true,
-      "capacity": 20,
-      "id": 39
+      "id": 88
     }
   ],
   "schedules": [
     {
-      "id": 1,
-      "classroomId": 20,
-      "dayId": 3,
-      "start": "10:20",
-      "end": "12:45",
-      "sectionId": 1,
-      "periodId": 2
-    },
-    {
-      "id": 2,
-      "classroomId": 17,
-      "dayId": 1,
-      "start": "07:00",
-      "end": "09:25",
-      "sectionId": 2,
-      "periodId": 2
-    },
-    {
-      "id": 3,
-      "classroomId": 20,
-      "dayId": 2,
-      "start": "07:00",
-      "end": "09:25",
-      "sectionId": 3,
-      "periodId": 2
-    },
-    {
-      "id": 4,
-      "classroomId": 14,
-      "dayId": 2,
-      "start": "09:30",
-      "end": "11:05",
-      "sectionId": 4,
-      "periodId": 2
-    },
-    {
-      "id": 5,
-      "classroomId": 20,
-      "dayId": 4,
-      "start": "09:30",
-      "end": "11:05",
-      "sectionId": 4,
-      "periodId": 2
-    },
-    {
-      "id": 6,
-      "classroomId": 14,
-      "dayId": 3,
-      "start": "08:40",
-      "end": "10:15",
-      "sectionId": 5,
-      "periodId": 2
-    },
-    {
-      "id": 7,
-      "classroomId": 20,
-      "dayId": 5,
-      "start": "09:30",
-      "end": "11:05",
-      "sectionId": 5,
-      "periodId": 2
-    },
-    {
-      "id": 8,
-      "classroomId": 14,
-      "dayId": 2,
-      "start": "07:00",
-      "end": "09:25",
-      "sectionId": 6,
-      "periodId": 2
-    },
-    {
-      "id": 9,
-      "classroomId": 20,
-      "dayId": 4,
-      "start": "11:10",
-      "end": "12:45",
-      "sectionId": 6,
-      "periodId": 2
-    },
-    {
-      "id": 10,
-      "classroomId": 15,
-      "dayId": 3,
-      "start": "07:00",
-      "end": "08:35",
-      "sectionId": 7,
-      "periodId": 2
-    },
-    {
-      "id": 11,
-      "classroomId": 20,
-      "dayId": 4,
-      "start": "07:00",
-      "end": "09:25",
-      "sectionId": 7,
-      "periodId": 2
-    },
-    {
-      "id": 12,
-      "classroomId": 17,
-      "dayId": 3,
-      "start": "08:40",
-      "end": "10:15",
-      "sectionId": 8,
-      "periodId": 2
-    },
-    {
-      "id": 13,
-      "classroomId": 20,
-      "dayId": 5,
-      "start": "08:40",
-      "end": "11:05",
-      "sectionId": 8,
-      "periodId": 2
-    },
-    {
-      "id": 14,
-      "classroomId": 18,
-      "dayId": 2,
-      "start": "08:40",
-      "end": "10:15",
-      "sectionId": 9,
-      "periodId": 2
-    },
-    {
-      "id": 15,
-      "classroomId": 20,
-      "dayId": 4,
-      "start": "09:30",
-      "end": "11:55",
-      "sectionId": 9,
-      "periodId": 2
-    },
-    {
-      "id": 16,
-      "classroomId": 20,
-      "dayId": 3,
-      "start": "08:40",
-      "end": "11:05",
-      "sectionId": 10,
-      "periodId": 2
-    },
-    {
-      "id": 17,
-      "classroomId": 17,
-      "dayId": 5,
-      "start": "08:40",
-      "end": "10:15",
-      "sectionId": 10,
-      "periodId": 2
-    },
-    {
-      "id": 18,
-      "classroomId": 19,
-      "dayId": 1,
-      "start": "07:50",
-      "end": "10:15",
-      "sectionId": 11,
-      "periodId": 2
-    },
-    {
-      "id": 19,
-      "classroomId": 19,
-      "dayId": 2,
-      "start": "07:00",
-      "end": "09:25",
-      "sectionId": 12,
-      "periodId": 2
-    },
-    {
-      "id": 20,
-      "classroomId": 20,
-      "dayId": 1,
-      "start": "09:30",
-      "end": "11:55",
-      "sectionId": 13,
-      "periodId": 2
-    },
-    {
-      "id": 22,
-      "classroomId": 15,
-      "dayId": 2,
-      "start": "09:30",
-      "end": "11:55",
-      "sectionId": 14,
-      "periodId": 2
-    },
-    {
-      "id": 23,
-      "classroomId": 13,
+      "classroomId": 12,
       "dayId": 1,
       "start": "07:00",
       "end": "08:35",
-      "sectionId": 15,
-      "periodId": 2
+      "sectionId": 54,
+      "periodId": 4,
+      "id": 1
     },
     {
-      "id": 24,
-      "classroomId": 20,
-      "dayId": 2,
+      "classroomId": 12,
+      "dayId": 3,
       "start": "07:00",
       "end": "08:35",
-      "sectionId": 15,
-      "periodId": 2
+      "sectionId": 54,
+      "periodId": 4,
+      "id": 3
     },
     {
       "classroomId": 12,
       "dayId": 1,
-      "start": "09:30",
-      "end": "10:15",
-      "sectionId": 25,
-      "periodId": 3,
+      "start": "12:00",
+      "end": "13:35",
+      "sectionId": 55,
+      "periodId": 4,
+      "id": 4
+    },
+    {
+      "classroomId": 12,
+      "dayId": 3,
+      "start": "12:00",
+      "end": "13:35",
+      "sectionId": 55,
+      "periodId": 4,
+      "id": 6
+    },
+    {
+      "classroomId": 17,
+      "dayId": 5,
+      "start": "07:00",
+      "end": "09:25",
+      "sectionId": 40,
+      "periodId": 4,
+      "id": 7
+    },
+    {
+      "classroomId": 17,
+      "dayId": 2,
+      "start": "07:00",
+      "end": "09:25",
+      "sectionId": 50,
+      "periodId": 4,
+      "id": 8
+    },
+    {
+      "classroomId": 17,
+      "dayId": 4,
+      "start": "07:00",
+      "end": "08:35",
+      "sectionId": 50,
+      "periodId": 4,
+      "id": 10
+    },
+    {
+      "classroomId": 13,
+      "dayId": 1,
+      "start": "13:40",
+      "end": "15:15",
+      "sectionId": 7,
+      "periodId": 4,
+      "id": 11
+    },
+    {
+      "classroomId": 13,
+      "dayId": 3,
+      "start": "13:40",
+      "end": "15:15",
+      "sectionId": 7,
+      "periodId": 4,
+      "id": 15
+    },
+    {
+      "classroomId": 13,
+      "dayId": 3,
+      "start": "15:20",
+      "end": "16:55",
+      "sectionId": 8,
+      "periodId": 4,
+      "id": 16
+    },
+    {
+      "classroomId": 13,
+      "dayId": 1,
+      "start": "15:20",
+      "end": "16:55",
+      "sectionId": 8,
+      "periodId": 4,
+      "id": 17
+    },
+    {
+      "classroomId": 13,
+      "dayId": 5,
+      "start": "07:00",
+      "end": "08:35",
+      "sectionId": 6,
+      "periodId": 4,
+      "id": 20
+    },
+    {
+      "classroomId": 13,
+      "dayId": 1,
+      "start": "12:00",
+      "end": "13:35",
+      "sectionId": 1,
+      "periodId": 4,
+      "id": 23
+    },
+    {
+      "classroomId": 13,
+      "dayId": 3,
+      "start": "12:00",
+      "end": "13:35",
+      "sectionId": 2,
+      "periodId": 4,
+      "id": 24
+    },
+    {
+      "classroomId": 13,
+      "dayId": 2,
+      "start": "12:00",
+      "end": "14:25",
+      "sectionId": 31,
+      "periodId": 4,
       "id": 25
     },
     {
-      "classroomId": 19,
-      "dayId": 1,
-      "start": "07:00",
-      "end": "07:45",
-      "sectionId": 26,
-      "periodId": 3,
-      "id": 26
+      "classroomId": 13,
+      "dayId": 4,
+      "start": "12:00",
+      "end": "13:35",
+      "sectionId": 31,
+      "periodId": 4,
+      "id": 27
     },
     {
-      "id": 27,
-      "classroomId": 17,
+      "classroomId": 16,
       "dayId": 3,
       "start": "07:00",
       "end": "08:35",
-      "sectionId": 17,
-      "periodId": 3
+      "sectionId": 3,
+      "periodId": 4,
+      "id": 28
     },
     {
-      "id": 28,
-      "classroomId": 20,
+      "classroomId": 16,
       "dayId": 5,
       "start": "07:00",
-      "end": "08:35",
-      "sectionId": 18,
-      "periodId": 3
-    },
-    {
-      "id": 29,
-      "classroomId": 19,
-      "dayId": 3,
-      "start": "07:00",
       "end": "09:25",
-      "sectionId": 19,
-      "periodId": 3
+      "sectionId": 13,
+      "periodId": 4,
+      "id": 29
     },
     {
-      "id": 30,
-      "classroomId": 20,
+      "classroomId": 16,
       "dayId": 3,
-      "start": "09:30",
-      "end": "11:55",
-      "sectionId": 20,
-      "periodId": 3
+      "start": "08:40",
+      "end": "11:05",
+      "sectionId": 12,
+      "periodId": 4,
+      "id": 30
     },
     {
-      "classroomId": 18,
-      "dayId": 1,
+      "classroomId": 16,
+      "dayId": 2,
       "start": "07:00",
       "end": "08:35",
-      "sectionId": 28,
-      "periodId": 3,
+      "sectionId": 11,
+      "periodId": 4,
+      "id": 31
+    },
+    {
+      "classroomId": 16,
+      "dayId": 2,
+      "start": "09:30",
+      "end": "11:05",
+      "sectionId": 4,
+      "periodId": 4,
+      "id": 32
+    },
+    {
+      "classroomId": 13,
+      "dayId": 3,
+      "start": "07:00",
+      "end": "08:35",
+      "sectionId": 5,
+      "periodId": 4,
+      "id": 33
+    },
+    {
+      "classroomId": 16,
+      "dayId": 5,
+      "start": "09:30",
+      "end": "11:05",
+      "sectionId": 82,
+      "periodId": 4,
       "id": 34
     },
     {
-      "classroomId": 18,
-      "dayId": 4,
-      "start": "07:00",
-      "end": "08:35",
-      "sectionId": 28,
-      "periodId": 3,
+      "classroomId": 12,
+      "dayId": 2,
+      "start": "12:00",
+      "end": "13:35",
+      "sectionId": 81,
+      "periodId": 4,
       "id": 35
     },
     {
-      "classroomId": 12,
-      "dayId": 3,
+      "classroomId": 14,
+      "dayId": 4,
+      "start": "12:50",
+      "end": "14:25",
+      "sectionId": 47,
+      "periodId": 4,
+      "id": 36
+    },
+    {
+      "classroomId": 14,
+      "dayId": 4,
+      "start": "12:50",
+      "end": "14:25",
+      "sectionId": 0,
+      "periodId": 4,
+      "id": 37
+    },
+    {
+      "classroomId": 14,
+      "dayId": 2,
+      "start": "12:00",
+      "end": "14:25",
+      "sectionId": 47,
+      "periodId": 4,
+      "id": 38
+    },
+    {
+      "classroomId": 18,
+      "dayId": 1,
       "start": "07:00",
       "end": "09:25",
-      "sectionId": 36,
-      "periodId": 3,
+      "sectionId": 84,
+      "periodId": 4,
+      "id": 39
+    },
+    {
+      "classroomId": 18,
+      "dayId": 2,
+      "start": "14:30",
+      "end": "16:55",
+      "sectionId": 85,
+      "periodId": 4,
+      "id": 40
+    },
+    {
+      "classroomId": 18,
+      "dayId": 4,
+      "start": "14:30",
+      "end": "16:55",
+      "sectionId": 85,
+      "periodId": 4,
+      "id": 41
+    },
+    {
+      "classroomId": 17,
+      "dayId": 3,
+      "start": "10:20",
+      "end": "12:45",
+      "sectionId": 65,
+      "periodId": 4,
+      "id": 42
+    },
+    {
+      "classroomId": 14,
+      "dayId": 3,
+      "start": "12:00",
+      "end": "14:25",
+      "sectionId": 83,
+      "periodId": 4,
       "id": 43
     },
     {
-      "classroomId": 13,
-      "dayId": 4,
-      "start": "07:00",
-      "end": "09:25",
-      "sectionId": 27,
-      "periodId": 3,
+      "classroomId": 14,
+      "dayId": 3,
+      "start": "14:30",
+      "end": "16:55",
+      "sectionId": 34,
+      "periodId": 4,
       "id": 44
     },
     {
-      "classroomId": 13,
-      "dayId": 1,
-      "start": "07:00",
-      "end": "08:35",
-      "sectionId": 29,
-      "periodId": 3,
+      "classroomId": 16,
+      "dayId": 2,
+      "start": "12:00",
+      "end": "13:35",
+      "sectionId": 52,
+      "periodId": 4,
       "id": 45
     },
     {
+      "classroomId": 16,
+      "dayId": 4,
+      "start": "12:00",
+      "end": "13:35",
+      "sectionId": 0,
+      "periodId": 4,
+      "id": 46
+    },
+    {
+      "classroomId": 16,
+      "dayId": 4,
+      "start": "12:00",
+      "end": "13:35",
+      "sectionId": 52,
+      "periodId": 4,
+      "id": 47
+    },
+    {
+      "classroomId": 16,
+      "dayId": 2,
+      "start": "13:40",
+      "end": "15:15",
+      "sectionId": 53,
+      "periodId": 4,
+      "id": 48
+    },
+    {
+      "classroomId": 16,
+      "dayId": 4,
+      "start": "13:40",
+      "end": "15:15",
+      "sectionId": 0,
+      "periodId": 4,
+      "id": 49
+    },
+    {
+      "classroomId": 16,
+      "dayId": 4,
+      "start": "13:40",
+      "end": "15:15",
+      "sectionId": 53,
+      "periodId": 4,
+      "id": 50
+    },
+    {
       "classroomId": 12,
       "dayId": 3,
+      "start": "08:40",
+      "end": "10:15",
+      "sectionId": 62,
+      "periodId": 4,
+      "id": 51
+    },
+    {
+      "classroomId": 12,
+      "dayId": 5,
+      "start": "08:40",
+      "end": "10:15",
+      "sectionId": 0,
+      "periodId": 4,
+      "id": 52
+    },
+    {
+      "classroomId": 12,
+      "dayId": 5,
+      "start": "08:40",
+      "end": "10:15",
+      "sectionId": 62,
+      "periodId": 4,
+      "id": 53
+    },
+    {
+      "classroomId": 15,
+      "dayId": 1,
+      "start": "07:00",
+      "end": "09:25",
+      "sectionId": 14,
+      "periodId": 4,
+      "id": 54
+    },
+    {
+      "classroomId": 15,
+      "dayId": 4,
+      "start": "09:30",
+      "end": "11:55",
+      "sectionId": 0,
+      "periodId": 4,
+      "id": 55
+    },
+    {
+      "classroomId": 15,
+      "dayId": 4,
+      "start": "09:30",
+      "end": "11:55",
+      "sectionId": 15,
+      "periodId": 4,
+      "id": 56
+    },
+    {
+      "classroomId": 15,
+      "dayId": 2,
       "start": "07:00",
       "end": "08:35",
-      "sectionId": 37,
-      "periodId": 3,
-      "id": 46
+      "sectionId": 24,
+      "periodId": 4,
+      "id": 57
+    },
+    {
+      "classroomId": 15,
+      "dayId": 2,
+      "start": "08:40",
+      "end": "10:15",
+      "sectionId": 25,
+      "periodId": 4,
+      "id": 58
+    },
+    {
+      "classroomId": 15,
+      "dayId": 2,
+      "start": "10:20",
+      "end": "12:45",
+      "sectionId": 87,
+      "periodId": 4,
+      "id": 59
+    },
+    {
+      "classroomId": 16,
+      "dayId": 1,
+      "start": "12:00",
+      "end": "14:25",
+      "sectionId": 38,
+      "periodId": 4,
+      "id": 60
+    },
+    {
+      "classroomId": 16,
+      "dayId": 3,
+      "start": "12:00",
+      "end": "14:25",
+      "sectionId": 39,
+      "periodId": 4,
+      "id": 61
+    },
+    {
+      "classroomId": 16,
+      "dayId": 1,
+      "start": "14:30",
+      "end": "16:55",
+      "sectionId": 16,
+      "periodId": 4,
+      "id": 62
+    },
+    {
+      "classroomId": 16,
+      "dayId": 3,
+      "start": "14:30",
+      "end": "16:55",
+      "sectionId": 17,
+      "periodId": 4,
+      "id": 63
+    },
+    {
+      "classroomId": 15,
+      "dayId": 4,
+      "start": "12:00",
+      "end": "14:25",
+      "sectionId": 88,
+      "periodId": 4,
+      "id": 64
+    },
+    {
+      "classroomId": 13,
+      "dayId": 1,
+      "start": "08:40",
+      "end": "10:15",
+      "sectionId": 18,
+      "periodId": 4,
+      "id": 65
+    },
+    {
+      "classroomId": 18,
+      "dayId": 4,
+      "start": "08:40",
+      "end": "10:15",
+      "sectionId": 0,
+      "periodId": 4,
+      "id": 66
     },
     {
       "classroomId": 13,
       "dayId": 3,
-      "start": "07:00",
-      "end": "09:25",
-      "sectionId": 38,
-      "periodId": 3,
-      "id": 47
+      "start": "08:40",
+      "end": "10:15",
+      "sectionId": 18,
+      "periodId": 4,
+      "id": 67
     },
     {
-      "classroomId": 12,
+      "classroomId": 18,
+      "dayId": 3,
+      "start": "10:20",
+      "end": "12:45",
+      "sectionId": 21,
+      "periodId": 4,
+      "id": 68
+    },
+    {
+      "classroomId": 13,
       "dayId": 1,
-      "start": "07:00",
-      "end": "09:25",
-      "sectionId": 33,
-      "periodId": 3,
-      "id": 48
+      "start": "10:20",
+      "end": "11:55",
+      "sectionId": 78,
+      "periodId": 4,
+      "id": 69
+    },
+    {
+      "classroomId": 13,
+      "dayId": 2,
+      "start": "10:20",
+      "end": "11:55",
+      "sectionId": 0,
+      "periodId": 4,
+      "id": 70
+    },
+    {
+      "classroomId": 13,
+      "dayId": 2,
+      "start": "10:20",
+      "end": "11:55",
+      "sectionId": 78,
+      "periodId": 4,
+      "id": 71
+    },
+    {
+      "classroomId": 15,
+      "dayId": 2,
+      "start": "12:50",
+      "end": "14:25",
+      "sectionId": 19,
+      "periodId": 4,
+      "id": 72
+    },
+    {
+      "classroomId": 18,
+      "dayId": 4,
+      "start": "12:50",
+      "end": "14:25",
+      "sectionId": 0,
+      "periodId": 4,
+      "id": 73
+    },
+    {
+      "classroomId": 17,
+      "dayId": 2,
+      "start": "14:30",
+      "end": "16:55",
+      "sectionId": 22,
+      "periodId": 4,
+      "id": 74
+    },
+    {
+      "classroomId": 17,
+      "dayId": 4,
+      "start": "14:30",
+      "end": "16:55",
+      "sectionId": 23,
+      "periodId": 4,
+      "id": 75
+    },
+    {
+      "classroomId": 17,
+      "dayId": 4,
+      "start": "12:50",
+      "end": "14:25",
+      "sectionId": 19,
+      "periodId": 4,
+      "id": 76
+    },
+    {
+      "classroomId": 15,
+      "dayId": 3,
+      "start": "12:50",
+      "end": "14:25",
+      "sectionId": 20,
+      "periodId": 4,
+      "id": 77
+    },
+    {
+      "classroomId": 15,
+      "dayId": 5,
+      "start": "12:50",
+      "end": "14:25",
+      "sectionId": 0,
+      "periodId": 4,
+      "id": 78
+    },
+    {
+      "classroomId": 15,
+      "dayId": 5,
+      "start": "12:50",
+      "end": "14:25",
+      "sectionId": 20,
+      "periodId": 4,
+      "id": 79
     }
   ]
 }

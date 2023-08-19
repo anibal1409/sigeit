@@ -109,6 +109,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit(): void {
+    console.log('ngOnInit');
+    
     this.createForm();
     this.loadClassrooms();
     this.sub$.add(
@@ -174,10 +176,18 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy(): void {
     this.sub$.unsubscribe();
+    this.form.reset();
+    this.form.clearValidators();
+    this.sectionId = 0;
+    this.scheduleId = 0;
+    this.departmentId = 0;
+    console.log('ngOnDestroy');
   }
 
 
   private loadSchedule(): void {
+    console.log();
+    
     if (!!this.scheduleId && !isNaN(this.scheduleId)) {
       this.title = 'Editar Horario';
       this.sub$.add(
@@ -339,7 +349,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
   save(): void {
     const schedule = this.form.value;
-    schedule.classroomId = schedule.classroomId?.id || schedule.classroomId;
+    schedule.classroomId = schedule?.classroomId?.id || schedule.classroomId;
     schedule.dayId = schedule.dayId?.id || schedule.dayId;
     let obs;
     if (this.scheduleId) {
@@ -361,6 +371,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
   clickCancel(): void {
     this.cancel.emit();
+    this.ngOnDestroy();
   }
 
   private loadClassrooms(): void {

@@ -76,7 +76,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
         cell: (element: { [key: string]: string }) => `${element['name']}`,
       },
       {
-        columnDef: 'id_teacher',
+        columnDef: 'teacher.last_name',
         header: 'Profesor',
         cell: (element: { [key: string]: string }) =>
           `${
@@ -84,6 +84,14 @@ export class SectionsComponent implements OnInit, OnDestroy {
               ? (element['teacher'] as any)?.last_name + ','
               : ''
           } ${(element['teacher'] as any)?.first_name}`,
+      },
+      {
+        columnDef: 'subject',
+        header: 'Asignatura',
+        cell: (element: { [key: string]: string }) =>
+            (element['subject'] as any)?.name
+              ? (element['subject'] as any)?.name
+              : ''
       },
       {
         columnDef: 'status',
@@ -99,7 +107,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
     body: [],
     options: [],
   };
-  periodId = 3;
+  periodId = 4;
   departmentId = 0;
   semester = -1;
   subjectId = 0;
@@ -191,6 +199,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
             this.addParams('departmentId', department.id);
           }
           this.loadSubjects();
+          this.loadSections();
         }
       })
     );
@@ -328,9 +337,9 @@ export class SectionsComponent implements OnInit, OnDestroy {
   loadSections(): void {
     this.loading = true;
     this.stateService.setLoading(this.loading);
+    const obj = this.subjectId ? this.sectionsService.getSectionsSubject$(this.subjectId, this.periodId) : this.sectionsService.getSections$(this.periodId);
     this.sub$.add(
-      this.sectionsService
-        .getSections$(this.subjectId, this.periodId)
+      obj
         .pipe(
           finalize(() => {
             this.loading = false;
