@@ -1,0 +1,17 @@
+export * from './auth.service';
+import { AuthService } from './auth.service';
+export * from './config.service';
+import { ConfigService } from './config.service';
+export * from './default.service';
+import { DefaultService } from './default.service';
+export * from './publications.service';
+import { PublicationsService } from './publications.service';
+export * from './reports.service';
+import { ReportsService } from './reports.service';
+export * from './socialNetworks.service';
+import { SocialNetworksService } from './socialNetworks.service';
+export * from './socialPrograms.service';
+import { SocialProgramsService } from './socialPrograms.service';
+export * from './users.service';
+import { UsersService } from './users.service';
+export const APIS = [AuthService, ConfigService, DefaultService, PublicationsService, ReportsService, SocialNetworksService, SocialProgramsService, UsersService];

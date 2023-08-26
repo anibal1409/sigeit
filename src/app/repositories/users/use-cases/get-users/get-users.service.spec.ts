@@ -1,8 +1,12 @@
-import { HttpClient, HttpHandler } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpHandler,
+} from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { UsersService } from '@sigeit/admin-sdk';
-import { UsersMemoryService } from '../../memory';
 
+import { UsersService } from 'admin-sdk';
+
+import { UsersMemoryService } from '../../memory';
 import { GetUsersService } from './get-users.service';
 
 describe('GetUsersService', () => {

@@ -24,7 +24,33 @@
     "lib": [
       "ES2022",
       "dom"
-    ]
+    ],
+    "paths": {
+      "api-interfaces": [
+        "dist/api-interfaces"
+      ],
+      "dashboard-sdk": [
+        "dist/dashboard-sdk"
+      ],
+      "error-handler": [
+        "dist/error-handler"
+      ],
+      "form-control-errors": [
+        "dist/form-control-errors"
+      ],
+      "http-form-data-client": [
+        "dist/http-form-data-client"
+      ],
+      "logger": [
+        "dist/logger"
+      ],
+      "login": [
+        "dist/login"
+      ],
+      "toast": [
+        "dist/toast"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

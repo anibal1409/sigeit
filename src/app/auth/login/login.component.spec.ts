@@ -1,11 +1,18 @@
-import { HttpClient, HttpHandler } from '@angular/common/http';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  HttpClient,
+  HttpHandler,
+} from '@angular/common/http';
+import {
+  ComponentFixture,
+  TestBed,
+} from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-import { AuthService } from '@sigeit/dashboard-sdk';
-import { AuthModule } from '../auth.module';
 
+import { AuthService } from 'dashboard-sdk';
+
+import { AuthModule } from '../auth.module';
 import { LoginComponent } from './login.component';
 import { LoginService } from './login.service';
 
