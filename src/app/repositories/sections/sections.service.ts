@@ -16,6 +16,7 @@ import {
   CreateSectionService,
   FindSectionService,
   GetDepartamentsBySchoolService,
+  GetSetcionsService,
   GetSubjectsByDepartmentService,
   GetSubjectSectionsService,
   RemoveSectionService,
@@ -34,6 +35,7 @@ export class SectionsService {
     private findSectionService: FindSectionService,
     private updateSectionService: UpdateSectionService,
     private removeSectionService: RemoveSectionService,
+    private getSetcionsService: GetSetcionsService,
   ) {}
 
   getDepartaments$(idSchool: number): Observable<Array<DepartmentVM>> {
@@ -44,8 +46,12 @@ export class SectionsService {
     return this.getSubjectsService.exec(departmentId, semester);
   }
 
-  getSections$(subjectId: number, periodId: number): Observable<Array<SectionItemVM>> {
+  getSectionsSubject$(subjectId: number, periodId: number): Observable<Array<SectionItemVM>> {
     return this.getSubjectSectionsService.exec(subjectId, periodId);
+  }
+
+  getSections$(periodId: number): Observable<Array<SectionItemVM>> {
+    return this.getSetcionsService.exec(periodId);
   }
 
   createSection$(section: SectionVM): Observable<SectionItemVM> {

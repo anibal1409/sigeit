@@ -6,4 +6,5 @@ export interface ScheduleVM {
   end: string;
   sectionId: number;
   periodId: number;
+  hours?: number;
 }

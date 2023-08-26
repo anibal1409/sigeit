@@ -27,21 +27,29 @@ export class GetAllClassroomSchedulesService {
         map((schedules: any) => schedules.map(Schedule2ScheduleItemVM)),
         mergeMap(
           (schudules) => {
-            const scheduleObservables = schudules.map(
-              (schedule: ScheduleItemVM) => {
-                return this.http.get(`http://localhost:3000/subjects/${schedule.section?.subjectId}`)
-                .pipe(
-                  map((Subject2SubjectItemVM)),
-                  map((subject) => {
-                    if (schedule.section) {
-                      schedule.section.subject = subject;
-                      schedule.section.teacher =  teachers.find(teacher => teacher.id === schedule.section?.teacherId);
-                    }
-                    return schedule;
-                  })
-                );
-              }
-            );
+            console.log(schudules);
+            schudules = schudules.filter((x: ScheduleItemVM) => !!x?.section?.subjectId);
+            
+            let scheduleObservables;
+            if (schudules?.length) {
+              scheduleObservables = schudules?.map(
+                (schedule: ScheduleItemVM) => {
+                  console.log(schedule?.section?.subjectId, schedule);
+                  
+                  return this.http.get(`http://localhost:3000/subjects/${schedule?.section?.subjectId}`)
+                  .pipe(
+                    map((Subject2SubjectItemVM)),
+                    map((subject) => {
+                      if (schedule.section) {
+                        schedule.section.subject = subject;
+                        schedule.section.teacher =  teachers.find(teacher => teacher.id === schedule.section?.teacherId);
+                      }
+                      return schedule;
+                    })
+                  );
+                }
+              );
+            }
 
             return schudules?.length ? forkJoin(scheduleObservables) as any : of([]);
           }

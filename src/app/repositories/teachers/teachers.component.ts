@@ -3,6 +3,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
 import {
   finalize,
@@ -14,6 +15,7 @@ import {
 } from 'src/app/common';
 import { StateService } from 'src/app/common/state';
 
+import { FormComponent } from './form';
 import { TeacherVM } from './model';
 import { TeachersService } from './teachers.service';
 
@@ -23,10 +25,12 @@ import { TeachersService } from './teachers.service';
   styleUrls: ['./teachers.component.scss'],
 })
 export class TeachersComponent implements OnInit, OnDestroy {
+
   constructor(
     private teachersService: TeachersService,
     private tableService: TableService,
-    private stateService: StateService
+    private stateService: StateService,
+    private matDialog: MatDialog,
   ) {}
 
   teachersData: TableDataVM<TeacherVM> = {
@@ -71,8 +75,13 @@ export class TeachersComponent implements OnInit, OnDestroy {
 
   sub$ = new Subscription();
   loading = false;
+  teacherId = 0;
 
   ngOnInit(): void {
+    this.loadTeachers();
+  }
+
+  private loadTeachers(): void {
     this.loading = true;
     this.stateService.setLoading(this.loading);
     this.sub$.add(
@@ -93,7 +102,22 @@ export class TeachersComponent implements OnInit, OnDestroy {
         })
     );
   }
+
   ngOnDestroy(): void {
     this.sub$.unsubscribe();
+  }
+
+  showForm(): void {
+    const dialogRef = this.matDialog.open(FormComponent, {
+      data: {
+        teacherId: this.teacherId,
+      },
+      hasBackdrop: true,
+    });
+
+    dialogRef.componentInstance.closed.subscribe((res) => {
+      dialogRef.close();
+      this.loadTeachers();
+    });
   }
 }

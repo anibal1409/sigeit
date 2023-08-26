@@ -116,12 +116,17 @@ export class ScheludesComponent implements OnInit, OnDestroy {
         header: 'Hora de Culminación',
         cell: (element: { [key: string]: string }) => `${element['end']}`,
       },
+      {
+        columnDef: 'hours',
+        header: 'Horas academicas',
+        cell: (element: { [key: string]: string }) => `${element['hours']}`,
+      },
     ],
     body: [],
     options: [],
   };
 
-  periodId = 3;
+  periodId = 4;
   departmentId = 0;
   semester = -1;
   subjectId = 0;
@@ -330,7 +335,10 @@ export class ScheludesComponent implements OnInit, OnDestroy {
         )
         .subscribe((departaments) => {
           this.departments = departaments;
-          if (departaments) {
+          this.form.patchValue({
+            departmentId: departaments[0],
+          });
+          if (departaments?.length) {
             this.filteredDepartments = this.form.controls[
               'departmentId'
             ].valueChanges.pipe(
@@ -441,7 +449,8 @@ export class ScheludesComponent implements OnInit, OnDestroy {
   changeShowForm(showForm: boolean): void {
     this.showForm = showForm;
     if (!showForm) {
-      this.sectionId = 0;
+      // this.sectionId = 0;
+      this.scheduleId = 0;
     }
   }
 

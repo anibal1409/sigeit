@@ -124,7 +124,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
           this.loading = true;
           this.stateService.setLoading(this.loading);
           this.teachers = teachers;
-          if (teachers) {
+          this.loadSection();
+          if (teachers?.length) {
             this.filteredTeachers = this.form.controls[
               'teacherId'
             ].valueChanges.pipe(
@@ -166,7 +167,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
                 ...section,
                 teacherId: this.teachers.find(
                   (teacher) => teacher.id == section.teacherId
-                ),
+                ) || section.teacherId,
               }, { emitEvent: false });
             }
           })
@@ -192,7 +193,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       this.stateService.setLoading(this.loading);
       this.sub$.add(
         this.sectionsService
-          .getSections$(this.subjectId, this.periodId)
+          .getSectionsSubject$(this.subjectId, this.periodId)
           .pipe(
             finalize(() => {
               this.loading = false;
@@ -236,7 +237,6 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       this.form.get('teacherId')?.valueChanges.subscribe((teacherId) => {
         if (teacherId && teacherId?.id) {
           this.filteredTeachers = of(this.teachers);
-          this.loadSection();
         }
       })
     );
