@@ -116,6 +116,11 @@ export class ScheludesComponent implements OnInit, OnDestroy {
         header: 'Hora de Culminación',
         cell: (element: { [key: string]: string }) => `${element['end']}`,
       },
+      {
+        columnDef: 'hours',
+        header: 'Horas academicas',
+        cell: (element: { [key: string]: string }) => `${element['hours']}`,
+      },
     ],
     body: [],
     options: [],

@@ -65,8 +65,6 @@ export class TableComponent implements AfterViewInit, OnInit {
   )
 
   setDataSourceAttributes() {
-    console.log(this.sort);
-    
     this.dataSource.paginator = this.paginator;
     this.dataSource.sortingDataAccessor = (obj, property) => this.getProperty(obj, property);
     this.dataSource.sort = this.sort;

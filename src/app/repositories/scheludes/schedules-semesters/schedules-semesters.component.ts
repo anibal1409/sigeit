@@ -366,7 +366,8 @@ export class SchedulesSemestersComponent {
           !fields.includes(field) &&
           schedule.code === scheduleData.code) ||
         (schedule.code === scheduleData.code && field === 'code') ||
-        (schedule.name === scheduleData.name && field === 'name');
+        (schedule.name === scheduleData.name && field === 'name') ||
+        (schedule.teacherName === scheduleData.teacherName && field === 'teacherName');
     }
 
     return equal;
@@ -434,31 +435,6 @@ export class SchedulesSemestersComponent {
     }
   }
 
-  // downloadFile(): void {
-  //   if (this._alldata?.length) {
-  //     let countRow = -1;
-  //     const workbook: XLSX.WorkBook = XLSX.utils.book_new();
-  //     const worksheet: XLSX.WorkSheet = XLSX.utils.sheet_add_aoa(workbook.Sheets[workbook.SheetNames[0]], []);
-
-  //     const headers1 = [`PLANIFICACION ACADEMICA ${this.departmentCtrl.value?.abbreviation}-${this.period.name}`];
-  //     XLSX.utils.sheet_add_aoa(worksheet, [headers1], {origin: 'B' + countRow});
-  //     countRow+=2;
-  //     Object.keys(data).forEach(
-  //       (key) => {
-  //         const headers2 = [`${this.groupsBy[0]?.text} ${key}`];
-  //         XLSX.utils.sheet_add_aoa(worksheet, [headers2], {origin: 'B' + countRow});
-  //         countRow++;
-  //         const headers = ['Código', 'Asignatura', 'Sección', 'Día', 'Aula', 'Desde', 'Hasta', 'Profesor', 'Nombre', 'Capacidad'];
-  //         XLSX.utils.sheet_add_aoa(worksheet, [headers], {origin: 'B' + countRow});
-  //         countRow++;
-  //         XLSX.utils.sheet_add_aoa(worksheet, data[key], {origin: 'B' + countRow});
-  //       }
-  //     );
-
-  //     XLSX.writeFile(workbook, `${this.period.name} planificacion academica departamento de ${this.departmentCtrl.value.name} ${moment().format('DD-MM-YYYY HH:mm')}.xlsx`);
-  //   }
-  // }
-
   displayFn(item: DepartmentVM | any): string {
     return item?.name;
   }
@@ -508,8 +484,6 @@ export class SchedulesSemestersComponent {
     if (this.groupsByField === 'teacherName') {
       let count = 0;
       let index = -1;
-      console.log(this.dataSource.data);
-      
       this.dataSource.data.forEach((schedule, i) => {
         if (schedule instanceof Group) {
           if (index > -1) {
@@ -518,18 +492,11 @@ export class SchedulesSemestersComponent {
           count = 0;
           index = i;
         } else {
-          console.log(schedule);
-          
           const hours = (moment(schedule.end, 'HH:mm').diff(moment(schedule.start, 'HH:mm'), 'minutes'));
-          console.log(hours);
-          console.log(hours/this.period.duration);
-          // tomar la parte entera de la division de horas entre duracion de periodo
           count += Math.floor(hours/this.period.duration);
-          // while (hours - this.period.duration >= this.period.duration) {
-          //   count++;
-          //   hours - this.period.duration;
-          // }
-          console.log(count);
+        }
+        if (this.dataSource.data?.length === i + 1) {
+          this.dataSource.data[index].teacherName += ` (${count})`;
         }
       });
     }
