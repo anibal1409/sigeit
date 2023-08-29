@@ -1,4 +1,8 @@
-import { Inject, Injectable, Optional } from '@angular/core';
+import {
+  Inject,
+  Injectable,
+  Optional,
+} from '@angular/core';
 
 import * as toastr from 'toastr';
 
@@ -11,7 +15,7 @@ export class ToastService {
   constructor(
     @Optional()
     @Inject(TOAST_OPTIONS)
-    private options: ToastrOptions = { preventDuplicates: true },
+    private options = { preventDuplicates: true },
     private translateService: TranslateService
   ) {
     Object.assign(toastr.options, this.options);

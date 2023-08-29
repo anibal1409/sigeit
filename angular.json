@@ -33,9 +33,18 @@
             ],
             "styles": [
               "src/styles.scss",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css"
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/toastr/build/toastr.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.js",
+              "node_modules/toastr/build/toastr.min.js"
+            ],
+            "allowedCommonJsDependencies": [
+              "lodash",
+              "jquery",
+              "moment"
+            ]
           },
           "configurations": {
             "production": {

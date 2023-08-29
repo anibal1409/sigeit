@@ -18,11 +18,11 @@ import {
   ErrorHandlerService,
 } from 'error-handler';
 import { HttpFormDataClientModule } from 'http-form-data-client';
-
 import {
   ToastModule,
   ToastService,
-} from '../../libs/toast/src';
+} from 'toast';
+
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
