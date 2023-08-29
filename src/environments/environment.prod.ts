@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiBasePath: `http://localhost:3333/api`,
+  apiBasePath: `https://sigeit-api.onrender.com/api`,
   apiPrefix: 'api',
 };
