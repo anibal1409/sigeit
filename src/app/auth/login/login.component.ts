@@ -13,8 +13,13 @@ import {
   Router,
 } from '@angular/router';
 
-import { Subscription } from 'rxjs';
+import {
+  finalize,
+  Subscription,
+} from 'rxjs';
 import { StateService } from 'src/app/common/state';
+
+import { LoginService } from './login.service';
 
 @Component({
   selector: 'sigeit-login',
@@ -22,21 +27,20 @@ import { StateService } from 'src/app/common/state';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  constructor(
-    private formBuilder: FormBuilder,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private stateService: StateService
-  ) {
-    this.stateService.setLoading(true);
-    return;
-  }
   form!: FormGroup;
   submitDisable = true;
   loading = false;
   hide = true;
 
   private sub$ = new Subscription();
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private stateService: StateService,
+    private loginService: LoginService,
+  ) {}
+
   ngOnInit(): void {
     this.createForm();
     setTimeout(() => this.stateService.setLoading(false), 1000);
@@ -51,7 +55,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
   private createForm(): void {
     this.form = this.formBuilder.group({
-      user: [null, [Validators.required, Validators.maxLength(256)]],
+      email: [null, [Validators.required, Validators.maxLength(256)]],
       password: [
         null,
         [
@@ -69,6 +73,23 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   submit(): void {
-    this.router.navigate(['dashboard']);
+    if (!this.submitDisable) {
+      this.stateService.setLoading(true);
+      const {email, password} = this.form.value;
+      this.loginService.exec(email, password)
+      .pipe(
+        finalize(() => {
+          this.stateService.setLoading(false);
+        }
+        )
+      )
+      .subscribe(
+        (res) => {
+          console.log(res);
+          this.form.reset();
+          this.router.navigate(['dashboard']);
+        }
+      );
+    }
   }
 }

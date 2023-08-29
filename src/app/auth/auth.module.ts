@@ -1,18 +1,22 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './login/login.component';
-import { RecoveryPasswordComponent } from './recovery-password/recovery-password.component';
-import { ResetPasswordComponent } from './reset-password/reset-password.component';
-import { MatCardModule } from '@angular/material/card';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { ReactiveFormsModule } from '@angular/forms';
-
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { LoginService } from './login/login.service';
+import {
+  RecoveryPasswordComponent,
+} from './recovery-password/recovery-password.component';
+import {
+  ResetPasswordComponent,
+} from './reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -31,5 +35,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatFormFieldModule,
     MatSnackBarModule,
   ],
+  providers: [
+    LoginService,
+  ]
 })
 export class AuthModule {}

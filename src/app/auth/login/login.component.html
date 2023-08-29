@@ -16,12 +16,12 @@
         </mat-card-header>
         <mat-card-content>
           <mat-form-field>
-            <mat-label for="user">Usuario</mat-label>
-            <input name="user" formControlName="user" matInput type="user" />
-            <mat-error *ngIf="form.controls['user'].hasError('required')"
+            <mat-label for="email">Usuario</mat-label>
+            <input name="email" formControlName="email" matInput type="email" />
+            <mat-error *ngIf="form.controls['email'].hasError('required')"
               >Usuario Requerido</mat-error
             >
-            <mat-error *ngIf="form.controls['user'].hasError('maxlength')"
+            <mat-error *ngIf="form.controls['email'].hasError('maxlength')"
               >Longitud Excedida</mat-error
             >
           </mat-form-field>

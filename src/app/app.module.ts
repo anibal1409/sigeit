@@ -26,6 +26,8 @@ import {
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AuthLoginGuard } from './auth/auth-login.guard';
+import { AuthGuard } from './auth/auth.guard';
 import { AuthModule } from './auth/auth.module';
 import { StateModule } from './common/state';
 import { CareersModule } from './repositories/careers/careers.module';
@@ -88,6 +90,8 @@ function apiConfigFactory(): Configuration {
       provide: ErrorHandler,
       useExisting: forwardRef(() => ErrorHandlerService),
     },
+    AuthGuard,
+    AuthLoginGuard
   ],
   bootstrap: [AppComponent],
 })

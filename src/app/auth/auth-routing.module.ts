@@ -1,25 +1,43 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {
+  RouterModule,
+  Routes,
+} from '@angular/router';
+
 import { LoginComponent } from './login/login.component';
-import { RecoveryPasswordComponent } from './recovery-password/recovery-password.component';
-import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import {
+  RecoveryPasswordComponent,
+} from './recovery-password/recovery-password.component';
+import {
+  ResetPasswordComponent,
+} from './reset-password/reset-password.component';
 
 const routes: Routes = [
   {
-    path: 'login',
+    path: '',
     component: LoginComponent,
-  },
-  {
-    path: 'recovery-password',
-    component: RecoveryPasswordComponent,
-  },
-  {
-    path: 'reset-password/:token',
-    component: ResetPasswordComponent,
+    children: [
+      {
+        path: 'login',
+        component: LoginComponent,
+      },
+      {
+        path: 'recovery-password',
+        component: RecoveryPasswordComponent,
+      },
+      {
+        path: 'reset-password/:token',
+        component: ResetPasswordComponent,
+      },
+      {
+        path: '**',
+        redirectTo: '/auth/login',
+      },
+    ]
   },
   {
     path: '**',
-    redirectTo: '/login',
+    redirectTo: '/auth/login',
   },
 ];
 
