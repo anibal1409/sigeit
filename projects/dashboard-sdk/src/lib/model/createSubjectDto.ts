@@ -10,10 +10,15 @@
  * Do not edit the class manually.
  */
 
-export interface LoginUserResponseDto { 
-    email: string;
-    id: number;
+export interface CreateSubjectDto { 
     name: string;
-    role: string;
-    loginStamp: number;
+    code: string;
+    credits: number;
+    description?: string;
+    hours: number;
+    semester: number;
+    typeCurriculum: number;
+    departmentId: number;
+    status: boolean;
+    careerIds: Array<number>;
 }

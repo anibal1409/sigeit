@@ -1,6 +1,6 @@
 /**
- * SM-SOC
- * The SM-SOC API description
+ * SIGEIT-API
+ * The SIGEIT-APIdescription
  *
  * OpenAPI spec version: 1.0
  * 
@@ -17,7 +17,6 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { NotFoundException } from '../model/notFoundException';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -58,54 +57,13 @@ export class DefaultService {
     /**
      * 
      * 
-     * @param name 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public appControllerGetAsset(name: string, observe?: 'body', reportProgress?: boolean): Observable<NotFoundException>;
-    public appControllerGetAsset(name: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<NotFoundException>>;
-    public appControllerGetAsset(name: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<NotFoundException>>;
-    public appControllerGetAsset(name: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (name === null || name === undefined) {
-            throw new Error('Required parameter name was null or undefined when calling appControllerGetAsset.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<NotFoundException>('get',`${this.basePath}/public/${encodeURIComponent(String(name))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * 
-     * 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public appControllerGetData(observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public appControllerGetData(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public appControllerGetData(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public appControllerGetData(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public appControllerGetHello(observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public appControllerGetHello(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public appControllerGetHello(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public appControllerGetHello(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -121,7 +79,7 @@ export class DefaultService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<any>('get',`${this.basePath}/hello`,
+        return this.httpClient.request<any>('get',`${this.basePath}/`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

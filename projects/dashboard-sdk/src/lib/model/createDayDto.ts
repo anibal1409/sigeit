@@ -10,6 +10,8 @@
  * Do not edit the class manually.
  */
 
-export interface RecoveryPasswordDto { 
-    email: string;
+export interface CreateDayDto { 
+    name: string;
+    abbreviation: string;
+    status: boolean;
 }

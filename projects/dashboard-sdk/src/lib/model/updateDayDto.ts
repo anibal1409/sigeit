@@ -10,6 +10,8 @@
  * Do not edit the class manually.
  */
 
-export interface RecoveryPasswordDto { 
-    email: string;
+export interface UpdateDayDto { 
+    name?: string;
+    abbreviation?: string;
+    status?: boolean;
 }

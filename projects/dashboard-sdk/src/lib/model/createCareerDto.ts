@@ -10,6 +10,11 @@
  * Do not edit the class manually.
  */
 
-export interface RecoveryPasswordDto { 
-    email: string;
+export interface CreateCareerDto { 
+    name: string;
+    description?: string;
+    logo?: string;
+    abbreviation: string;
+    departmentId: number;
+    status: boolean;
 }

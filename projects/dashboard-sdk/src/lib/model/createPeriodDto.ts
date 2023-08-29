@@ -10,6 +10,15 @@
  * Do not edit the class manually.
  */
 
-export interface RecoveryPasswordDto { 
-    email: string;
+export interface CreatePeriodDto { 
+    name: string;
+    description?: string;
+    start: Date;
+    end: Date;
+    startTime: string;
+    endTime: string;
+    stage: string;
+    interval: number;
+    duration: number;
+    status: boolean;
 }

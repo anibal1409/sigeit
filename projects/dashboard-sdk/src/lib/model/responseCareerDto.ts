@@ -9,11 +9,15 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Department } from './department';
 
-export interface LoginUserResponseDto { 
-    email: string;
+export interface ResponseCareerDto { 
     id: number;
     name: string;
-    role: string;
-    loginStamp: number;
+    description?: string;
+    logo?: string;
+    abbreviation: string;
+    departamentId: number;
+    departament: Department;
+    status: boolean;
 }

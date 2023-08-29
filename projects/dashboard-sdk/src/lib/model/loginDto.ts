@@ -1,6 +1,6 @@
 /**
- * SM-SOC
- * The SM-SOC API description
+ * SIGEIT-API
+ * The SIGEIT-APIdescription
  *
  * OpenAPI spec version: 1.0
  * 

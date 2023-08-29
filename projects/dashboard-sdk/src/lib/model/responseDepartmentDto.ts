@@ -9,7 +9,15 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { School } from './school';
 
-export interface RecoveryPasswordDto { 
-    email: string;
+export interface ResponseDepartmentDto { 
+    id: number;
+    name: string;
+    description?: string;
+    logo?: string;
+    abbreviation: string;
+    schoolId: number;
+    school: School;
+    status: boolean;
 }

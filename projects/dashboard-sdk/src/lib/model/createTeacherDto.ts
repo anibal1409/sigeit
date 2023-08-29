@@ -10,6 +10,11 @@
  * Do not edit the class manually.
  */
 
-export interface RecoveryPasswordDto { 
-    email: string;
+export interface CreateTeacherDto { 
+    idDocument: string;
+    firstName: string;
+    lastName?: string;
+    email?: string;
+    departmentId: number;
+    status: boolean;
 }

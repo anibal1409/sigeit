@@ -10,11 +10,15 @@
  * Do not edit the class manually.
  */
 
-export interface UpdateUserDto { 
-    email?: string;
-    role?: string;
-    teacherId?: number;
-    status?: boolean;
-    schoolId?: number;
+export interface UpdateSubjectDto { 
+    name?: string;
+    code?: string;
+    credits?: number;
+    description?: string;
+    hours?: number;
+    semester?: number;
+    typeCurriculum?: number;
     departmentId?: number;
+    status?: boolean;
+    careerIds?: Array<number>;
 }

@@ -9,20 +9,21 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Career } from './career';
 import { Department } from './department';
-import { School } from './school';
-import { Teacher } from './teacher';
 
-export interface UserRespondeDto { 
+export interface ResponseSubjectDto { 
     id: number;
     name: string;
-    email: string;
-    role: string;
+    code: string;
+    credits: number;
+    description?: string;
+    hours: number;
+    semester: number;
+    typeCurriculum: number;
+    departamentId: number;
+    departament: Department;
     status: boolean;
-    teacherId: number;
-    teacher: Teacher;
-    schoolId: number;
-    school: School;
-    departmentId: number;
-    department: Department;
+    careerIds: Array<number>;
+    careers: Array<Career>;
 }

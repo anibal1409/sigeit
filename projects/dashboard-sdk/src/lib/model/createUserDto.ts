@@ -1,6 +1,6 @@
 /**
- * SM-SOC
- * The SM-SOC API description
+ * SIGEIT-API
+ * The SIGEIT-APIdescription
  *
  * OpenAPI spec version: 1.0
  * 
@@ -11,4 +11,10 @@
  */
 
 export interface CreateUserDto { 
+    email: string;
+    role: string;
+    teacherId: number;
+    status: boolean;
+    schoolId: number;
+    departmentId: number;
 }

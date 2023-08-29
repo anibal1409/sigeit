@@ -9,20 +9,19 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { Department } from './department';
-import { School } from './school';
+import { Period } from './period';
+import { Subject } from './subject';
 import { Teacher } from './teacher';
 
-export interface UserRespondeDto { 
+export interface ResponseSectionDto { 
     id: number;
+    capacity: number;
     name: string;
-    email: string;
-    role: string;
-    status: boolean;
+    subjectId: number;
+    subject: Subject;
+    periodId: number;
+    period: Period;
     teacherId: number;
     teacher: Teacher;
-    schoolId: number;
-    school: School;
-    departmentId: number;
-    department: Department;
+    status: boolean;
 }

@@ -4,13 +4,18 @@ import { HttpClient } from '@angular/common/http';
 
 
 import { AuthService } from './api/auth.service';
-import { ConfigService } from './api/config.service';
+import { CareerService } from './api/career.service';
+import { ClassroomService } from './api/classroom.service';
+import { DayService } from './api/day.service';
 import { DefaultService } from './api/default.service';
-import { PublicationsService } from './api/publications.service';
-import { ReportsService } from './api/reports.service';
-import { SocialNetworksService } from './api/socialNetworks.service';
-import { SocialProgramsService } from './api/socialPrograms.service';
-import { UsersService } from './api/users.service';
+import { DepartamentService } from './api/departament.service';
+import { PeriodService } from './api/period.service';
+import { ScheduleService } from './api/schedule.service';
+import { SchoolService } from './api/school.service';
+import { SectionService } from './api/section.service';
+import { SubjectService } from './api/subject.service';
+import { TeacherService } from './api/teacher.service';
+import { UserService } from './api/user.service';
 
 @NgModule({
   imports:      [],
@@ -18,13 +23,18 @@ import { UsersService } from './api/users.service';
   exports:      [],
   providers: [
     AuthService,
-    ConfigService,
+    CareerService,
+    ClassroomService,
+    DayService,
     DefaultService,
-    PublicationsService,
-    ReportsService,
-    SocialNetworksService,
-    SocialProgramsService,
-    UsersService ]
+    DepartamentService,
+    PeriodService,
+    ScheduleService,
+    SchoolService,
+    SectionService,
+    SubjectService,
+    TeacherService,
+    UserService ]
 })
 export class ApiModule {
     public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders<ApiModule> {

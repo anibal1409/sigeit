@@ -10,6 +10,12 @@
  * Do not edit the class manually.
  */
 
-export interface RecoveryPasswordDto { 
-    email: string;
+export interface CreateScheduleDto { 
+    start: string;
+    end: string;
+    classroomId: number;
+    dayId: number;
+    sectionId: number;
+    periodId: number;
+    status: boolean;
 }

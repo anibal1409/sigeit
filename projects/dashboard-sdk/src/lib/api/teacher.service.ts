@@ -17,19 +17,16 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { ChangePasswordDto } from '../model/changePasswordDto';
-import { ChangePasswordResponseDto } from '../model/changePasswordResponseDto';
-import { LoginDto } from '../model/loginDto';
-import { LoginUserResponseDto } from '../model/loginUserResponseDto';
-import { RecoveryPasswordDto } from '../model/recoveryPasswordDto';
-import { RecoveryPasswordResponseDto } from '../model/recoveryPasswordResponseDto';
+import { CreateTeacherDto } from '../model/createTeacherDto';
+import { ResponseTeacherDto } from '../model/responseTeacherDto';
+import { UpdateTeacherDto } from '../model/updateTeacherDto';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
 
 @Injectable()
-export class AuthService {
+export class TeacherService {
 
     protected basePath = '/';
     public defaultHeaders = new HttpHeaders();
@@ -67,13 +64,13 @@ export class AuthService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public authControllerChangePassword(body: ChangePasswordDto, observe?: 'body', reportProgress?: boolean): Observable<ChangePasswordResponseDto>;
-    public authControllerChangePassword(body: ChangePasswordDto, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ChangePasswordResponseDto>>;
-    public authControllerChangePassword(body: ChangePasswordDto, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ChangePasswordResponseDto>>;
-    public authControllerChangePassword(body: ChangePasswordDto, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public teacherControllerCreate(body: CreateTeacherDto, observe?: 'body', reportProgress?: boolean): Observable<ResponseTeacherDto>;
+    public teacherControllerCreate(body: CreateTeacherDto, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResponseTeacherDto>>;
+    public teacherControllerCreate(body: CreateTeacherDto, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResponseTeacherDto>>;
+    public teacherControllerCreate(body: CreateTeacherDto, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling authControllerChangePassword.');
+            throw new Error('Required parameter body was null or undefined when calling teacherControllerCreate.');
         }
 
         let headers = this.defaultHeaders;
@@ -96,142 +93,7 @@ export class AuthService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<ChangePasswordResponseDto>('put',`${this.basePath}/auth/change-password`,
-            {
-                body: body,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * 
-     * 
-     * @param body 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public authControllerGenerateRecovery(body: RecoveryPasswordDto, observe?: 'body', reportProgress?: boolean): Observable<RecoveryPasswordDto>;
-    public authControllerGenerateRecovery(body: RecoveryPasswordDto, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<RecoveryPasswordDto>>;
-    public authControllerGenerateRecovery(body: RecoveryPasswordDto, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<RecoveryPasswordDto>>;
-    public authControllerGenerateRecovery(body: RecoveryPasswordDto, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling authControllerGenerateRecovery.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        return this.httpClient.request<RecoveryPasswordDto>('post',`${this.basePath}/auth/recovery-password`,
-            {
-                body: body,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * 
-     * 
-     * @param recoveryToken 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public authControllerGetRecoveryById(recoveryToken: string, observe?: 'body', reportProgress?: boolean): Observable<RecoveryPasswordResponseDto>;
-    public authControllerGetRecoveryById(recoveryToken: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<RecoveryPasswordResponseDto>>;
-    public authControllerGetRecoveryById(recoveryToken: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<RecoveryPasswordResponseDto>>;
-    public authControllerGetRecoveryById(recoveryToken: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (recoveryToken === null || recoveryToken === undefined) {
-            throw new Error('Required parameter recoveryToken was null or undefined when calling authControllerGetRecoveryById.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<RecoveryPasswordResponseDto>('get',`${this.basePath}/auth/recovery-password/${encodeURIComponent(String(recoveryToken))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * 
-     * 
-     * @param body 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public authControllerLogin(body: LoginDto, observe?: 'body', reportProgress?: boolean): Observable<LoginUserResponseDto>;
-    public authControllerLogin(body: LoginDto, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<LoginUserResponseDto>>;
-    public authControllerLogin(body: LoginDto, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<LoginUserResponseDto>>;
-    public authControllerLogin(body: LoginDto, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling authControllerLogin.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        return this.httpClient.request<LoginUserResponseDto>('post',`${this.basePath}/auth/login`,
+        return this.httpClient.request<ResponseTeacherDto>('post',`${this.basePath}/teacher`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,
@@ -248,15 +110,16 @@ export class AuthService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public authControllerLogout(observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public authControllerLogout(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public authControllerLogout(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public authControllerLogout(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public teacherControllerFindAll(observe?: 'body', reportProgress?: boolean): Observable<Array<ResponseTeacherDto>>;
+    public teacherControllerFindAll(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ResponseTeacherDto>>>;
+    public teacherControllerFindAll(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ResponseTeacherDto>>>;
+    public teacherControllerFindAll(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
+            'application/json'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -267,7 +130,130 @@ export class AuthService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<any>('get',`${this.basePath}/auth/logout`,
+        return this.httpClient.request<Array<ResponseTeacherDto>>('get',`${this.basePath}/teacher`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * 
+     * 
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public teacherControllerFindAllDepartment(id: number, observe?: 'body', reportProgress?: boolean): Observable<Array<ResponseTeacherDto>>;
+    public teacherControllerFindAllDepartment(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ResponseTeacherDto>>>;
+    public teacherControllerFindAllDepartment(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ResponseTeacherDto>>>;
+    public teacherControllerFindAllDepartment(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling teacherControllerFindAllDepartment.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<ResponseTeacherDto>>('get',`${this.basePath}/teacher/department/${encodeURIComponent(String(id))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * 
+     * 
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public teacherControllerFindOne(id: number, observe?: 'body', reportProgress?: boolean): Observable<ResponseTeacherDto>;
+    public teacherControllerFindOne(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResponseTeacherDto>>;
+    public teacherControllerFindOne(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResponseTeacherDto>>;
+    public teacherControllerFindOne(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling teacherControllerFindOne.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<ResponseTeacherDto>('get',`${this.basePath}/teacher/${encodeURIComponent(String(id))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * 
+     * 
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public teacherControllerRemove(id: number, observe?: 'body', reportProgress?: boolean): Observable<ResponseTeacherDto>;
+    public teacherControllerRemove(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResponseTeacherDto>>;
+    public teacherControllerRemove(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResponseTeacherDto>>;
+    public teacherControllerRemove(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling teacherControllerRemove.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<ResponseTeacherDto>('delete',`${this.basePath}/teacher/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -281,21 +267,21 @@ export class AuthService {
      * 
      * 
      * @param body 
-     * @param recoveryToken 
+     * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public authControllerPostRecoveryById(body: ChangePasswordDto, recoveryToken: string, observe?: 'body', reportProgress?: boolean): Observable<RecoveryPasswordResponseDto>;
-    public authControllerPostRecoveryById(body: ChangePasswordDto, recoveryToken: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<RecoveryPasswordResponseDto>>;
-    public authControllerPostRecoveryById(body: ChangePasswordDto, recoveryToken: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<RecoveryPasswordResponseDto>>;
-    public authControllerPostRecoveryById(body: ChangePasswordDto, recoveryToken: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public teacherControllerUpdate(body: UpdateTeacherDto, id: number, observe?: 'body', reportProgress?: boolean): Observable<ResponseTeacherDto>;
+    public teacherControllerUpdate(body: UpdateTeacherDto, id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResponseTeacherDto>>;
+    public teacherControllerUpdate(body: UpdateTeacherDto, id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResponseTeacherDto>>;
+    public teacherControllerUpdate(body: UpdateTeacherDto, id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling authControllerPostRecoveryById.');
+            throw new Error('Required parameter body was null or undefined when calling teacherControllerUpdate.');
         }
 
-        if (recoveryToken === null || recoveryToken === undefined) {
-            throw new Error('Required parameter recoveryToken was null or undefined when calling authControllerPostRecoveryById.');
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling teacherControllerUpdate.');
         }
 
         let headers = this.defaultHeaders;
@@ -318,7 +304,7 @@ export class AuthService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<RecoveryPasswordResponseDto>('post',`${this.basePath}/auth/recovery-password/${encodeURIComponent(String(recoveryToken))}`,
+        return this.httpClient.request<ResponseTeacherDto>('patch',`${this.basePath}/teacher/${encodeURIComponent(String(id))}`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,
