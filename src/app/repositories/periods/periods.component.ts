@@ -1,10 +1,21 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { PeriodVM } from './model';
-import { HttpClient } from '@angular/common/http';
-import { TableDataVM, TableService } from 'src/app/common';
-import { Subscription, finalize } from 'rxjs';
-import { PeriodsService } from './periods.service';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+
+import {
+  finalize,
+  Subscription,
+} from 'rxjs';
+import {
+  TableDataVM,
+  TableService,
+} from 'src/app/common';
 import { StateService } from 'src/app/common/state';
+
+import { PeriodVM } from './model';
+import { PeriodsService } from './periods.service';
 
 @Component({
   selector: 'app-periods',
@@ -37,7 +48,7 @@ export class PeriodsComponent implements OnInit, OnDestroy {
       },
       {
         columnDef: 'status',
-        header: 'Estatus',
+        header: 'Estado',
         cell: (element: { [key: string]: string }) => `${element['status']}`,
       },
     ],

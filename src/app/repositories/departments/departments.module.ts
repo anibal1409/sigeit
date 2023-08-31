@@ -11,9 +11,10 @@ import { DepartmentsRoutingModule } from './departments-routing.module';
 import { DepartmentsComponent } from './departments.component';
 import { DepartmentsService } from './departments.service';
 import { GetDepartmentsService } from './use-cases';
+import { FormComponent } from './form/form.component';
 
 @NgModule({
-  declarations: [DepartmentsComponent],
+  declarations: [DepartmentsComponent, FormComponent],
   imports: [
     CommonModule,
     DepartmentsRoutingModule,

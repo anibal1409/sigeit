@@ -1,10 +1,21 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { SubjectVM } from './model';
-import { HttpClient } from '@angular/common/http';
-import { TableDataVM, TableService } from 'src/app/common';
-import { Subscription, finalize } from 'rxjs';
-import { SubjectsService } from './subjects.service';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+
+import {
+  finalize,
+  Subscription,
+} from 'rxjs';
+import {
+  TableDataVM,
+  TableService,
+} from 'src/app/common';
 import { StateService } from 'src/app/common/state';
+
+import { SubjectVM } from './model';
+import { SubjectsService } from './subjects.service';
 
 @Component({
   selector: 'app-subjects',
@@ -53,7 +64,7 @@ export class SubjectsComponent implements OnInit, OnDestroy {
       },
       {
         columnDef: 'status',
-        header: 'Estatus',
+        header: 'Estado',
         cell: (element: { [key: string]: string }) => `${element['status']}`,
       },
     ],

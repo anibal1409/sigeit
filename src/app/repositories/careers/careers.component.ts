@@ -40,7 +40,7 @@ export class CareersComponent implements OnInit, OnDestroy {
       },
       {
         columnDef: 'abbreviation',
-        header: 'Abreviación',
+        header: 'Abreviatura',
         cell: (element: { [key: string]: string }) =>
           `${element['abbreviation']}`,
       },
@@ -53,7 +53,7 @@ export class CareersComponent implements OnInit, OnDestroy {
       },
       {
         columnDef: 'status',
-        header: 'Estatus',
+        header: 'Estado',
         cell: (element: { [key: string]: string }) => `${element['status']}`,
       },
     ],

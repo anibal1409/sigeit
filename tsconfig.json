@@ -25,6 +25,9 @@
       "ES2022",
       "dom"
     ],
+    "types": [
+      "node"
+    ],
     "paths": {
       "api-interfaces": [
         "dist/api-interfaces"

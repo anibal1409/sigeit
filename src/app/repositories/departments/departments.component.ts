@@ -1,11 +1,21 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 
-import { Subscription, finalize } from 'rxjs';
-import { TableDataVM, TableService } from 'src/app/common';
+import {
+  finalize,
+  Subscription,
+} from 'rxjs';
+import {
+  TableDataVM,
+  TableService,
+} from 'src/app/common';
+import { StateService } from 'src/app/common/state';
 
 import { DepartmentsService } from './departments.service';
 import { DepartmentItemVM } from './model';
-import { StateService } from 'src/app/common/state';
 
 @Component({
   selector: 'app-departments',
@@ -28,7 +38,7 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
       },
       {
         columnDef: 'abbreviation',
-        header: 'Abreviación',
+        header: 'Abreviatura',
         cell: (element: { [key: string]: string }) =>
           `${element['abbreviation']}`,
       },
@@ -40,7 +50,7 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
       },
       {
         columnDef: 'status',
-        header: 'Estatus',
+        header: 'Estado',
         cell: (element: { [key: string]: string }) => `${element['status']}`,
       },
     ],

@@ -65,7 +65,7 @@ export class TeachersComponent implements OnInit, OnDestroy {
       },
       {
         columnDef: 'status',
-        header: 'Estatus',
+        header: 'Estado',
         cell: (element: { [key: string]: string }) => `${element['status']}`,
       },
     ],

@@ -60,7 +60,7 @@ export class UsersComponent implements OnInit, OnDestroy {
       },
       {
         columnDef: 'status',
-        header: 'Estatus',
+        header: 'Estado',
         cell: (element: { [key: string]: string | boolean }) =>
           element['status'],
       },
