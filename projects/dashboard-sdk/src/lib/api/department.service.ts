@@ -107,13 +107,20 @@ export class DepartmentService {
     /**
      * 
      * 
+     * @param schoolId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public departmentControllerFindAll(observe?: 'body', reportProgress?: boolean): Observable<Array<ResponseDepartmentDto>>;
-    public departmentControllerFindAll(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ResponseDepartmentDto>>>;
-    public departmentControllerFindAll(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ResponseDepartmentDto>>>;
-    public departmentControllerFindAll(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public departmentControllerFindAll(schoolId?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<ResponseDepartmentDto>>;
+    public departmentControllerFindAll(schoolId?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ResponseDepartmentDto>>>;
+    public departmentControllerFindAll(schoolId?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ResponseDepartmentDto>>>;
+    public departmentControllerFindAll(schoolId?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (schoolId !== undefined && schoolId !== null) {
+            queryParameters = queryParameters.set('schoolId', <any>schoolId);
+        }
 
         let headers = this.defaultHeaders;
 
@@ -132,6 +139,7 @@ export class DepartmentService {
 
         return this.httpClient.request<Array<ResponseDepartmentDto>>('get',`${this.basePath}/department`,
             {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

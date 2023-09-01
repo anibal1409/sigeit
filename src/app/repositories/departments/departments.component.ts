@@ -11,6 +11,7 @@ import {
   OptionAction,
   TableDataVM,
   TableService,
+  UserStateService,
 } from 'src/app/common';
 import { StateService } from 'src/app/common/state';
 
@@ -65,6 +66,7 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
     private departmentsService: DepartmentsService,
     private stateService: StateService,
     public matDialog: MatDialog,
+    private userStateService: UserStateService,
   ) {}
 
   ngOnInit(): void {
@@ -85,7 +87,9 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
         this.tableService.setData(this.dataTable);
       })
     );
-    this.departmentsService.get({});
+    this.departmentsService.get({
+      schoolId: this.userStateService.getSchoolId(),
+    });
   }
 
   ngOnDestroy(): void {

@@ -144,16 +144,23 @@ export class SubjectService {
      * 
      * 
      * @param id 
+     * @param semester 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public subjectControllerFindAllCareer(id: number, observe?: 'body', reportProgress?: boolean): Observable<Array<ResponseSubjectDto>>;
-    public subjectControllerFindAllCareer(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ResponseSubjectDto>>>;
-    public subjectControllerFindAllCareer(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ResponseSubjectDto>>>;
-    public subjectControllerFindAllCareer(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public subjectControllerFindAllCareer(id: number, semester?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<ResponseSubjectDto>>;
+    public subjectControllerFindAllCareer(id: number, semester?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ResponseSubjectDto>>>;
+    public subjectControllerFindAllCareer(id: number, semester?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ResponseSubjectDto>>>;
+    public subjectControllerFindAllCareer(id: number, semester?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling subjectControllerFindAllCareer.');
+        }
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (semester !== undefined && semester !== null) {
+            queryParameters = queryParameters.set('semester', <any>semester);
         }
 
         let headers = this.defaultHeaders;
@@ -173,6 +180,7 @@ export class SubjectService {
 
         return this.httpClient.request<Array<ResponseSubjectDto>>('get',`${this.basePath}/subject/career/${encodeURIComponent(String(id))}`,
             {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -185,16 +193,23 @@ export class SubjectService {
      * 
      * 
      * @param id 
+     * @param semester 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public subjectControllerFindAllDepartment(id: number, observe?: 'body', reportProgress?: boolean): Observable<Array<ResponseSubjectDto>>;
-    public subjectControllerFindAllDepartment(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ResponseSubjectDto>>>;
-    public subjectControllerFindAllDepartment(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ResponseSubjectDto>>>;
-    public subjectControllerFindAllDepartment(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public subjectControllerFindAllDepartment(id: number, semester?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<ResponseSubjectDto>>;
+    public subjectControllerFindAllDepartment(id: number, semester?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ResponseSubjectDto>>>;
+    public subjectControllerFindAllDepartment(id: number, semester?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ResponseSubjectDto>>>;
+    public subjectControllerFindAllDepartment(id: number, semester?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling subjectControllerFindAllDepartment.');
+        }
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (semester !== undefined && semester !== null) {
+            queryParameters = queryParameters.set('semester', <any>semester);
         }
 
         let headers = this.defaultHeaders;
@@ -214,6 +229,7 @@ export class SubjectService {
 
         return this.httpClient.request<Array<ResponseSubjectDto>>('get',`${this.basePath}/subject/department/${encodeURIComponent(String(id))}`,
             {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

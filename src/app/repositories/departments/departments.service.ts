@@ -6,7 +6,10 @@ import { ListComponentService } from '../../common';
 import { SchoolItemVM } from '../schools';
 import { GetSchoolsService } from '../schools/use-cases/get-schools';
 import { DepartmentsMemoryService } from './memory';
-import { DepartmentItemVM } from './model';
+import {
+  DepartmentBaseQuery,
+  DepartmentItemVM,
+} from './model';
 import {
   CreateDepartmentService,
   DeleteDepartmentService,
@@ -16,7 +19,7 @@ import {
 } from './use-cases';
 
 @Injectable()
-export class DepartmentsService extends ListComponentService<DepartmentItemVM> {
+export class DepartmentsService extends ListComponentService<DepartmentItemVM, DepartmentBaseQuery> {
   constructor(
     public getEntityService: GetDepartmentsService,
     public memoryEntityService: DepartmentsMemoryService,

@@ -31,6 +31,9 @@ export class LoginService {
           name: response.name,
           role: response.role,
           loginStamp: response.loginStamp,
+          department: response.department,
+          school: response.school,
+          teacher: response.teacher,
         };
       }),
       tap((user: UserStateVM) => {

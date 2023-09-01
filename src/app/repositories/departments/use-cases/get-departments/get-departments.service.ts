@@ -7,25 +7,27 @@ import {
   tap,
 } from 'rxjs';
 
-import {
-  BaseQuery,
-  UseCase,
-} from '../../../../common';
+import { UseCase } from '../../../../common';
 import { Department2DepartmentItemVM } from '../../mappers';
 import { DepartmentsMemoryService } from '../../memory';
-import { DepartmentItemVM } from '../../model';
+import {
+  DepartmentBaseQuery,
+  DepartmentItemVM,
+} from '../../model';
 
 @Injectable()
 export class GetDepartmentsService
-implements UseCase<Array<DepartmentItemVM> | null, BaseQuery> {
+implements UseCase<Array<DepartmentItemVM> | null, DepartmentBaseQuery> {
 
   constructor(
     private departmentService: DepartmentService,
     private memoryService: DepartmentsMemoryService,
   ) {}
 
-  exec(data: BaseQuery = {}): Observable<Array<DepartmentItemVM>> {
-    return this.departmentService.departmentControllerFindAll()
+  exec(data: DepartmentBaseQuery = {}): Observable<Array<DepartmentItemVM>> {
+    return this.departmentService.departmentControllerFindAll(
+      data?.schoolId,
+    )
     .pipe(
       map((departments: any) => departments.map(Department2DepartmentItemVM)),
       tap((department) => {

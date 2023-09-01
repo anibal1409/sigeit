@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject, Observable } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+} from 'rxjs';
 
 import { UserStateVM } from './models';
 
@@ -43,4 +46,17 @@ export class UserStateService {
   getRole(): string {
     return this.getUser()?.role || '';
   }
+
+  getSchoolId(): number | undefined {
+    return this.getUser()?.school?.id;
+  }
+
+  getDepartmentId(): number | undefined {
+    return this.getUser()?.department?.id;
+  }
+
+  getTeacherId(): number | undefined {
+    return this.getUser()?.teacher?.id;
+  }
+    
 }
