@@ -16,6 +16,7 @@ export class UserStateService {
   }
 
   getUser(): UserStateVM | null {
+    this.validateTimeStamp();
     return this.user$.value || this.getUserStorage();
   }
 
@@ -57,6 +58,15 @@ export class UserStateService {
 
   getTeacherId(): number | undefined {
     return this.getUser()?.teacher?.id;
+  }
+
+  private validateTimeStamp(): void {
+    const user = this.getUserStorage();
+    if (user) {
+      if (user.loginStamp + 60 * 60 * 1000 < Date.now()) {
+        this.clear();
+      }
+    }
   }
     
 }
