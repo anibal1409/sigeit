@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { SchoolService } from 'dashboard-sdk';
@@ -23,10 +22,9 @@ export class CreateSchoolService
   constructor(
     private schoolService: SchoolService,
     private memoryService: SchoolMemoryService,
-    private http: HttpClient,
   ) { }
 
-  exec(schoolSave: SchoolVM): Observable<any | null> {
+  exec(schoolSave: SchoolVM): Observable<SchoolItemVM | null> {
       return this.schoolService
         .schoolControllerCreate({
           abbreviation: schoolSave.abbreviation,

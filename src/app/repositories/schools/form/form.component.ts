@@ -126,7 +126,6 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   private create(): void {
-    console.log('create');
     if (!this.submitDisabled) {
       this.sub$.add(
         this.schoolsService

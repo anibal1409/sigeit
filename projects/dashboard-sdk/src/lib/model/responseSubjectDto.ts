@@ -21,8 +21,8 @@ export interface ResponseSubjectDto {
     hours: number;
     semester: number;
     typeCurriculum: number;
-    departamentId: number;
-    departament: Department;
+    departmentId: number;
+    department: Department;
     status: boolean;
     careerIds: Array<number>;
     careers: Array<Career>;

@@ -26,7 +26,7 @@ import { Configuration }                                     from '../configurat
 
 
 @Injectable()
-export class DepartamentService {
+export class DepartmentService {
 
     protected basePath = '/';
     public defaultHeaders = new HttpHeaders();
@@ -64,13 +64,13 @@ export class DepartamentService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public departamentControllerCreate(body: CreateDepartmentDto, observe?: 'body', reportProgress?: boolean): Observable<ResponseDepartmentDto>;
-    public departamentControllerCreate(body: CreateDepartmentDto, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResponseDepartmentDto>>;
-    public departamentControllerCreate(body: CreateDepartmentDto, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResponseDepartmentDto>>;
-    public departamentControllerCreate(body: CreateDepartmentDto, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public departmentControllerCreate(body: CreateDepartmentDto, observe?: 'body', reportProgress?: boolean): Observable<ResponseDepartmentDto>;
+    public departmentControllerCreate(body: CreateDepartmentDto, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResponseDepartmentDto>>;
+    public departmentControllerCreate(body: CreateDepartmentDto, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResponseDepartmentDto>>;
+    public departmentControllerCreate(body: CreateDepartmentDto, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling departamentControllerCreate.');
+            throw new Error('Required parameter body was null or undefined when calling departmentControllerCreate.');
         }
 
         let headers = this.defaultHeaders;
@@ -93,7 +93,7 @@ export class DepartamentService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<ResponseDepartmentDto>('post',`${this.basePath}/departament`,
+        return this.httpClient.request<ResponseDepartmentDto>('post',`${this.basePath}/department`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,
@@ -110,10 +110,10 @@ export class DepartamentService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public departamentControllerFindAll(observe?: 'body', reportProgress?: boolean): Observable<Array<ResponseDepartmentDto>>;
-    public departamentControllerFindAll(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ResponseDepartmentDto>>>;
-    public departamentControllerFindAll(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ResponseDepartmentDto>>>;
-    public departamentControllerFindAll(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public departmentControllerFindAll(observe?: 'body', reportProgress?: boolean): Observable<Array<ResponseDepartmentDto>>;
+    public departmentControllerFindAll(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ResponseDepartmentDto>>>;
+    public departmentControllerFindAll(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ResponseDepartmentDto>>>;
+    public departmentControllerFindAll(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -130,7 +130,7 @@ export class DepartamentService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<ResponseDepartmentDto>>('get',`${this.basePath}/departament`,
+        return this.httpClient.request<Array<ResponseDepartmentDto>>('get',`${this.basePath}/department`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -147,13 +147,13 @@ export class DepartamentService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public departamentControllerFindOne(id: number, observe?: 'body', reportProgress?: boolean): Observable<ResponseDepartmentDto>;
-    public departamentControllerFindOne(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResponseDepartmentDto>>;
-    public departamentControllerFindOne(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResponseDepartmentDto>>;
-    public departamentControllerFindOne(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public departmentControllerFindOne(id: number, observe?: 'body', reportProgress?: boolean): Observable<ResponseDepartmentDto>;
+    public departmentControllerFindOne(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResponseDepartmentDto>>;
+    public departmentControllerFindOne(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResponseDepartmentDto>>;
+    public departmentControllerFindOne(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling departamentControllerFindOne.');
+            throw new Error('Required parameter id was null or undefined when calling departmentControllerFindOne.');
         }
 
         let headers = this.defaultHeaders;
@@ -171,7 +171,7 @@ export class DepartamentService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<ResponseDepartmentDto>('get',`${this.basePath}/departament/${encodeURIComponent(String(id))}`,
+        return this.httpClient.request<ResponseDepartmentDto>('get',`${this.basePath}/department/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -188,13 +188,13 @@ export class DepartamentService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public departamentControllerRemove(id: number, observe?: 'body', reportProgress?: boolean): Observable<ResponseDepartmentDto>;
-    public departamentControllerRemove(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResponseDepartmentDto>>;
-    public departamentControllerRemove(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResponseDepartmentDto>>;
-    public departamentControllerRemove(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public departmentControllerRemove(id: number, observe?: 'body', reportProgress?: boolean): Observable<ResponseDepartmentDto>;
+    public departmentControllerRemove(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResponseDepartmentDto>>;
+    public departmentControllerRemove(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResponseDepartmentDto>>;
+    public departmentControllerRemove(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling departamentControllerRemove.');
+            throw new Error('Required parameter id was null or undefined when calling departmentControllerRemove.');
         }
 
         let headers = this.defaultHeaders;
@@ -212,7 +212,7 @@ export class DepartamentService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<ResponseDepartmentDto>('delete',`${this.basePath}/departament/${encodeURIComponent(String(id))}`,
+        return this.httpClient.request<ResponseDepartmentDto>('delete',`${this.basePath}/department/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -230,17 +230,17 @@ export class DepartamentService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public departamentControllerUpdate(body: UpdateDepartmentDto, id: number, observe?: 'body', reportProgress?: boolean): Observable<ResponseDepartmentDto>;
-    public departamentControllerUpdate(body: UpdateDepartmentDto, id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResponseDepartmentDto>>;
-    public departamentControllerUpdate(body: UpdateDepartmentDto, id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResponseDepartmentDto>>;
-    public departamentControllerUpdate(body: UpdateDepartmentDto, id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public departmentControllerUpdate(body: UpdateDepartmentDto, id: number, observe?: 'body', reportProgress?: boolean): Observable<ResponseDepartmentDto>;
+    public departmentControllerUpdate(body: UpdateDepartmentDto, id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResponseDepartmentDto>>;
+    public departmentControllerUpdate(body: UpdateDepartmentDto, id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResponseDepartmentDto>>;
+    public departmentControllerUpdate(body: UpdateDepartmentDto, id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling departamentControllerUpdate.');
+            throw new Error('Required parameter body was null or undefined when calling departmentControllerUpdate.');
         }
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling departamentControllerUpdate.');
+            throw new Error('Required parameter id was null or undefined when calling departmentControllerUpdate.');
         }
 
         let headers = this.defaultHeaders;
@@ -263,7 +263,7 @@ export class DepartamentService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<ResponseDepartmentDto>('patch',`${this.basePath}/departament/${encodeURIComponent(String(id))}`,
+        return this.httpClient.request<ResponseDepartmentDto>('patch',`${this.basePath}/department/${encodeURIComponent(String(id))}`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

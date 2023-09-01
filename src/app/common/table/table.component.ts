@@ -96,8 +96,6 @@ export class TableComponent implements AfterViewInit, OnInit {
   }
 
   applyFilter(event: Event) {
-    console.log('applyFilter');
-    
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
     if (this.dataSource.paginator) {

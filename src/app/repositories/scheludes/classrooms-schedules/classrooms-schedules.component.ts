@@ -236,8 +236,6 @@ export class ClassroomsSchedulesComponent
             })
           )
           .subscribe((schedules) => {
-            console.log(schedules);
-
             this.dataScheduleByDay = this.startIntervals.map(() =>
               this.classrooms.map(() => {
                 return { text: '', schedules: [] };
@@ -250,8 +248,6 @@ export class ClassroomsSchedulesComponent
               );
               const startIndex = this.startIntervals.indexOf(schedule.start);
               const endIndex = this.endIntervals.indexOf(schedule.end);
-
-              console.log(schedule, classroomIndex, startIndex, endIndex);
 
               for (let i = startIndex; i <= endIndex; i++) {
                 this.dataScheduleByDay[i][classroomIndex].schedules.push(schedule);

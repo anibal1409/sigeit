@@ -1,6 +1,6 @@
 import { FormGroup } from '@angular/forms';
-import * as moment from 'moment';
 
+import moment from 'moment';
 
 // Valida entre dos fecha, si la segunda fecha  esta antes que la primera fecha
 

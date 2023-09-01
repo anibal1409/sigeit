@@ -52,6 +52,7 @@ export class SchoolsComponent implements OnInit, OnDestroy {
 
   sub$ = new Subscription();
   loading = false;
+
   constructor(
     private schoolsService: SchoolsService,
     private tableService: TableService,
@@ -108,12 +109,12 @@ export class SchoolsComponent implements OnInit, OnDestroy {
     });
   }
 
-  showConfirm(socialPlan: SchoolVM): void {
+  showConfirm(item: SchoolVM): void {
     const dialogRef = this.matDialog.open(ConfirmModalComponent, {
       data: {
         message: {
           title: 'Eliminar escuela',
-          body: `¿Está seguro que desea eliminar la escuela <strong>${socialPlan.name}</strong>?`,
+          body: `¿Está seguro que desea eliminar la escuela <strong>${item.name}</strong>?`,
         },
       },
       hasBackdrop: true,
@@ -123,7 +124,7 @@ export class SchoolsComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.closed.subscribe((res) => {
       dialogRef.close();
       if (res) {
-        this.schoolsService.delete(socialPlan?.id || 0);
+        this.schoolsService.delete(item?.id || 0);
       }
     });
   }

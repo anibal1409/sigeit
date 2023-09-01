@@ -205,14 +205,11 @@ export class SchedulesSemestersComponent {
             })
           )
           .subscribe((subjects) => {
-            console.log(subjects);
-            
             this._alldata = subjects;
             this.dataSource.data = this.addGroups(
               this._alldata,
               this.groupByColumns
             );
-            console.log(this.dataSource.data);
             
             this.dataSource.filterPredicate =
               this.customFilterPredicate.bind(this);
@@ -448,7 +445,6 @@ export class SchedulesSemestersComponent {
       ) {
         data[(schedule as any)?.[this.groupsBy[0]?.field]] = [];
       } else {
-        console.log(schedule);
         const obj: any = {
           Código: !this.equalPrevious(schedule, 'code', this.dataSource.data) ? schedule?.code : '',
           Asignatura: !this.equalPrevious(schedule, 'name', this.dataSource.data)

@@ -17,27 +17,27 @@ import {
 
 @Injectable()
 export class UpdateSchoolService
-implements UseCase<SchoolItemVM | null, SchoolVM>
+  implements UseCase<SchoolItemVM | null, SchoolVM>
 {
-constructor(
-  private schoolService: SchoolService,
-  private memoryService: SchoolMemoryService,
-) {}
+  constructor(
+    private schoolService: SchoolService,
+    private memoryService: SchoolMemoryService,
+  ) { }
 
-exec(schoolSave: SchoolVM): Observable<SchoolItemVM | null> {
-  return this.schoolService
-    .schoolControllerUpdate({
-      name: schoolSave.name,
-      status: !!schoolSave.status,
-      logo: schoolSave.logo,
-      description: schoolSave.description,
-      abbreviation: schoolSave.abbreviation,
-    }, schoolSave.id || 0)
-    .pipe(
-      map(School2SchoolItemVM),
-      tap((school) => {
-        this.memoryService.update(school);
-      })
-    );
-}
+  exec(schoolSave: SchoolVM): Observable<SchoolItemVM | null> {
+    return this.schoolService
+      .schoolControllerUpdate({
+        name: schoolSave.name,
+        status: !!schoolSave.status,
+        logo: schoolSave.logo,
+        description: schoolSave.description,
+        abbreviation: schoolSave.abbreviation,
+      }, schoolSave.id || 0)
+      .pipe(
+        map(School2SchoolItemVM),
+        tap((school) => {
+          this.memoryService.update(school);
+        })
+      );
+  }
 }

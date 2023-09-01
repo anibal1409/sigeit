@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class DepartmentsMemoryService {
+import { MemoryRepository } from '../../../../common';
+import { DepartmentItemVM } from '../../model';
 
-  constructor() { }
+@Injectable()
+export class DepartmentsMemoryService extends MemoryRepository<DepartmentItemVM> {
+  constructor() {
+    super();
+  }
 }

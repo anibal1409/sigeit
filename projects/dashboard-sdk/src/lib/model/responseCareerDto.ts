@@ -17,7 +17,7 @@ export interface ResponseCareerDto {
     description?: string;
     logo?: string;
     abbreviation: string;
-    departamentId: number;
-    departament: Department;
+    departmentId: number;
+    department: Department;
     status: boolean;
 }

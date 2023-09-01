@@ -17,7 +17,6 @@ export * from './day';
 export * from './department';
 export * from './loginDto';
 export * from './loginUserResponseDto';
-export * from './models';export {default as './career';} from './models';
 export * from './period';
 export * from './recoveryPasswordDto';
 export * from './recoveryPasswordResponseDto';

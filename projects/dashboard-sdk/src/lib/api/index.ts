@@ -1,10 +1,9 @@
-export * from './api';export {default as './auth.service';} from './api';
 export * from './auth.service';
 export * from './career.service';
 export * from './classroom.service';
 export * from './day.service';
 export * from './default.service';
-export * from './departament.service';
+export * from './department.service';
 export * from './period.service';
 export * from './schedule.service';
 export * from './school.service';

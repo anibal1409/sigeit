@@ -8,7 +8,7 @@ import { CareerService } from './api/career.service';
 import { ClassroomService } from './api/classroom.service';
 import { DayService } from './api/day.service';
 import { DefaultService } from './api/default.service';
-import { DepartamentService } from './api/departament.service';
+import { DepartmentService } from './api/department.service';
 import { PeriodService } from './api/period.service';
 import { ScheduleService } from './api/schedule.service';
 import { SchoolService } from './api/school.service';
@@ -27,7 +27,7 @@ import { UserService } from './api/user.service';
     ClassroomService,
     DayService,
     DefaultService,
-    DepartamentService,
+    DepartmentService,
     PeriodService,
     ScheduleService,
     SchoolService,

@@ -23,7 +23,6 @@ export class AuthLoginGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-      console.log('AuthLoginGuard');
     const userState = this.userService.getUser();
     if (!userState) {
       return true;

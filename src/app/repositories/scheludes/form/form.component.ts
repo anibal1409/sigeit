@@ -109,8 +109,6 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit(): void {
-    console.log('ngOnInit');
-    
     this.createForm();
     this.loadClassrooms();
     this.sub$.add(
@@ -181,13 +179,10 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     this.sectionId = 0;
     this.scheduleId = 0;
     this.departmentId = 0;
-    console.log('ngOnDestroy');
   }
 
 
   private loadSchedule(): void {
-    console.log();
-    
     if (!!this.scheduleId && !isNaN(this.scheduleId)) {
       this.title = 'Editar Horario';
       this.sub$.add(
@@ -297,7 +292,6 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       this.sub$.add(
         this.schedulesService.validateTeacherSchedules$(data, this.teacherId, this.periodId).subscribe(
           (sections: Array<SectionItemVM>) => {
-            console.log(sections);
             const collapsedSchedules = sections
             .filter((section: SectionItemVM) => {
               return section.schedules?.filter((schedule: ScheduleItemVM) => schedule.id !== this.scheduleId)?.length;

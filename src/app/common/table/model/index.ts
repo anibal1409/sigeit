@@ -1,3 +1,3 @@
-export * from './table-data.model';
-export * from './row-option-vm';
 export * from './option-action';
+export * from './row-option-vm';
+export * from './table-data.model';

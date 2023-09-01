@@ -16,7 +16,7 @@ export interface ResponseClassroomDto {
     name: string;
     description?: string;
     type: string;
-    departamentIds: Array<number>;
-    departaments: Array<Department>;
+    departmentIds: Array<number>;
+    departments: Array<Department>;
     status: boolean;
 }

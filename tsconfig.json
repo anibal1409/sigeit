@@ -62,5 +62,6 @@
     "strictTemplates": true,
     "resolveJsonModule": true,
     "esModuleInterop": true
-  }
+  },
+  "exclude": ["node_modules"],
 }

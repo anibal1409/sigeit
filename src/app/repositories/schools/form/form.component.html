@@ -23,6 +23,14 @@
   </mat-form-field>
 
   <mat-form-field class="">
+    <mat-label>Abreviatura</mat-label>
+    <input type="text" matInput formControlName="abbreviation" />
+    <mat-error *ngIf="form.controls['name'].hasError('required')"
+      >Campo requerido</mat-error
+    >
+  </mat-form-field>
+
+  <mat-form-field class="">
     <mat-label>Descripción</mat-label>
     <textarea
       class="form-control"
@@ -30,20 +38,12 @@
       type="text"
       formControlName="description"
       maxlength="200"
-      rows="5"
+      rows="1"
       matInput
     >
     </textarea>
     <mat-error *ngIf="form.controls['description'].hasError('maxlength')"
       >200 caracteres maximo</mat-error
-    >
-  </mat-form-field>
-
-  <mat-form-field class="">
-    <mat-label>Abreviatura</mat-label>
-    <input type="text" matInput formControlName="abbreviation" />
-    <mat-error *ngIf="form.controls['name'].hasError('required')"
-      >Campo requerido</mat-error
     >
   </mat-form-field>
   

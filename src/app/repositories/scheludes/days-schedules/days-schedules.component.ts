@@ -81,7 +81,6 @@ export class DaysSchedulesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit(): void {
-    console.log(this.dataSourceByClassroom);
     this.loadDays();
     this.loadIntervals();
     this.subClassrooms();
@@ -174,7 +173,6 @@ export class DaysSchedulesComponent implements OnInit, OnDestroy, OnChanges {
               })
             );
 
-            console.log(schedules);
             schedules.forEach((schedule) => {
               const dayIndex = this.days.findIndex(
                 (day) => day.id === schedule.dayId
@@ -203,7 +201,6 @@ export class DaysSchedulesComponent implements OnInit, OnDestroy, OnChanges {
                 return row;
               }
             );
-            console.log(this.dataScheduleByClassroom);
           })
       );
     }

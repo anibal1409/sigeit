@@ -1,9 +1,28 @@
 import { Injectable } from '@angular/core';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class DeleteDepartmentService {
+import { DepartmentService } from 'dashboard-sdk';
+import {
+  map,
+  Observable,
+  tap,
+} from 'rxjs';
 
-  constructor() { }
+import { UseCase } from '../../../../common';
+import { DepartmentsMemoryService } from '../../memory';
+
+@Injectable()
+export class DeleteDepartmentService implements UseCase<number, number> {
+  constructor(
+    private departmentService: DepartmentService,
+    private memoryService: DepartmentsMemoryService,
+  ) {}
+
+  exec(id: number): Observable<number> {
+    return this.departmentService.departmentControllerRemove(id).pipe(
+      map(() => 1),
+      tap(() => {
+        this.memoryService.delete(id);
+      })
+    );
+  }
 }

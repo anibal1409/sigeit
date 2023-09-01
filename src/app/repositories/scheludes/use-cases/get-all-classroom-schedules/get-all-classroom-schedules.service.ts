@@ -27,14 +27,12 @@ export class GetAllClassroomSchedulesService {
         map((schedules: any) => schedules.map(Schedule2ScheduleItemVM)),
         mergeMap(
           (schudules) => {
-            console.log(schudules);
             schudules = schudules.filter((x: ScheduleItemVM) => !!x?.section?.subjectId);
             
             let scheduleObservables;
             if (schudules?.length) {
               scheduleObservables = schudules?.map(
                 (schedule: ScheduleItemVM) => {
-                  console.log(schedule?.section?.subjectId, schedule);
                   
                   return this.http.get(`http://localhost:3000/subjects/${schedule?.section?.subjectId}`)
                   .pipe(

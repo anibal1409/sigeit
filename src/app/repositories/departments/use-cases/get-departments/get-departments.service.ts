@@ -1,24 +1,36 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { DepartmentService } from 'dashboard-sdk';
 import {
   map,
   Observable,
+  tap,
 } from 'rxjs';
 
+import {
+  BaseQuery,
+  UseCase,
+} from '../../../../common';
 import { Department2DepartmentItemVM } from '../../mappers';
+import { DepartmentsMemoryService } from '../../memory';
 import { DepartmentItemVM } from '../../model';
 
 @Injectable()
-export class GetDepartmentsService {
+export class GetDepartmentsService
+implements UseCase<Array<DepartmentItemVM> | null, BaseQuery> {
+
   constructor(
-    private http: HttpClient,
+    private departmentService: DepartmentService,
+    private memoryService: DepartmentsMemoryService,
   ) {}
 
-  exec(): Observable<Array<DepartmentItemVM>> {
-    return this.http.get('http://localhost:3000/departments?_expand=school')
+  exec(data: BaseQuery = {}): Observable<Array<DepartmentItemVM>> {
+    return this.departmentService.departmentControllerFindAll()
     .pipe(
-      map((departments: any) => departments.map(Department2DepartmentItemVM))
+      map((departments: any) => departments.map(Department2DepartmentItemVM)),
+      tap((department) => {
+        this.memoryService.setDataSource(department);
+      })
     );
   }
 }
