@@ -18,6 +18,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { CreatePeriodDto } from '../model/createPeriodDto';
+import { Period } from '../model/period';
 import { ResponsePeriodDto } from '../model/responsePeriodDto';
 import { UpdatePeriodDto } from '../model/updatePeriodDto';
 
@@ -110,9 +111,9 @@ export class PeriodService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public periodControllerFindActive(observe?: 'body', reportProgress?: boolean): Observable<ResponsePeriodDto>;
-    public periodControllerFindActive(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResponsePeriodDto>>;
-    public periodControllerFindActive(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResponsePeriodDto>>;
+    public periodControllerFindActive(observe?: 'body', reportProgress?: boolean): Observable<Period>;
+    public periodControllerFindActive(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Period>>;
+    public periodControllerFindActive(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Period>>;
     public periodControllerFindActive(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -130,7 +131,7 @@ export class PeriodService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<ResponsePeriodDto>('get',`${this.basePath}/period/active`,
+        return this.httpClient.request<Period>('get',`${this.basePath}/period/active`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -146,9 +147,9 @@ export class PeriodService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public periodControllerFindAll(observe?: 'body', reportProgress?: boolean): Observable<Array<ResponsePeriodDto>>;
-    public periodControllerFindAll(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ResponsePeriodDto>>>;
-    public periodControllerFindAll(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ResponsePeriodDto>>>;
+    public periodControllerFindAll(observe?: 'body', reportProgress?: boolean): Observable<Array<Period>>;
+    public periodControllerFindAll(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Period>>>;
+    public periodControllerFindAll(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Period>>>;
     public periodControllerFindAll(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -166,7 +167,7 @@ export class PeriodService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<ResponsePeriodDto>>('get',`${this.basePath}/period`,
+        return this.httpClient.request<Array<Period>>('get',`${this.basePath}/period`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

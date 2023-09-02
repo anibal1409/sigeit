@@ -18,8 +18,15 @@ export interface ResponsePeriodDto {
     end: Date;
     startTime: string;
     endTime: string;
-    stage: string;
+    stage: ResponsePeriodDto.StageEnum;
     interval: number;
     duration: number;
     status: boolean;
+}
+export namespace ResponsePeriodDto {
+    export type StageEnum = 'Por Planificar' | 'Finalizado';
+    export const StageEnum = {
+        PorPlanificar: 'Por Planificar' as StageEnum,
+        Finalizado: 'Finalizado' as StageEnum
+    };
 }

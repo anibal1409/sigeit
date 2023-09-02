@@ -11,4 +11,13 @@
  */
 
 export interface School { 
+    name: string;
+    description: string;
+    logo: string;
+    abbreviation: string;
+    id: number;
+    createdAt: Date;
+    updatedAt: Date;
+    status?: boolean;
+    deleted?: boolean;
 }

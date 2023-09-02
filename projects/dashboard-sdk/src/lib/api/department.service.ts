@@ -18,6 +18,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { CreateDepartmentDto } from '../model/createDepartmentDto';
+import { Department } from '../model/department';
 import { ResponseDepartmentDto } from '../model/responseDepartmentDto';
 import { UpdateDepartmentDto } from '../model/updateDepartmentDto';
 
@@ -111,9 +112,9 @@ export class DepartmentService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public departmentControllerFindAll(schoolId?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<ResponseDepartmentDto>>;
-    public departmentControllerFindAll(schoolId?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ResponseDepartmentDto>>>;
-    public departmentControllerFindAll(schoolId?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ResponseDepartmentDto>>>;
+    public departmentControllerFindAll(schoolId?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Department>>;
+    public departmentControllerFindAll(schoolId?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Department>>>;
+    public departmentControllerFindAll(schoolId?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Department>>>;
     public departmentControllerFindAll(schoolId?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
@@ -137,7 +138,7 @@ export class DepartmentService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<ResponseDepartmentDto>>('get',`${this.basePath}/department`,
+        return this.httpClient.request<Array<Department>>('get',`${this.basePath}/department`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,

@@ -18,6 +18,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { CreateDayDto } from '../model/createDayDto';
+import { Day } from '../model/day';
 import { ResponseDayDto } from '../model/responseDayDto';
 import { UpdateDayDto } from '../model/updateDayDto';
 
@@ -110,9 +111,9 @@ export class DayService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public dayControllerFindAll(observe?: 'body', reportProgress?: boolean): Observable<Array<ResponseDayDto>>;
-    public dayControllerFindAll(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ResponseDayDto>>>;
-    public dayControllerFindAll(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ResponseDayDto>>>;
+    public dayControllerFindAll(observe?: 'body', reportProgress?: boolean): Observable<Array<Day>>;
+    public dayControllerFindAll(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Day>>>;
+    public dayControllerFindAll(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Day>>>;
     public dayControllerFindAll(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -130,7 +131,7 @@ export class DayService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<ResponseDayDto>>('get',`${this.basePath}/day`,
+        return this.httpClient.request<Array<Day>>('get',`${this.basePath}/day`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

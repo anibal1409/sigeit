@@ -9,6 +9,17 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Department } from './department';
 
 export interface Teacher { 
+    idDocument: string;
+    firstName: string;
+    lastName: string;
+    email?: string;
+    department?: Department;
+    id: number;
+    createdAt: Date;
+    updatedAt: Date;
+    status?: boolean;
+    deleted?: boolean;
 }

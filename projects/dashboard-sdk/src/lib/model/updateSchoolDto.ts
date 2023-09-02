@@ -16,4 +16,5 @@ export interface UpdateSchoolDto {
     logo?: string;
     abbreviation?: string;
     status?: boolean;
+    id?: number;
 }

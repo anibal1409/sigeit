@@ -198,7 +198,7 @@ export class SchedulesService {
   }
 
   getClassrooms$(departmentId?: number): Observable<Array<ClassroomVM>> {
-    return this.getClassroomsService.exec(departmentId);
+    return this.getClassroomsService.exec({id: departmentId});
   }
 
   getDays$(): Observable<Array<DayVM>> {

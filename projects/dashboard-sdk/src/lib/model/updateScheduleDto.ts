@@ -9,13 +9,23 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Department } from './department';
+import { IdCreateEntity } from './idCreateEntity';
+import { Subject } from './subject';
 
 export interface UpdateScheduleDto { 
     start?: string;
     end?: string;
-    classroomId?: number;
-    dayId?: number;
-    sectionId?: number;
-    periodId?: number;
+    classroom?: IdCreateEntity;
+    day?: IdCreateEntity;
+    section?: IdCreateEntity;
+    period?: IdCreateEntity;
     status?: boolean;
+    id?: number;
+    name?: string;
+    description?: string;
+    logo?: string;
+    abbreviation?: string;
+    department?: Department;
+    subjects?: Array<Subject>;
 }

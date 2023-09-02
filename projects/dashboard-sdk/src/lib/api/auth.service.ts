@@ -114,9 +114,9 @@ export class AuthService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public authControllerGenerateRecovery(body: RecoveryPasswordDto, observe?: 'body', reportProgress?: boolean): Observable<RecoveryPasswordDto>;
-    public authControllerGenerateRecovery(body: RecoveryPasswordDto, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<RecoveryPasswordDto>>;
-    public authControllerGenerateRecovery(body: RecoveryPasswordDto, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<RecoveryPasswordDto>>;
+    public authControllerGenerateRecovery(body: RecoveryPasswordDto, observe?: 'body', reportProgress?: boolean): Observable<RecoveryPasswordResponseDto>;
+    public authControllerGenerateRecovery(body: RecoveryPasswordDto, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<RecoveryPasswordResponseDto>>;
+    public authControllerGenerateRecovery(body: RecoveryPasswordDto, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<RecoveryPasswordResponseDto>>;
     public authControllerGenerateRecovery(body: RecoveryPasswordDto, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
@@ -143,7 +143,7 @@ export class AuthService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<RecoveryPasswordDto>('post',`${this.basePath}/auth/recovery-password`,
+        return this.httpClient.request<RecoveryPasswordResponseDto>('post',`${this.basePath}/auth/recovery-password`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

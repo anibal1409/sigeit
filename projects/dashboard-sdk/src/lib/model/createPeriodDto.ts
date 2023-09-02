@@ -17,8 +17,16 @@ export interface CreatePeriodDto {
     end: Date;
     startTime: string;
     endTime: string;
-    stage: string;
+    stage: CreatePeriodDto.StageEnum;
     interval: number;
     duration: number;
     status: boolean;
+    id?: number;
+}
+export namespace CreatePeriodDto {
+    export type StageEnum = 'Por Planificar' | 'Finalizado';
+    export const StageEnum = {
+        PorPlanificar: 'Por Planificar' as StageEnum,
+        Finalizado: 'Finalizado' as StageEnum
+    };
 }

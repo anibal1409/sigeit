@@ -3,5 +3,6 @@ export interface ClassroomVM {
   name: string;
   type: string;
   status: boolean | string;
-  departmentId: number;
+  departmentIds: Array<number>;
+  description?: string;
 }

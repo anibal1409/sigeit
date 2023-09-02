@@ -19,6 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { CreateSchoolDto } from '../model/createSchoolDto';
 import { ResponseSchoolDto } from '../model/responseSchoolDto';
+import { School } from '../model/school';
 import { UpdateSchoolDto } from '../model/updateSchoolDto';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -110,9 +111,9 @@ export class SchoolService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public schoolControllerFindAll(observe?: 'body', reportProgress?: boolean): Observable<Array<ResponseSchoolDto>>;
-    public schoolControllerFindAll(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ResponseSchoolDto>>>;
-    public schoolControllerFindAll(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ResponseSchoolDto>>>;
+    public schoolControllerFindAll(observe?: 'body', reportProgress?: boolean): Observable<Array<School>>;
+    public schoolControllerFindAll(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<School>>>;
+    public schoolControllerFindAll(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<School>>>;
     public schoolControllerFindAll(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -130,7 +131,7 @@ export class SchoolService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<ResponseSchoolDto>>('get',`${this.basePath}/school`,
+        return this.httpClient.request<Array<School>>('get',`${this.basePath}/school`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

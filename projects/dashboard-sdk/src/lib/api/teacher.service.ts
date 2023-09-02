@@ -19,6 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { CreateTeacherDto } from '../model/createTeacherDto';
 import { ResponseTeacherDto } from '../model/responseTeacherDto';
+import { Teacher } from '../model/teacher';
 import { UpdateTeacherDto } from '../model/updateTeacherDto';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -110,9 +111,9 @@ export class TeacherService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public teacherControllerFindAll(observe?: 'body', reportProgress?: boolean): Observable<Array<ResponseTeacherDto>>;
-    public teacherControllerFindAll(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ResponseTeacherDto>>>;
-    public teacherControllerFindAll(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ResponseTeacherDto>>>;
+    public teacherControllerFindAll(observe?: 'body', reportProgress?: boolean): Observable<Array<Teacher>>;
+    public teacherControllerFindAll(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Teacher>>>;
+    public teacherControllerFindAll(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Teacher>>>;
     public teacherControllerFindAll(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -130,7 +131,7 @@ export class TeacherService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<ResponseTeacherDto>>('get',`${this.basePath}/teacher`,
+        return this.httpClient.request<Array<Teacher>>('get',`${this.basePath}/teacher`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -147,9 +148,9 @@ export class TeacherService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public teacherControllerFindAllDepartment(id: number, observe?: 'body', reportProgress?: boolean): Observable<Array<ResponseTeacherDto>>;
-    public teacherControllerFindAllDepartment(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ResponseTeacherDto>>>;
-    public teacherControllerFindAllDepartment(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ResponseTeacherDto>>>;
+    public teacherControllerFindAllDepartment(id: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Teacher>>;
+    public teacherControllerFindAllDepartment(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Teacher>>>;
+    public teacherControllerFindAllDepartment(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Teacher>>>;
     public teacherControllerFindAllDepartment(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
@@ -171,7 +172,7 @@ export class TeacherService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<ResponseTeacherDto>>('get',`${this.basePath}/teacher/department/${encodeURIComponent(String(id))}`,
+        return this.httpClient.request<Array<Teacher>>('get',`${this.basePath}/teacher/department/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

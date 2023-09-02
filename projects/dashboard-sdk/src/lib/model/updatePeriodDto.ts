@@ -17,8 +17,16 @@ export interface UpdatePeriodDto {
     end?: Date;
     startTime?: string;
     endTime?: string;
-    stage?: string;
+    stage?: UpdatePeriodDto.StageEnum;
     interval?: number;
     duration?: number;
     status?: boolean;
+    id?: number;
+}
+export namespace UpdatePeriodDto {
+    export type StageEnum = 'Por Planificar' | 'Finalizado';
+    export const StageEnum = {
+        PorPlanificar: 'Por Planificar' as StageEnum,
+        Finalizado: 'Finalizado' as StageEnum
+    };
 }

@@ -9,9 +9,16 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Department } from './department';
+import { Subject } from './subject';
 
 export interface CreateDayDto { 
     name: string;
     abbreviation: string;
     status: boolean;
+    id?: number;
+    description?: string;
+    logo?: string;
+    department?: Department;
+    subjects?: Array<Subject>;
 }

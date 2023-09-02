@@ -11,4 +11,11 @@
  */
 
 export interface Day { 
+    name: string;
+    abbreviation: string;
+    id: number;
+    createdAt: Date;
+    updatedAt: Date;
+    status?: boolean;
+    deleted?: boolean;
 }

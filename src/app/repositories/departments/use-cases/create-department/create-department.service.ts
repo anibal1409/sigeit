@@ -17,14 +17,14 @@ import {
 
 @Injectable()
 export class CreateDepartmentService
-implements UseCase<DepartmentItemVM | null, DepartmentVM>
+  implements UseCase<DepartmentItemVM | null, DepartmentVM>
 {
-constructor(
-  private departmentService: DepartmentService,
-  private memoryService: DepartmentsMemoryService,
-) { }
+  constructor(
+    private departmentService: DepartmentService,
+    private memoryService: DepartmentsMemoryService,
+  ) { }
 
-exec(departmentSave: DepartmentVM): Observable<DepartmentItemVM | null> {
+  exec(departmentSave: DepartmentVM): Observable<DepartmentItemVM | null> {
     return this.departmentService
       .departmentControllerCreate({
         abbreviation: departmentSave.abbreviation,
@@ -36,11 +36,11 @@ exec(departmentSave: DepartmentVM): Observable<DepartmentItemVM | null> {
           id: departmentSave.schoolId,
         }
       })
-    .pipe(
-      map(Department2DepartmentItemVM),
-      tap((department) => {
-        this.memoryService.create(department);
-      })
-    );
-}
+      .pipe(
+        map(Department2DepartmentItemVM),
+        tap((department) => {
+          this.memoryService.create(department);
+        })
+      );
+  }
 }

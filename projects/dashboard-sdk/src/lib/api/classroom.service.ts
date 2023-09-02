@@ -17,6 +17,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { Classroom } from '../model/classroom';
 import { CreateClassroomDto } from '../model/createClassroomDto';
 import { ResponseClassroomDto } from '../model/responseClassroomDto';
 import { UpdateClassroomDto } from '../model/updateClassroomDto';
@@ -107,53 +108,29 @@ export class ClassroomService {
     /**
      * 
      * 
+     * @param classroomId 
+     * @param departmentId 
+     * @param status 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public classroomControllerFindAll(observe?: 'body', reportProgress?: boolean): Observable<Array<ResponseClassroomDto>>;
-    public classroomControllerFindAll(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ResponseClassroomDto>>>;
-    public classroomControllerFindAll(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ResponseClassroomDto>>>;
-    public classroomControllerFindAll(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public classroomControllerFindAll(classroomId?: number, departmentId?: number, status?: boolean, observe?: 'body', reportProgress?: boolean): Observable<Array<Classroom>>;
+    public classroomControllerFindAll(classroomId?: number, departmentId?: number, status?: boolean, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Classroom>>>;
+    public classroomControllerFindAll(classroomId?: number, departmentId?: number, status?: boolean, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Classroom>>>;
+    public classroomControllerFindAll(classroomId?: number, departmentId?: number, status?: boolean, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        let headers = this.defaultHeaders;
 
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (classroomId !== undefined && classroomId !== null) {
+            queryParameters = queryParameters.set('classroomId', <any>classroomId);
         }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<Array<ResponseClassroomDto>>('get',`${this.basePath}/classroom`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * 
-     * 
-     * @param id 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public classroomControllerFindAllDepartment(id: number, observe?: 'body', reportProgress?: boolean): Observable<Array<ResponseClassroomDto>>;
-    public classroomControllerFindAllDepartment(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ResponseClassroomDto>>>;
-    public classroomControllerFindAllDepartment(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ResponseClassroomDto>>>;
-    public classroomControllerFindAllDepartment(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling classroomControllerFindAllDepartment.');
+        if (departmentId !== undefined && departmentId !== null) {
+            queryParameters = queryParameters.set('departmentId', <any>departmentId);
+        }
+        if (status !== undefined && status !== null) {
+            queryParameters = queryParameters.set('status', <any>status);
         }
 
         let headers = this.defaultHeaders;
@@ -171,8 +148,9 @@ export class ClassroomService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<ResponseClassroomDto>>('get',`${this.basePath}/classroom/department/${encodeURIComponent(String(id))}`,
+        return this.httpClient.request<Array<Classroom>>('get',`${this.basePath}/classroom`,
             {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

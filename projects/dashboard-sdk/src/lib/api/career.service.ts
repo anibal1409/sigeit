@@ -17,6 +17,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { Career } from '../model/career';
 import { CreateCareerDto } from '../model/createCareerDto';
 import { ResponseCareerDto } from '../model/responseCareerDto';
 import { UpdateCareerDto } from '../model/updateCareerDto';
@@ -110,9 +111,9 @@ export class CareerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public careerControllerFindAll(observe?: 'body', reportProgress?: boolean): Observable<Array<ResponseCareerDto>>;
-    public careerControllerFindAll(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ResponseCareerDto>>>;
-    public careerControllerFindAll(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ResponseCareerDto>>>;
+    public careerControllerFindAll(observe?: 'body', reportProgress?: boolean): Observable<Array<Career>>;
+    public careerControllerFindAll(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Career>>>;
+    public careerControllerFindAll(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Career>>>;
     public careerControllerFindAll(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -130,7 +131,7 @@ export class CareerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<ResponseCareerDto>>('get',`${this.basePath}/career`,
+        return this.httpClient.request<Array<Career>>('get',`${this.basePath}/career`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

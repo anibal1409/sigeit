@@ -9,11 +9,13 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { IdCreateEntity } from './idCreateEntity';
 
 export interface UpdateClassroomDto { 
     name?: string;
     description?: string;
     type?: string;
-    departmentIds?: Array<number>;
+    departments?: Array<IdCreateEntity>;
     status?: boolean;
+    id?: number;
 }

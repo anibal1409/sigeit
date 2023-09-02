@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { IdCreateEntity } from './idCreateEntity';
 
 export interface CreateSubjectDto { 
     name: string;
@@ -18,7 +19,8 @@ export interface CreateSubjectDto {
     hours: number;
     semester: number;
     typeCurriculum: number;
-    departmentId: number;
-    status: boolean;
-    careerIds: Array<number>;
+    department: IdCreateEntity;
+    careers: Array<IdCreateEntity>;
+    id?: number;
+    status?: boolean;
 }

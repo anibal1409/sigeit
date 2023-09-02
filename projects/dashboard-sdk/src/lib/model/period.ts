@@ -11,4 +11,25 @@
  */
 
 export interface Period { 
+    name: string;
+    description?: string;
+    start: Date;
+    end: Date;
+    startTime: string;
+    endTime: string;
+    interval: number;
+    duration: number;
+    stage: Period.StageEnum;
+    id: number;
+    createdAt: Date;
+    updatedAt: Date;
+    status?: boolean;
+    deleted?: boolean;
+}
+export namespace Period {
+    export type StageEnum = 'Por Planificar' | 'Finalizado';
+    export const StageEnum = {
+        PorPlanificar: 'Por Planificar' as StageEnum,
+        Finalizado: 'Finalizado' as StageEnum
+    };
 }

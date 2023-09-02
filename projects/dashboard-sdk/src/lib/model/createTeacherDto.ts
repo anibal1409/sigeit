@@ -9,12 +9,20 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { IdCreateEntity } from './idCreateEntity';
+import { Subject } from './subject';
 
 export interface CreateTeacherDto { 
     idDocument: string;
     firstName: string;
     lastName?: string;
     email?: string;
-    departmentId: number;
+    department: IdCreateEntity;
     status: boolean;
+    id?: number;
+    name?: string;
+    description?: string;
+    logo?: string;
+    abbreviation?: string;
+    subjects?: Array<Subject>;
 }

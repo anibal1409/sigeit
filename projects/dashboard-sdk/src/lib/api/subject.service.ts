@@ -19,6 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { CreateSubjectDto } from '../model/createSubjectDto';
 import { ResponseSubjectDto } from '../model/responseSubjectDto';
+import { Subject } from '../model/subject';
 import { UpdateSubjectDto } from '../model/updateSubjectDto';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -107,109 +108,29 @@ export class SubjectService {
     /**
      * 
      * 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public subjectControllerFindAll(observe?: 'body', reportProgress?: boolean): Observable<Array<ResponseSubjectDto>>;
-    public subjectControllerFindAll(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ResponseSubjectDto>>>;
-    public subjectControllerFindAll(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ResponseSubjectDto>>>;
-    public subjectControllerFindAll(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<Array<ResponseSubjectDto>>('get',`${this.basePath}/subject`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * 
-     * 
-     * @param id 
      * @param semester 
+     * @param careerId 
+     * @param departmentId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public subjectControllerFindAllCareer(id: number, semester?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<ResponseSubjectDto>>;
-    public subjectControllerFindAllCareer(id: number, semester?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ResponseSubjectDto>>>;
-    public subjectControllerFindAllCareer(id: number, semester?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ResponseSubjectDto>>>;
-    public subjectControllerFindAllCareer(id: number, semester?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public subjectControllerFindAll(semester?: number, careerId?: number, departmentId?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Subject>>;
+    public subjectControllerFindAll(semester?: number, careerId?: number, departmentId?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Subject>>>;
+    public subjectControllerFindAll(semester?: number, careerId?: number, departmentId?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Subject>>>;
+    public subjectControllerFindAll(semester?: number, careerId?: number, departmentId?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling subjectControllerFindAllCareer.');
-        }
+
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
         if (semester !== undefined && semester !== null) {
             queryParameters = queryParameters.set('semester', <any>semester);
         }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        if (careerId !== undefined && careerId !== null) {
+            queryParameters = queryParameters.set('careerId', <any>careerId);
         }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<Array<ResponseSubjectDto>>('get',`${this.basePath}/subject/career/${encodeURIComponent(String(id))}`,
-            {
-                params: queryParameters,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * 
-     * 
-     * @param id 
-     * @param semester 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public subjectControllerFindAllDepartment(id: number, semester?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<ResponseSubjectDto>>;
-    public subjectControllerFindAllDepartment(id: number, semester?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ResponseSubjectDto>>>;
-    public subjectControllerFindAllDepartment(id: number, semester?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ResponseSubjectDto>>>;
-    public subjectControllerFindAllDepartment(id: number, semester?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling subjectControllerFindAllDepartment.');
-        }
-
-
-        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (semester !== undefined && semester !== null) {
-            queryParameters = queryParameters.set('semester', <any>semester);
+        if (departmentId !== undefined && departmentId !== null) {
+            queryParameters = queryParameters.set('departmentId', <any>departmentId);
         }
 
         let headers = this.defaultHeaders;
@@ -227,7 +148,7 @@ export class SubjectService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<ResponseSubjectDto>>('get',`${this.basePath}/subject/department/${encodeURIComponent(String(id))}`,
+        return this.httpClient.request<Array<Subject>>('get',`${this.basePath}/subject`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,

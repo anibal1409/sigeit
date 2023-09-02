@@ -19,6 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { CreateScheduleDto } from '../model/createScheduleDto';
 import { ResponseScheduleDto } from '../model/responseScheduleDto';
+import { Schedule } from '../model/schedule';
 import { UpdateScheduleDto } from '../model/updateScheduleDto';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -108,17 +109,20 @@ export class ScheduleService {
      * 
      * 
      * @param id 
+     * @param sectionId 
      * @param subjectId 
      * @param periodId 
      * @param teacherId 
      * @param semester 
+     * @param dayId 
+     * @param classroomId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public scheduleControllerFindAll(id: number, subjectId?: number, periodId?: number, teacherId?: number, semester?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<ResponseScheduleDto>>;
-    public scheduleControllerFindAll(id: number, subjectId?: number, periodId?: number, teacherId?: number, semester?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ResponseScheduleDto>>>;
-    public scheduleControllerFindAll(id: number, subjectId?: number, periodId?: number, teacherId?: number, semester?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ResponseScheduleDto>>>;
-    public scheduleControllerFindAll(id: number, subjectId?: number, periodId?: number, teacherId?: number, semester?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public scheduleControllerFindAll(id: number, sectionId?: number, subjectId?: number, periodId?: number, teacherId?: number, semester?: number, dayId?: number, classroomId?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Schedule>>;
+    public scheduleControllerFindAll(id: number, sectionId?: number, subjectId?: number, periodId?: number, teacherId?: number, semester?: number, dayId?: number, classroomId?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Schedule>>>;
+    public scheduleControllerFindAll(id: number, sectionId?: number, subjectId?: number, periodId?: number, teacherId?: number, semester?: number, dayId?: number, classroomId?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Schedule>>>;
+    public scheduleControllerFindAll(id: number, sectionId?: number, subjectId?: number, periodId?: number, teacherId?: number, semester?: number, dayId?: number, classroomId?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling scheduleControllerFindAll.');
@@ -128,7 +132,13 @@ export class ScheduleService {
 
 
 
+
+
+
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (sectionId !== undefined && sectionId !== null) {
+            queryParameters = queryParameters.set('sectionId', <any>sectionId);
+        }
         if (subjectId !== undefined && subjectId !== null) {
             queryParameters = queryParameters.set('subjectId', <any>subjectId);
         }
@@ -140,6 +150,12 @@ export class ScheduleService {
         }
         if (semester !== undefined && semester !== null) {
             queryParameters = queryParameters.set('semester', <any>semester);
+        }
+        if (dayId !== undefined && dayId !== null) {
+            queryParameters = queryParameters.set('dayId', <any>dayId);
+        }
+        if (classroomId !== undefined && classroomId !== null) {
+            queryParameters = queryParameters.set('classroomId', <any>classroomId);
         }
 
         let headers = this.defaultHeaders;
@@ -157,7 +173,7 @@ export class ScheduleService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<ResponseScheduleDto>>('get',`${this.basePath}/schedule/period/${encodeURIComponent(String(id))}`,
+        return this.httpClient.request<Array<Schedule>>('get',`${this.basePath}/schedule/period/${encodeURIComponent(String(id))}`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,

@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { GetClassroomsService } from './use-cases/get-classrooms.service';
-import { ClassroomItemVM } from './model';
+
 import { Observable } from 'rxjs';
+
+import { ClassroomItemVM } from './model';
+import { GetClassroomsService } from './use-cases';
 
 @Injectable()
 export class ClassroomsService {

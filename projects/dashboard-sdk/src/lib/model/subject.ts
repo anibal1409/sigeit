@@ -9,6 +9,22 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Career } from './career';
+import { Department } from './department';
 
 export interface Subject { 
+    code: string;
+    name: string;
+    credits: number;
+    description?: string;
+    hours: number;
+    semester: number;
+    typeCurriculum: number;
+    department: Department;
+    careers: Array<Career>;
+    id: number;
+    createdAt: Date;
+    updatedAt: Date;
+    status?: boolean;
+    deleted?: boolean;
 }

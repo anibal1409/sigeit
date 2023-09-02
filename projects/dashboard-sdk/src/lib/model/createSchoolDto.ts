@@ -16,4 +16,5 @@ export interface CreateSchoolDto {
     logo?: string;
     abbreviation: string;
     status: boolean;
+    id?: number;
 }

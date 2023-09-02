@@ -9,12 +9,33 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { IdCreateEntity } from './idCreateEntity';
 
 export interface UpdateUserDto { 
-    email?: string;
-    role?: string;
-    teacherId?: number;
+    email?: UpdateUserDto.EmailEnum;
+    role?: UpdateUserDto.RoleEnum;
+    teacher?: IdCreateEntity;
     status?: boolean;
-    schoolId?: number;
-    departmentId?: number;
+    school?: IdCreateEntity;
+    department?: IdCreateEntity;
+    id?: number;
+    name?: string;
+}
+export namespace UpdateUserDto {
+    export type EmailEnum = 'admin' | 'director' | 'head-department' | 'planner' | 'teacher';
+    export const EmailEnum = {
+        Admin: 'admin' as EmailEnum,
+        Director: 'director' as EmailEnum,
+        HeadDepartment: 'head-department' as EmailEnum,
+        Planner: 'planner' as EmailEnum,
+        Teacher: 'teacher' as EmailEnum
+    };
+    export type RoleEnum = 'admin' | 'director' | 'head-department' | 'planner' | 'teacher';
+    export const RoleEnum = {
+        Admin: 'admin' as RoleEnum,
+        Director: 'director' as RoleEnum,
+        HeadDepartment: 'head-department' as RoleEnum,
+        Planner: 'planner' as RoleEnum,
+        Teacher: 'teacher' as RoleEnum
+    };
 }

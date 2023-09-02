@@ -17,30 +17,30 @@ import {
 
 @Injectable()
 export class UpdateDepartmentService
-implements UseCase<DepartmentItemVM | null, DepartmentVM>
+  implements UseCase<DepartmentItemVM | null, DepartmentVM>
 {
-constructor(
-  private departmentService: DepartmentService,
-  private memoryService: DepartmentsMemoryService,
-) { }
+  constructor(
+    private departmentService: DepartmentService,
+    private memoryService: DepartmentsMemoryService,
+  ) { }
 
-exec(departmentSave: DepartmentVM): Observable<DepartmentItemVM | null> {
-  return this.departmentService
-    .departmentControllerUpdate({
-      name: departmentSave.name,
-      status: !!departmentSave.status,
-      logo: departmentSave.logo,
-      description: departmentSave.description,
-      abbreviation: departmentSave.abbreviation,
-      school: {
-        id: departmentSave.schoolId,
-      }
-    }, departmentSave.id || 0)
-    .pipe(
-      map(Department2DepartmentItemVM),
-      tap((department) => {
-        this.memoryService.update(department);
-      })
-    );
-}
+  exec(departmentSave: DepartmentVM): Observable<DepartmentItemVM | null> {
+    return this.departmentService
+      .departmentControllerUpdate({
+        name: departmentSave.name,
+        status: !!departmentSave.status,
+        logo: departmentSave.logo,
+        description: departmentSave.description,
+        abbreviation: departmentSave.abbreviation,
+        school: {
+          id: departmentSave.schoolId,
+        }
+      }, departmentSave.id || 0)
+      .pipe(
+        map(Department2DepartmentItemVM),
+        tap((department) => {
+          this.memoryService.update(department);
+        })
+      );
+  }
 }

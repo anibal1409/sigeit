@@ -9,6 +9,9 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Department } from './department';
+import { School } from './school';
+import { Teacher } from './teacher';
 
 export interface LoginUserResponseDto { 
     email: string;
@@ -16,4 +19,7 @@ export interface LoginUserResponseDto {
     name: string;
     role: string;
     loginStamp: number;
+    school: School;
+    department: Department;
+    teacher: Teacher;
 }

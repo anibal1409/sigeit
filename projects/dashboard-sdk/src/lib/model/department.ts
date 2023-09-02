@@ -9,6 +9,19 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Classroom } from './classroom';
+import { School } from './school';
 
 export interface Department { 
+    name: string;
+    description: string;
+    logo: string;
+    abbreviation: string;
+    school: School;
+    classrooms: Array<Classroom>;
+    id: number;
+    createdAt: Date;
+    updatedAt: Date;
+    status?: boolean;
+    deleted?: boolean;
 }
