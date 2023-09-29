@@ -13,5 +13,6 @@ export function Classroom2ClassroomItemVM(classroom: any): ClassroomItemVM {
         ? 'Laboratorio'
         : 'Aula Virtual',
     department: Department2DepartmentVM(classroom?.department),
+    status: classroom?.status ? 'Activo' : 'Inactivo',
   };
 }

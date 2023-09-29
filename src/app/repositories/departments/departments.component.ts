@@ -124,7 +124,7 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
     const dialogRef = this.matDialog.open(ConfirmModalComponent, {
       data: {
         message: {
-          title: 'Eliminar escuela',
+          title: 'Eliminar departamento',
           body: `¿Está seguro que desea eliminar el departmento <strong>${item.name}</strong>?`,
         },
       },

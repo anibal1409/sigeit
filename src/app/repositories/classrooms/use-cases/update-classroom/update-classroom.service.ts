@@ -31,7 +31,7 @@ export class UpdateClassroomService
         status: !!entitySave.status,
         type: entitySave.type,
         description: entitySave.description,
-        departments: entitySave.departmentIds.map((id) => ({ id })),
+        departments: entitySave?.departmentIds?.map((id) => ({ id })),
       }, entitySave.id || 0)
       .pipe(
         map(Classroom2ClassroomItemVM),

@@ -3,19 +3,24 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
+import { Subscription } from 'rxjs';
 import {
-  finalize,
-  Subscription,
-} from 'rxjs';
-import {
+  ConfirmModalComponent,
+  OptionAction,
   TableDataVM,
   TableService,
 } from 'src/app/common';
 import { StateService } from 'src/app/common/state';
 
 import { ClassroomsService } from './classrooms.service';
-import { ClassroomVM } from './model';
+import { FormComponent } from './form';
+import {
+  ClassroomItemVM,
+  ClassroomVM,
+  RowActionClassroom,
+} from './model';
 
 @Component({
   selector: 'app-classrooms',
@@ -26,7 +31,8 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
   constructor(
     private classroomsService: ClassroomsService,
     private tableService: TableService,
-    private stateService: StateService
+    private stateService: StateService,
+    public matDialog: MatDialog,
   ) {}
 
   classroomData: TableDataVM<ClassroomVM> = {
@@ -42,12 +48,6 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
         cell: (element: { [key: string]: string }) => `${element['type']}`,
       },
       {
-        columnDef: 'departmentId',
-        header: 'Departamento',
-        cell: (element: { [key: string]: string }) =>
-          `${(element['department'] as any).name}`,
-      },
-      {
         columnDef: 'status',
         header: 'Estado',
         cell: (element: { [key: string]: string }) => `${element['status']}`,
@@ -61,17 +61,15 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
   loading = false;
 
   ngOnInit(): void {
-    this.loading = true;
-    this.stateService.setLoading(this.loading);
+    this.sub$.add(
+      this.classroomsService.getLoading$().subscribe((loading) => {
+        this.loading = loading;
+        this.stateService.setLoading(loading);
+      })
+    );
     this.sub$.add(
       this.classroomsService
-        .getClassrooms$()
-        .pipe(
-          finalize(() => {
-            this.loading = false;
-            setTimeout(() => this.stateService.setLoading(this.loading), 500);
-          })
-        )
+        .getData$()
         .subscribe((classrooms) => {
           this.classroomData = {
             ...this.classroomData,
@@ -80,8 +78,56 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
           this.tableService.setData(this.classroomData);
         })
     );
+
+    this.classroomsService.get({});
   }
+
   ngOnDestroy(): void {
-    this.sub$.unsubscribe;
+    this.sub$.unsubscribe();
+  }
+  
+  clickAction(option: OptionAction) {
+    switch (option.option.value) {
+      case RowActionClassroom.update:
+        this.showModal(+option.data['id']);
+        break;
+      case RowActionClassroom.delete:
+        this.showConfirm(option.data as any);
+        break;
+    }
+  }
+
+  showModal(id?: number): void {
+    const modal = this.matDialog.open(FormComponent, {
+      hasBackdrop: true,
+      disableClose: true,
+      data: {
+        id,
+      },
+    });
+    modal.componentInstance.closed.subscribe(() => {
+      modal.close();
+    });
+  }
+
+  showConfirm(item: ClassroomItemVM): void {
+    const dialogRef = this.matDialog.open(ConfirmModalComponent, {
+      data: {
+        message: {
+          title: 'Eliminar aula',
+          body: `¿Está seguro que desea eliminar el aula <strong>${item.name}</strong>?`,
+        },
+      },
+      hasBackdrop: true,
+      disableClose: true,
+    });
+
+    dialogRef.componentInstance.closed.subscribe((res) => {
+      dialogRef.close();
+      if (res) {
+        this.classroomsService.delete(item?.id || 0);
+      }
+    });
   }
 }
+

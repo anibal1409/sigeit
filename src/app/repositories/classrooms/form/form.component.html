@@ -1,1 +1,101 @@
-<p>form works!</p>
+<div class="modal-header">
+  <span mat-dialog-title> {{ id ? 'Modificar':  'Crear' }} aula </span>
+  <button
+    id="modal-close-button"
+    mat-dialog-close
+    mat-mini-fab
+    type="button"
+    aria-label="Cerrar"
+    color="basic"
+    (click)="clickClosed()"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<form mat-dialog-content [formGroup]="form!">
+  <mat-form-field class="">
+    <mat-label>Nombre</mat-label>
+    <input type="text" matInput formControlName="name" />
+    <mat-error *ngIf="form.controls['name'].hasError('required')"
+      >Campo requerido</mat-error
+    >
+  </mat-form-field>
+  
+  <mat-form-field>
+    <mat-label>Tipo</mat-label>
+    <mat-select formControlName="type">
+      <mat-option *ngFor="let classroomType of classroomTypes" [value]="classroomType.value">{{classroomType.name}}</mat-option>
+    </mat-select>
+    <mat-error *ngIf="form.controls['type'].hasError('required')"
+    >Campo requerido</mat-error
+    >
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Departamento(s)</mat-label>
+    <mat-select formControlName="departmentIds" multiple>
+      <mat-option *ngFor="let department of departments" [value]="department">{{department.name}}</mat-option>
+    </mat-select>
+    <mat-error *ngIf="form.controls['departmentIds'].hasError('required')"
+    >Campo requerido</mat-error
+    >
+  </mat-form-field>
+
+  <mat-form-field class="">
+    <mat-label>Descripción</mat-label>
+    <textarea
+      class="form-control"
+      id="description"
+      type="text"
+      formControlName="description"
+      maxlength="200"
+      rows="2"
+      matInput
+    >
+    </textarea>
+    <mat-error *ngIf="form.controls['description'].hasError('maxlength')"
+      >200 caracteres maximo</mat-error
+    >
+  </mat-form-field>
+  
+  <mat-form-field>
+    <mat-label>Estado</mat-label>
+    <mat-select
+      name="status"
+      formControlName="status"
+      matSelect
+      placeholder="Estado"
+    >
+      <mat-option
+        *ngFor="let option of status"
+        [value]="option.value"
+      >
+        {{ option.name }}
+      </mat-option
+      >
+    </mat-select>
+  </mat-form-field>
+</form>
+
+<div class="modal-footer" mat-dialog-actions>
+  <button
+    mat-button
+    type="button"
+    (click)="clickSave()"
+    color="primary"
+    [disabled]="submitDisabled || loading"
+  >
+    Guardar
+  </button>
+  <button
+    mat-button
+    mat-dialog-close
+    cdkFocusInitial
+    type="button"
+    (click)="clickClosed()"
+  >
+    Cancelar
+  </button>
+</div>
+<app-state *ngIf="loading" class="app-loading"> </app-state>
