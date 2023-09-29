@@ -10,7 +10,7 @@ import {
   BaseQuery,
   UseCase,
 } from '../../../../common/memory-repository';
-import { Classroom2ClassroomItemVM } from '../../mappers';
+import { Classroom2ClassroomVM } from '../../mappers';
 import { ClassroomItemVM } from '../../model';
 
 @Injectable()
@@ -22,6 +22,6 @@ export class FindClassroomService
   exec(data: BaseQuery): Observable<ClassroomItemVM | null> {
     return this.entityServices
       .classroomControllerFindOne(data?.id || 0)
-      .pipe(map(Classroom2ClassroomItemVM));
+      .pipe(map(Classroom2ClassroomVM));
   }
 }

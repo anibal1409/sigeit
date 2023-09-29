@@ -80,8 +80,6 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   loadData(): void {
-    console.log(this.data);
-    
     if (this.data?.id) {
       this.id = this.data?.id;
       this.sub$.add(
