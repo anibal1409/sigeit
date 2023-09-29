@@ -2376,7 +2376,7 @@
       "teacherId": 58,
       "name": "01",
       "status": true,
-      "capacity": 20,
+      "capacity": 30,
       "id": 16
     },
     {
@@ -2385,7 +2385,7 @@
       "teacherId": 58,
       "name": "02",
       "status": true,
-      "capacity": 20,
+      "capacity": 30,
       "id": 17
     },
     {
@@ -2965,15 +2965,6 @@
       "id": 87
     },
     {
-      "subjectId": 21,
-      "periodId": 4,
-      "teacherId": 58,
-      "name": "03",
-      "status": true,
-      "capacity": 20,
-      "id": 88
-    },
-    {
       "subjectId": 28,
       "periodId": 4,
       "teacherId": 53,
@@ -2999,6 +2990,33 @@
       "status": true,
       "capacity": 30,
       "id": 91
+    },
+    {
+      "subjectId": 49,
+      "periodId": 4,
+      "teacherId": 44,
+      "name": "01",
+      "status": true,
+      "capacity": 24,
+      "id": 92
+    },
+    {
+      "subjectId": 49,
+      "periodId": 4,
+      "teacherId": 37,
+      "name": "02",
+      "status": true,
+      "capacity": 24,
+      "id": 93
+    },
+    {
+      "subjectId": 49,
+      "periodId": 4,
+      "teacherId": 34,
+      "name": "03",
+      "status": true,
+      "capacity": 24,
+      "id": 94
     }
   ],
   "schedules": [
@@ -3406,15 +3424,6 @@
       "sectionId": 17,
       "periodId": 4,
       "id": 63
-    },
-    {
-      "classroomId": 15,
-      "dayId": 4,
-      "start": "12:00",
-      "end": "14:25",
-      "sectionId": 88,
-      "periodId": 4,
-      "id": 64
     },
     {
       "classroomId": 13,
@@ -3937,6 +3946,42 @@
       "sectionId": 75,
       "periodId": 4,
       "id": 129
+    },
+    {
+      "classroomId": 12,
+      "dayId": 1,
+      "start": "08:40",
+      "end": "10:15",
+      "sectionId": 94,
+      "periodId": 4,
+      "id": 130
+    },
+    {
+      "classroomId": 18,
+      "dayId": 4,
+      "start": "08:40",
+      "end": "10:15",
+      "sectionId": 94,
+      "periodId": 4,
+      "id": 131
+    },
+    {
+      "classroomId": 18,
+      "dayId": 2,
+      "start": "07:00",
+      "end": "10:15",
+      "sectionId": 93,
+      "periodId": 4,
+      "id": 132
+    },
+    {
+      "classroomId": 18,
+      "dayId": 3,
+      "start": "07:00",
+      "end": "10:15",
+      "sectionId": 92,
+      "periodId": 4,
+      "id": 133
     }
   ]
 }
