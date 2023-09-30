@@ -10,7 +10,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 
 import {
-  SelectExModule,
   StateModule,
   TableModule,
 } from 'src/app/common';
@@ -44,7 +43,6 @@ import {
     MatInputModule,
     StateModule,
     MatSelectModule,
-    SelectExModule,
   ],
   providers: [
     ClassroomsService, 

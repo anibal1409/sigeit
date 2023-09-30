@@ -18,11 +18,8 @@ import { isEqual } from 'lodash';
 import { Subscription } from 'rxjs';
 
 import { DepartmentItemVM } from '../../departments';
-import { ClassroomsService } from '../classrooms.service';
-import {
-  CLASSROOM_TYPES,
-  ClassroomVM,
-} from '../model';
+import { CareersService } from '../careers.service';
+import { CareerVM } from '../model';
 
 @Component({
   selector: 'app-form',
@@ -41,13 +38,14 @@ export class FormComponent implements OnInit, OnDestroy {
   loading = false;
   submitDisabled = true;
 
-  oldFormValue: ClassroomVM = {
+  oldFormValue: CareerVM = {
     name: '',
     description: '',
     id: 0,
     status: true,
-    departmentIds: [],
-    type: 'CLASSROOM',
+    abbreviation: '',
+    departmentId: 0,
+    logo: '',
   };
   
   status = [
@@ -56,12 +54,11 @@ export class FormComponent implements OnInit, OnDestroy {
   ];
 
   departments: Array<DepartmentItemVM> = [];
-  classroomTypes = CLASSROOM_TYPES;
 
   constructor(
-    private classroomsService: ClassroomsService,
+    private careersService: CareersService,
     private formBuilder: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: ClassroomVM,
+    @Inject(MAT_DIALOG_DATA) public data: CareerVM,
   ) { }
 
   ngOnDestroy(): void {
@@ -70,7 +67,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sub$.add(
-      this.classroomsService.getLoading$().subscribe((loading) => {
+      this.careersService.getLoading$().subscribe((loading) => {
         this.loading = loading;
       })
     );
@@ -83,7 +80,7 @@ export class FormComponent implements OnInit, OnDestroy {
     if (this.data?.id) {
       this.id = this.data?.id;
       this.sub$.add(
-        this.classroomsService
+        this.careersService
           .find$({ id: this.id })
           .subscribe((entity) => {
             if (entity) {
@@ -104,7 +101,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
   loadDepartments(): void {
     this.sub$.add(
-      this.classroomsService.getDepartments$().subscribe((departments) => {
+      this.careersService.getDepartments$().subscribe((departments) => {
         this.departments = departments;
       })
     );
@@ -120,8 +117,9 @@ export class FormComponent implements OnInit, OnDestroy {
       description: [null, [Validators.maxLength(200)]],
       id: [0],
       status: [true, [Validators.required]],
-      departmentIds:  [[],],
-      type: ['CLASSROOM', [Validators.required]]
+      departmentId:  [null, [Validators.required]],
+      type: ['CLASSROOM', [Validators.required]],
+      abbreviation: [null, [Validators.required]],
     });
 
     this.sub$.add(
@@ -144,7 +142,7 @@ export class FormComponent implements OnInit, OnDestroy {
   private create(): void {
     if (!this.submitDisabled) {
       this.sub$.add(
-        this.classroomsService
+        this.careersService
           .create({
             ...this.form.value,
           })
@@ -161,7 +159,7 @@ export class FormComponent implements OnInit, OnDestroy {
   private update(): void {
     if (!this.submitDisabled) {
       this.sub$.add(
-        this.classroomsService
+        this.careersService
           .update({
             ...this.form.value,
             id: this.id,

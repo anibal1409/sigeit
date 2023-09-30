@@ -28,12 +28,6 @@ import {
   styleUrls: ['./classrooms.component.scss'],
 })
 export class ClassroomsComponent implements OnInit, OnDestroy {
-  constructor(
-    private classroomsService: ClassroomsService,
-    private tableService: TableService,
-    private stateService: StateService,
-    public matDialog: MatDialog,
-  ) {}
 
   classroomData: TableDataVM<ClassroomVM> = {
     headers: [
@@ -59,6 +53,13 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
 
   sub$ = new Subscription();
   loading = false;
+
+  constructor(
+    private classroomsService: ClassroomsService,
+    private tableService: TableService,
+    private stateService: StateService,
+    public matDialog: MatDialog,
+  ) {}
 
   ngOnInit(): void {
     this.sub$.add(
