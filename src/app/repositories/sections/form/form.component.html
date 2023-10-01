@@ -60,8 +60,8 @@
                   *ngFor="let teacher of filteredTeachers | async"
                   [value]="teacher"
                 >
-                  {{ teacher?.last_name ? teacher?.last_name + "," : "" }}
-                  {{ teacher.first_name }}
+                  {{ teacher?.lastName ? teacher?.lastName + "," : "" }}
+                  {{ teacher.firstName }}
                 </mat-option>
               </mat-autocomplete>
               <mat-error *ngIf="form.controls['teacherId'].hasError('required')"

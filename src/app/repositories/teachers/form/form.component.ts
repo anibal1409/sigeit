@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  Inject,
   Input,
   OnDestroy,
   OnInit,
@@ -11,17 +12,14 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-import {
-  finalize,
-  map,
-  Observable,
-  startWith,
-  Subscription,
-} from 'rxjs';
+import { isEqual } from 'lodash';
+import { Subscription } from 'rxjs';
 
-import { StateService } from '../../../common/state';
-import { DepartmentVM } from '../../departments';
+import { UserStateService } from '../../../common';
+import { DepartmentItemVM } from '../../departments';
+import { TeacherVM } from '../model';
 import { TeachersService } from '../teachers.service';
 
 @Component({
@@ -31,115 +29,154 @@ import { TeachersService } from '../teachers.service';
 })
 export class FormComponent implements OnInit, OnDestroy {
   @Input()
-  teacherId!: number;
+  id!: number;
 
   @Output()
   closed = new EventEmitter();
+
   form!: FormGroup;
   sub$ = new Subscription();
   loading = false;
-  filteredDepartments!: Observable<DepartmentVM[]>;
-  departments: Array<DepartmentVM> = [];
+  submitDisabled = true;
+
+  oldFormValue: TeacherVM = {
+    departmentId: 0,
+    email: '',
+    firstName: '',
+    idDocument: '',
+    lastName: '',
+    status: true,
+    id: 0,
+  };
+
+  status = [
+    { name: 'Activo', value: true },
+    { name: 'Inactivo', value: false, },
+  ];
+
+  departments: Array<DepartmentItemVM> = [];
 
   constructor(
     private teachersService: TeachersService,
-    private stateService: StateService,
-    private fb: FormBuilder,
-  ) {}
+    private formBuilder: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) public data: TeacherVM,
+    private userStateService: UserStateService,
+  ) { }
 
   ngOnDestroy(): void {
-    
+    this.sub$.unsubscribe();
   }
+
   ngOnInit(): void {
+    this.sub$.add(
+      this.teachersService.getLoading$().subscribe((loading) => {
+        this.loading = loading;
+      })
+    );
     this.createForm();
     this.loadDepartments();
+    this.loadData();
   }
 
-  private createForm(): void {
-    this.form = this.fb.group({
-      id: [null],
-      departmentId: [null, [Validators.required]],
-      id_document: [null, [Validators.required]],
-      first_name: [null, [Validators.required]],
-      last_name: [null, [Validators.required]],
-      status: [true, [Validators.required]],
-      email: ['', [Validators.email]],
-    });
-  }
-
-  closeModal(value = false): void {
-    if (!value) {
-      this.closed.emit();
-    } else {
-      this.closed.emit();
+  loadData(): void {
+    if (this.data?.id) {
+      this.id = this.data?.id;
+      this.sub$.add(
+        this.teachersService
+          .find$({ id: this.id })
+          .subscribe((entity) => {
+            if (entity) {
+              this.oldFormValue = entity;
+              this.form.patchValue(
+                {
+                  ...entity,
+                },
+                {
+                  emitEvent: false,
+                }
+              );
+            }
+          })
+      );
     }
   }
 
-  displayFn(item: DepartmentVM | any): string {
-    return item?.name;
-  }
-
-  private loadDepartments(): void {
-    this.loading = true;
-    this.stateService.setLoading(this.loading);
+  loadDepartments(): void {
     this.sub$.add(
-      this.teachersService
-        .getDepartaments$(1)
-        .pipe(
-          finalize(() => {
-            this.loading = false;
-            setTimeout(() => this.stateService.setLoading(this.loading), 500);
+      this.teachersService.getDepartaments$(
+        this.userStateService.getSchoolId()
+      ).subscribe((departments) => {
+        this.departments = departments;
+      })
+    );
+  }
+
+  clickClosed(): void {
+    this.closed.emit();
+  }
+
+  private createForm(): void {
+    this.form = this.formBuilder.group({
+      idDocument: [null, [Validators.required]],
+      lastName: [null, [Validators.required]],
+      firstName: [null, [Validators.required]],
+      id: [0],
+      status: [true, [Validators.required]],
+      email: [null, [Validators.required, Validators.email]],
+      departmentId: [null, [Validators.required]],
+    });
+
+    this.sub$.add(
+      this.form.valueChanges.subscribe(() => {
+        this.submitDisabled =
+          isEqual(this.oldFormValue, this.form.getRawValue()) ||
+          this.form.invalid;
+      })
+    );
+  }
+
+  clickSave(): void {
+    if (this.id) {
+      this.update();
+    } else {
+      this.create();
+    }
+  }
+
+  private create(): void {
+    if (!this.submitDisabled) {
+      this.sub$.add(
+        this.teachersService
+          .create({
+            ...this.form.value,
           })
-        )
-        .subscribe((departaments) => {
-          this.departments = departaments;
-          this.form.patchValue({
-            departmentId: departaments[0],
-          });
-          if (departaments) {
-            this.filteredDepartments = this.form.controls[
-              'departmentId'
-            ].valueChanges.pipe(
-              startWith<string | DepartmentVM>(''),
-              map((value: any) => {
-                if (value !== null) {
-                  if (value.id) {
-                    return '';
-                  } else {
-                    return typeof value === 'string' ? value : value.name;
-                  }
-                }
-                return '';
-              }),
-              map((name: any) => {
-                return name
-                  ? this._departmentFilter(name)
-                  : this.departments.slice();
-              })
-            );
-          }
-        })
-    );
+          .subscribe(
+            () => {
+              this.form.reset();
+              this.clickClosed();
+            }
+          )
+      );
+    }
   }
 
-  private _departmentFilter(name: string): DepartmentVM[] {
-    const filterValue = name.toLowerCase();
-    return this.departments.filter(
-      (option) => option.name.toLowerCase().indexOf(filterValue) === 0
-    );
-  }
-
-  save(): void {
-    if (this.form.valid) {
-      const data = this.form.value;
-      data.departmentId = data?.departmentId?.id || data?.departmentId;
-      const obs = this.teacherId ?  this.teachersService.updateSection$(data) : this.teachersService.createSection$(data);
-      obs.subscribe(
-        () => {
-          this.closeModal();
-        }
+  private update(): void {
+    if (!this.submitDisabled) {
+      this.sub$.add(
+        this.teachersService
+          .update({
+            ...this.form.value,
+            id: this.id,
+          })
+          .subscribe(
+            () => {
+              this.form.reset();
+              this.clickClosed();
+            }
+          )
       );
     }
   }
 
 }
+

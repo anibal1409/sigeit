@@ -161,8 +161,8 @@ export class ClassroomsSchedulesComponent
         )
         .subscribe((period) => {
           const intervals = this.schedulesService.generateTimeIntervalsStartEnd(
-            period.start_time,
-            period.end_time,
+            period.startTime,
+            period.endTime,
             period.duration,
             period.interval
           );

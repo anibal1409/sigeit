@@ -134,7 +134,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
                 if (value !== null) {
                   return typeof value === 'string'
                     ? value
-                    : `${value.last_name}, ${value.first_name}`;
+                    : `${value.last_name}, ${value.firstName}`;
                 }
                 return '';
               }),
@@ -279,10 +279,10 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
   displayFn(item: TeacherVM): string {
     if (item) {
-      if (item.last_name == '') {
-        return item.first_name;
+      if (item.lastName == '') {
+        return item.firstName;
       } else {
-        return `${item.last_name}, ${item.first_name}`;
+        return `${item.lastName}, ${item.firstName}`;
       }
     } else return '';
   }
@@ -290,7 +290,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   private _teacherFilter(name: string): TeacherVM[] {
     const filterValue = name.toLowerCase();
     return this.teachers.filter(
-      (option) => option.last_name.toLowerCase().indexOf(filterValue) === 0
+      (option) => option.lastName.toLowerCase().indexOf(filterValue) === 0
     );
   }
 }

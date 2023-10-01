@@ -33,8 +33,8 @@ export class CreatePeriodService
         duration: entitySave.duration,
         end: new Date(entitySave.end),
         start: new Date(entitySave.start),
-        endTime: entitySave.end_time,
-        startTime: entitySave.start_time,
+        endTime: entitySave.endTime,
+        startTime: entitySave.startTime,
         interval: entitySave.interval,
         stage: entitySave.stage as any,
       })

@@ -139,8 +139,8 @@ export class DaysSchedulesComponent implements OnInit, OnDestroy, OnChanges {
         )
         .subscribe((period) => {
           const intervals = this.schedulesService.generateTimeIntervalsStartEnd(
-            period.start_time,
-            period.end_time,
+            period.startTime,
+            period.endTime,
             period.duration,
             period.interval
           );

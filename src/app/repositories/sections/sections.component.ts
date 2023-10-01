@@ -80,10 +80,10 @@ export class SectionsComponent implements OnInit, OnDestroy {
         header: 'Profesor',
         cell: (element: { [key: string]: string }) =>
           `${
-            (element['teacher'] as any)?.last_name
-              ? (element['teacher'] as any)?.last_name + ','
+            (element['teacher'] as any)?.lastName
+              ? (element['teacher'] as any)?.lastName + ','
               : ''
-          } ${(element['teacher'] as any)?.first_name}`,
+          } ${(element['teacher'] as any)?.firstName}`,
       },
       {
         columnDef: 'subject',

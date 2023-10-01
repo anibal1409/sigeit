@@ -1,128 +1,125 @@
-<mat-card id="modal-card">
-  <mat-card-header id="modal-header">
-    <mat-card-title><p id="modal-title">
-      {{
-        (teacherId ? 'Editar' : 'Crear') + ' Profesor'
-      }}
-    </p></mat-card-title>
-    <button
-      id="modal-close-button"
-      type="button"
-      mat-fab
-      color="basic"
-      aria-label="Close"
-      (click)="closeModal(false)"
+<div class="modal-header">
+  <span mat-dialog-title> {{ id ? 'Modificar':  'Crear' }} profesor </span>
+  <button
+    id="modal-close-button"
+    mat-dialog-close
+    mat-mini-fab
+    type="button"
+    aria-label="Cerrar"
+    color="basic"
+    (click)="clickClosed()"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<form mat-dialog-content [formGroup]="form!">
+  <mat-form-field>
+    <mat-label>Cédula</mat-label>
+    <input
+      matInput
+      type="text"
+      name="idDocument"
+      id="idDocument"
+      formControlName="idDocument"
+      required
+    />
+    <mat-error *ngIf="form.controls['idDocument'].hasError('required')"
+      >Campo requerido</mat-error
     >
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-card-header>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Apellido(s)</mat-label>
+    <input
+      matInput
+      type="text"
+      name="lastName"
+      id="lastName"
+      formControlName="lastName"
+      required
+    />
+    <mat-error
+      *ngIf="form.controls['lastName'].hasError('required')"
+      >Campo requerido</mat-error
+    >
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Nombres</mat-label>
+    <input
+      matInput
+      type="text"
+      name="firstName"
+      id="firstName"
+      formControlName="firstName"
+      required
+    />
+    <mat-error
+      *ngIf="form.controls['firstName'].hasError('required')"
+      >Campo requerido</mat-error
+    >
+  </mat-form-field>
 
-  <form class="formControl" [formGroup]="form!" (ngSubmit)="closeModal(true)">
-    <mat-card-content>
-      <mat-form-field id="modal-form-field-container">
-        <mat-label>Cédula</mat-label>
-        <input
-          matInput
-          type="text"
-          name="id_document"
-          id="id_document"
-          formControlName="id_document"
-          required
-        />
-        <mat-error *ngIf="form.controls['id_document'].hasError('required')"
-          >Campo requerido</mat-error
-        >
-      </mat-form-field>
-      <mat-form-field id="modal-form-field-container">
-        <mat-label>Apellidos</mat-label>
-        <input
-          matInput
-          type="text"
-          name="last_name"
-          id="last_name"
-          formControlName="last_name"
-          required
-        />
-        <mat-error
-          *ngIf="form.controls['last_name'].hasError('required')"
-          >Campo requerido</mat-error
-        >
-      </mat-form-field>
-      <mat-form-field id="modal-form-field-container">
-        <mat-label>Nombres</mat-label>
-        <input
-          matInput
-          type="text"
-          name="first_name"
-          id="first_name"
-          formControlName="first_name"
-          required
-        />
-        <mat-error
-          *ngIf="form.controls['first_name'].hasError('required')"
-          >Campo requerido</mat-error
-        >
-      </mat-form-field>
-      <div class="inputs-container">
-      <mat-form-field id="modal-form-field-container">
-        <mat-label>Correo Electronico</mat-label>
-        <input
-          matInput
-          type="email"
-          name="email"
-          id="email"
-          formControlName="email"
-        />
-        <mat-error *ngIf="form.controls['email'].hasError('required')"
-          >Campo requerido</mat-error
-        >
-      </mat-form-field>
-      </div>
-      <div class="inputs-container">
-        
-        <mat-form-field class="w-100">
-          <mat-label>Departamento</mat-label>
-          <input
-            type="text"
-            placeholder="Seleccione un departamento"
-            aria-label="departamento"
-            matInput
-            formControlName="departmentId"
-            [matAutocomplete]="autoDepartments"
-          />
-          <mat-autocomplete
-            #autoDepartments="matAutocomplete"
-            [displayWith]="displayFn"
-          >
-            <mat-option
-              *ngFor="let department of filteredDepartments | async"
-              [value]="department"
-            >
-              {{ department.name }}
-            </mat-option>
-          </mat-autocomplete>
-          <mat-error
-            *ngIf="form.controls['departmentId'].hasError('required')"
-            >Campo Requerido</mat-error
-          >
-        </mat-form-field>
-      </div>
+  <mat-form-field>
+    <mat-label>Correo Electronico</mat-label>
+    <input
+      matInput
+      type="email"
+      name="email"
+      id="email"
+      formControlName="email"
+    />
+    <mat-error *ngIf="form.controls['email'].hasError('required')"
+      >Campo requerido</mat-error
+    >
+  </mat-form-field>  
 
-      <mat-card-actions id="modal-actions">
-        <button
-          type="submit"
-          mat-button
-          color="primary"
-          [disabled]="!form.valid"
-          (click)="save()"
-        >
-          Guardar
-        </button>
-        <button mat-button type="button" (click)="closeModal(false)">
-          Cancelar
-        </button>
-      </mat-card-actions>
-      <div class="modal-footer"></div>
-    </mat-card-content>
-  </form>
-</mat-card>
+  <mat-form-field>
+    <mat-label>Departamento</mat-label>
+    <mat-select formControlName="departmentId">
+      <mat-option *ngFor="let department of departments" [value]="department.id">{{department.name}}</mat-option>
+    </mat-select>
+    <mat-error *ngIf="form.controls['departmentId'].hasError('required')"
+    >Campo requerido</mat-error
+    >
+  </mat-form-field>
+  
+  <mat-form-field>
+    <mat-label>Estado</mat-label>
+    <mat-select
+      name="status"
+      formControlName="status"
+      matSelect
+      placeholder="Estado"
+    >
+      <mat-option
+        *ngFor="let option of status"
+        [value]="option.value"
+      >
+        {{ option.name }}
+      </mat-option
+      >
+    </mat-select>
+  </mat-form-field>
+</form>
+
+<div class="modal-footer" mat-dialog-actions>
+  <button
+    mat-button
+    type="button"
+    (click)="clickSave()"
+    color="primary"
+    [disabled]="submitDisabled || loading"
+  >
+    Guardar
+  </button>
+  <button
+    mat-button
+    mat-dialog-close
+    cdkFocusInitial
+    type="button"
+    (click)="clickClosed()"
+  >
+    Cancelar
+  </button>
+</div>
+<app-state *ngIf="loading" class="app-loading"> </app-state>

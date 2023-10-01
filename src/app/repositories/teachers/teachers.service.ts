@@ -2,11 +2,15 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { DepartmentVM } from '../departments';
-import { GetDepartamentsBySchoolService } from '../sections';
+import { ListComponentService } from '../../common/memory-repository';
 import {
+  DepartmentVM,
+  GetDepartmentsService,
+} from '../departments';
+import { TeacherMemoryService } from './memory';
+import {
+  TeacherBaseQuery,
   TeacherItemVM,
-  TeacherVM,
 } from './model';
 import {
   CreateTeacherService,
@@ -17,37 +21,27 @@ import {
 } from './use-cases';
 
 @Injectable()
-export class TeachersService {
+export class TeachersService extends ListComponentService<TeacherItemVM, TeacherBaseQuery> {
   constructor(
-    private getTeachersServices: GetTeachersService,
-    private getDepartamentsService: GetDepartamentsBySchoolService,
-    private createTeacherService: CreateTeacherService,
-    private findTeacherService: FindTeacherService,
-    private updateTeacherService: UpdateTeacherService,
-    private deleteTeacherService: DeleteTeacherService,
-  ) {}
-
-  getTeachers$(): Observable<Array<TeacherItemVM>> {
-    return this.getTeachersServices.exec();
+    public getEntityService: GetTeachersService,
+    public memoryEntityService: TeacherMemoryService,
+    public createEntityService: CreateTeacherService,
+    public deleteEntityService: DeleteTeacherService,
+    public findEntityService: FindTeacherService,
+    public updateEntityService: UpdateTeacherService,
+    private getDepartmentsService: GetDepartmentsService,
+  ) {
+    super(
+      getEntityService,
+      memoryEntityService,
+      deleteEntityService,
+      createEntityService,
+      updateEntityService,
+      findEntityService,
+    );
   }
   
-  getDepartaments$(idSchool: number): Observable<Array<DepartmentVM>> {
-    return this.getDepartamentsService.exec(idSchool);
-  }
-
-  createSection$(teacher: TeacherVM): Observable<TeacherItemVM> {
-    return this.createTeacherService.exec(teacher);
-  }
-
-  findSection$(teacherId: number): Observable<TeacherVM> {
-    return this.findTeacherService.exec(teacherId);
-  }
-
-  updateSection$(teacher: TeacherVM): Observable<TeacherItemVM> {
-    return this.updateTeacherService.exec(teacher);
-  }
-
-  removeSection$(teacherId: number): Observable<number> {
-    return this.deleteTeacherService.exec(teacherId);
+  getDepartaments$(schoolId?: number): Observable<Array<DepartmentVM>> {
+    return this.getDepartmentsService.exec({schoolId});
   }
 }

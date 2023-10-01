@@ -5,18 +5,22 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
+import { Subscription } from 'rxjs';
 import {
-  finalize,
-  Subscription,
-} from 'rxjs';
-import {
+  ConfirmModalComponent,
+  OptionAction,
   TableDataVM,
   TableService,
+  UserStateService,
 } from 'src/app/common';
 import { StateService } from 'src/app/common/state';
 
 import { FormComponent } from './form';
-import { TeacherVM } from './model';
+import {
+  RowActionTeacher,
+  TeacherItemVM,
+  TeacherVM,
+} from './model';
 import { TeachersService } from './teachers.service';
 
 @Component({
@@ -26,39 +30,27 @@ import { TeachersService } from './teachers.service';
 })
 export class TeachersComponent implements OnInit, OnDestroy {
 
-  constructor(
-    private teachersService: TeachersService,
-    private tableService: TableService,
-    private stateService: StateService,
-    private matDialog: MatDialog,
-  ) {}
-
-  teachersData: TableDataVM<TeacherVM> = {
+  data: TableDataVM<TeacherVM> = {
     headers: [
       {
         columnDef: 'id_document',
         header: 'Cédula',
         cell: (element: { [key: string]: string }) =>
-          `${element['id_document']}`,
+          `${element['idDocument']}`,
       },
       {
-        columnDef: 'last_name',
+        columnDef: 'v',
         header: 'Apellido(s)',
-        cell: (element: { [key: string]: string }) => `${element['last_name']}`,
+        cell: (element: { [key: string]: string }) => `${element['lastName']}`,
       },
       {
-        columnDef: 'first_name',
+        columnDef: 'firstName',
         header: 'Nombre(s)',
         cell: (element: { [key: string]: string }) =>
-          `${element['first_name']}`,
+          `${element['firstName']}`,
       },
       {
-        columnDef: 'email',
-        header: 'Correo Electronico',
-        cell: (element: { [key: string]: string }) => `${element['email']}`,
-      },
-      {
-        columnDef: 'departmentId',
+        columnDef: 'department',
         header: 'Departamento',
         cell: (element: { [key: string]: string }) =>
           `${(element['department'] as any).name}`,
@@ -77,47 +69,85 @@ export class TeachersComponent implements OnInit, OnDestroy {
   loading = false;
   teacherId = 0;
 
-  ngOnInit(): void {
-    this.loadTeachers();
-  }
+  constructor(
+    private teachersService: TeachersService,
+    private tableService: TableService,
+    private stateService: StateService,
+    private matDialog: MatDialog,
+    private userStateService: UserStateService,
+  ) {}
 
-  private loadTeachers(): void {
-    this.loading = true;
-    this.stateService.setLoading(this.loading);
+
+  ngOnInit(): void {
     this.sub$.add(
-      this.teachersService
-        .getTeachers$()
-        .pipe(
-          finalize(() => {
-            this.loading = false;
-            setTimeout(() => this.stateService.setLoading(this.loading), 500);
-          })
-        )
-        .subscribe((teachers) => {
-          this.teachersData = {
-            ...this.teachersData,
-            body: teachers || [],
-          };
-          this.tableService.setData(this.teachersData);
-        })
+      this.teachersService.getLoading$().subscribe((loading) => {
+        this.loading = loading;
+        this.stateService.setLoading(loading);
+      })
     );
+    
+    this.sub$.add(
+      this.teachersService.getData$().subscribe((data) => {
+        this.data = {
+          ...this.data,
+          body: data || [],
+        };
+
+        this.tableService.setData(this.data);
+      })
+    );
+    this.teachersService.get({
+      schoolId: this.userStateService.getSchoolId(),
+      departmentId: this.userStateService.getDepartmentId(),
+    });
   }
 
   ngOnDestroy(): void {
     this.sub$.unsubscribe();
   }
+  
+  clickAction(option: OptionAction) {
+    switch (option.option.value) {
+      case RowActionTeacher.update:
+        this.showModal(+option.data['id']);
+        break;
+      case RowActionTeacher.delete:
+        this.showConfirm(option.data as any);
+        break;
+    }
+  }
 
-  showForm(): void {
-    const dialogRef = this.matDialog.open(FormComponent, {
+  showModal(id?: number): void {
+    const modal = this.matDialog.open(FormComponent, {
+      hasBackdrop: true,
+      disableClose: true,
       data: {
-        teacherId: this.teacherId,
+        id,
+      },
+    });
+    modal.componentInstance.closed.subscribe(() => {
+      modal.close();
+    });
+  }
+
+  showConfirm(item: TeacherItemVM): void {
+    const dialogRef = this.matDialog.open(ConfirmModalComponent, {
+      data: {
+        message: {
+          title: 'Eliminar profesor',
+          body: `¿Está seguro que desea eliminar el profesor <strong>${item.firstName} ${item.lastName}</strong>?`,
+        },
       },
       hasBackdrop: true,
+      disableClose: true,
     });
 
     dialogRef.componentInstance.closed.subscribe((res) => {
       dialogRef.close();
-      this.loadTeachers();
+      if (res) {
+        this.teachersService.delete(item?.id || 0);
+      }
     });
   }
 }
+

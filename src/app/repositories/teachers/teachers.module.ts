@@ -10,9 +10,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 
-import { TableModule } from 'src/app/common';
+import {
+  StateModule,
+  TableModule,
+} from 'src/app/common';
 
+import { GetDepartmentsService } from '../departments/use-cases';
 import { FormComponent } from './form/form.component';
+import { TeacherMemoryService } from './memory';
 import { TeachersRoutingModule } from './teachers-routing.module';
 import { TeachersComponent } from './teachers.component';
 import { TeachersService } from './teachers.service';
@@ -39,6 +44,7 @@ import {
     MatInputModule,
     MatAutocompleteModule,
     MatSelectModule,
+    StateModule,
   ],
   providers: [
     TeachersService, 
@@ -47,6 +53,8 @@ import {
     FindTeacherService,
     UpdateTeacherService,
     DeleteTeacherService,
+    TeacherMemoryService,
+    GetDepartmentsService,
   ],
 })
 export class TeachersModule {}

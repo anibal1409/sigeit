@@ -133,8 +133,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     this.sub$.add(
       this.schedulesService.findPeriod$(this.periodId).subscribe((period) => {
         const intervals = this.schedulesService.generateTimeIntervalsStartEnd(
-          period.start_time,
-          period.end_time,
+          period.startTime,
+          period.endTime,
           period.duration,
           period.interval
         );
@@ -308,7 +308,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
             });
 
             if (collapsedSchedules?.length) {
-              this.teacherScheduleClash = `El horario establecido presenta choques en el profesor <strong>${sections[0].teacher?.last_name} ${sections[0].teacher?.first_name}</strong> en los siguentes horarios:<ul>${collapsedSchedules}</ul>`.replace(/,/g, '');
+              this.teacherScheduleClash = `El horario establecido presenta choques en el profesor <strong>${sections[0].teacher?.lastName} ${sections[0].teacher?.firstName}</strong> en los siguentes horarios:<ul>${collapsedSchedules}</ul>`.replace(/,/g, '');
             }
           }
         )

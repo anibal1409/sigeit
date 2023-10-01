@@ -49,9 +49,9 @@ export class FormComponent implements OnInit, OnDestroy {
     duration: 45,
     end: '',
     start: '',
-    end_time: '',
+    endTime: '',
     interval: 5,
-    start_time: '07:00',
+    startTime: '07:00',
     stage: StagePeriod.toPlan,
   };
   
@@ -126,8 +126,8 @@ export class FormComponent implements OnInit, OnDestroy {
       status: [true, [Validators.required]],
       start:  [null, [Validators.required]],
       end: [null, [Validators.required]],
-      start_time:  ['07:00', [Validators.required]],
-      end_time: [null, [Validators.required]],
+      startTime:  ['07:00', [Validators.required]],
+      endTime: [null, [Validators.required]],
       duration:  [45, [Validators.required]],
       interval: [5, [Validators.required]],
       stage: [StagePeriod.toPlan, [Validators.required]],

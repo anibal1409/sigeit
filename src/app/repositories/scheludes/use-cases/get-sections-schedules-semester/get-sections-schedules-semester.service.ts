@@ -92,11 +92,11 @@ export class GetSectionsSchedulesSemesterService {
                           classroomName: schedule.classroom?.name,
                           start: schedule?.start,
                           end: schedule?.end,
-                          documentTeacher: section.teacher?.id_document,
+                          documentTeacher: section.teacher?.idDocument,
                           teacherName: 
-                            section.teacher?.last_name ? 
-                            (`${section.teacher?.last_name}, ${section.teacher?.first_name}`) : 
-                            section.teacher?.first_name,
+                            section.teacher?.lastName ? 
+                            (`${section.teacher?.lastName}, ${section.teacher?.firstName}`) : 
+                            section.teacher?.firstName,
                           scheduleId: schedule.id,
                           capacity: section.capacity,
                         });

@@ -1,28 +1,44 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { TeacherService } from 'dashboard-sdk';
 import {
   map,
   Observable,
+  tap,
 } from 'rxjs';
 
+import { UseCase } from '../../../../common';
 import { Teacher2TeacherItemVM } from '../../mappers';
+import { TeacherMemoryService } from '../../memory';
 import {
   TeacherItemVM,
   TeacherVM,
 } from '../../model';
 
 @Injectable()
-export class CreateTeacherService {
-
+export class CreateTeacherService
+  implements UseCase<TeacherItemVM | null, TeacherVM>
+{
   constructor(
-    private http: HttpClient
+    private entityServices: TeacherService,
+    private memoryService: TeacherMemoryService,
   ) { }
 
-  exec(teacher: TeacherVM): Observable<TeacherItemVM> {
-    return this.http.post('http://localhost:3000/teachers', teacher)
-    .pipe(
-      map(Teacher2TeacherItemVM)
-    );
+  exec(entitySave: TeacherVM): Observable<TeacherItemVM> {
+    return this.entityServices
+      .teacherControllerCreate({
+        status: !!entitySave.status,
+        department: { id: entitySave.departmentId },
+        firstName: entitySave.firstName,
+        idDocument: entitySave.idDocument,
+        email: entitySave.email,
+        lastName: entitySave.lastName,
+      })
+      .pipe(
+        map(Teacher2TeacherItemVM),
+        tap((entity) => {
+          this.memoryService.create(entity);
+        })
+      );
   }
 }

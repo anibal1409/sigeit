@@ -33,14 +33,14 @@
       <div class="col-md-8 col-12  floating-label">
         <label>Profesor</label>
         <span class="text-truncate">
-          <ng-container *ngIf="schedule?.section?.teacher?.last_name; else noLastName">
+          <ng-container *ngIf="schedule?.section?.teacher?.lastName; else noLastName">
             {{
-            schedule?.section?.teacher?.last_name + ', ' + schedule?.section?.teacher?.first_name
+            schedule?.section?.teacher?.lastName + ', ' + schedule?.section?.teacher?.firstName
             }}
           </ng-container>
           <ng-template #noLastName>
             {{
-            schedule?.section?.teacher?.first_name
+            schedule?.section?.teacher?.firstName
             }}
           </ng-template>
         </span>

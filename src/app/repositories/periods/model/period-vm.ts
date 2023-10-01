@@ -6,8 +6,8 @@ export interface PeriodVM {
   start: string;
   description?: string;
   end: string;
-  start_time: string;
-  end_time: string;
+  startTime: string;
+  endTime: string;
   duration: number;
   interval: number;
   status: boolean | string;

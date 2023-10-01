@@ -1,23 +1,36 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { TeacherService } from 'dashboard-sdk';
 import {
   map,
   Observable,
+  tap,
 } from 'rxjs';
 
+import { UseCase } from '../../../../common/memory-repository';
 import { Teacher2TeacherItemVM } from '../../mappers';
-import { TeacherItemVM } from '../../model';
+import { TeacherMemoryService } from '../../memory';
+import {
+  TeacherBaseQuery,
+  TeacherItemVM,
+} from '../../model';
 
 @Injectable()
-export class GetTeachersService {
-  constructor(private httpClient: HttpClient) {}
+export class GetTeachersService
+implements UseCase<Array<TeacherItemVM> | null, TeacherBaseQuery> {
 
-  exec(departmentId?: number): Observable<Array<TeacherItemVM>> {
-    return this.httpClient
-      .get(
-        'http://localhost:3000/teachers?_sort=last_name&_order=asc&_expand=department' + (departmentId ? `&departmentId=${departmentId}`:'')
-      )
-      .pipe(map((teachers: any) => teachers.map(Teacher2TeacherItemVM)));
+  constructor(
+    private entityServices: TeacherService,
+    private memoryService: TeacherMemoryService,
+  ) {}
+
+  exec(data: TeacherBaseQuery = {}): Observable<Array<TeacherItemVM>> {
+    return this.entityServices.teacherControllerFindAll()
+    .pipe(
+      map((entities: any) => entities.map(Teacher2TeacherItemVM)),
+      tap((entity) => {
+        this.memoryService.setDataSource(entity);
+      })
+    );
   }
 }

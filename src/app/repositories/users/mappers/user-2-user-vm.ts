@@ -7,10 +7,10 @@ import {
 export function User2UserVM(user: any): UserVM {
   return {
     id: user.id,
-    first_name: user.first_name,
-    last_name: user.last_name,
-    id_document: user.id_document,
-    birthday_date: user.birthday_date,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    idDocument: user.idDocument,
+    birthdayDate: user.birthdayDate,
     email: user.email,
     status: user.status,
     password: user.password,

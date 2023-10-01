@@ -106,7 +106,7 @@
                 <mat-option *ngFor="let section of sections" [value]="section">
                   {{ section.name }} 
                   ({{
-                    section?.teacher?.last_name + ', '  + section?.teacher?.first_name
+                    section?.teacher?.lastName + ', '  + section?.teacher?.firstName
                   }})
                 </mat-option>
               </mat-autocomplete>

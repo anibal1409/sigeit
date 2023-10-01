@@ -3,12 +3,12 @@ import { RowActionUser } from './row-action';
 
 export interface UserVM {
   id: number;
-  first_name: string;
-  last_name: string;
-  id_document: number;
+  firstName: string;
+  lastName: string;
+  idDocument: number;
   email: string;
   status: boolean | string;
-  birthday_date: Date | string;
+  birthdayDate: Date | string;
   password: string;
   departmentId: number;
   role: string;

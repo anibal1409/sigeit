@@ -1,22 +1,28 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { TeacherService } from 'dashboard-sdk';
 import {
   map,
   Observable,
+  tap,
 } from 'rxjs';
 
-@Injectable()
-export class DeleteTeacherService {
+import { UseCase } from '../../../../common/memory-repository';
+import { TeacherMemoryService } from '../../memory';
 
+@Injectable()
+export class DeleteTeacherService implements UseCase<number, number> {
   constructor(
-    private http: HttpClient
+    private entityServices: TeacherService,
+    private memoryService: TeacherMemoryService,
   ) { }
 
-  exec(teacherId: number): Observable<number> {
-    return this.http.delete(`http://localhost:3000/teachers/${teacherId}`)
-    .pipe(
-      map((data) => 1)
+  exec(id: number): Observable<number> {
+    return this.entityServices.teacherControllerRemove(id).pipe(
+      map(() => 1),
+      tap(() => {
+        this.memoryService.delete(id);
+      })
     );
   }
 }

@@ -37,10 +37,10 @@ export class UsersComponent implements OnInit, OnDestroy {
         cell: (element: { [key: string]: string }) => `${element['last_name']}`,
       },
       {
-        columnDef: 'first_name',
+        columnDef: 'firstName',
         header: 'Nombre',
         cell: (element: { [key: string]: string }) =>
-          `${element['first_name']}`,
+          `${element['firstName']}`,
       },
       {
         columnDef: 'role',
