@@ -190,7 +190,7 @@ export class SchedulesService {
   }
 
   findPeriod$(periodId: number): Observable<PeriodVM> {
-    return this.findPeriodService.exec(periodId);
+    return this.findPeriodService.exec({id: periodId});
   }
 
   getSectionSchedules$(sectionId: number): Observable<Array<ScheduleItemVM>> {

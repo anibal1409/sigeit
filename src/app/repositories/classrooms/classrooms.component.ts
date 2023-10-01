@@ -29,7 +29,7 @@ import {
 })
 export class ClassroomsComponent implements OnInit, OnDestroy {
 
-  classroomData: TableDataVM<ClassroomVM> = {
+  data: TableDataVM<ClassroomVM> = {
     headers: [
       {
         columnDef: 'name',
@@ -71,12 +71,12 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
     this.sub$.add(
       this.classroomsService
         .getData$()
-        .subscribe((classrooms) => {
-          this.classroomData = {
-            ...this.classroomData,
-            body: classrooms || [],
+        .subscribe((data) => {
+          this.data = {
+            ...this.data,
+            body: data || [],
           };
-          this.tableService.setData(this.classroomData);
+          this.tableService.setData(this.data);
         })
     );
 

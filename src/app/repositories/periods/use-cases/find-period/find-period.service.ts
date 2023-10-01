@@ -1,25 +1,28 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { PeriodService } from 'dashboard-sdk';
 import {
   map,
   Observable,
 } from 'rxjs';
 
+import {
+  BaseQuery,
+  UseCase,
+} from '../../../../common';
 import { Period2PeriodVM } from '../../mappers';
-import { PeriodVM } from '../../model';
+import { PeriodItemVM } from '../../model';
 
 @Injectable()
-export class FindPeriodService {
+export class FindPeriodService
+  implements UseCase<PeriodItemVM | null, BaseQuery>
+{
+  constructor(private entityServices: PeriodService) { }
 
-  constructor(
-    private http: HttpClient
-  ) { }
-
-  exec(periodId: number): Observable<PeriodVM> {
-    return this.http.get(`http://localhost:3000/periods/${periodId}`)
-    .pipe(
-      map(Period2PeriodVM)
-    );
+  exec(data: BaseQuery): Observable<PeriodItemVM> {
+    return this.entityServices
+      .periodControllerFindOne(data?.id || 0)
+      .pipe(map(Period2PeriodVM));
   }
 }
+

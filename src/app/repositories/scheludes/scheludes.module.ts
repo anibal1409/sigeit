@@ -57,6 +57,7 @@ import {
   GetSectionsSchedulesService,
   GetSubjectSchedulesService,
   GetTeacherSectionsService,
+  IntervalsService,
   RemoveScheduleService,
   UpdateScheduleService,
 } from './use-cases';
@@ -112,6 +113,7 @@ import {
     GetAllClassroomSchedulesService,
     GetAllDaySchedulesService,
     GetSectionsSchedulesSemesterService,
+    IntervalsService,
   ],
 })
 export class ScheludesModule { }

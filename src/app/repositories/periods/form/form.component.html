@@ -1,0 +1,159 @@
+<div class="modal-header">
+  <span mat-dialog-title> {{ id ? 'Modificar':  'Crear' }} aula </span>
+  <button
+    id="modal-close-button"
+    mat-dialog-close
+    mat-mini-fab
+    type="button"
+    aria-label="Cerrar"
+    color="basic"
+    (click)="clickClosed()"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<form mat-dialog-content [formGroup]="form!">
+  <mat-form-field class="">
+    <mat-label>Nombre</mat-label>
+    <input type="text" matInput formControlName="name" />
+    <mat-error *ngIf="form.controls['name'].hasError('required')"
+      >Campo requerido</mat-error
+    >
+  </mat-form-field>
+
+  <mat-form-field class="">
+    <mat-label>Descripción</mat-label>
+    <textarea
+      class="form-control"
+      id="description"
+      type="text"
+      formControlName="description"
+      maxlength="200"
+      rows="2"
+      matInput
+    >
+    </textarea>
+    <mat-error *ngIf="form.controls['description'].hasError('maxlength')"
+      >200 caracteres maximo</mat-error
+    >
+  </mat-form-field>
+  
+  <mat-grid-list cols="2" rowHeight="80px">
+    <mat-grid-tile class="mr-3">
+      <mat-form-field>
+        <mat-label>Duración</mat-label>
+        <input matInput type="number" placeholder="0" formControlName="duration">
+        <span matTextSuffix>min</span>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field>
+        <mat-label>Intervalo</mat-label>
+        <input matInput type="number" placeholder="0" formControlName="interval">
+        <span matTextSuffix>min</span>
+      </mat-form-field>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+
+  <mat-grid-list cols="2" rowHeight="80px">
+    <mat-grid-tile class="mr-3">
+      <mat-form-field>
+        <mat-label>Inicio</mat-label>
+        <input matInput [matDatepicker]="picker1" formControlName="start">
+        <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>   
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field>
+        <mat-label>Fin</mat-label>
+        <input matInput [matDatepicker]="picker2" formControlName="end">
+        <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field> 
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="2" rowHeight="80px">
+    <mat-grid-tile class="mr-3">
+      <mat-form-field>
+        <mat-label>Desde</mat-label>
+        <mat-select
+          name="start_time"
+          formControlName="start_time"
+          matSelect
+          placeholder="Desde"
+        >
+          <mat-option
+            *ngFor="let start of intervalsStart"
+            [value]="start"
+          >
+            {{ start }}
+          </mat-option
+          >
+        </mat-select>
+      </mat-form-field> 
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field>
+        <mat-label>Hasta</mat-label>
+        <mat-select
+          name="end_time"
+          formControlName="end_time"
+          matSelect
+          placeholder="Hasta"
+        >
+          <mat-option
+            *ngFor="let end of intervalsEnd"
+            [value]="end"
+          >
+            {{ end }}
+          </mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+  </mat-grid-list>
+  
+  <mat-form-field>
+    <mat-label>Estado</mat-label>
+    <mat-select
+      name="stage"
+      formControlName="stage"
+      matSelect
+      placeholder="Estado"
+    >
+      <mat-option
+        *ngFor="let option of stages"
+        [value]="option.value"
+      >
+        {{ option.name }}
+      </mat-option
+      >
+    </mat-select>
+  </mat-form-field>
+</form>
+
+<div class="modal-footer" mat-dialog-actions>
+  <button
+    mat-button
+    type="button"
+    (click)="clickSave()"
+    color="primary"
+    [disabled]="submitDisabled || loading"
+  >
+    Guardar
+  </button>
+  <button
+    mat-button
+    mat-dialog-close
+    cdkFocusInitial
+    type="button"
+    (click)="clickClosed()"
+  >
+    Cancelar
+  </button>
+</div>
+<app-state *ngIf="loading" class="app-loading"> </app-state>
