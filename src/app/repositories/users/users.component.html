@@ -6,6 +6,7 @@
       <sigeit-table
         emptyMessage="No hay usuarios para mostrar"
         emptySearchMessage="Ningún usuario coincide con la busqueda"
+        (clickOption)="clickAction($event)"
       ></sigeit-table>
     </mat-card-content>
   </mat-card>
@@ -15,6 +16,8 @@
     color="primary"
     aria-label="Agregar nuevo usuario"
     class="btn-fixed"
+    (click)="showModal()"
+    [disabled]="loading"
   >
     <mat-icon>add</mat-icon>
   </button>

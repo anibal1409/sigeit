@@ -3,18 +3,22 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
-import {
-  finalize,
-  Subscription,
-} from 'rxjs';
+import { Subscription } from 'rxjs';
 import { StateService } from 'src/app/common/state';
 
 import {
+  ConfirmModalComponent,
+  OptionAction,
   TableDataVM,
   TableService,
 } from '../../common';
-import { UserVM } from './model';
+import { FormComponent } from './form';
+import {
+  RowActionUser,
+  UserItemVM,
+} from './model';
 import { UsersService } from './users.service';
 
 @Component({
@@ -23,29 +27,17 @@ import { UsersService } from './users.service';
   styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent implements OnInit, OnDestroy {
-  usersData: TableDataVM = {
+  data: TableDataVM = {
     headers: [
       {
-        columnDef: 'id_document',
-        header: 'Cedula',
-        cell: (element: { [key: string]: string }) =>
-          `${element['id_document']}`,
-      },
-      {
-        columnDef: 'last_name',
-        header: 'Apellido',
-        cell: (element: { [key: string]: string }) => `${element['last_name']}`,
-      },
-      {
-        columnDef: 'firstName',
+        columnDef: 'name',
         header: 'Nombre',
-        cell: (element: { [key: string]: string }) =>
-          `${element['firstName']}`,
+        cell: (element: { [key: string]: string }) => `${element['name']}`,
       },
       {
-        columnDef: 'role',
+        columnDef: 'roleText',
         header: 'Rol',
-        cell: (element: { [key: string]: string }) => `${element['role']}`,
+        cell: (element: { [key: string]: string }) => `${element['roleText']}`,
       },
       {
         columnDef: 'email',
@@ -53,10 +45,10 @@ export class UsersComponent implements OnInit, OnDestroy {
         cell: (element: { [key: string]: string }) => `${element['email']}`,
       },
       {
-        columnDef: 'departmentId',
+        columnDef: 'department',
         header: 'Departamento',
         cell: (element: { [key: string]: string }) =>
-          `${(element['department'] as any).name}`,
+          `${(element['department'] as any)?.name || ''}`,
       },
       {
         columnDef: 'status',
@@ -75,35 +67,76 @@ export class UsersComponent implements OnInit, OnDestroy {
   constructor(
     private tableService: TableService,
     private usersService: UsersService,
-    private stateService: StateService
-  ) {
-    return;
-  }
+    private stateService: StateService,
+    private matDialog: MatDialog,
+  ) {}
 
   ngOnInit(): void {
-    this.loading = true;
-    this.stateService.setLoading(this.loading);
     this.sub$.add(
-      this.usersService
-        .getUsers$()
-        .pipe(
-          finalize(() => {
-            this.loading = false;
-            setTimeout(() => this.stateService.setLoading(this.loading), 500);
-          })
-        )
-        .subscribe((users: UserVM[] | null) => {
-          this.usersData = {
-            ...this.usersData,
-            body: (users as any) || [],
-          };
-
-          this.tableService.setData(this.usersData);
-        })
+      this.usersService.getLoading$().subscribe((loading) => {
+        this.loading = loading;
+        this.stateService.setLoading(loading);
+      })
     );
+    
+    this.sub$.add(
+      this.usersService.getData$().subscribe((data) => {
+        this.data = {
+          ...this.data,
+          body: data || [],
+        };
+
+        this.tableService.setData(this.data);
+      })
+    );
+    this.usersService.get({});
   }
 
   ngOnDestroy(): void {
     this.sub$.unsubscribe();
+  }
+  
+  clickAction(option: OptionAction) {
+    switch (option.option.value) {
+      case RowActionUser.update:
+        this.showModal(+option.data['id']);
+        break;
+      case RowActionUser.delete:
+        this.showConfirm(option.data as any);
+        break;
+    }
+  }
+
+  showModal(id?: number): void {
+    const modal = this.matDialog.open(FormComponent, {
+      hasBackdrop: true,
+      disableClose: true,
+      data: {
+        id,
+      },
+    });
+    modal.componentInstance.closed.subscribe(() => {
+      modal.close();
+    });
+  }
+
+  showConfirm(item: UserItemVM): void {
+    const dialogRef = this.matDialog.open(ConfirmModalComponent, {
+      data: {
+        message: {
+          title: 'Eliminar usuario',
+          body: `¿Está seguro que desea eliminar el usuario <strong>${item.name}</strong>?`,
+        },
+      },
+      hasBackdrop: true,
+      disableClose: true,
+    });
+
+    dialogRef.componentInstance.closed.subscribe((res) => {
+      dialogRef.close();
+      if (res) {
+        this.usersService.delete(item?.id || 0);
+      }
+    });
   }
 }

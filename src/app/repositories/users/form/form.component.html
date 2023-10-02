@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <span mat-dialog-title> {{ id ? 'Modificar':  'Crear' }} profesor </span>
+  <span mat-dialog-title> {{ id ? 'Modificar':  'Crear' }} usuario </span>
   <button
     id="modal-close-button"
     mat-dialog-close
@@ -29,32 +29,17 @@
     >
   </mat-form-field>
   <mat-form-field>
-    <mat-label>Apellido(s)</mat-label>
+    <mat-label>Nombres y Apellido(s)</mat-label>
     <input
       matInput
       type="text"
-      name="lastName"
-      id="lastName"
-      formControlName="lastName"
+      name="name"
+      id="name"
+      formControlName="name"
       required
     />
     <mat-error
-      *ngIf="form.controls['lastName'].hasError('required')"
-      >Campo requerido</mat-error
-    >
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Nombres</mat-label>
-    <input
-      matInput
-      type="text"
-      name="firstName"
-      id="firstName"
-      formControlName="firstName"
-      required
-    />
-    <mat-error
-      *ngIf="form.controls['firstName'].hasError('required')"
+      *ngIf="form.controls['name'].hasError('required')"
       >Campo requerido</mat-error
     >
   </mat-form-field>
@@ -71,17 +56,48 @@
     <mat-error *ngIf="form.controls['email'].hasError('required')"
       >Campo requerido</mat-error
     >
-  </mat-form-field>  
-
+  </mat-form-field>    
+  
   <mat-form-field>
-    <mat-label>Departamento</mat-label>
-    <mat-select formControlName="departmentId">
-      <mat-option *ngFor="let department of departments" [value]="department.id">{{department.name}}</mat-option>
-    </mat-select>
-    <mat-error *ngIf="form.controls['departmentId'].hasError('required')"
-    >Campo requerido</mat-error
+    <mat-label>Rol</mat-label>
+    <mat-select
+      name="role"
+      formControlName="role"
+      matSelect
+      placeholder="Rol"
     >
+      <mat-option
+        *ngFor="let role of roles"
+        [value]="role.value"
+      >
+        {{ role.name }}
+      </mat-option
+      >
+    </mat-select>
   </mat-form-field>
+  <ng-container *ngIf="showSelects">
+    <mat-form-field *ngIf="showSchools; else showDepartments">
+      <mat-label>Escuela</mat-label>
+      <mat-select formControlName="schoolId">
+        <mat-option *ngFor="let school of schools" [value]="school.id">{{school.name}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.controls['schoolId'].hasError('required')"
+      >Campo requerido</mat-error
+      >
+    </mat-form-field>
+  
+    <ng-template #showDepartments>
+      <mat-form-field>
+        <mat-label>Departamento</mat-label>
+        <mat-select formControlName="departmentId">
+          <mat-option *ngFor="let department of departments" [value]="department.id">{{department.name}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.controls['departmentId'].hasError('required')"
+        >Campo requerido</mat-error
+        >
+      </mat-form-field>
+    </ng-template>
+  </ng-container>
   
   <mat-form-field>
     <mat-label>Estado</mat-label>

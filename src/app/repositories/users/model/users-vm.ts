@@ -1,18 +1,12 @@
-import { RowOptionVM } from '../../../common';
-import { RowActionUser } from './row-action';
+import { UserRole } from './role-user';
 
 export interface UserVM {
   id: number;
-  firstName: string;
-  lastName: string;
-  idDocument: number;
+  name: string;
+  idDocument: string;
   email: string;
   status: boolean | string;
-  birthdayDate: Date | string;
-  password: string;
-  departmentId: number;
-  role: string;
-  options?: {
-    options?: Array<RowOptionVM<RowActionUser>>;
-  };
+  departmentId?: number;
+  schoolId?: number;
+  role: UserRole;
 }

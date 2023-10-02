@@ -77,7 +77,6 @@ export class TeachersComponent implements OnInit, OnDestroy {
     private userStateService: UserStateService,
   ) {}
 
-
   ngOnInit(): void {
     this.sub$.add(
       this.teachersService.getLoading$().subscribe((loading) => {

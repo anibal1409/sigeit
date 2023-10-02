@@ -24,7 +24,7 @@ export class UpdateTeacherService
     private memoryService: TeacherMemoryService,
   ) { }
 
-  exec(entitySave: TeacherItemVM): Observable<TeacherItemVM | null> {
+  exec(entitySave: TeacherVM): Observable<TeacherItemVM | null> {
     return this.entityServices
       .teacherControllerUpdate({
         status: !!entitySave.status,
