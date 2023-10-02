@@ -40,17 +40,6 @@ export class UsersComponent implements OnInit, OnDestroy {
         cell: (element: { [key: string]: string }) => `${element['roleText']}`,
       },
       {
-        columnDef: 'email',
-        header: 'Correo',
-        cell: (element: { [key: string]: string }) => `${element['email']}`,
-      },
-      {
-        columnDef: 'department',
-        header: 'Departamento',
-        cell: (element: { [key: string]: string }) =>
-          `${(element['department'] as any)?.name || ''}`,
-      },
-      {
         columnDef: 'status',
         header: 'Estado',
         cell: (element: { [key: string]: string | boolean }) =>

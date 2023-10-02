@@ -33,6 +33,7 @@ export class UpdateUserService
         role: entitySave.role as any,
         name: entitySave.name,
         school: { id: entitySave?.schoolId || 0 },
+        idDocument: entitySave.idDocument,
       }, entitySave.id || 0)
       .pipe(
         map(User2UserItemVM),

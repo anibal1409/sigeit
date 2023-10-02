@@ -28,11 +28,12 @@ export class CreateUserService
     return this.entityServices
       .userControllerCreate({
         status: !!entitySave.status,
-        department: { id: entitySave?.departmentId || 0 },
-        email: entitySave.email as any,
-        role: entitySave.role as any,
+        department: entitySave?.departmentId ? { id: entitySave?.departmentId } : undefined,
+        email: entitySave.email,
+        role: entitySave.role,
         name: entitySave.name,
-        school: { id: entitySave?.schoolId || 0 },
+        school: entitySave?.schoolId ? { id: entitySave?.schoolId } : undefined,
+        idDocument: entitySave.idDocument,
       }
       )
       .pipe(

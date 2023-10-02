@@ -27,9 +27,10 @@ export interface Period {
     deleted?: boolean;
 }
 export namespace Period {
-    export type StageEnum = 'Por Planificar' | 'Finalizado';
+    export type StageEnum = 'TO_PLAN' | 'PLANNED' | 'FINALIZED';
     export const StageEnum = {
-        PorPlanificar: 'Por Planificar' as StageEnum,
-        Finalizado: 'Finalizado' as StageEnum
+        TOPLAN: 'TO_PLAN' as StageEnum,
+        PLANNED: 'PLANNED' as StageEnum,
+        FINALIZED: 'FINALIZED' as StageEnum
     };
 }

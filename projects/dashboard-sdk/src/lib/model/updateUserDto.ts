@@ -12,8 +12,9 @@
 import { IdCreateEntity } from './idCreateEntity';
 
 export interface UpdateUserDto { 
-    email?: UpdateUserDto.EmailEnum;
+    email?: string;
     role?: UpdateUserDto.RoleEnum;
+    idDocument?: string;
     teacher?: IdCreateEntity;
     status?: boolean;
     school?: IdCreateEntity;
@@ -22,14 +23,6 @@ export interface UpdateUserDto {
     name?: string;
 }
 export namespace UpdateUserDto {
-    export type EmailEnum = 'admin' | 'director' | 'head-department' | 'planner' | 'teacher';
-    export const EmailEnum = {
-        Admin: 'admin' as EmailEnum,
-        Director: 'director' as EmailEnum,
-        HeadDepartment: 'head-department' as EmailEnum,
-        Planner: 'planner' as EmailEnum,
-        Teacher: 'teacher' as EmailEnum
-    };
     export type RoleEnum = 'admin' | 'director' | 'head-department' | 'planner' | 'teacher';
     export const RoleEnum = {
         Admin: 'admin' as RoleEnum,

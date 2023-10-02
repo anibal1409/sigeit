@@ -18,6 +18,7 @@ export interface UserRespondeDto {
     name: string;
     email: string;
     role: string;
+    idDocument: string;
     status: boolean;
     teacherId: number;
     teacher: Teacher;
