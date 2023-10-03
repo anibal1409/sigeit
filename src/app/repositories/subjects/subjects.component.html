@@ -5,7 +5,15 @@
       <mat-card-content>
         <sigeit-table
           emptyMessage="No hay asignaturas para mostrar"
-        ></sigeit-table>
+          (clickOption)="clickAction($event)"
+        >
+        <mat-form-field filters>
+          <mat-label>Departamento</mat-label>
+          <mat-select [formControl]="departmentIdCtrl">
+            <mat-option *ngFor="let department of departments" [value]="department.id">{{department.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        </sigeit-table>
       </mat-card-content>
     </mat-card>
     <button
@@ -14,6 +22,8 @@
       color="primary"
       aria-label="Agregar asignatura"
       class="btn-fixed"
+      (click)="showModal()"
+      [disabled]="loading"
     >
       <mat-icon>add</mat-icon>
     </button>

@@ -8,8 +8,10 @@ export function Subject2SubjectVM(subject: any): SubjectVM {
     name: subject?.name,
     semester: subject?.semester,
     status: subject?.status,
-    type_curriculum: subject?.type_curriculum,
+    typeCurriculum: subject?.type_curriculum,
     id: subject?.id,
     departmentId: subject?.departmentId,
+    careerIds: subject?.careerIds,
+    description: subject?.description,
   };
 }

@@ -1,11 +1,13 @@
 export interface SubjectVM {
   id?: number;
   name: string;
-  credits: number | string;
+  credits: number;
   hours: number;
-  code: number;
+  code: string;
   status: boolean | string;
   semester: number;
-  type_curriculum: string;
+  typeCurriculum: number;
   departmentId: number;
+  careerIds: Array<number>;
+  description?: string;
 }

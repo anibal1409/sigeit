@@ -222,7 +222,7 @@ export class SchedulesService {
 
         const scheduleObservables = collapsedSchedules.map((schedule) => {
           return this.findSubjectService
-            .exec(schedule?.section?.subjectId || 0)
+            .exec({id: schedule?.section?.subjectId || 0})
             .pipe(
               map((subject) => {
                 if (schedule.section) {

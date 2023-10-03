@@ -1,7 +1,13 @@
-<mat-form-field>
-  <mat-label>Buscar</mat-label>
-  <input matInput (keyup)="applyFilter($event)" placeholder="" #input />
-</mat-form-field>
+<div class="d-flex align-items-center w-100 justify-content-between">
+  <mat-form-field>
+    <mat-label>Buscar</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="" #input />
+  </mat-form-field>
+  <div class="w-100 d-flex justify-content-end align-items-center">
+    <ng-content select="[filters]"></ng-content>
+  </div>
+</div>
+
 
 <div class="mat-elevation-z8">
   <table mat-table [dataSource]="dataSource" matSort>

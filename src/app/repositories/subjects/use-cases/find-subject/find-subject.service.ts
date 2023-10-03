@@ -1,21 +1,27 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { SubjectService } from 'dashboard-sdk';
 import {
   map,
   Observable,
 } from 'rxjs';
 
-import { Subject2SubjectItemVM } from '../../mappers';
-import { SubjectItemVM } from '../../model';
+import { UseCase } from '../../../../common/memory-repository';
+import { Subject2SubjectVM } from '../../mappers';
+import {
+  SubjectBaseQuery,
+  SubjectItemVM,
+} from '../../model';
 
 @Injectable()
-export class FindSubjectService {
-  constructor(private http: HttpClient) {}
+export class FindSubjectService
+  implements UseCase<SubjectItemVM | null, SubjectBaseQuery>
+{
+  constructor(private entityServices: SubjectService) { }
 
-  exec(subjectId: number): Observable<SubjectItemVM> {
-    return this.http.get(`http://localhost:3000/subjects/${subjectId}`).pipe(
-      map(Subject2SubjectItemVM)
-    );
+  exec(data: SubjectBaseQuery): Observable<SubjectItemVM> {
+    return this.entityServices
+      .subjectControllerFindOne(data?.id || 0)
+      .pipe(map(Subject2SubjectVM));
   }
 }
