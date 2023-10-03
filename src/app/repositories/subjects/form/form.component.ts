@@ -146,8 +146,6 @@ export class FormComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.valueChanges.subscribe(() => {
-        console.log(this.form.value);
-        
         this.submitDisabled =
           isEqual(this.oldFormValue, this.form.getRawValue()) ||
           this.form.invalid;
