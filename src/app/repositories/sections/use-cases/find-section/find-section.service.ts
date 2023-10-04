@@ -1,25 +1,27 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { SectionService } from 'dashboard-sdk';
 import {
   map,
   Observable,
 } from 'rxjs';
 
+import { UseCase } from '../../../../common/memory-repository';
 import { Section2SectionVM } from '../../mappers';
-import { SectionVM } from '../../model';
+import {
+  SectionBaseQuery,
+  SectionVM,
+} from '../../model';
 
 @Injectable()
-export class FindSectionService {
+export class FindSectionService
+  implements UseCase<SectionVM | null, SectionBaseQuery>
+{
+  constructor(private entityServices: SectionService) { }
 
-  constructor(
-    private http: HttpClient
-  ) { }
-
-  exec(sectionId: number): Observable<SectionVM> {
-    return this.http.get(`http://localhost:3000/sections/${sectionId}`)
-    .pipe(
-      map(Section2SectionVM)
-    );
+  exec(data: SectionBaseQuery): Observable<SectionVM> {
+    return this.entityServices
+      .sectionControllerFindOne(data?.id || 0)
+      .pipe(map(Section2SectionVM));
   }
 }

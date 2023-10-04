@@ -1,28 +1,44 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { SectionService } from 'dashboard-sdk';
 import {
   map,
   Observable,
+  tap,
 } from 'rxjs';
 
+import { UseCase } from '../../../../common/memory-repository';
 import { Section2SectionItemVM } from '../../mappers';
+import { SectionMemoryService } from '../../memory';
 import {
   SectionItemVM,
   SectionVM,
 } from '../../model';
 
 @Injectable()
-export class UpdateSectionService {
-
+export class UpdateSectionService
+  implements UseCase<SectionItemVM | null, SectionVM>
+{
   constructor(
-    private http: HttpClient
+    private entityServices: SectionService,
+    private memoryService: SectionMemoryService,
   ) { }
 
-  exec(section: SectionVM): Observable<SectionItemVM> {
-    return this.http.put(`http://localhost:3000/sections/${section.id}`, section)
-    .pipe(
-      map(Section2SectionItemVM)
-    );
+  exec(entitySave: SectionVM): Observable<SectionItemVM | null> {
+    return this.entityServices
+      .sectionControllerUpdate({
+        name: entitySave.name,
+        status: !!entitySave.status,
+        capacity: entitySave.capacity,
+        subject: { id: entitySave.subjectId },
+        period: { id: entitySave.periodId },
+        teacher: { id: entitySave.teacherId },
+      }, entitySave.id || 0)
+      .pipe(
+        map(Section2SectionItemVM),
+        tap((entity) => {
+          this.memoryService.update(entity);
+        })
+      );
   }
 }

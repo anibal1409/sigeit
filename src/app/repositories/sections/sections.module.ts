@@ -12,19 +12,21 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { TableModule } from '../../common';
+import {
+  SelectExModule,
+  TableModule,
+} from '../../common';
+import { ActivePeriodService } from '../periods';
 import { GetTeachersService } from '../teachers';
 import { FormComponent } from './form/form.component';
+import { SectionMemoryService } from './memory';
 import { SectionsRoutingModule } from './sections-routing.module';
 import { SectionsComponent } from './sections.component';
 import { SectionsService } from './sections.service';
 import {
   CreateSectionService,
   FindSectionService,
-  GetDepartamentsBySchoolService,
   GetSetcionsService,
-  GetSubjectsByDepartmentService,
-  GetSubjectSectionsService,
   RemoveSectionService,
   UpdateSectionService,
 } from './use-cases';
@@ -46,18 +48,18 @@ import {
     MatSelectModule,
     MatTooltipModule,
     MatCheckboxModule,
+    SelectExModule,
   ],
   providers: [
     SectionsService,
-    GetSubjectsByDepartmentService,
-    GetDepartamentsBySchoolService,
-    GetSubjectSectionsService,
     CreateSectionService,
     GetTeachersService,
     FindSectionService,
     UpdateSectionService,
     RemoveSectionService,
     GetSetcionsService,
+    SectionMemoryService,
+    ActivePeriodService,
   ],
 })
 export class SectionsModule {}

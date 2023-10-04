@@ -2,76 +2,76 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { DepartmentVM } from '../departments';
-import { SubjectVM } from '../subjects';
+import { ListComponentService } from '../../common/memory-repository';
+import {
+  DepartmentVM,
+  GetDepartmentsService,
+} from '../departments';
+import {
+  ActivePeriodService,
+  PeriodVM,
+} from '../periods';
+import {
+  GetSubjectsService,
+  SubjectBaseQuery,
+  SubjectVM,
+} from '../subjects';
 import {
   GetTeachersService,
   TeacherItemVM,
 } from '../teachers';
+import { SectionMemoryService } from './memory';
 import {
+  SectionBaseQuery,
   SectionItemVM,
-  SectionVM,
 } from './model';
 import {
   CreateSectionService,
   FindSectionService,
-  GetDepartamentsBySchoolService,
   GetSetcionsService,
-  GetSubjectsByDepartmentService,
-  GetSubjectSectionsService,
   RemoveSectionService,
   UpdateSectionService,
 } from './use-cases';
 
 @Injectable()
-export class SectionsService {
+export class SectionsService extends ListComponentService<SectionItemVM, SectionBaseQuery> {
 
   constructor(
-    private getDepartamentsService: GetDepartamentsBySchoolService,
-    private getSubjectsService: GetSubjectsByDepartmentService,
-    private getSubjectSectionsService: GetSubjectSectionsService,
-    private createSectionService: CreateSectionService,
+    public getEntityService: GetSetcionsService,
+    public memoryEntityService: SectionMemoryService,
+    public createEntityService: CreateSectionService,
+    public deleteEntityService: RemoveSectionService,
+    public findEntityService: FindSectionService,
+    public updateEntityService: UpdateSectionService,
+    private getDepartmentsService: GetDepartmentsService,
     private getTeachersService: GetTeachersService,
-    private findSectionService: FindSectionService,
-    private updateSectionService: UpdateSectionService,
-    private removeSectionService: RemoveSectionService,
-    private getSetcionsService: GetSetcionsService,
-  ) {}
-
-  getDepartaments$(idSchool: number): Observable<Array<DepartmentVM>> {
-    return this.getDepartamentsService.exec(idSchool);
+    private getSubjectsService: GetSubjectsService,
+    private activePeriodService: ActivePeriodService,
+  ) {
+    super(
+      getEntityService,
+      memoryEntityService,
+      deleteEntityService,
+      createEntityService,
+      updateEntityService,
+      findEntityService,
+    );
   }
 
-  getSubjects$(departmentId: number, semester: number): Observable<Array<SubjectVM>> {
-    return this.getSubjectsService.exec(departmentId, semester);
+  getDepartaments$(schoolId?: number): Observable<Array<DepartmentVM>> {
+    return this.getDepartmentsService.exec({schoolId});
   }
 
-  getSectionsSubject$(subjectId: number, periodId: number): Observable<Array<SectionItemVM>> {
-    return this.getSubjectSectionsService.exec(subjectId, periodId);
-  }
-
-  getSections$(periodId: number): Observable<Array<SectionItemVM>> {
-    return this.getSetcionsService.exec(periodId);
-  }
-
-  createSection$(section: SectionVM): Observable<SectionItemVM> {
-    return this.createSectionService.exec(section);
+  getSubjects$(data: SubjectBaseQuery): Observable<Array<SubjectVM>> {
+    return this.getSubjectsService.exec(data);
   }
 
   getTeachers$(departmentId?: number): Observable<Array<TeacherItemVM>> {
     return this.getTeachersService.exec({departmentId});
   }
 
-  findSection$(sectionId: number): Observable<SectionVM> {
-    return this.findSectionService.exec(sectionId);
-  }
-
-  updateSection$(section: SectionVM): Observable<SectionItemVM> {
-    return this.updateSectionService.exec(section);
-  }
-
-  removeSection$(sectionId: number): Observable<number> {
-    return this.removeSectionService.exec(sectionId);
+  getActivePeriod$(): Observable<PeriodVM> {
+    return this.activePeriodService.exec();
   }
 
 }

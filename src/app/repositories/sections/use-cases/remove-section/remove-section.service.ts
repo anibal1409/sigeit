@@ -1,22 +1,28 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { SectionService } from 'dashboard-sdk';
 import {
   map,
   Observable,
+  tap,
 } from 'rxjs';
 
+import { UseCase } from '../../../../common/memory-repository';
+import { SectionMemoryService } from '../../memory';
+
 @Injectable()
-export class RemoveSectionService {
-
+export class RemoveSectionService implements UseCase<number, number> {
   constructor(
-    private http: HttpClient
-  ) { }
+    private entityService: SectionService,
+    private memoryService: SectionMemoryService,
+  ) {}
 
-  exec(sectionId: number): Observable<number> {
-    return this.http.delete(`http://localhost:3000/sections/${sectionId}`)
-    .pipe(
-      map((data) => 1)
+  exec(id: number): Observable<number> {
+    return this.entityService.sectionControllerRemove(id).pipe(
+      map(() => 1),
+      tap(() => {
+        this.memoryService.delete(id);
+      })
     );
   }
 }

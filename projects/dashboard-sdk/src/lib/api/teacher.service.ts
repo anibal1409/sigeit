@@ -108,13 +108,25 @@ export class TeacherService {
     /**
      * 
      * 
+     * @param schoolId 
+     * @param departmentId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public teacherControllerFindAll(observe?: 'body', reportProgress?: boolean): Observable<Array<Teacher>>;
-    public teacherControllerFindAll(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Teacher>>>;
-    public teacherControllerFindAll(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Teacher>>>;
-    public teacherControllerFindAll(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public teacherControllerFindAll(schoolId?: number, departmentId?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Teacher>>;
+    public teacherControllerFindAll(schoolId?: number, departmentId?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Teacher>>>;
+    public teacherControllerFindAll(schoolId?: number, departmentId?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Teacher>>>;
+    public teacherControllerFindAll(schoolId?: number, departmentId?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (schoolId !== undefined && schoolId !== null) {
+            queryParameters = queryParameters.set('schoolId', <any>schoolId);
+        }
+        if (departmentId !== undefined && departmentId !== null) {
+            queryParameters = queryParameters.set('departmentId', <any>departmentId);
+        }
 
         let headers = this.defaultHeaders;
 
@@ -133,6 +145,7 @@ export class TeacherService {
 
         return this.httpClient.request<Array<Teacher>>('get',`${this.basePath}/teacher`,
             {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

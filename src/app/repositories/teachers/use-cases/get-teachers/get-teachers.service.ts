@@ -25,7 +25,10 @@ implements UseCase<Array<TeacherItemVM> | null, TeacherBaseQuery> {
   ) {}
 
   exec(data: TeacherBaseQuery = {}): Observable<Array<TeacherItemVM>> {
-    return this.entityServices.teacherControllerFindAll()
+    return this.entityServices.teacherControllerFindAll(
+      data?.schoolId,
+      data?.departmentId,
+    )
     .pipe(
       map((entities: any) => entities.map(Teacher2TeacherItemVM)),
       tap((entity) => {

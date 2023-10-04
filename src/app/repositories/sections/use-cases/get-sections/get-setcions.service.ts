@@ -1,27 +1,43 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { SectionService } from 'dashboard-sdk';
 import {
   map,
   Observable,
+  tap,
 } from 'rxjs';
 
 import {
   Section2SectionItemVM,
+  SectionBaseQuery,
   SectionItemVM,
+  SectionMemoryService,
 } from '../../';
+import { UseCase } from '../../../../common/memory-repository';
 
 @Injectable()
-export class GetSetcionsService {
+export class GetSetcionsService 
+implements UseCase<Array<SectionItemVM> | null, SectionBaseQuery> {
 
   constructor(
-    private http: HttpClient
-  ) { }
+    private entityServices: SectionService,
+    private memoryService: SectionMemoryService,
+  ) {}
 
-  exec(periodId: number): Observable<Array<SectionItemVM>> {
-    return this.http.get(`http://localhost:3000/sections?periodId=${periodId}&_expand=teacher&_expand=subject`)
-      .pipe(
-        map((sections: any) => sections.map(Section2SectionItemVM)),
-      );
+  exec(data: SectionBaseQuery): Observable<Array<SectionItemVM>> {
+    return this.entityServices.sectionControllerFindAll(
+      data?.departmentId || 0,
+      data?.periodId || 0,
+      data?.subjectId,
+      data?.teacherId,
+      data?.semester,
+    )
+    .pipe(
+      map((entities: any) => entities.map(Section2SectionItemVM)),
+      tap((entity) => {
+        this.memoryService.setDataSource(entity);
+      })
+    );
   }
 }
+

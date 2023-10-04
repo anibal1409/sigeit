@@ -42,31 +42,21 @@
           </div>
           <div class="col-md-5">
             <mat-checkbox [formControl]="allTeachersCtrl" class="check-teachers">Mostrar todos</mat-checkbox>
-            <mat-form-field>
-              <mat-label>Profesor</mat-label>
-              <input
-                type="text"
-                placeholder="Seleccione un profesor"
-                aria-label="profesor"
-                matInput
+            
+            <mat-form-field class="">
+              <mat-label>Asignatura</mat-label>
+              <app-select-ex
+                label="Seleccione"
+                [items]="teachers"
                 formControlName="teacherId"
-                [matAutocomplete]="autoTeacher"
-              />
-              <mat-autocomplete
-                #autoTeacher="matAutocomplete"
-                [displayWith]="displayFn"
+                placeholder="Seleccione un profesor"
+                optionTextField="fullName"
               >
-                <mat-option
-                  *ngFor="let teacher of filteredTeachers | async"
-                  [value]="teacher"
-                >
-                  {{ teacher?.lastName ? teacher?.lastName + "," : "" }}
-                  {{ teacher.firstName }}
-                </mat-option>
-              </mat-autocomplete>
+                
               <mat-error *ngIf="form.controls['teacherId'].hasError('required')"
-                >Campo Requerido</mat-error
+              >Campo requerido</mat-error
               >
+              </app-select-ex>
             </mat-form-field>
           </div>
           <div class="col-md-3">

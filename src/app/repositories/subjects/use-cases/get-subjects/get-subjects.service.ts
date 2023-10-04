@@ -25,7 +25,11 @@ implements UseCase<Array<SubjectItemVM> | null, SubjectBaseQuery> {
   ) {}
 
   exec(data: SubjectBaseQuery = {}): Observable<Array<SubjectItemVM>> {
-    return this.entityServices.subjectControllerFindAll()
+    return this.entityServices.subjectControllerFindAll(
+      data?.carrerId,
+      data?.departmentId,
+      data?.semester,
+    )
     .pipe(
       map((entities: any) => entities.map(Subject2SubjectItemVM)),
       tap((entity) => {

@@ -6,4 +6,5 @@ export interface TeacherVM {
   status: boolean | string;
   email: string;
   departmentId: number;
+  fullName?: string;
 }
