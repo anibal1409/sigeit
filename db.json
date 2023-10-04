@@ -195,6 +195,20 @@
       "type": "VIRTUAL",
       "status": true,
       "departmentId": 1
+    },
+    {
+      "id": 21,
+      "name": "A-51",
+      "type": "VIRTUAL",
+      "status": true,
+      "departmentId": 1
+    },
+    {
+      "id": 22,
+      "name": "LC-03",
+      "type": "LAB",
+      "status": true,
+      "departmentId": 1
     }
   ],
   "departments": [
@@ -3156,7 +3170,7 @@
       "id": 28
     },
     {
-      "classroomId": 16,
+      "classroomId": 21,
       "dayId": 5,
       "start": "07:00",
       "end": "09:25",
@@ -3174,7 +3188,7 @@
       "id": 30
     },
     {
-      "classroomId": 16,
+      "classroomId": 22,
       "dayId": 2,
       "start": "07:00",
       "end": "09:25",
@@ -3183,7 +3197,7 @@
       "id": 31
     },
     {
-      "classroomId": 16,
+      "classroomId": 21,
       "dayId": 2,
       "start": "09:30",
       "end": "11:05",
@@ -3624,7 +3638,7 @@
       "id": 92
     },
     {
-      "classroomId": 14,
+      "classroomId": 17,
       "dayId": 1,
       "start": "07:00",
       "end": "09:25",
@@ -3705,7 +3719,7 @@
       "id": 101
     },
     {
-      "classroomId": 19,
+      "classroomId": 14,
       "dayId": 1,
       "start": "07:00",
       "end": "09:25",

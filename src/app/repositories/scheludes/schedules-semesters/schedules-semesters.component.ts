@@ -367,7 +367,8 @@ export class SchedulesSemestersComponent {
           schedule.code === scheduleData.code) ||
         (schedule.code === scheduleData.code && field === 'code') ||
         (schedule.name === scheduleData.name && field === 'name') ||
-        (schedule.teacherName === scheduleData.teacherName && field === 'teacherName');
+        (schedule.teacherName === scheduleData.teacherName && field === 'teacherName') ||
+        (schedule.documentTeacher === scheduleData.documentTeacher && field === 'documentTeacher');
     }
 
     return equal;
