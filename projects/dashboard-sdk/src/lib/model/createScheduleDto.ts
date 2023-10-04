@@ -9,9 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { Department } from './department';
 import { IdCreateEntity } from './idCreateEntity';
-import { Subject } from './subject';
 
 export interface CreateScheduleDto { 
     start: string;
@@ -22,10 +20,4 @@ export interface CreateScheduleDto {
     period: IdCreateEntity;
     status: boolean;
     id?: number;
-    name?: string;
-    description?: string;
-    logo?: string;
-    abbreviation?: string;
-    department?: Department;
-    subjects?: Array<Subject>;
 }

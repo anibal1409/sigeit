@@ -37,6 +37,7 @@ import {
   DaysSchedulesComponent,
 } from './days-schedules/days-schedules.component';
 import { FormComponent } from './form/form.component';
+import { ScheduleMemoryService } from './memory';
 import {
   ScheduleDetailsComponent,
 } from './schedule-details/schedule-details.component';
@@ -53,6 +54,7 @@ import {
   GetAllDaySchedulesService,
   GetClassroomScheduleService,
   GetDaysService,
+  GetSchedulesService,
   GetSectionsSchedulesSemesterService,
   GetSectionsSchedulesService,
   GetSubjectSchedulesService,
@@ -114,6 +116,8 @@ import {
     GetAllDaySchedulesService,
     GetSectionsSchedulesSemesterService,
     IntervalsService,
+    ScheduleMemoryService,
+    GetSchedulesService,
   ],
 })
 export class ScheludesModule { }

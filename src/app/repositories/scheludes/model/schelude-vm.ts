@@ -7,4 +7,5 @@ export interface ScheduleVM {
   sectionId: number;
   periodId: number;
   hours?: number;
+  status: boolean;
 }

@@ -12,5 +12,6 @@ export function Schedule2ScheduleVM(schedule: any, duration = 45): ScheduleVM {
     id: schedule?.id,
     periodId: schedule?.periodId,
     hours: Math.floor((moment(schedule.end, 'HH:mm').diff(moment(schedule.start, 'HH:mm'), 'minutes'))/duration),
+    status: schedule?.status,
   };
 }

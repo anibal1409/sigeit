@@ -1,25 +1,27 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { ScheduleService } from 'dashboard-sdk';
 import {
   map,
   Observable,
 } from 'rxjs';
 
-import { Schedule2ScheduleVM } from '../../mappers';
-import { ScheduleVM } from '../../model';
+import { Schedule2ScheduleVM } from '../../';
+import { UseCase } from '../../../../common';
+import {
+  ScheduleBaseQuery,
+  ScheduleVM,
+} from '../../model';
 
 @Injectable()
-export class FindScheduleService {
+export class FindScheduleService
+  implements UseCase<ScheduleVM | null, ScheduleBaseQuery>
+{
+  constructor(private entityServices: ScheduleService) { }
 
-  constructor(
-    private http: HttpClient
-  ) { }
-
-  exec(scheduleId: number): Observable<ScheduleVM> {
-    return this.http.get(`http://localhost:3000/schedules/${scheduleId}`)
-    .pipe(
-      map(Schedule2ScheduleVM)
-    );
+  exec(data: ScheduleBaseQuery): Observable<ScheduleVM> {
+    return this.entityServices
+      .scheduleControllerFindOne(data?.id || 0)
+      .pipe(map(Schedule2ScheduleVM));
   }
 }
