@@ -1,0 +1,180 @@
+<div class="mat-container">
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="form!" class="p-2">
+        <div class="row">
+          <div class="col-md-2 col-12">
+            <mat-form-field class="">
+              <mat-label>Departamento</mat-label>
+              <app-select-ex
+                label="Departamento"
+                [items]="departments"
+                formControlName="departmentId"
+                placeholder="Seleccione un departamento"
+              >
+                
+              <mat-error *ngIf="form.controls['departmentId'].hasError('required')"
+              >Campo requerido</mat-error
+              >
+              </app-select-ex>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-2 col-12">
+            <mat-form-field class="">
+              <mat-label>Semestre</mat-label>
+              <app-select-ex
+                label="Semestre"
+                [items]="semesters"
+                formControlName="semester"
+                placeholder="Seleccione un semestre"
+              >
+                
+              <mat-error *ngIf="form.controls['semester'].hasError('required')"
+              >Campo requerido</mat-error
+              >
+              </app-select-ex>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-4 col-12">
+            <mat-form-field class="">
+              <mat-label>Asignatura</mat-label>
+              <app-select-ex
+                label="Asignatura"
+                [items]="subjects"
+                formControlName="subjectId"
+                placeholder="Seleccione una asignatura"
+              >
+                
+              <mat-error *ngIf="form.controls['subjectId'].hasError('required')"
+              >Campo requerido</mat-error
+              >
+              </app-select-ex>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-4 col-12">
+            <mat-form-field class="">
+              <mat-label>Sección</mat-label>
+              <app-select-ex
+                label="Sección"
+                [items]="sections"
+                formControlName="sectionId"
+                placeholder="Seleccione una sección"
+              >
+                
+              <mat-error *ngIf="form.controls['sectionId'].hasError('required')"
+              >Campo requerido</mat-error
+              >
+              </app-select-ex>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div class="mat-container">
+  <mat-card>
+    <mat-card-header> </mat-card-header>
+    <mat-card-content>
+      <sigeit-table
+        emptyMessage="No hay horarios para mostrar"
+        (clickOption)="clickOption($event)"
+      ></sigeit-table>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+
+<ng-container *ngIf="showForm">
+  <app-form
+    [sectionId]="sectionId"
+    [scheduleId]="scheduleId"
+    [periodId]="periodId"
+    [departmentId]="departmentId"
+    [teacherId]="teacherId"
+    (closed)="loadSchedules(); changeShowForm(false)"
+    (cancel)="changeShowForm(false)"
+  >
+  </app-form>
+</ng-container>
+
+
+<div class="w-100 d-flex justify-content-center px-4">
+  <button
+    (click)="showTableSchedules = !showTableSchedules"
+    mat-raised-button
+    [color]="'accent'"
+    [disabled]="!departmentId || loading"
+  >
+    <mat-icon>date_range</mat-icon>
+    {{showTableSchedules ? 'Ocultar' : 'Mostrar'}} itinerarios
+  </button>
+</div>
+
+
+<ng-container *ngIf="showTableSchedules && departmentId">
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center" animationDuration="0ms">
+    <mat-tab label="Por aula">
+      <app-schedule
+        [departmentId]="departmentId"
+        [periodId]="periodId"
+      >
+      </app-schedule>
+    </mat-tab>
+    
+    <mat-tab label="Por dia">
+      <app-classrooms-schedules
+        [departmentId]="departmentId"
+        [periodId]="periodId"
+      ></app-classrooms-schedules>
+    </mat-tab>
+  </mat-tab-group>
+</ng-container>
+
+
+<button
+  mat-fab
+  matTooltip="Mostrar todos horarios planificados"
+  matTooltipPosition="left"
+  aria-label="Mostrar todos horarios planificados"
+  class="btn-fixed btn-schedules"
+  color="basic"
+  [routerLink]="['semesters']" 
+>
+  <mat-icon>date_range</mat-icon>
+</button>
+
+<button
+  mat-fab
+  matTooltip="Gestionar secciones"
+  matTooltipPosition="left"
+  color="primary"
+  aria-label="Gestionar secciones"
+  class="btn-fixed btn-secitons"
+  (click)="showListSections()"
+  [disabled]="!subjectId || loading"
+>
+  <mat-icon>cast_for_education</mat-icon>
+</button>
+
+<button
+  mat-fab
+  matTooltip="Agregar horario"
+  matTooltipPosition="left"
+  color="primary"
+  aria-label="Agregar horario"
+  class="btn-fixed"
+  (click)="changeShowForm(true)"
+  [disabled]="addDisabled || loading"
+>
+  <mat-icon>add</mat-icon>
+</button>
+
+
+
+
+

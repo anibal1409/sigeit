@@ -17,7 +17,7 @@ import {
 
 @Injectable()
 export class CreateScheduleService
-  implements UseCase<ScheduleItemVM | null, ScheduleVM>
+  implements UseCase<ScheduleItemVM, ScheduleVM>
 {
   constructor(
     private entityServices: ScheduleService,

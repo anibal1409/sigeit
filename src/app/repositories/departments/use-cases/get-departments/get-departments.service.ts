@@ -24,14 +24,16 @@ implements UseCase<Array<DepartmentItemVM> | null, DepartmentBaseQuery> {
     private memoryService: DepartmentsMemoryService,
   ) {}
 
-  exec(data: DepartmentBaseQuery = {}): Observable<Array<DepartmentItemVM>> {
+  exec(data: DepartmentBaseQuery = {}, memory = true): Observable<Array<DepartmentItemVM>> {
     return this.departmentService.departmentControllerFindAll(
       data?.schoolId,
     )
     .pipe(
       map((departments: any) => departments.map(Department2DepartmentItemVM)),
       tap((department) => {
-        this.memoryService.setDataSource(department);
+        if(memory) {
+          this.memoryService.setDataSource(department);
+        }
       })
     );
   }

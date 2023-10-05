@@ -24,7 +24,7 @@ implements UseCase<Array<SectionItemVM> | null, SectionBaseQuery> {
     private memoryService: SectionMemoryService,
   ) {}
 
-  exec(data: SectionBaseQuery): Observable<Array<SectionItemVM>> {
+  exec(data: SectionBaseQuery, memory = true): Observable<Array<SectionItemVM>> {
     return this.entityServices.sectionControllerFindAll(
       data?.departmentId || 0,
       data?.periodId || 0,
@@ -35,7 +35,9 @@ implements UseCase<Array<SectionItemVM> | null, SectionBaseQuery> {
     .pipe(
       map((entities: any) => entities.map(Section2SectionItemVM)),
       tap((entity) => {
-        this.memoryService.setDataSource(entity);
+        if(memory) {
+          this.memoryService.setDataSource(entity);
+        }
       })
     );
   }

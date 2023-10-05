@@ -1,5 +1,9 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {
+  RouterModule,
+  Routes,
+} from '@angular/router';
+
 import { WelcomeComponent } from '../repositories/welcome/welcome.component';
 import { AdminComponent } from './admin.component';
 
@@ -54,8 +58,8 @@ const routes: Routes = [
       {
         path: 'scheludes',
         loadChildren: () =>
-          import('../repositories/scheludes/scheludes.module').then(
-            (m) => m.ScheludesModule
+          import('../repositories/schedules/schedules.module').then(
+            (m) => m.SchedulesModule
           ),
       },
       {

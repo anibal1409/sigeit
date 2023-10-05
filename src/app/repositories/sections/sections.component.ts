@@ -23,10 +23,7 @@ import {
   Router,
 } from '@angular/router';
 
-import {
-  lastValueFrom,
-  Subscription,
-} from 'rxjs';
+import { Subscription } from 'rxjs';
 import {
   ConfirmModalComponent,
   OptionAction,
@@ -328,49 +325,5 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
   clickClosed(): void {
     this.closed.emit();
-  }
-
-  private async loadFormParams(): Promise<void> {
-    this.queryParamsList = JSON.parse(
-      localStorage.getItem('sigeit_section_params') as string
-    );
-
-    if (!!this.queryParamsList && Object?.keys(this.queryParamsList)?.length) {
-      this.readingFromParams = true;
-      let { departmentId, semesterId, subjectId } = this.queryParamsList;
-      let lastDepartment, lastSemester, lastSubject;
-      if (departmentId) {
-        lastDepartment = (
-          await lastValueFrom(this.sectionsService.getDepartaments$(1))
-        ).find((dept) => dept.id == +departmentId);
-
-        if (semesterId) {
-          lastSemester = this.semesters.find(
-            (semestr) => semestr.id == +semesterId
-          );
-
-          if (subjectId) {
-            lastSubject = (
-              await lastValueFrom(
-                this.sectionsService.getSubjects$({ departmentId: +departmentId, semester: +semesterId })
-              )
-            ).find((subj) => subj.id == +subjectId);
-          }
-        }
-
-        this.form.patchValue({
-          subjectId: lastSubject || '',
-          departmentId: lastDepartment || '',
-          semester: lastSemester || '',
-        });
-        this.readingFromParams = false;
-        this.router.navigate([], { queryParams: {} });
-      }
-    }
-  }
-
-  private addParams(key: string, value: string): void {
-    this.queryParamsList[key] = value;
-    this.router.navigate([], { queryParams: this.queryParamsList });
   }
 }

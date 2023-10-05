@@ -24,16 +24,18 @@ implements UseCase<Array<SubjectItemVM> | null, SubjectBaseQuery> {
     private memoryService: SubjectMemoryService,
   ) {}
 
-  exec(data: SubjectBaseQuery = {}): Observable<Array<SubjectItemVM>> {
+  exec(data: SubjectBaseQuery = {}, memory = true): Observable<Array<SubjectItemVM>> {
     return this.entityServices.subjectControllerFindAll(
+      data?.semester,
       data?.carrerId,
       data?.departmentId,
-      data?.semester,
     )
     .pipe(
       map((entities: any) => entities.map(Subject2SubjectItemVM)),
       tap((entity) => {
-        this.memoryService.setDataSource(entity);
+        if(memory) {
+          this.memoryService.setDataSource(entity);
+        }
       })
     );
   }

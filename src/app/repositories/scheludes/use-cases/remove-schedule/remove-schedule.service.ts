@@ -1,22 +1,28 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { ScheduleService } from 'dashboard-sdk';
 import {
   map,
   Observable,
+  tap,
 } from 'rxjs';
 
-@Injectable()
-export class RemoveScheduleService {
+import { UseCase } from '../../../../common/memory-repository';
+import { ScheduleMemoryService } from '../../memory';
 
+@Injectable()
+export class RemoveScheduleService implements UseCase<number, number> {
   constructor(
-    private http: HttpClient
+    private entityServices: ScheduleService,
+    private memoryService: ScheduleMemoryService,
   ) { }
 
-  exec(scheduleId: number): Observable<number> {
-    return this.http.delete(`http://localhost:3000/schedules/${scheduleId}`)
-    .pipe(
-      map((data) => 1)
+  exec(id: number): Observable<number> {
+    return this.entityServices.scheduleControllerRemove(id).pipe(
+      map(() => 1),
+      tap(() => {
+        this.memoryService.delete(id);
+      })
     );
   }
 }

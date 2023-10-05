@@ -7,29 +7,34 @@ import {
   tap,
 } from 'rxjs';
 
-import {
-  BaseQuery,
-  UseCase,
-} from '../../../../common';
+import { UseCase } from '../../../../common';
 import { Classroom2ClassroomItemVM } from '../../mappers';
 import { ClassroomsMemoryService } from '../../memory';
-import { ClassroomItemVM } from '../../model';
+import {
+  ClassroomBaseQuery,
+  ClassroomItemVM,
+} from '../../model';
 
 @Injectable()
 export class GetClassroomsService
-implements UseCase<Array<ClassroomItemVM> | null, BaseQuery> {
+implements UseCase<Array<ClassroomItemVM> | null, ClassroomBaseQuery> {
 
   constructor(
     private entityServices: ClassroomService,
     private memoryService: ClassroomsMemoryService,
   ) {}
 
-  exec(data: BaseQuery = {}): Observable<Array<ClassroomItemVM>> {
-    return this.entityServices.classroomControllerFindAll()
+  exec(data: ClassroomBaseQuery = {}, memory = true): Observable<Array<ClassroomItemVM>> {
+    return this.entityServices.classroomControllerFindAll(
+      data?.id,
+      data?.departmentId,
+    )
     .pipe(
       map((entities: any) => entities.map(Classroom2ClassroomItemVM)),
       tap((entity) => {
-        this.memoryService.setDataSource(entity);
+        if (memory) {
+          this.memoryService.setDataSource(entity);
+        }
       })
     );
   }

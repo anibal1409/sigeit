@@ -1,5 +1,6 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import {
+  ChangeDetectorRef,
   Component,
   forwardRef,
   Input,
@@ -81,8 +82,10 @@ export class SelectExComponent implements OnInit, OnChanges, ControlValueAccesso
     if (key === null) {
       return '';
     }
+    
     let item = this.items.find(i => i[this.optionValueField] === key);
-    return key ? item[this.optionTextField] : '';
+  
+    return item ? item[this.optionTextField] : '';
   }
   @Input()
   get required(): boolean { return this._required; }
@@ -135,7 +138,7 @@ export class SelectExComponent implements OnInit, OnChanges, ControlValueAccesso
   onChange = (_: any) => { };
   onTouch = () => { };
 
-  constructor() {}
+  constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
   ngOnDestroy(): void {
     this.stateChanges.complete();
@@ -151,6 +154,7 @@ export class SelectExComponent implements OnInit, OnChanges, ControlValueAccesso
   writeValue(id: number): void {
     this._val = id;
     this.myControl.setValue(id);
+    this.changeDetectorRef.detectChanges();
   }
 
   registerOnChange(fn: any): void {
@@ -181,6 +185,8 @@ export class SelectExComponent implements OnInit, OnChanges, ControlValueAccesso
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['items'].currentValue) {
       this.filter();
+      this.myControl.setValue(this._val);
+      this.changeDetectorRef.detectChanges();
     }
   }
 

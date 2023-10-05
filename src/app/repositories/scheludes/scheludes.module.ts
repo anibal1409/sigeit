@@ -20,58 +20,17 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { TableModule } from 'src/app/common';
 
-import { GetClassroomsService } from '../classrooms';
-import { FindPeriodService } from '../periods';
-import {
-  GetDepartamentsBySchoolService,
-  GetSubjectsByDepartmentService,
-  GetSubjectSectionsService,
-} from '../sections';
 import { SectionsModule } from '../sections/sections.module';
-import { FindSubjectService } from '../subjects/use-cases';
-import { GetTeachersService } from '../teachers';
-import {
-  ClassroomsSchedulesComponent,
-} from './classrooms-schedules/classrooms-schedules.component';
-import {
-  DaysSchedulesComponent,
-} from './days-schedules/days-schedules.component';
-import { FormComponent } from './form/form.component';
-import { ScheduleMemoryService } from './memory';
-import {
-  ScheduleDetailsComponent,
-} from './schedule-details/schedule-details.component';
-import {
-  SchedulesSemestersComponent,
-} from './schedules-semesters/schedules-semesters.component';
 import { ScheludesRoutingModule } from './scheludes-routing.module';
-import { ScheludesComponent } from './scheludes.component';
-import { SchedulesService } from './scheludes.service';
-import {
-  CreateScheduleService,
-  FindScheduleService,
-  GetAllClassroomSchedulesService,
-  GetAllDaySchedulesService,
-  GetClassroomScheduleService,
-  GetDaysService,
-  GetSchedulesService,
-  GetSectionsSchedulesSemesterService,
-  GetSectionsSchedulesService,
-  GetSubjectSchedulesService,
-  GetTeacherSectionsService,
-  IntervalsService,
-  RemoveScheduleService,
-  UpdateScheduleService,
-} from './use-cases';
 
 @NgModule({
   declarations: [
-    ScheludesComponent, 
-    FormComponent, 
-    DaysSchedulesComponent, 
-    ClassroomsSchedulesComponent, 
-    SchedulesSemestersComponent, 
-    ScheduleDetailsComponent,
+    // ScheludesComponent, 
+    // FormComponent, 
+    // DaysSchedulesComponent, 
+    // ClassroomsSchedulesComponent, 
+    // SchedulesSemestersComponent, 
+    // ScheduleDetailsComponent,
   ],
   imports: [
     CommonModule,
@@ -95,29 +54,22 @@ import {
     MatTooltipModule,
   ],
   providers: [
-    SchedulesService,
-    GetSubjectsByDepartmentService,
-    GetDepartamentsBySchoolService,
-    GetSubjectSectionsService,
-    GetTeachersService,
-    FindPeriodService,
-    GetSectionsSchedulesService,
-    GetSubjectSchedulesService,
-    CreateScheduleService,
-    FindScheduleService,
-    RemoveScheduleService,
-    UpdateScheduleService,
-    GetClassroomsService,
-    GetDaysService,
-    GetClassroomScheduleService,
-    FindSubjectService,
-    GetTeacherSectionsService,
-    GetAllClassroomSchedulesService,
-    GetAllDaySchedulesService,
-    GetSectionsSchedulesSemesterService,
-    IntervalsService,
-    ScheduleMemoryService,
-    GetSchedulesService,
+    // SchedulesService,
+    // GetSchedulesService,
+    // ScheduleMemoryService,
+    // CreateScheduleService,
+    // RemoveScheduleService,
+    // FindScheduleService,
+    // UpdateScheduleService,
+    // IntervalsService,
+    // GetTeachersService,
+    // GetClassroomsService,
+    // GetDepartmentsService,
+    // // GetSetcionsService,
+    // ActivePeriodService,
+    // GetSubjectsService,
+    // GetDaysService,
+    // FindSubjectService,
   ],
 })
 export class ScheludesModule { }

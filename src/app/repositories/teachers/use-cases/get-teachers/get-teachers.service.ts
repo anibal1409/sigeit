@@ -24,7 +24,7 @@ implements UseCase<Array<TeacherItemVM> | null, TeacherBaseQuery> {
     private memoryService: TeacherMemoryService,
   ) {}
 
-  exec(data: TeacherBaseQuery = {}): Observable<Array<TeacherItemVM>> {
+  exec(data: TeacherBaseQuery = {}, memory = true): Observable<Array<TeacherItemVM>> {
     return this.entityServices.teacherControllerFindAll(
       data?.schoolId,
       data?.departmentId,
@@ -32,7 +32,9 @@ implements UseCase<Array<TeacherItemVM> | null, TeacherBaseQuery> {
     .pipe(
       map((entities: any) => entities.map(Teacher2TeacherItemVM)),
       tap((entity) => {
-        this.memoryService.setDataSource(entity);
+        if(memory) {
+          this.memoryService.setDataSource(entity);
+        }
       })
     );
   }

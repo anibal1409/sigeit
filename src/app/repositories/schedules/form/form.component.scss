@@ -1,0 +1,32 @@
+:host {
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.mat-container {
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+
+.btn-error {
+  position: absolute;
+  right: 1rem;
+}
+
+mat-card {
+  //  min-width: max-content;
+}
+
+mat-card-header {
+  margin-bottom: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    padding: 0.5rem;
+  }
+  mat-card-header {
+    margin: 0.5rem;
+  }
+}

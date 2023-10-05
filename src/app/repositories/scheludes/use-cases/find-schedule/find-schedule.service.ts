@@ -6,8 +6,8 @@ import {
   Observable,
 } from 'rxjs';
 
-import { Schedule2ScheduleVM } from '../../';
 import { UseCase } from '../../../../common';
+import { Schedule2ScheduleVM } from '../../mappers';
 import {
   ScheduleBaseQuery,
   ScheduleVM,
@@ -15,7 +15,7 @@ import {
 
 @Injectable()
 export class FindScheduleService
-  implements UseCase<ScheduleVM | null, ScheduleBaseQuery>
+  implements UseCase<ScheduleVM, ScheduleBaseQuery>
 {
   constructor(private entityServices: ScheduleService) { }
 

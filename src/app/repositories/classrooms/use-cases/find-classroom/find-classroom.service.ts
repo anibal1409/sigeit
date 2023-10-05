@@ -6,20 +6,20 @@ import {
   Observable,
 } from 'rxjs';
 
-import {
-  BaseQuery,
-  UseCase,
-} from '../../../../common/memory-repository';
+import { UseCase } from '../../../../common/memory-repository';
 import { Classroom2ClassroomVM } from '../../mappers';
-import { ClassroomItemVM } from '../../model';
+import {
+  ClassroomBaseQuery,
+  ClassroomItemVM,
+} from '../../model';
 
 @Injectable()
 export class FindClassroomService
-  implements UseCase<ClassroomItemVM | null, BaseQuery>
+  implements UseCase<ClassroomItemVM | null, ClassroomBaseQuery>
 {
   constructor(private entityServices: ClassroomService) { }
 
-  exec(data: BaseQuery): Observable<ClassroomItemVM | null> {
+  exec(data: ClassroomBaseQuery): Observable<ClassroomItemVM | null> {
     return this.entityServices
       .classroomControllerFindOne(data?.id || 0)
       .pipe(map(Classroom2ClassroomVM));

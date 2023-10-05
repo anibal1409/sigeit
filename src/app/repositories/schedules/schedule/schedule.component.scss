@@ -1,0 +1,61 @@
+mat-form-field {
+  margin-left: 2rem;
+}
+.mat-container {
+  margin: 1.5rem;
+}
+mat-column {
+  width: max-content;
+}
+
+mat-header-row > mat-header-cell.mat-column-hora {
+  max-width: 7rem;
+}
+
+mat-row > mat-cell {
+  padding: 0.5rem 1rem;
+}
+
+
+mat-row > .mat-column-hora {
+  background-color: rgb(67, 146, 237);
+  color: white;
+  font-weight: 800;
+  max-width: 7rem;
+}
+
+.mat-mdc-header-cell:not(.mat-column-hora) {
+  min-width: 10rem;
+}
+
+.mat-mdc-header-cell {
+  background-color: rgb(67, 146, 237);
+  color: white;
+  font-weight: 800;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.mat-card-content {
+    overflow-x: auto;
+    max-width: 100%;
+    padding: 0;
+  }
+  mat-table {
+    width: max-content;
+  }
+.mat-cell-empty {
+  text-align: center;
+  padding: 1rem;
+  font-size: 1.4rem;
+  font-weight: 100;
+}
+
+.empty-table {
+  padding: 1.5rem;
+  text-align: center;
+  background: white;
+  margin: 1.5rem;
+  font-size: 1.4rem;
+  font-weight: 100;
+}

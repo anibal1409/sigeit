@@ -7,4 +7,5 @@ export interface SectionBaseQuery  extends BaseQuery {
   periodId?: number;
   subjectId?: number;
   teacherId?: number;
+  dayId?: number;
 }

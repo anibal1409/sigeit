@@ -1,5 +1,5 @@
 import { RowOptionVM } from '../../../common';
-import { ScheduleItemVM } from '../../scheludes';
+import { ScheduleItemVM } from '../../schedules';
 import { SubjectItemVM } from '../../subjects';
 import { RowActionSection } from './row-action';
 import { SectionVM } from './section-vm';

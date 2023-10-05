@@ -17,7 +17,7 @@ import {
   TableModule,
 } from 'src/app/common';
 
-import { IntervalsService } from '../scheludes/use-cases';
+import { IntervalsService } from '../scheludes/use-cases/intervals';
 import { FormComponent } from './form/form.component';
 import { PeriodMemoryService } from './memory';
 import { PeriodsRoutingModule } from './periods-routing.module';

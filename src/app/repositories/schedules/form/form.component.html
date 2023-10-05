@@ -1,0 +1,100 @@
+<div class="mat-container">
+  <mat-card>
+    <mat-card-header class="d-flex justify-content-between align-items-center">
+      <mat-card-title>{{ title }}</mat-card-title>
+
+      <button *ngIf="classroomScheduleClash || teacherScheduleClash" color="basic" mat-raised-button
+        class="btn-error text-danger " matTooltip="Mostrar choque de horarios" matTooltipPosition="left"
+        aria-label="Mostrar choque de horarios" (click)="showSchedulesClash()">
+        <span class="parpadeo">
+          <mat-icon>report_problem</mat-icon>
+          Choque de horarios
+        </span>
+      </button>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="form!" class="p-2">
+        <div class="row">
+          <div class="col-md-3 align-items-end d-flex">
+            <mat-form-field class="">
+              <mat-label>Día</mat-label>
+              <app-select-ex
+                label="Día"
+                [items]="days"
+                formControlName="dayId"
+                placeholder="Seleccione un día"
+              >
+                
+              <mat-error *ngIf="form.controls['dayId'].hasError('required')"
+              >Campo requerido</mat-error
+              >
+              </app-select-ex>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3 justify-content-end d-flex flex-column">
+            <mat-checkbox [formControl]="allClassroomsCtrl">Mostrar todas</mat-checkbox>
+            <mat-form-field class="">
+              <mat-label>Aula</mat-label>
+              <app-select-ex
+                label="Aula"
+                [items]="classrooms"
+                formControlName="classroomId"
+                placeholder="Seleccione un aula"
+              >
+                
+              <mat-error *ngIf="form.controls['classroomId'].hasError('required')"
+              >Campo requerido</mat-error
+              >
+              </app-select-ex>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3 align-items-end d-flex">
+            <mat-form-field class="">
+              <mat-label>Desde</mat-label>
+              <app-select-ex
+                label="Desde"
+                [items]="startIntervals"
+                formControlName="start"
+                placeholder="Seleccione una hora"
+              >
+                
+              <mat-error *ngIf="form.controls['start'].hasError('required')"
+              >Campo requerido</mat-error
+              >
+              </app-select-ex>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3 align-items-end d-flex">
+            <mat-form-field class="">
+              <mat-label>Hasta</mat-label>
+              <app-select-ex
+                label="Hasta"
+                [items]="endIntervals"
+                formControlName="end"
+                placeholder="Seleccione una hora"
+              >
+                
+              <mat-error *ngIf="form.controls['end'].hasError('required')"
+              >Campo requerido</mat-error
+              >
+              </app-select-ex>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col d-flex justify-content-end">
+            <button (click)="saveWarning()" mat-raised-button [color]="crashWarning ? 'accent' : 'primary'"
+              [disabled]="submitDisabled || loading">
+              <mat-icon *ngIf="crashWarning">report_problem</mat-icon>
+              Guardar
+            </button>
+          </div>
+          <div class="col">
+            <button (click)="clickCancel()" mat-raised-button>Cancelar</button>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
