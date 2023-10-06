@@ -142,8 +142,6 @@ export class ScheduleComponent implements OnInit, OnDestroy, OnChanges {
                 const endIndex = this.endIntervals.indexOf(schedule.end);
   
                 for (let i = startIndex; i <= endIndex; i++) {
-                  console.log(dayIndex);
-                  console.log(this.dataScheduleByClassroom[i]);
                   
                   this.dataScheduleByClassroom[i][dayIndex].schedules.push(schedule);
                   if (this.dataScheduleByClassroom[i][dayIndex]?.text) {

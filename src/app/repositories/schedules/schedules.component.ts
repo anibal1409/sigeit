@@ -159,6 +159,10 @@ export class SchedulesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.sub$.unsubscribe();
+    this.clearList();
+  }
+
+  clearList(): void {
     this.data = {
       ...this.data,
       body: [],
@@ -176,7 +180,19 @@ export class SchedulesComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('departmentId')?.valueChanges.subscribe((departmentId) => {
+        this.changeShowForm(false);
         this.departmentId = +departmentId;
+        this.semester = 0;
+        this.subjectId = 0;
+        this.sectionId = 0;
+        
+        this.form.patchValue({
+          semester: null,
+          subjectId: null,
+          sectionId: null,
+        });
+
+        this.clearList();
 
         if (departmentId) {
           this.loadTeachers();
@@ -184,10 +200,8 @@ export class SchedulesComponent implements OnInit, OnDestroy {
           this.validateForm();
           this.form.patchValue({
             semester: this.semesters[0].id,
-            subjectId: null,
-            sectionId: null,
           });
-        }
+        } 
       })
     );
 
