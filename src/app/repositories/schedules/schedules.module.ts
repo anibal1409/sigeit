@@ -51,6 +51,7 @@ import {
   ValidateTeacherSchedulesService,
 } from './use-cases';
 import { PlannedSchedulesComponent } from './planned-schedules/planned-schedules.component';
+import { AcademicChargeTeacherComponent } from './academic-charge-teacher/academic-charge-teacher.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { PlannedSchedulesComponent } from './planned-schedules/planned-schedules
     ScheduleComponent,
     ScheduleDetailsComponent,
     ClassroomsSchedulesComponent,
-    PlannedSchedulesComponent
+    PlannedSchedulesComponent,
+    AcademicChargeTeacherComponent
   ],
   imports: [
     CommonModule,

@@ -9,7 +9,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 
@@ -114,7 +113,6 @@ export class SchedulesComponent implements OnInit, OnDestroy {
     private matDialog: MatDialog,
     private schedulesService: SchedulesService,
     private stateService: StateService,
-    private router: Router,
     private userStateService: UserStateService,
   ) { }
 

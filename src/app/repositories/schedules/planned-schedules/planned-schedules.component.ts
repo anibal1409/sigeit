@@ -417,9 +417,10 @@ export class PlannedSchedulesComponent {
         Sheets: { Horarios: worksheet },
         SheetNames: ['Horarios'],
       };
+      const department = this.departments.find(department => department.id === this.departmentId);
       XLSX.writeFile(
         workbook,
-        `${this.period.name} planificacion academica departamento de ${this.departmentCtrl.value.name
+        `${this.period.name} planificacion academica departamento de ${department?.name
         } ${moment().format('DD-MM-YYYY HH:mm')}.xlsx`
       );
     }

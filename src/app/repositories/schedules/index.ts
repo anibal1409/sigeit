@@ -1,3 +1,4 @@
+export * from './academic-charge-teacher';
 export * from './classrooms-schedules';
 export * from './form';
 export * from './mappers';

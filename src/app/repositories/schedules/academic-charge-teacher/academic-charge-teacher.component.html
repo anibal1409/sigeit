@@ -1,0 +1,74 @@
+
+<div [formGroup]="form" class="row">
+    
+  <div class="col-md-4 col-12">
+    <mat-form-field class="">
+      <mat-label>Departamento</mat-label>
+      <app-select-ex
+        label="Departamento"
+        [items]="departments"
+        formControlName="departmentId"
+        placeholder="Seleccione un departamento"
+      >
+        
+      <mat-error *ngIf="form.controls['departmentId'].hasError('required')"
+      >Campo requerido</mat-error
+      >
+      </app-select-ex>
+    </mat-form-field>
+  </div>
+  
+  <div class="col-md-4 col-12">
+    <mat-form-field class="">
+      <mat-label>Profesor</mat-label>
+      <app-select-ex
+        label="Aula"
+        [items]="teachers"
+        formControlName="teacherId"
+        optionTextField="fullName"
+        placeholder="Seleccione un profesor"
+      >
+        
+      <mat-error *ngIf="form.controls['teacherId'].hasError('required')"
+      >Campo requerido</mat-error
+      >
+      </app-select-ex>
+    </mat-form-field>
+  </div>
+  <div class="col-md-4 col-12">
+    
+    <mat-checkbox 
+      formControlName="allTeachers"> Mostrar todos </mat-checkbox>
+  </div>
+</div>
+
+<div class="mat-container" *ngIf="dataSourceByClassroom.length">
+  <mat-card>
+    <mat-card-content class="mat-card-content">
+      <mat-table [dataSource]="dataSourceByClassroom" class="mat-table">
+        <ng-container matColumnDef="hora" >
+          <mat-header-cell *matHeaderCellDef >Hora/Dia</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{ row.hora }}</mat-cell>
+        </ng-container>
+
+        <ng-container *ngFor="let day of days" [matColumnDef]="day.name" >
+          <mat-header-cell *matHeaderCellDef>{{ day.name }}</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <span [ngClass]="{'c-pointer': row[day.name]?.text}" (click)="showScheduleDetails(row[day.name]?.schedules || []) ">
+              {{ row[day.name]?.text || "" }}
+            </span>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row
+          *matHeaderRowDef="displayedColumnsByClassroom"
+        ></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumnsByClassroom">
+        </mat-row>
+      </mat-table>
+    </mat-card-content>
+  </mat-card>
+</div>
+<div class="mat-container empty-table" *ngIf="!dataSourceByClassroom.length">
+  Seleccione un aula para visualizar el itinerario
+</div>
