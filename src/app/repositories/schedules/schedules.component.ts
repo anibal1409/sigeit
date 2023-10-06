@@ -260,11 +260,11 @@ export class SchedulesComponent implements OnInit, OnDestroy {
         .getDepartaments$({ schoolId: this.userStateService.getSchoolId() })
         .subscribe((departaments) => {
           this.departments = departaments;
-          console.log(departaments[0]?.id);
-          
-          this.form.patchValue({
-            departmentId: departaments[0]?.id,
-          });
+          if (departaments.length) {
+            this.form.patchValue({
+              departmentId: departaments[0]?.id,
+            });
+          }
         })
     );
   }

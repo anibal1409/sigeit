@@ -47,6 +47,7 @@ import {
   IntervalsService,
   UpdateScheduleService,
   ValidateClassroomSchedulesService,
+  ValidateTeacherSchedulesService,
 } from './use-cases';
 
 @NgModule({
@@ -89,6 +90,7 @@ import {
     IntervalsService,
     GetDaysService,
     ValidateClassroomSchedulesService,
+    ValidateTeacherSchedulesService,
 
     GetSetcionsService,
     GetDepartmentsService,

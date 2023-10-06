@@ -6,7 +6,10 @@ import {
   Observable,
 } from 'rxjs';
 
-import { ScheduleVM } from '../../model';
+import {
+  ScheduleItemVM,
+  ScheduleVM,
+} from '../../model';
 import { GetSchedulesService } from '../get-schedules';
 
 @Injectable()
@@ -16,7 +19,7 @@ export class ValidateClassroomSchedulesService {
     private getSchedulesService: GetSchedulesService,
   ) { }
 
-  exec(scheduleVm: ScheduleVM): Observable<any> {
+  exec(scheduleVm: ScheduleVM): Observable<Array<ScheduleItemVM>> {
     return this.getSchedulesService.exec({
       classroomId: scheduleVm.classroomId,
       dayId: scheduleVm.dayId,

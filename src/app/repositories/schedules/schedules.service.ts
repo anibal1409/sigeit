@@ -48,6 +48,7 @@ import {
   IntervalsService,
   UpdateScheduleService,
   ValidateClassroomSchedulesService,
+  ValidateTeacherSchedulesService,
 } from './use-cases';
 
 @Injectable()
@@ -69,6 +70,7 @@ export class SchedulesService extends ListComponentService<ScheduleItemVM, Sched
     private getDaysService: GetDaysService,
     private intervalsService: IntervalsService,
     private validateClassroomSchedulesService: ValidateClassroomSchedulesService,
+    private validateTeacherSchedulesService: ValidateTeacherSchedulesService,
   ) {
     super(
       getEntityService,
@@ -132,6 +134,10 @@ export class SchedulesService extends ListComponentService<ScheduleItemVM, Sched
 
   validateClassroomSchedules$(scheduleVm: ScheduleVM): Observable<any> {
     return this.validateClassroomSchedulesService.exec(scheduleVm);
+  }
+
+  validateTeacherSchedules$(scheduleVm: ScheduleVM, teacherId: number, periodId: number): Observable<Array<ScheduleItemVM>> {
+    return this.validateTeacherSchedulesService.exec(scheduleVm, teacherId, periodId);
   }
 
 }

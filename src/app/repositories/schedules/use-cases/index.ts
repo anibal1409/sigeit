@@ -6,3 +6,4 @@ export * from './get-schedules';
 export * from './intervals';
 export * from './update-schedule';
 export * from './validate-classroom-schedules';
+export * from './validate-teacher-schedules';
