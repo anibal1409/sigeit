@@ -64,7 +64,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "baseHref": "./",
+              "baseHref": "./sigeit",
               "budgets": [
                 {
                   "type": "initial",
