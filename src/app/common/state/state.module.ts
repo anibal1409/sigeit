@@ -1,5 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  NgModule,
+} from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { StateComponent } from './state.component';
@@ -8,5 +11,6 @@ import { StateComponent } from './state.component';
   declarations: [StateComponent],
   imports: [CommonModule, MatProgressSpinnerModule],
   exports: [StateComponent],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class StateModule {}
