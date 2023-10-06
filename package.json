@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "json-server": "npx json-server --watch db.json",
-    "dashboard-sdk": "ng build --project dashboard-sdk"
+    "dashboard-sdk": "ng build --project dashboard-sdk",
+    "build-full": "ng build --project dashboard-sdk & ng build --project api-interfaces & ng build --project error-handler & ng build --project form-control-errors & ng build --project http-form-data-client & ng build --project logger & ng build --project login & ng build --project toast & ng build"
   },
   "private": true,
   "dependencies": {
