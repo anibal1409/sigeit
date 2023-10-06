@@ -44,6 +44,7 @@ import {
   DeleteScheduleService,
   FindScheduleService,
   GetDaysService,
+  GetPlannedSchedulesService,
   GetSchedulesService,
   IntervalsService,
   UpdateScheduleService,
@@ -71,6 +72,7 @@ export class SchedulesService extends ListComponentService<ScheduleItemVM, Sched
     private intervalsService: IntervalsService,
     private validateClassroomSchedulesService: ValidateClassroomSchedulesService,
     private validateTeacherSchedulesService: ValidateTeacherSchedulesService,
+    private getPlannedSchedulesService: GetPlannedSchedulesService,
   ) {
     super(
       getEntityService,
@@ -138,6 +140,10 @@ export class SchedulesService extends ListComponentService<ScheduleItemVM, Sched
 
   validateTeacherSchedules$(scheduleVm: ScheduleVM, teacherId: number, periodId: number): Observable<Array<ScheduleItemVM>> {
     return this.validateTeacherSchedulesService.exec(scheduleVm, teacherId, periodId);
+  }
+
+  GetPlannedSchedules$(data: ScheduleBaseQuery): Observable<any> {
+    return this.getPlannedSchedulesService.exec(data);
   }
 
 }

@@ -116,17 +116,19 @@ export class ScheduleService {
      * @param semester 
      * @param dayId 
      * @param classroomId 
+     * @param departmentId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public scheduleControllerFindAll(id: number, sectionId?: number, subjectId?: number, periodId?: number, teacherId?: number, semester?: number, dayId?: number, classroomId?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Schedule>>;
-    public scheduleControllerFindAll(id: number, sectionId?: number, subjectId?: number, periodId?: number, teacherId?: number, semester?: number, dayId?: number, classroomId?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Schedule>>>;
-    public scheduleControllerFindAll(id: number, sectionId?: number, subjectId?: number, periodId?: number, teacherId?: number, semester?: number, dayId?: number, classroomId?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Schedule>>>;
-    public scheduleControllerFindAll(id: number, sectionId?: number, subjectId?: number, periodId?: number, teacherId?: number, semester?: number, dayId?: number, classroomId?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public scheduleControllerFindAll(id: number, sectionId?: number, subjectId?: number, periodId?: number, teacherId?: number, semester?: number, dayId?: number, classroomId?: number, departmentId?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Schedule>>;
+    public scheduleControllerFindAll(id: number, sectionId?: number, subjectId?: number, periodId?: number, teacherId?: number, semester?: number, dayId?: number, classroomId?: number, departmentId?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Schedule>>>;
+    public scheduleControllerFindAll(id: number, sectionId?: number, subjectId?: number, periodId?: number, teacherId?: number, semester?: number, dayId?: number, classroomId?: number, departmentId?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Schedule>>>;
+    public scheduleControllerFindAll(id: number, sectionId?: number, subjectId?: number, periodId?: number, teacherId?: number, semester?: number, dayId?: number, classroomId?: number, departmentId?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling scheduleControllerFindAll.');
         }
+
 
 
 
@@ -156,6 +158,9 @@ export class ScheduleService {
         }
         if (classroomId !== undefined && classroomId !== null) {
             queryParameters = queryParameters.set('classroomId', <any>classroomId);
+        }
+        if (departmentId !== undefined && departmentId !== null) {
+            queryParameters = queryParameters.set('departmentId', <any>departmentId);
         }
 
         let headers = this.defaultHeaders;

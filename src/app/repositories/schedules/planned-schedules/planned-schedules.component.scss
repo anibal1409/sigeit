@@ -1,0 +1,61 @@
+.mat-column-hora {
+  width: 2rem;
+  border-right: 1px solid currentColor;
+  padding-right: 24px;
+  text-align: center;
+}
+.mat-column-groupHeader, .mat-mdc-header-cell {
+  background-color: var(--primary-color) !important;
+  color: #FFFFFF;
+}
+.mat-column-groupHeader {
+  font-weight: 600;
+} 
+.mat-mdc-header-cell {
+  font-weight: 900;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-table {
+  mat-cell {
+    min-width: 5rem;
+  }
+}
+
+
+#modal-close-button {
+  width: 2rem;
+  height: 2rem;
+}
+
+.mat-header {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 2rem;
+  margin-top: 2rem;
+  margin-right: 2rem;
+}
+
+.mat-container {
+  margin: 1.5rem;
+}
+table {
+  width: 100%;
+  table-layout: fixed;
+  overflow-y: scroll;
+}
+
+mat-column {
+  min-width: 5rem;
+}
+.empty-table {
+  padding: 1.5rem;
+  text-align: center;
+  background: white;
+  margin: 1.5rem;
+  font-size: 1.4rem;
+  font-weight: 100;
+}

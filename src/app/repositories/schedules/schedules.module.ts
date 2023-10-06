@@ -43,12 +43,14 @@ import {
   DeleteScheduleService,
   FindScheduleService,
   GetDaysService,
+  GetPlannedSchedulesService,
   GetSchedulesService,
   IntervalsService,
   UpdateScheduleService,
   ValidateClassroomSchedulesService,
   ValidateTeacherSchedulesService,
 } from './use-cases';
+import { PlannedSchedulesComponent } from './planned-schedules/planned-schedules.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,8 @@ import {
     FormComponent,
     ScheduleComponent,
     ScheduleDetailsComponent,
-    ClassroomsSchedulesComponent
+    ClassroomsSchedulesComponent,
+    PlannedSchedulesComponent
   ],
   imports: [
     CommonModule,
@@ -91,6 +94,7 @@ import {
     GetDaysService,
     ValidateClassroomSchedulesService,
     ValidateTeacherSchedulesService,
+    GetPlannedSchedulesService,
 
     GetSetcionsService,
     GetDepartmentsService,
