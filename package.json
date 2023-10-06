@@ -12,6 +12,9 @@
     "build-projects": "ng build --project api-interfaces & ng build --project form-control-errors & ng build --project http-form-data-client & ng build --project logger & ng build --project login & ng build --project toast",
     "build-error-handler": "ng build --project error-handler"
   },
+  "engines": {
+    "node": ">=18.17.1 <19.0.0"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "^15.2.9",
@@ -29,7 +32,7 @@
     "json-server": "^0.17.3",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
-    "ngx-toastr": "^17.0.2",
+    "ngx-toastr": "^16.2.0",
     "rxjs": "~7.5.0",
     "toastr": "^2.1.4",
     "tslib": "^2.3.0",
