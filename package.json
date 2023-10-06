@@ -9,7 +9,7 @@
     "test": "ng test",
     "json-server": "npx json-server --watch db.json",
     "dashboard-sdk": "ng build --project dashboard-sdk",
-    "build-projects": "ng build --project api-interfaces & ng build --project error-handler & ng build --project form-control-errors & ng build --project http-form-data-client & ng build --project logger & ng build --project login & ng build --project toast"
+    "build-projects": "ng build --project api-interfaces & ng build --project form-control-errors & ng build --project http-form-data-client & ng build --project logger & ng build --project login & ng build --project toast & ng build --project error-handler"
   },
   "private": true,
   "dependencies": {
