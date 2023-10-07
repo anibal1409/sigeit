@@ -26,6 +26,7 @@ import {
   TableLayoutType,
   TableRow,
   TextRun,
+  VerticalAlign,
   WidthType,
 } from 'docx';
 import { saveAs } from 'file-saver';
@@ -72,6 +73,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
 
   private sub$ = new Subscription();
   loading = false;
+  academicCharge: Array<ScheduleItemVM> = [];
 
   constructor(
     private schedulesService: SchedulesService,
@@ -192,6 +194,8 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
             departmentId: this.allTeachers ? undefined : this.departmentId,
           })
           .subscribe((schedules) => {
+            console.log(schedules);
+            this.academicCharge = schedules;
             this.clearSchedule();
 
             schedules.forEach((schedule) => {
@@ -273,7 +277,8 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
     moment.locale('es');
     const nameTeacher = 'Test Teacher'.toUpperCase();
     const nameSemester = this.periodActive.name;
-    const totalHours = 0;
+    //calculate total hours of academicCharge in hours
+    const totalHours = this.academicCharge.reduce((acc, curr) => acc + (curr?.hours || 0), 0);
     const img = await this.schedulesService.getFile('assets/circle-logo-udo.png');
     const doc = new Document({
       sections: [
@@ -644,6 +649,38 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
               ],
             }),
             new Paragraph({}),
+            new Table({
+              width: {
+                size: 100,
+                type: WidthType.PERCENTAGE,
+              },
+              rows: [
+                new TableRow({
+                  children: [
+                    this.createCellHeadTable('Código', 20),
+                    this.createCellHeadTable('Asignatura', 30),
+                    this.createCellHeadTable('Sección', 10),
+                    this.createCellHeadTable('Día', 10),
+                    this.createCellHeadTable('Aula', 10),
+                    this.createCellHeadTable('Desde', 10),
+                    this.createCellHeadTable('Hasta', 10),
+                  ],
+                }),
+                ...this.academicCharge.map(
+                  (charge, index) => (new TableRow({
+                    children: [
+                      this.createCellTable(this.calculeText(this.academicCharge, index) ? '' : charge.section?.subject?.code || '', 20),
+                      this.createCellTable(this.calculeText(this.academicCharge, index) ? '' : charge.section?.subject?.name || '', 30, AlignmentType.LEFT),
+                      this.createCellTable(this.calculeText(this.academicCharge, index) ? '' : charge.section?.name || '', 10),
+                      this.createCellTable(charge.day?.abbreviation || '', 10),
+                      this.createCellTable(charge.classroom?.name || '', 10),
+                      this.createCellTable(charge.start|| '', 10),
+                      this.createCellTable(charge.end || '', 10),
+                    ]
+                  }))
+                ),
+              ]
+            }),
             new Paragraph({
               children: [
                 new TextRun({
@@ -730,5 +767,64 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
       saveAs(blob, "example.docx");
       console.log("Document created successfully");
     });
+  }
+
+  createCellHeadTable(str: string, size: number): TableCell {
+    return new TableCell({
+      width: {
+        size,
+        type: WidthType.PERCENTAGE,
+      },
+      shading: {
+        fill: '99CCFF',
+        type: ShadingType.CLEAR,
+        color: '99CCFF',
+      },
+      children: [
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: str,
+              size: '12pt',
+              color: '000099',
+              bold: true,
+            }),
+          ],
+          alignment: AlignmentType.CENTER,
+        }),
+      ],
+    });
+  }
+
+  createCellTable(str: string, size: number, alignment = AlignmentType.CENTER): TableCell {
+    return new TableCell({
+      verticalAlign: VerticalAlign.CENTER,
+      width: {
+        size,
+        type: WidthType.PERCENTAGE,
+      },
+      children: [
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: str,
+              size: '10pt',
+            }),
+          ],
+          alignment,
+        }),
+      ],
+    });
+  }
+
+  calculeText(academicCharge: Array<ScheduleItemVM>, index: number): boolean {
+    let repeat =  false;
+    if (index !==0) {
+      repeat = academicCharge[index - 1].section?.subject?.code === academicCharge[index].section?.subject?.code &&
+                academicCharge[index - 1].section?.subject?.name === academicCharge[index].section?.subject?.name &&
+                academicCharge[index - 1].section?.name === academicCharge[index].section?.name; 
+    }
+
+    return repeat;
   }
 }

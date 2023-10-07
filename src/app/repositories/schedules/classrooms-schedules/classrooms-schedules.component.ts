@@ -160,14 +160,16 @@ export class ClassroomsSchedulesComponent
       this.sub$.add(
         this.schedulesService
           .getSchedules$({dayId, periodId: this.periodId})
-          .subscribe((schedules) => {
+          .subscribe((data) => {
             this.dataScheduleByDay = this.startIntervals.map(() =>
               this.classrooms.map(() => {
                 return { text: '', schedules: [] };
               })
             );
+            console.log(data);
+            
 
-            schedules.forEach((schedule) => {
+            data?.forEach((schedule) => {
               const classroomIndex = this.classrooms.findIndex(
                 (classroom) => classroom.id === schedule?.classroom?.id
               );
@@ -175,7 +177,7 @@ export class ClassroomsSchedulesComponent
               const endIndex = this.endIntervals.indexOf(schedule.end);
 
               for (let i = startIndex; i <= endIndex; i++) {
-                this.dataScheduleByDay[i][classroomIndex].schedules.push(schedule);
+                this.dataScheduleByDay[i][classroomIndex]?.schedules?.push(schedule);
                 if (this.dataScheduleByDay[i][classroomIndex]?.text) {
                   this.dataScheduleByDay[i][classroomIndex].text = 'Varias';
                 } else {
