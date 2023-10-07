@@ -32,7 +32,7 @@ mat-row > mat-cell {
 }
 
 .mat-mdc-header-cell {
-  background-color: rgb(67, 146, 237);
+  background-color: rgb(67, 146, 237) !important;
   color: white;
   font-weight: 800;
   text-align: center;

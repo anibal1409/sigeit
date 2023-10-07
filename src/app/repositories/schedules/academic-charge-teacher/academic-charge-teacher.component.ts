@@ -35,7 +35,6 @@ import { Subscription } from 'rxjs';
 
 import { StateService } from '../../../common/state';
 import { UserStateService } from '../../../common/user-state';
-import { ClassroomVM } from '../../classrooms';
 import { DepartmentItemVM } from '../../departments';
 import { PeriodVM } from '../../periods';
 import { TeacherItemVM } from '../../teachers';
@@ -69,7 +68,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
     })
   );
   dataSource: any[] = [];
-  displayedColumnsByClassroom: string[] = ['hora'];
+  displayedColumns: string[] = ['hora'];
 
   private sub$ = new Subscription();
   loading = false;
@@ -152,10 +151,12 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
       this.schedulesService
         .getDays$()
         .subscribe((days) => {
+          console.log(days);
+          
           this.days = days;
-          this.displayedColumnsByClassroom = ['hora'];
+          this.displayedColumns = ['hora'];
           days.forEach((day) => {
-            this.displayedColumnsByClassroom.push(day.name);
+            this.displayedColumns.push(day.name);
           });
         })
     );
@@ -236,10 +237,6 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
           })
       );
     }
-  }
-
-  displayFn(item: ClassroomVM | DayVM | any): string {
-    return item?.name;
   }
 
   showScheduleDetails(schedules: Array<ScheduleItemVM>): void {
