@@ -68,7 +68,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
       return { text: '', schedules: [] };
     })
   );
-  dataSourceByClassroom: any[] = [];
+  dataSource: any[] = [];
   displayedColumnsByClassroom: string[] = ['hora'];
 
   private sub$ = new Subscription();
@@ -111,6 +111,9 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
       this.form.get('departmentId')?.valueChanges.subscribe((departmentId) => {
         this.departmentId = +departmentId;
         this.teacherId = 0;
+        this.teachers = [];
+        this.academicCharge = [];
+        this.clearSchedule();
 
         this.form.patchValue({
           teacherId: null,
@@ -125,6 +128,8 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
     this.sub$.add(
       this.form.get('teacherId')?.valueChanges.subscribe((subjectId) => {
         this.teacherId = +subjectId;
+        this.academicCharge = [];
+        this.clearSchedule();
 
         if (subjectId) {
           this.loadSchedules();
@@ -182,6 +187,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
         return { text: '', schedules: [] };
       })
     );
+    this.dataSource = [];
   }
 
   private loadSchedules(): void {
@@ -218,7 +224,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
               }
             });
 
-            this.dataSourceByClassroom = this.startIntervals.map(
+            this.dataSource = this.startIntervals.map(
               (hora, index) => {
                 const row: any = { hora };
                 this.days.forEach((day, dayIndex) => {
@@ -274,6 +280,9 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
   }
 
   async createCharge(): Promise<void> {
+    if (!this.teacherId) {
+      return;
+    }
     moment.locale('es');
     const nameTeacher = this.teachers.find((teacher) => teacher.id === this.teacherId)?.fullName?.toUpperCase();
     const nameSemester = this.periodActive.name;

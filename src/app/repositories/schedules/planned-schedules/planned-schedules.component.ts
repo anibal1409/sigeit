@@ -187,7 +187,7 @@ export class PlannedSchedulesComponent {
       this.stateService.setLoading(this.loading);
       this.sub$.add(
         this.schedulesService
-          .GetPlannedSchedules$({
+          .getPlannedSchedules$({
             departmentId: this.departmentId,
             periodId: this.periodId
           })

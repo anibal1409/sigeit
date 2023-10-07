@@ -1,7 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import {
+  finalize,
+  Observable,
+} from 'rxjs';
 
 import { ListComponentService } from '../../common/memory-repository';
 import {
@@ -91,11 +94,19 @@ export class SchedulesService extends ListComponentService<ScheduleItemVM, Sched
   }
 
   getSubjects$(data: SubjectBaseQuery): Observable<Array<SubjectVM>> {
-    return this.getSubjectsService.exec(data, false);
+    this.setLoading(true);
+    return this.getSubjectsService.exec(data, false)
+      .pipe(
+        finalize(() => this.setLoading(false))
+      );
   }
 
   getTeachers$(data: TeacherBaseQuery): Observable<Array<TeacherItemVM>> {
-    return this.getTeachersService.exec(data, false);
+    this.setLoading(true);
+    return this.getTeachersService.exec(data, false)
+    .pipe(
+      finalize(() => this.setLoading(false))
+    );
   }
 
   getActivePeriod$(): Observable<PeriodVM> {
@@ -103,11 +114,19 @@ export class SchedulesService extends ListComponentService<ScheduleItemVM, Sched
   }
 
   getSections$(data: SectionBaseQuery): Observable<Array<SectionItemVM>> {
-    return this.getSetcionsService.exec(data, false);
+    this.setLoading(true);
+    return this.getSetcionsService.exec(data, false)
+    .pipe(
+      finalize(() => this.setLoading(false))
+    );
   }
 
   getClassrooms$(data?: ClassroomBaseQuery): Observable<Array<ClassroomItemVM>> {
-    return this.getClassroomsService.exec(data, false);
+    this.setLoading(true);
+    return this.getClassroomsService.exec(data, false)
+    .pipe(
+      finalize(() => this.setLoading(false))
+    );
   }
 
   getDays$(): Observable<Array<DayVM>> {
@@ -133,7 +152,11 @@ export class SchedulesService extends ListComponentService<ScheduleItemVM, Sched
   }
 
   getSchedules$(data: ScheduleBaseQuery): Observable<Array<ScheduleItemVM>> {
-    return this.getEntityService.exec(data, false);
+    this.setLoading(true);
+    return this.getEntityService.exec(data, false)
+    .pipe(
+      finalize(() => this.setLoading(false))
+    );
   }
 
   validateClassroomSchedules$(scheduleVm: ScheduleVM): Observable<any> {
@@ -144,12 +167,12 @@ export class SchedulesService extends ListComponentService<ScheduleItemVM, Sched
     return this.validateTeacherSchedulesService.exec(scheduleVm, teacherId, periodId);
   }
 
-  GetPlannedSchedules$(data: ScheduleBaseQuery): Observable<any> {
+  getPlannedSchedules$(data: ScheduleBaseQuery): Observable<any> {
     return this.getPlannedSchedulesService.exec(data);
   }
 
   getFile(path: string): Promise<Blob | undefined> {
-    return this.http.get(path, {responseType: 'blob'}).toPromise();
+    return this.http.get(path, { responseType: 'blob' }).toPromise();
   }
 
 }

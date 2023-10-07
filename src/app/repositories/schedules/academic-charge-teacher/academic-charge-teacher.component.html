@@ -44,7 +44,9 @@
     <button
       mat-raised-button
       color="primary"
-     (click)="createCharge()">
+     (click)="createCharge()"
+     [disabled]="!teacherId"
+    >
      
       <mat-icon>get_app</mat-icon>
       Carga académica
@@ -52,10 +54,10 @@
   </div>
 </div>
 
-<div class="mat-container" *ngIf="dataSourceByClassroom.length">
+<div class="mat-container" *ngIf="dataSource.length">
   <mat-card>
     <mat-card-content class="mat-card-content">
-      <mat-table [dataSource]="dataSourceByClassroom" class="mat-table">
+      <mat-table [dataSource]="dataSource" class="mat-table">
         <ng-container matColumnDef="hora" >
           <mat-header-cell *matHeaderCellDef >Hora/Dia</mat-header-cell>
           <mat-cell *matCellDef="let row">{{ row.hora }}</mat-cell>
@@ -79,6 +81,6 @@
     </mat-card-content>
   </mat-card>
 </div>
-<div class="mat-container empty-table" *ngIf="!dataSourceByClassroom.length">
+<div class="mat-container empty-table" *ngIf="!dataSource.length">
   Seleccione un profesor para visualizar el itinerario
 </div>

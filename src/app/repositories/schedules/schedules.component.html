@@ -135,6 +135,17 @@
   </mat-tab-group>
 </ng-container>
 
+<button
+  mat-fab
+  matTooltip="Mostrar carga academica profesor"
+  matTooltipPosition="left"
+  aria-label="Mostrar carga academica profesor"
+  class="btn-fixed btn-charge"
+  color="basic"
+  [routerLink]="['academic-charge']" 
+>
+  <mat-icon>account_circle</mat-icon>
+</button>
 
 <button
   mat-fab
@@ -143,7 +154,7 @@
   aria-label="Mostrar todos horarios planificados"
   class="btn-fixed btn-schedules"
   color="basic"
-  [routerLink]="['academic-charge']" 
+  [routerLink]="['planned']" 
 >
   <mat-icon>date_range</mat-icon>
 </button>
