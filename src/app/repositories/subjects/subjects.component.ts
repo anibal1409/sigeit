@@ -100,6 +100,12 @@ export class SubjectsComponent implements OnInit, OnDestroy {
         this.tableService.setData(this.data);
       })
     );
+
+    this.sub$.add(
+      this.departmentIdCtrl.valueChanges.subscribe((departmentId) => {
+        this.loadSubjects(departmentId);
+      })
+    );
     this.loadDepartments();
     this.loadSubjects(this.userStateService.getDepartmentId());
   }
@@ -163,7 +169,17 @@ export class SubjectsComponent implements OnInit, OnDestroy {
       this.subjectsService.getDepartaments$(
         this.userStateService.getSchoolId()
       ).subscribe((departments) => {
-        this.departments = departments;
+        this.departments = [
+          {
+            id: null as any,
+            name: 'Todos',
+            abbreviation: '',
+            logo: '',
+            schoolId: null as any,
+            status: '',
+          },
+          ...departments,
+        ];
       })
     );
   }
