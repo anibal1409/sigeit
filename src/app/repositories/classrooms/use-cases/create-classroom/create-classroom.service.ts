@@ -27,7 +27,7 @@ export class CreateClassroomService
   exec(entitySave: ClassroomVM): Observable<ClassroomItemVM | null> {
     return this.entityServices
       .classroomControllerCreate({
-        name: entitySave.name,
+        name: entitySave.name.toUpperCase(),
         status: !!entitySave.status,
         type: entitySave.type,
         description: entitySave.description,

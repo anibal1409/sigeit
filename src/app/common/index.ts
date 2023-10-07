@@ -10,3 +10,4 @@ export * from './table';
 export * from './timer';
 export * from './url-access-guard';
 export * from './user-state';
+export * from './text';

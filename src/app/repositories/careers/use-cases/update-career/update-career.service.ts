@@ -7,7 +7,10 @@ import {
   tap,
 } from 'rxjs';
 
-import { UseCase } from '../../../../common';
+import {
+  capitalize,
+  UseCase,
+} from '../../../../common';
 import { Career2CareerItemVM } from '../../mappers';
 import { CareerMemoryService } from '../../memory';
 import {
@@ -27,7 +30,7 @@ constructor(
 exec(entitySave: CareerVM): Observable<CareerItemVM | null> {
   return this.entityServices
     .careerControllerUpdate({
-      name: entitySave.name,
+      name: capitalize(entitySave.name),
       status: !!entitySave.status,
       description: entitySave.description,
       abbreviation: entitySave.abbreviation,

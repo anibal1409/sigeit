@@ -27,7 +27,7 @@ export class UpdatePeriodService
   exec(entitySave: PeriodVM): Observable<PeriodItemVM | null> {
     return this.entityServices
       .periodControllerUpdate({
-        name: entitySave.name,
+        name: entitySave.name.toUpperCase(),
         status: !!entitySave.status,
         description: entitySave.description,
         duration: entitySave.duration,

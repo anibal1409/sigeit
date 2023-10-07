@@ -8,6 +8,7 @@ import {
 } from 'rxjs';
 
 import { UseCase } from '../../../../common/memory-repository';
+import { capitalize } from '../../../../common/text';
 import { User2UserItemVM } from '../../mappers';
 import { UserMemoryService } from '../../memory';
 import {
@@ -31,7 +32,7 @@ export class UpdateUserService
         department: { id: entitySave?.departmentId || 0 },
         email: entitySave.email as any,
         role: entitySave.role as any,
-        name: entitySave.name,
+        name: capitalize(entitySave.name),
         school: { id: entitySave?.schoolId || 0 },
         idDocument: entitySave.idDocument,
       }, entitySave.id || 0)

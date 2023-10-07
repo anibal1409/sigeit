@@ -27,7 +27,7 @@ export class UpdateClassroomService
   exec(entitySave: ClassroomVM): Observable<ClassroomItemVM | null> {
     return this.entityServices
       .classroomControllerUpdate({
-        name: entitySave.name,
+        name: entitySave.name.toUpperCase(),
         status: !!entitySave.status,
         type: entitySave.type,
         description: entitySave.description,

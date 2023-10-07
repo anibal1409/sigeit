@@ -7,7 +7,10 @@ import {
   tap,
 } from 'rxjs';
 
-import { UseCase } from '../../../../common';
+import {
+  capitalize,
+  UseCase,
+} from '../../../../common';
 import { School2SchoolItemVM } from '../../mappers';
 import { SchoolMemoryService } from '../../memory';
 import {
@@ -28,7 +31,7 @@ export class CreateSchoolService
       return this.schoolService
         .schoolControllerCreate({
           abbreviation: schoolSave.abbreviation,
-          name: schoolSave.name,
+          name: capitalize(schoolSave.name),
           status: !!schoolSave.status,
           logo: schoolSave.logo,
           description: schoolSave.description,

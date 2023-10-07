@@ -10,12 +10,33 @@ import {
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
+import {
+  AlignmentType,
+  BorderStyle,
+  Document,
+  Footer,
+  Header,
+  ImageRun,
+  Packer,
+  Paragraph,
+  ShadingType,
+  Table,
+  TableAnchorType,
+  TableCell,
+  TableLayoutType,
+  TableRow,
+  TextRun,
+  WidthType,
+} from 'docx';
+import { saveAs } from 'file-saver';
+import moment from 'moment';
 import { Subscription } from 'rxjs';
 
 import { StateService } from '../../../common/state';
 import { UserStateService } from '../../../common/user-state';
 import { ClassroomVM } from '../../classrooms';
 import { DepartmentItemVM } from '../../departments';
+import { PeriodVM } from '../../periods';
 import { TeacherItemVM } from '../../teachers';
 import {
   DayVM,
@@ -30,11 +51,11 @@ import { SchedulesService } from '../schedules.service';
   styleUrls: ['./academic-charge-teacher.component.scss']
 })
 export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
-  periodId!: number;
   teacherId!: number;
   allTeachers: boolean = false;
   departmentId!: number;
   form!: FormGroup;
+  periodActive!: PeriodVM;
 
   startIntervals: Array<string> = [];
   endIntervals: Array<string> = [];
@@ -70,14 +91,6 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
       this.schedulesService.getLoading$().subscribe((loading) => {
         this.loading = loading;
         this.stateService.setLoading(loading);
-      })
-    );
-
-    this.sub$.add(
-      this.schedulesService.getActivePeriod$().subscribe((period) => {
-        if (period?.id) {
-          this.periodId = period.id;
-        }
       })
     );
     this.loadDays();
@@ -147,7 +160,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
         .getActivePeriod$()
         .subscribe((period) => {
           if (period?.id) {
-            this.periodId = period.id;
+            this.periodActive = period;
             const intervals = this.schedulesService.generateTimeIntervalsStartEnd(
               period.startTime,
               period.endTime,
@@ -175,7 +188,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
         this.schedulesService
           .getSchedules$({
             teacherId: this.teacherId,
-            periodId: this.periodId,
+            periodId: this.periodActive.id,
             departmentId: this.allTeachers ? undefined : this.departmentId,
           })
           .subscribe((schedules) => {
@@ -254,5 +267,468 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
           this.teachers = teachers;
         })
     );
+  }
+
+  async createCharge(): Promise<void> {
+    moment.locale('es');
+    const nameTeacher = 'Test Teacher'.toUpperCase();
+    const nameSemester = this.periodActive.name;
+    const totalHours = 0;
+    const img = await this.schedulesService.getFile('assets/circle-logo-udo.png');
+    const doc = new Document({
+      sections: [
+        {
+          headers: {
+            default: new Header({
+              children: [
+                new Paragraph({
+                  children: [
+                    new ImageRun({
+                      data: (await img?.arrayBuffer() as any),
+                      transformation: {
+                        width: 98,
+                        height: 98,
+                      },
+                      floating: {
+                        behindDocument: false,
+                        horizontalPosition: {
+                          offset: 850000,
+                        },
+                        verticalPosition: {
+                          offset: 200000,
+                        },
+                    },
+                    }),
+                  ],
+                }),
+                new Table({
+                  layout: TableLayoutType.FIXED,
+                  float: {
+                    absoluteHorizontalPosition: '0cm',
+                    absoluteVerticalPosition: '0.6cm',
+                    horizontalAnchor: TableAnchorType.PAGE,
+                    verticalAnchor: TableAnchorType.PAGE,
+
+                  },
+                  indent: {
+                    size: 0,
+                    type: WidthType.PERCENTAGE,
+                  },
+                  margins: {
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    marginUnitType: WidthType.PERCENTAGE,
+                  },
+                  width: {
+                    size: '21cm',
+                    type: WidthType.DXA,
+                  },
+                  rows: [
+                    new TableRow({
+                      children: [
+                        new TableCell({
+                          width: {
+                            size: 100,
+                            type: WidthType.PERCENTAGE,
+                          },
+                          borders: {
+                            bottom: {
+                              style: BorderStyle.NONE,
+                              size: 0,
+                              color: '0066FF',
+                            },
+                            left: {
+                              style: BorderStyle.NONE,
+                              size: 0,
+                              color: '0066FF',
+                            },
+                            right: {
+                              style: BorderStyle.NONE,
+                              size: 0,
+                              color: '0066FF',
+                            },
+                            top: {
+                              style: BorderStyle.NONE,
+                              size: 0,
+                              color: '0066FF',
+                            }
+                          },
+                          shading: {
+                            fill: '0066FF',
+                            type: ShadingType.CLEAR,
+                            color: '0066FF',
+                          },
+                          margins: {
+                            marginUnitType: WidthType.DXA,
+                            bottom: 1,
+                            left: 6,
+                            right: 6,
+                            top: 1,
+                          },
+                          children: [
+                            new Paragraph({
+                              children: [
+                                new TextRun({
+                                  text: '',
+                                  size: '12pt',
+                                  color: 'FFFFFF',
+                                }),
+                              ],
+                            }),
+                            new Paragraph({
+                              children: [
+                                new TextRun({
+                                  text: '                                                UNIVERSIDAD DE ORIENTE',
+                                  bold: true,
+                                  size: '12pt',
+                                  color: 'FFFFFF',
+                                }),
+                              ],
+                            }),
+                            new Paragraph({
+                              children: [
+                                new TextRun({
+                                  text: '                                                          NÚCLEO DE MONAGAS',
+                                  bold: true,
+                                  size: '10pt',
+                                  color: 'FFFFFF',
+                                }),
+                              ],
+                            }),
+                            new Paragraph({
+                              children: [
+                                new TextRun({
+                                  text: '',
+                                  size: '12pt',
+                                  color: 'FFFFFF',
+                                }),
+                              ],
+                            }),
+                          ],
+                        }),
+                      ],
+
+                    }),
+                    new TableRow({
+                      children: [
+                        new TableCell({
+                          borders: {
+                            bottom: {
+                              style: BorderStyle.NONE,
+                              size: 0,
+                              color: 'FFFFFF',
+                            },
+                            left: {
+                              style: BorderStyle.NONE,
+                              size: 0,
+                              color: 'FFFFFF',
+                            },
+                            right: {
+                              style: BorderStyle.NONE,
+                              size: 0,
+                              color: 'FFFFFF',
+                            },
+                            top: {
+                              style: BorderStyle.NONE,
+                              size: 0,
+                              color: 'FFFFFF',
+                            }
+                          },
+                          shading: {
+                            fill: 'FFFFFF',
+                            type: ShadingType.CLEAR,
+                            color: 'FFFFFF',
+                          },
+                          width: {
+                            size: 100,
+                            type: WidthType.PERCENTAGE,
+                          },
+                          children: [
+                            new Paragraph({
+                              children: [
+                                new TextRun({
+                                  text: '',
+                                  size: '12pt',
+                                  color: 'FFFFFF',
+                                }),
+                              ],
+                            }),
+                          ],
+                        }),
+                      ],
+                    }),
+                    new TableRow({
+                      children: [
+                        new TableCell({
+                          borders: {
+                            bottom: {
+                              style: BorderStyle.NONE,
+                              size: 0,
+                              color: '0066FF',
+                            },
+                            left: {
+                              style: BorderStyle.NONE,
+                              size: 0,
+                              color: '0066FF',
+                            },
+                            right: {
+                              style: BorderStyle.NONE,
+                              size: 0,
+                              color: '0066FF',
+                            },
+                            top: {
+                              style: BorderStyle.NONE,
+                              size: 0,
+                              color: '0066FF',
+                            }
+                          },
+                          shading: {
+                            fill: '0066FF',
+                            type: ShadingType.CLEAR,
+                            color: '0066FF',
+                          },
+                          width: {
+                            size: 100,
+                            type: WidthType.PERCENTAGE,
+                          },
+                          children: [
+                            new Paragraph({
+                              children: [
+                                new TextRun({
+                                  text: '',
+                                  size: '8pt',
+                                  color: 'FFFFFF',
+                                }),
+                              ],
+                            }),
+                          ],
+                        }),
+                      ],
+                    }),
+                  ],
+                })
+              ],
+            }),
+          },
+          footers: {
+            default: new Footer({
+              children: [
+                new Paragraph({
+                  alignment: AlignmentType.CENTER,
+                  children: [
+                    new TextRun({
+                      text: 'DEL PUEBLO VENIMOS /  HACIA EL PUEBLO VAMOS',
+                      bold: true,
+                      size: '10pt',
+                    }),
+                  ],
+                }),
+                new Paragraph({
+                  alignment: AlignmentType.CENTER,
+                  children: [
+                    new TextRun({
+                      text: '',
+                      size: '9pt',
+                    }),
+                  ],
+                }),
+                new Paragraph({
+                  alignment: AlignmentType.CENTER,
+                  children: [
+                    new TextRun({
+                      text: 'Av. Universidad. Campus Los Guaritos. Maturín Estado Monagas. Apartado Postal Nº 6201.',
+                      size: '9pt',
+                    }),
+                  ],
+                }),
+                new Paragraph({
+                  alignment: AlignmentType.CENTER,
+                  children: [
+                    new TextRun({
+                      text: 'Teléfono 0291-3004010. htpp://www.monagas.udo.edu.ve/',
+                      size: '9pt',
+                    }),
+                  ],
+                }),
+              ],
+
+            }),
+          },
+          children: [
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: 'DIRECCIÓN ESCUELA DE INGENIERÍA Y CIENCIAS APLICADAS',
+                  bold: true,
+                  size: '12pt',
+                }),
+              ],
+              alignment: AlignmentType.CENTER,
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: 'DEPARTAMENTO DE INGENIERÍA DE SISTEMAS',
+                  bold: true,
+                  size: '12pt',
+                }),
+              ],
+              alignment: AlignmentType.CENTER,
+            }),
+            new Paragraph({}),
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: 'Maturín, ' + moment().format('DD MMMM') + ' de ' + moment().format('YYYY'),
+                  size: '12pt',
+                }),
+              ],
+            }),
+            new Paragraph({}),
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: 'DIS-0XX/' + moment().format('YYYY'),
+                  size: '12pt',
+                  shading: {
+                    type: ShadingType.CLEAR,
+                    fill: 'FFFF00',
+                  }
+                }),
+              ],
+              alignment: AlignmentType.RIGHT,
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: 'Ciudadano(a)',
+                  size: '12pt',
+                }),
+              ],
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: 'PROF. ' + nameTeacher,
+                  size: '12pt',
+                  bold: true,
+                }),
+              ],
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: 'Presente',
+                  size: '12pt',
+                }),
+              ],
+            }),
+            new Paragraph({}),
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: 'Estimado Profesor:',
+                  size: '12pt',
+                }),
+              ],
+            }),
+            new Paragraph({}),
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: `Es grato dirigirme a usted, en la oportunidad de saludarle y hacerle entrega de su Carga Académica para el semestre ${nameSemester}; que se detalla a continuación:`,
+                  size: '12pt',
+                }),
+              ],
+            }),
+            new Paragraph({}),
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: `Total de Horas académicas: ${totalHours}`,
+                  size: '12pt',
+                  bold: true,
+                }),
+              ],
+            }),
+            new Paragraph({}),
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: `En tal sentido, le auguro un semestre de éxitos profesionales y de buenos rendimientos para los estudiantes que cursan las(s) asignatura(s) que usted dictará en la Carrera de Ingeniería de Sistemas y en pro de enaltecer a nuestra Casa más Alta.`,
+                  size: '12pt',
+                }),
+              ],
+            }),
+            new Paragraph({}),
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: `Sin otro particular, reiterándole mi aprecio y consideración.`,
+                  size: '12pt',
+                }),
+              ],
+            }),
+            new Paragraph({}),
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: `Le saluda`,
+                  size: '12pt',
+                }),
+              ],
+            }),
+            new Paragraph({}),
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: `Atentamente,`,
+                  size: '12pt',
+                }),
+              ],
+              alignment: AlignmentType.CENTER,
+            }),
+            new Paragraph({}),
+            new Paragraph({}),
+            new Paragraph({}),
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: `Prof. MSc. Roger Díaz`,
+                  size: '12pt',
+                  bold: true,
+                }),
+              ],
+              alignment: AlignmentType.CENTER,
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: `Jefe de Departamento`,
+                  size: '12pt',
+                }),
+              ],
+              alignment: AlignmentType.CENTER,
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: `C.c. Expediente, Archivo / EICA`,
+                  size: '8pt',
+                }),
+              ],
+            }),
+          ],
+        },
+      ],
+    });
+
+    Packer.toBlob(doc).then(blob => {
+      console.log(blob);
+      saveAs(blob, "example.docx");
+      console.log("Document created successfully");
+    });
   }
 }

@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
@@ -73,6 +74,7 @@ export class SchedulesService extends ListComponentService<ScheduleItemVM, Sched
     private validateClassroomSchedulesService: ValidateClassroomSchedulesService,
     private validateTeacherSchedulesService: ValidateTeacherSchedulesService,
     private getPlannedSchedulesService: GetPlannedSchedulesService,
+    private http: HttpClient,
   ) {
     super(
       getEntityService,
@@ -144,6 +146,10 @@ export class SchedulesService extends ListComponentService<ScheduleItemVM, Sched
 
   GetPlannedSchedules$(data: ScheduleBaseQuery): Observable<any> {
     return this.getPlannedSchedulesService.exec(data);
+  }
+
+  getFile(path: string): Promise<Blob | undefined> {
+    return this.http.get(path, {responseType: 'blob'}).toPromise();
   }
 
 }
