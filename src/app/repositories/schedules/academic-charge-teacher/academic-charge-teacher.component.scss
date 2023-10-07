@@ -1,6 +1,9 @@
-mat-form-field {
-  margin-left: 2rem;
+:host {
+  mat-form-field {
+    width: 100%;
+  }
 }
+
 .mat-container {
   margin: 1.5rem;
 }

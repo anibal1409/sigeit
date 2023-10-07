@@ -763,9 +763,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
     });
 
     Packer.toBlob(doc).then(blob => {
-      console.log(blob);
-      saveAs(blob, "example.docx");
-      console.log("Document created successfully");
+      saveAs(blob, `carga-académica-${nameTeacher?.replace(' ', '').replace(',', '-')}-${nameSemester}.docx`);
     });
   }
 

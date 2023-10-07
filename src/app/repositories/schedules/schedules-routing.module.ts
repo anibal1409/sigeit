@@ -10,17 +10,17 @@ import { SchedulesComponent } from './schedules.component';
 
 const routes: Routes = [
   {
-  path: '',
-  component: SchedulesComponent,
+    path: '',
+    component: SchedulesComponent,
   },
-  { 
-    path: 'planned', 
-    component: PlannedSchedulesComponent 
+  {
+    path: 'planned',
+    component: PlannedSchedulesComponent,
   },
   {
     path: 'academic-charge',
     component: AcademicChargeTeacherComponent,
-  }
+  },
 ];
 
 @NgModule({

@@ -1,5 +1,5 @@
 
-<div [formGroup]="form" class="row">
+<div [formGroup]="form" class="row mt-5 mx-3">
     
   <div class="col-md-4 col-12">
     <mat-form-field class="">
@@ -35,13 +35,20 @@
       </app-select-ex>
     </mat-form-field>
   </div>
-  <div class="col-md-4 col-12">
+  <div class="col-md-4 col-12 d-flex align-items-center justify-content-between">
     <mat-checkbox 
       formControlName="allTeachers"
     >
       Mostrar todos 
     </mat-checkbox>
-    <button (click)="createCharge()">Carga</button>
+    <button
+      mat-raised-button
+      color="primary"
+     (click)="createCharge()">
+     
+      <mat-icon>get_app</mat-icon>
+      Carga académica
+    </button>
   </div>
 </div>
 
@@ -73,5 +80,5 @@
   </mat-card>
 </div>
 <div class="mat-container empty-table" *ngIf="!dataSourceByClassroom.length">
-  Seleccione un aula para visualizar el itinerario
+  Seleccione un profesor para visualizar el itinerario
 </div>

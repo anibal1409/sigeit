@@ -9,6 +9,11 @@ import { AuthLoginGuard } from './auth/auth-login.guard';
 import { AuthGuard } from './auth/auth.guard';
 
 export const routes: Routes = [
+	{
+		path: '',
+		redirectTo: 'dashboard',
+		pathMatch: 'full',
+	},
   {
     path: 'dashboard',
     loadChildren: () =>
