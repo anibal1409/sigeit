@@ -286,7 +286,6 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
     moment.locale('es');
     const nameTeacher = this.teachers.find((teacher) => teacher.id === this.teacherId)?.fullName?.toUpperCase();
     const nameSemester = this.periodActive.name;
-    //calculate total hours of academicCharge in hours
     const totalHours = this.academicCharge.reduce((acc, curr) => acc + (curr?.hours || 0), 0);
     const img = await this.schedulesService.getFile('assets/circle-logo-udo.png');
     const doc = new Document({
@@ -311,7 +310,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
                         verticalPosition: {
                           offset: 200000,
                         },
-                    },
+                      },
                     }),
                   ],
                 }),
@@ -574,7 +573,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
             new Paragraph({
               children: [
                 new TextRun({
-                  text: 'DIRECCIÓN ESCUELA DE INGENIERÍA Y CIENCIAS APLICADAS',
+                  text: 'ESCUELA DE INGENIERÍA Y CIENCIAS APLICADAS',
                   bold: true,
                   size: '12pt',
                 }),
@@ -652,7 +651,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
             new Paragraph({
               children: [
                 new TextRun({
-                  text: `Es grato dirigirme a usted, en la oportunidad de saludarle y hacerle entrega de su Carga Académica para el semestre ${nameSemester}; que se detalla a continuación:`,
+                  text: `Es grato dirigirme a usted, en la oportunidad de saludarle y hacerle entrega de su Carga Académica para el Periodo Académico ${nameSemester}; que se detalla a continuación:`,
                   size: '12pt',
                 }),
               ],
@@ -683,7 +682,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
                       this.createCellTable(this.calculeText(this.academicCharge, index) ? '' : charge.section?.name || '', 10),
                       this.createCellTable(charge.day?.abbreviation || '', 10),
                       this.createCellTable(charge.classroom?.name || '', 10),
-                      this.createCellTable(charge.start|| '', 10),
+                      this.createCellTable(charge.start || '', 10),
                       this.createCellTable(charge.end || '', 10),
                     ]
                   }))
@@ -825,11 +824,11 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
   }
 
   calculeText(academicCharge: Array<ScheduleItemVM>, index: number): boolean {
-    let repeat =  false;
-    if (index !==0) {
+    let repeat = false;
+    if (index !== 0) {
       repeat = academicCharge[index - 1].section?.subject?.code === academicCharge[index].section?.subject?.code &&
-                academicCharge[index - 1].section?.subject?.name === academicCharge[index].section?.subject?.name &&
-                academicCharge[index - 1].section?.name === academicCharge[index].section?.name; 
+        academicCharge[index - 1].section?.subject?.name === academicCharge[index].section?.subject?.name &&
+        academicCharge[index - 1].section?.name === academicCharge[index].section?.name;
     }
 
     return repeat;
