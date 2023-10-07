@@ -275,7 +275,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
 
   async createCharge(): Promise<void> {
     moment.locale('es');
-    const nameTeacher = 'Test Teacher'.toUpperCase();
+    const nameTeacher = this.teachers.find((teacher) => teacher.id === this.teacherId)?.fullName?.toUpperCase();
     const nameSemester = this.periodActive.name;
     //calculate total hours of academicCharge in hours
     const totalHours = this.academicCharge.reduce((acc, curr) => acc + (curr?.hours || 0), 0);
