@@ -147,8 +147,11 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
   private loadLastSection(): void {
     this.sub$.add(
-      this.sectionsService.getData$().subscribe((data) => {
-        this.sections = data as any;
+      this.sectionsService.getSections$({
+        periodId: this.periodId,
+        subjectId: this.subjectId,
+      }).subscribe((data) => {
+        this.sections = data;
         if (data?.length) {
           const lastSection = data?.reduce((prev, current) => {
             return +prev.name > +current.name ? prev : current;
@@ -161,15 +164,6 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
         }
       })
     );
-    if (!this.sectionId) {
-      this.sub$.add(
-        this.sectionsService
-          .get({
-            subjectId: this.subjectId,
-            periodId: this.periodId,
-          })
-      );
-    }
   }
 
   private createForm(): void {

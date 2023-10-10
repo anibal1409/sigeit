@@ -152,7 +152,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
         .getDays$()
         .subscribe((days) => {
           console.log(days);
-          
+
           this.days = days;
           this.displayedColumns = ['hora'];
           days.forEach((day) => {
@@ -591,7 +591,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
             new Paragraph({
               children: [
                 new TextRun({
-                  text: 'Maturín, ' + moment().format('DD MMMM') + ' de ' + moment().format('YYYY'),
+                  text: 'Maturín, ' + moment('2023-10-16').format('DD MMMM') + ' de ' + moment().format('YYYY'),
                   size: '12pt',
                 }),
               ],
@@ -674,9 +674,9 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
                 ...this.academicCharge.map(
                   (charge, index) => (new TableRow({
                     children: [
-                      this.createCellTable(this.calculeText(this.academicCharge, index) ? '' : charge.section?.subject?.code || '', 20),
-                      this.createCellTable(this.calculeText(this.academicCharge, index) ? '' : charge.section?.subject?.name || '', 30, AlignmentType.LEFT),
-                      this.createCellTable(this.calculeText(this.academicCharge, index) ? '' : charge.section?.name || '', 10),
+                      this.createCellTable(this.calculeText(this.academicCharge, index, charge.section?.subject?.code) ? '' : charge.section?.subject?.code || '', 20),
+                      this.createCellTable(this.calculeText(this.academicCharge, index, charge.section?.subject?.name) ? '' : charge.section?.subject?.name || '', 30, AlignmentType.LEFT),
+                      this.createCellTable(this.calculeText(this.academicCharge, index, charge.section?.name) ? '' : charge.section?.name || '', 10),
                       this.createCellTable(charge.day?.abbreviation || '', 10),
                       this.createCellTable(charge.classroom?.name || '', 10),
                       this.createCellTable(charge.start || '', 10),
@@ -820,12 +820,13 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
     });
   }
 
-  calculeText(academicCharge: Array<ScheduleItemVM>, index: number): boolean {
+  calculeText(academicCharge: Array<ScheduleItemVM>, index: number, str: string = ''): boolean {
     let repeat = false;
     if (index !== 0) {
-      repeat = academicCharge[index - 1].section?.subject?.code === academicCharge[index].section?.subject?.code &&
-        academicCharge[index - 1].section?.subject?.name === academicCharge[index].section?.subject?.name &&
-        academicCharge[index - 1].section?.name === academicCharge[index].section?.name;
+      repeat = (academicCharge[index - 1].section?.subject?.code === str ||
+        academicCharge[index - 1].section?.subject?.name === str ||
+        academicCharge[index - 1].section?.name === str) && 
+        academicCharge[index - 1].section?.subject?.code === academicCharge[index].section?.subject?.code;
     }
 
     return repeat;

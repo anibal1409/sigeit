@@ -73,6 +73,10 @@ export class SectionsService extends ListComponentService<SectionItemVM, Section
   getActivePeriod$(): Observable<PeriodVM> {
     return this.activePeriodService.exec();
   }
+
+  getSections$(data: SectionBaseQuery): Observable<Array<SectionItemVM>> {
+    return this.getEntityService.exec(data, false);
+  }
 }
 
 

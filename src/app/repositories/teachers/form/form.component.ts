@@ -122,7 +122,7 @@ export class FormComponent implements OnInit, OnDestroy {
       firstName: [null, [Validators.required]],
       id: [0],
       status: [true, [Validators.required]],
-      email: [null, [Validators.required, Validators.email]],
+      email: [null, [Validators.email]],
       departmentId: [null, [Validators.required]],
     });
 

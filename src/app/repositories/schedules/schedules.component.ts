@@ -232,8 +232,13 @@ export class SchedulesComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('sectionId')?.valueChanges.subscribe((sectionId) => {
+        this.teacherId = 0;
         this.sectionId = +sectionId;
         if (sectionId) {
+          const section = this.sections.find((s) => s.id === sectionId);
+          if (section?.teacher?.id) {
+            this.teacherId = section.teacher.id;
+          }
           this.loadSchedules();
           this.validateForm();
         }
@@ -334,8 +339,10 @@ export class SchedulesComponent implements OnInit, OnDestroy {
   clickOption(event: OptionAction): void {
     switch (event.option.value) {
       case RowActionSchedule.update:
-        this.scheduleId = +event.data['id'];
-        this.changeShowForm(true);
+        if (this.teacherId) {
+          this.scheduleId = +event.data['id'];
+          this.changeShowForm(true);
+        }
         break;
       case RowActionSchedule.delete:
         this.showConfirm(event.data as any);

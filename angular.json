@@ -44,7 +44,8 @@
               "lodash",
               "jquery",
               "moment",
-              "escape-string-regexp"
+              "escape-string-regexp",
+              "file-saver"
             ]
           },
           "configurations": {

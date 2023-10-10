@@ -7,6 +7,7 @@ import { SectionVM } from './section-vm';
 export interface SectionItemVM extends SectionVM {
   subject?: SubjectItemVM;
   schedules?: Array<ScheduleItemVM>;
+  nameTeacher?: string;
   options?: {
     options?: Array<RowOptionVM<RowActionSection>>;
   };

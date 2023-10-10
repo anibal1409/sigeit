@@ -130,11 +130,9 @@ export class SectionsComponent implements OnInit, OnDestroy {
     localStorage.setItem('sigeit_section_params', JSON.stringify({}));
     this.sub$.unsubscribe();
     this.modal = false;
-    this.data = {
-      ...this.data,
-      body: [],
-    };
-    this.tableService.setData(this.data);
+    console.log('ngOnDestroy');
+    
+    this.cleanList();
   }
 
   ngOnInit(): void {
@@ -149,6 +147,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.sectionsService.getData$().subscribe((data) => {
+        console.log('data');
         this.data = {
           ...this.data,
           body: data || [],
@@ -170,6 +169,15 @@ export class SectionsComponent implements OnInit, OnDestroy {
     this.loadDepartments();
   }
 
+  cleanList(): void {
+    this.data = {
+      ...this.data,
+      body: [],
+    };
+
+    this.tableService.setData(this.data);
+  }
+
   private createForm(): void {
     this.form = this.fb.group({
       departmentId: [null, [Validators.required]],
@@ -179,17 +187,13 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('departmentId')?.valueChanges.subscribe((departmentId) => {
+        console.log('departmentId');
         this.departmentId = departmentId;
         this.semester = 0;
         this.subjectId = 0;
         this.sectionId = 0;
         this.showForm = false;
-        this.data = {
-          ...this.data,
-          body: [],
-        };
-
-        this.tableService.setData(this.data);
+        this.cleanList();
 
         if (departmentId) {
           this.semester = this.semesters[0].id;
@@ -225,7 +229,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
         this.subjectId = subjectId;
         this.sectionId = 0;
         this.showForm = false;
-        this
+        this.cleanList();
         if (subjectId) {
           this.form.patchValue({
             sectionId: null,

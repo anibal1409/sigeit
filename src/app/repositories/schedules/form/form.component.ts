@@ -229,7 +229,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
   private validateTeacherSchedules(values: any): void {
     this.teacherScheduleClash = '';
-    if (this.form.valid) {
+    if (this.form.valid && this.teacherId && this.periodId) {
       const data = {
         ...values,
         classroomId: values?.classroomId?.id || values?.classroomId,
@@ -238,6 +238,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       this.sub$.add(
         this.schedulesService.validateTeacherSchedules$(data, this.teacherId, this.periodId).subscribe(
           (schedules: Array<ScheduleItemVM>) => {
+            console.log(schedules);
+            
 
             const collapsedSchedules = schedules
               ?.filter((schedule: ScheduleItemVM) => schedule.id !== this.scheduleId)
