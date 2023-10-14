@@ -7,10 +7,7 @@ import {
   tap,
 } from 'rxjs';
 
-import {
-  capitalize,
-  UseCase,
-} from '../../../../common';
+import { UseCase } from '../../../../common';
 import { Teacher2TeacherItemVM } from '../../mappers';
 import { TeacherMemoryService } from '../../memory';
 import {
@@ -32,8 +29,8 @@ export class CreateTeacherService
       .teacherControllerCreate({
         status: !!entitySave.status,
         department: { id: entitySave.departmentId },
-        firstName: capitalize(entitySave.firstName),
-        lastName: capitalize(entitySave.lastName),
+        firstName: entitySave.firstName,
+        lastName: entitySave.lastName,
         idDocument: entitySave.idDocument,
         email: entitySave.email,
       })

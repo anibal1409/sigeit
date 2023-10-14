@@ -7,10 +7,7 @@ import {
   tap,
 } from 'rxjs';
 
-import {
-  capitalize,
-  UseCase,
-} from '../../../../common';
+import { UseCase } from '../../../../common';
 import { Department2DepartmentItemVM } from '../../mappers';
 import { DepartmentsMemoryService } from '../../memory';
 import {
@@ -30,7 +27,7 @@ export class UpdateDepartmentService
   exec(departmentSave: DepartmentVM): Observable<DepartmentItemVM | null> {
     return this.departmentService
       .departmentControllerUpdate({
-        name: capitalize(departmentSave.name),
+        name: departmentSave.name,
         status: !!departmentSave.status,
         logo: departmentSave.logo,
         description: departmentSave.description,

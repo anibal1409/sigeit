@@ -151,8 +151,6 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
       this.schedulesService
         .getDays$()
         .subscribe((days) => {
-          console.log(days);
-
           this.days = days;
           this.displayedColumns = ['hora'];
           days.forEach((day) => {
@@ -201,7 +199,6 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
             departmentId: this.allTeachers ? undefined : this.departmentId,
           })
           .subscribe((schedules) => {
-            console.log(schedules);
             this.academicCharge = schedules;
             this.clearSchedule();
 

@@ -95,8 +95,6 @@ export class PeriodsComponent implements OnInit, OnDestroy {
   }
   
   clickAction(option: OptionAction) {
-    console.log(option);
-    
     switch (option.option.value) {
       case RowActionPeriod.update:
         this.showModal(+option.data['id']);

@@ -7,10 +7,7 @@ import {
   tap,
 } from 'rxjs';
 
-import {
-  capitalize,
-  UseCase,
-} from '../../../../common';
+import { UseCase } from '../../../../common';
 import { Department2DepartmentItemVM } from '../../mappers';
 import { DepartmentsMemoryService } from '../../memory';
 import {
@@ -31,7 +28,7 @@ export class CreateDepartmentService
     return this.departmentService
       .departmentControllerCreate({
         abbreviation: departmentSave.abbreviation,
-        name: capitalize(departmentSave.name),
+        name: departmentSave.name,
         status: !!departmentSave.status,
         logo: departmentSave.logo,
         description: departmentSave.description,

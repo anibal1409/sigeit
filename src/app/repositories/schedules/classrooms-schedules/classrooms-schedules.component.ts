@@ -165,9 +165,7 @@ export class ClassroomsSchedulesComponent
               this.classrooms.map(() => {
                 return { text: '', schedules: [] };
               })
-            );
-            console.log(data);
-            
+            );            
 
             data?.forEach((schedule) => {
               const classroomIndex = this.classrooms.findIndex(

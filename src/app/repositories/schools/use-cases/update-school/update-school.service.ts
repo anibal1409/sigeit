@@ -7,10 +7,7 @@ import {
   tap,
 } from 'rxjs';
 
-import {
-  capitalize,
-  UseCase,
-} from '../../../../common';
+import { UseCase } from '../../../../common';
 import { School2SchoolItemVM } from '../../mappers';
 import { SchoolMemoryService } from '../../memory';
 import {
@@ -30,7 +27,7 @@ export class UpdateSchoolService
   exec(schoolSave: SchoolVM): Observable<SchoolItemVM | null> {
     return this.schoolService
       .schoolControllerUpdate({
-        name: capitalize(schoolSave.name),
+        name: schoolSave.name,
         status: !!schoolSave.status,
         logo: schoolSave.logo,
         description: schoolSave.description,

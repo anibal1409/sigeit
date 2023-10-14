@@ -8,7 +8,6 @@ import {
 } from 'rxjs';
 
 import { UseCase } from '../../../../common/memory-repository';
-import { capitalize } from '../../../../common/text';
 import { Subject2SubjectItemVM } from '../../mappers';
 import { SubjectMemoryService } from '../../memory';
 import {
@@ -28,7 +27,7 @@ export class CreateSubjectService
   exec(entitySave: SubjectVM): Observable<SubjectItemVM | null> {
     return this.entityServices
       .subjectControllerCreate({
-        name: capitalize(entitySave.name),
+        name: entitySave.name,
         status: !!entitySave.status,
         code: entitySave.code,
         credits: entitySave.credits,

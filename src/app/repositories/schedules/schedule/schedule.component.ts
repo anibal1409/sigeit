@@ -127,45 +127,41 @@ export class ScheduleComponent implements OnInit, OnDestroy, OnChanges {
         this.schedulesService
           .getSchedules$({ classroomId, periodId: this.periodId })
           .subscribe((schedules) => {
-            try {
-              this.dataScheduleByClassroom = this.startIntervals.map(() =>
-                this.days.map(() => {
-                  return { text: '', schedules: [] };
-                })
+            this.dataScheduleByClassroom = this.startIntervals.map(() =>
+              this.days.map(() => {
+                return { text: '', schedules: [] };
+              })
+            );
+
+            schedules.forEach((schedule) => {
+              const dayIndex = this.days.findIndex(
+                (day) => day.id === schedule.day?.id
               );
-  
-              schedules.forEach((schedule) => {
-                const dayIndex = this.days.findIndex(
-                  (day) => day.id === schedule.day?.id
-                );
-                const startIndex = this.startIntervals.indexOf(schedule.start);
-                const endIndex = this.endIntervals.indexOf(schedule.end);
-  
-                for (let i = startIndex; i <= endIndex; i++) {
-                  
-                  this.dataScheduleByClassroom[i][dayIndex].schedules.push(schedule);
-                  if (this.dataScheduleByClassroom[i][dayIndex]?.text) {
-                    this.dataScheduleByClassroom[i][dayIndex].text = 'Varias';
-                  } else {
-                    this.dataScheduleByClassroom[i][
-                      dayIndex
-                    ].text = `${schedule.section?.name} - ${schedule.section?.subject?.name}`;
-                  }
+              const startIndex = this.startIntervals.indexOf(schedule.start);
+              const endIndex = this.endIntervals.indexOf(schedule.end);
+
+              for (let i = startIndex; i <= endIndex; i++) {
+                
+                this.dataScheduleByClassroom[i][dayIndex].schedules.push(schedule);
+                if (this.dataScheduleByClassroom[i][dayIndex]?.text) {
+                  this.dataScheduleByClassroom[i][dayIndex].text = 'Varias';
+                } else {
+                  this.dataScheduleByClassroom[i][
+                    dayIndex
+                  ].text = `${schedule.section?.name} - ${schedule.section?.subject?.name}`;
                 }
-              });
-  
-              this.dataSourceByClassroom = this.startIntervals.map(
-                (hora, index) => {
-                  const row: any = { hora };
-                  this.days.forEach((day, dayIndex) => {
-                    row[day.name] = this.dataScheduleByClassroom[index][dayIndex];
-                  });
-                  return row;
-                }
-              );
-            } catch (error) {
-              console.log(error);
-            }
+              }
+            });
+
+            this.dataSourceByClassroom = this.startIntervals.map(
+              (hora, index) => {
+                const row: any = { hora };
+                this.days.forEach((day, dayIndex) => {
+                  row[day.name] = this.dataScheduleByClassroom[index][dayIndex];
+                });
+                return row;
+              }
+            );
           })
       );
     }
@@ -178,7 +174,6 @@ export class ScheduleComponent implements OnInit, OnDestroy, OnChanges {
   private subClassrooms(): void {
     this.sub$.add(
       this.classroomCtrl?.valueChanges.subscribe((classroomId) => {
-        console.log(classroomId);
         if (classroomId) {
           this.loadSchedulesClassroom();
         }

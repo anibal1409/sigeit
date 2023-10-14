@@ -130,8 +130,6 @@ export class SectionsComponent implements OnInit, OnDestroy {
     localStorage.setItem('sigeit_section_params', JSON.stringify({}));
     this.sub$.unsubscribe();
     this.modal = false;
-    console.log('ngOnDestroy');
-    
     this.cleanList();
   }
 
@@ -147,7 +145,6 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.sectionsService.getData$().subscribe((data) => {
-        console.log('data');
         this.data = {
           ...this.data,
           body: data || [],
@@ -187,7 +184,6 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('departmentId')?.valueChanges.subscribe((departmentId) => {
-        console.log('departmentId');
         this.departmentId = departmentId;
         this.semester = 0;
         this.subjectId = 0;

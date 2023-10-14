@@ -143,7 +143,6 @@ export class PlannedSchedulesComponent {
     this.loadDepartments();
     this.sub$.add(
       this.departmentCtrl?.valueChanges.subscribe((departmentId) => {
-        console.log('departmentId', departmentId);
         this.departmentId = +departmentId;
         if (departmentId) {
           this.loadSchedules();
@@ -198,7 +197,6 @@ export class PlannedSchedulesComponent {
             })
           )
           .subscribe((schedules) => {
-            console.log(schedules);
             this._alldata = schedules;
             this.dataSource.data = this.addGroups(
               this._alldata,
