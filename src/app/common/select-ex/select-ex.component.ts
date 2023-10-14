@@ -199,9 +199,13 @@ export class SelectExComponent implements OnInit, OnChanges, ControlValueAccesso
       .pipe(
         startWith(''),
         map((name) => {
+          
           let items = this.items.slice();
           if (name) {
-            items = this.items.filter(item => searchCallback(item[this.optionTextField], name?.toString()) || item[this.optionValueField] === name);;
+            
+            items = items.filter(item => {
+              return searchCallback(name?.toString(), item[this.optionTextField]) || item[this.optionValueField] === name;
+            });
           }
 
           return items;

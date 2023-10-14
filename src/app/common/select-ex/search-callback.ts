@@ -3,16 +3,19 @@
  */
 export function searchCallback(search: string, item: string): boolean {
   const length = search && search.length;
-  const searchTerm = search && search.trim();
+  const searchTerm = search && search.trim().toLowerCase();
   if (search && search.length && !search.trim()) {
     return false;
   }
   if (searchTerm) {
     const searchRagesp = new RegExp(
-      NormalizeWords(searchTerm).toLowerCase(),
-      'ig'
+      NormalizeWords(searchTerm),
+      'gi'
     );
-    const normalizedItem = NormalizeWords(item);
+    //verificar si el item esta en la busqueda
+
+    const normalizedItem = NormalizeWords(item.toLowerCase());
+    
     return (searchRagesp.test(normalizedItem));
   } else if (!length) {
     return true;
