@@ -281,9 +281,13 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
       return;
     }
     moment.locale('es');
+    let codeDepartment = localStorage.getItem('codeDepartment') || 46;
+    codeDepartment = +codeDepartment;
+    codeDepartment++;
     const nameTeacher = this.teachers.find((teacher) => teacher.id === this.teacherId)?.fullName?.toUpperCase();
     const nameSemester = this.periodActive.name;
     const totalHours = this.academicCharge.reduce((acc, curr) => acc + (curr?.hours || 0), 0);
+    const code = `DIS-${codeDepartment < 99 ? `0${codeDepartment}` : codeDepartment}/${moment().format('YYYY')}`;
     const img = await this.schedulesService.getFile('assets/circle-logo-udo.png');
     const doc = new Document({
       sections: [
@@ -600,12 +604,12 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
             new Paragraph({
               children: [
                 new TextRun({
-                  text: 'DIS-0XX/' + moment().format('YYYY'),
+                  text: code,
                   size: '12pt',
-                  shading: {
-                    type: ShadingType.CLEAR,
-                    fill: 'FFFF00',
-                  }
+                  // shading: {
+                  //   type: ShadingType.CLEAR,
+                  //   fill: 'FFFF00',
+                  // }
                 }),
               ],
               alignment: AlignmentType.RIGHT,
@@ -652,6 +656,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
                   size: '12pt',
                 }),
               ],
+              alignment: AlignmentType.JUSTIFIED,
             }),
             new Paragraph({}),
             new Table({
@@ -699,10 +704,11 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
             new Paragraph({
               children: [
                 new TextRun({
-                  text: `En tal sentido, le auguro un semestre de éxitos profesionales y de buenos rendimientos para los estudiantes que cursan las(s) asignatura(s) que usted dictará en la Carrera de Ingeniería de Sistemas y en pro de enaltecer a nuestra Casa más Alta.`,
+                  text: `En tal sentido, le auguro un semestre de éxitos profesionales y de buenos rendimientos para los estudiantes que cursan la(s) asignatura(s) que usted dictará en la Carrera de Ingeniería de Sistemas y en pro de enaltecer a nuestra Casa más Alta.`,
                   size: '12pt',
                 }),
               ],
+              alignment: AlignmentType.JUSTIFIED,
             }),
             new Paragraph({}),
             new Paragraph({
@@ -768,7 +774,8 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
     });
 
     Packer.toBlob(doc).then(blob => {
-      saveAs(blob, `carga-académica-${nameTeacher?.replace(' ', '').replace(',', '-')}-${nameSemester}.docx`);
+      saveAs(blob, `${code}-CA-${nameTeacher?.replaceAll(/ /gi, '-')?.replaceAll(',', '')}-${nameSemester}.docx`);
+      localStorage.setItem('codeDepartment', codeDepartment.toString())
     });
   }
 
