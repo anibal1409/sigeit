@@ -1,4 +1,4 @@
-import { Schedule2ScheduleItemVM } from '../../scheludes/mappers';
+import { Schedule2ScheduleItemVM } from '../../schedules/mappers';
 import { Subject2SubjectItemVM } from '../../subjects';
 import { Teacher2TeacherVM } from '../../teachers/mappers';
 import { SectionItemVM } from '../model';

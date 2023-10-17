@@ -4,7 +4,7 @@ import {
   BaseQuery,
   ListComponentService,
 } from '../../common/memory-repository';
-import { IntervalsService } from '../scheludes/use-cases/intervals';
+import { IntervalsService } from '../schedules/use-cases';
 import { PeriodMemoryService } from './memory';
 import { PeriodItemVM } from './model';
 import {
