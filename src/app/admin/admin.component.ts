@@ -4,20 +4,16 @@ import {
   OnInit,
 } from '@angular/core';
 import {
-  ActivatedRoute,
   NavigationEnd,
   Router,
 } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 
-import { SettingsService } from '../repositories/settings/settings.service';
-
-interface optionItem {
-  name: string;
-  value: string;
-  icon: string;
-}
+import { UserStateService } from '../common/user-state';
+import { AdminService } from './admin.service';
+import { MENU } from './data';
+import { optionMenu } from './models';
 
 @Component({
   selector: 'app-admin',
@@ -31,63 +27,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     name: '',
   };
 
-  optionList: optionItem[] = [
-    {
-      name: 'Asignaturas',
-      value: 'subjects',
-      icon: 'class',
-    },
-    {
-      name: 'Aulas',
-      value: 'classrooms',
-      icon: 'door_sliding',
-    },
-    {
-      name: 'Carreras',
-      value: 'careers',
-      icon: 'school',
-    },
-    {
-      name: 'Configuraciones',
-      value: 'settings',
-      icon: 'settings',
-    },
-    {
-      name: 'Departamentos',
-      value: 'departments',
-      icon: 'apartment',
-    },
-    {
-      name: 'Escuelas',
-      value: 'schools',
-      icon: 'local_library',
-    },
-    {
-      name: 'Horarios',
-      value: 'scheludes',
-      icon: 'date_range',
-    },
-    {
-      name: 'Periodos\nAcademicos',
-      value: 'periods',
-      icon: 'hourglass_empty',
-    },
-    {
-      name: 'Profesores',
-      value: 'teachers',
-      icon: 'account_box',
-    },
-    {
-      name: 'Secciones',
-      value: 'sections',
-      icon: 'cast_for_education',
-    },
-    {
-      name: 'Usuarios',
-      value: 'users',
-      icon: 'person',
-    },
-  ];
+  optionList: Array<optionMenu> = [];
 
   pages = [
     {
@@ -138,14 +78,18 @@ export class AdminComponent implements OnInit, OnDestroy {
       path: '/dashboard/users',
       title: 'Usuarios',
     },
+    {
+      path: '/dashboard/formats',
+      title: 'Formatos',
+    },
   ];
 
   sub$ = new Subscription();
 
   constructor(
-    private activatedRoute: ActivatedRoute,
     private router: Router,
-    private settingsService: SettingsService
+    private userStateService: UserStateService,
+    private adminService: AdminService,
   ) { }
 
   ngOnDestroy(): void {
@@ -161,15 +105,37 @@ export class AdminComponent implements OnInit, OnDestroy {
         }
       })
     );
+    const role = this.userStateService.getRole();
+    if (role) {
+      this.optionList = MENU.filter((item) => (item.permissions.includes(role as any)))
+      .sort((a, b) => {
+        let sort = 0;
+        if (a.name > b.name) {
+          sort = 1;
+        } else if (a.name < b.name) {
+          sort = -1;
+        }
+        
+        return sort;
+      }
+      );
+      this.optionList.push({
+        name: 'Salir',
+        icon: 'logout',
+        permissions: [],
+        value: 'logout',
+      });
+    }
+    
   }
 
-  menuOption(option?: optionItem): void {
-    if (option && option.name !== 'Configuraciones') {
+  menuOption(option?: optionMenu): void {
+    if (option && option.name === 'Salir') {
+      this.adminService.logout();
+    } else if (option) {
       this.router.navigate([`/dashboard/${option.value}`]);
     } else if (!option) {
       this.title = 'SIGEIT';
-    } else {
-      this.settingsService.open();
     }
   }
 

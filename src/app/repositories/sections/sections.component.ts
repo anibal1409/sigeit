@@ -18,10 +18,6 @@ import {
   MAT_DIALOG_DATA,
   MatDialog,
 } from '@angular/material/dialog';
-import {
-  ActivatedRoute,
-  Router,
-} from '@angular/router';
 
 import { Subscription } from 'rxjs';
 import {
@@ -121,13 +117,10 @@ export class SectionsComponent implements OnInit, OnDestroy {
     private matDialog: MatDialog,
     @Optional() @Inject(MAT_DIALOG_DATA) private item: any,
     private stateService: StateService,
-    private activatedRouter: ActivatedRoute,
-    private router: Router,
     private userStateService: UserStateService,
   ) { }
 
   ngOnDestroy(): void {
-    localStorage.setItem('sigeit_section_params', JSON.stringify({}));
     this.sub$.unsubscribe();
     this.modal = false;
     this.cleanList();

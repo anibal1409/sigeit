@@ -24,7 +24,7 @@ export class UpdateSubjectService
     private memoryService: SubjectMemoryService,
   ) { }
 
-  exec(entitySave: SubjectVM): Observable<SubjectItemVM | null> {=
+  exec(entitySave: SubjectVM): Observable<SubjectItemVM | null> {
     return this.entityServices
       .subjectControllerUpdate({
         name: entitySave.name,

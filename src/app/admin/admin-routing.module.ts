@@ -90,6 +90,10 @@ const routes: Routes = [
             (m) => m.UsersModule
           ),
       },
+      {
+        path: 'formats',
+        loadChildren: () => import('../repositories/documents/documents.module').then((m) => m.DocumentsModule),
+      }
     ],
   },
 ];

@@ -278,7 +278,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
       return;
     }
     moment.locale('es');
-    let codeDepartment = localStorage.getItem('codeDepartment') || 46;
+    let codeDepartment = sessionStorage.getItem('codeDepartment') || 46;
     codeDepartment = +codeDepartment;
     codeDepartment++;
     const nameTeacher = this.teachers.find((teacher) => teacher.id === this.teacherId)?.fullName?.toUpperCase();
@@ -772,7 +772,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
 
     Packer.toBlob(doc).then(blob => {
       saveAs(blob, `${code}-CA-${nameTeacher?.replaceAll(/ /gi, '-')?.replaceAll(',', '')}-${nameSemester}.docx`);
-      localStorage.setItem('codeDepartment', codeDepartment.toString())
+      sessionStorage.setItem('codeDepartment', codeDepartment.toString())
     });
   }
 

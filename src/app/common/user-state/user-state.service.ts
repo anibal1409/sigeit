@@ -22,17 +22,17 @@ export class UserStateService {
 
   setUser(user: UserStateVM | null): void {
     this.user$.next(user);
-    localStorage.setItem('sigeit-user', JSON.stringify(user));
+    sessionStorage.setItem('sigeit-user', JSON.stringify(user));
   }
 
   clear(): void {
     this.user$.next(null);
-    localStorage.removeItem('sigeit-user');
+    sessionStorage.removeItem('sigeit-user');
   }
 
   getUserStorage(): UserStateVM | null {
     let user = null;
-    const userString = localStorage.getItem('sigeit-user');
+    const userString = sessionStorage.getItem('sigeit-user');
     if (userString) {
       user = JSON.parse(userString) as UserStateVM;
     }
