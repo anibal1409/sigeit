@@ -1,0 +1,59 @@
+:host {
+  width: 18.75rem;
+  max-width: 18.75rem;
+  mat-card {
+    mat-card-header {
+      mat-card-title,
+      mat-card-subtitle {
+        font-size: 0.75rem;
+        line-height: 1rem;
+      }
+    }
+  }
+  mat-accordion.card-schedule {
+    mat-expansion-panel.schedule {
+      box-shadow: none !important;
+      background: transparent !important;
+      mat-expansion-panel-header {
+        height: auto !important;
+        padding: 0 !important;
+      }
+      &::ng-deep {
+        .mat-expansion-panel-body {
+          padding: 0 !important;
+        }
+      }
+      div.mat-expansion-panel-content {
+        div.mat-expansion-panel-body {
+          padding: 0 !important;
+        }
+      }
+    }
+  }
+  
+  mat-list {
+    padding: 0 !important;
+    mat-list-item {
+      padding: 0 !important;
+      .mat-mdc-list-item-title,
+      .mat-mdc-list-item-line {
+        font-size: 0.75rem;
+        line-height: 1rem;
+      }
+    }
+  }
+  .icon-delete {
+    cursor: pointer;
+    display: none;
+  }
+  :hover {
+    .icon-delete {
+      display: initial;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .icon-delete {
+      display: initial;
+    }
+  }
+}

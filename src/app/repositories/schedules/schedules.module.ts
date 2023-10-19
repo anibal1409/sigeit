@@ -4,7 +4,6 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -23,14 +22,20 @@ import { GetClassroomsService } from '../classrooms/use-cases';
 import { GetDepartmentsService } from '../departments/use-cases';
 import { ActivePeriodService } from '../periods/use-cases';
 import { SectionsModule } from '../sections';
-import { GetSetcionsService } from '../sections/use-cases';
+import { GetSectionsService } from '../sections/use-cases';
 import { GetSubjectsService } from '../subjects/use-cases';
 import { GetTeachersService } from '../teachers/use-cases';
+import {
+  AcademicChargeTeacherComponent,
+} from './academic-charge-teacher/academic-charge-teacher.component';
 import {
   ClassroomsSchedulesComponent,
 } from './classrooms-schedules/classrooms-schedules.component';
 import { FormComponent } from './form/form.component';
 import { ScheduleMemoryService } from './memory';
+import {
+  PlannedSchedulesComponent,
+} from './planned-schedules/planned-schedules.component';
 import {
   ScheduleDetailsComponent,
 } from './schedule-details/schedule-details.component';
@@ -50,8 +55,6 @@ import {
   ValidateClassroomSchedulesService,
   ValidateTeacherSchedulesService,
 } from './use-cases';
-import { PlannedSchedulesComponent } from './planned-schedules/planned-schedules.component';
-import { AcademicChargeTeacherComponent } from './academic-charge-teacher/academic-charge-teacher.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +76,6 @@ import { AcademicChargeTeacherComponent } from './academic-charge-teacher/academ
     MatInputModule,
     MatFormFieldModule,
     MatCommonModule,
-    MatAutocompleteModule,
     MatSelectModule,
     ReactiveFormsModule,
     MatCheckboxModule,
@@ -98,7 +100,7 @@ import { AcademicChargeTeacherComponent } from './academic-charge-teacher/academ
     ValidateTeacherSchedulesService,
     GetPlannedSchedulesService,
 
-    GetSetcionsService,
+    GetSectionsService,
     GetDepartmentsService,
     GetTeachersService,
     GetSubjectsService,

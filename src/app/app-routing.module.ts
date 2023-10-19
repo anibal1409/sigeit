@@ -25,7 +25,11 @@ export const routes: Routes = [
     loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
     canActivate: [AuthLoginGuard],
   },
-  { path: '**', redirectTo: '/auth/login', pathMatch: 'full' },
+  {
+    path: 'schedules',
+    loadChildren: () => import('./student-schedules/student-schedules.module').then((m) => m.StudentSchedulesModule),
+  },
+  { path: '**', redirectTo: 'schedules', pathMatch: 'full' },
 ];
 
 @NgModule({

@@ -338,3 +338,8 @@ textarea {
   align-items: center;
   background: rgba(0, 0, 0, 0.32);
 }
+
+mat-card.danger,
+app-card-subject-schedules.danger > mat-card {
+  background-color: #dc354550 !important;
+}

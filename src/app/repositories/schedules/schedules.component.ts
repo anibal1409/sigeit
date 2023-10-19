@@ -42,10 +42,6 @@ import { SchedulesService } from './schedules.service';
 export class SchedulesComponent implements OnInit, OnDestroy {
   form!: FormGroup;
 
-  horario = [];
-
-  dias = ['hora', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes'];
-
   departments: Array<DepartmentVM> = [];
   subjects: Array<SubjectVM> = [];
   semesters: Array<SemesterVM> = SEMESTERS;
@@ -101,7 +97,6 @@ export class SchedulesComponent implements OnInit, OnDestroy {
 
   showForm = false;
   loading = false;
-  reload = true;
   showTableSchedules = false;
 
   private sub$ = new Subscription();

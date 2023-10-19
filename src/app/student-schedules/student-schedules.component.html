@@ -1,0 +1,157 @@
+<div class="mat-container">
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="form!" class="p-2">
+        <div class="row">
+          <div class="col-md-4 col-12">
+            <mat-form-field class="">
+              <mat-label>Carrera</mat-label>
+              <app-select-ex
+                label="Departamento"
+                [items]="careers"
+                formControlName="careerId"
+                placeholder="Seleccione un departamento"
+              >
+                
+              <mat-error *ngIf="form.controls['careerId'].hasError('required')"
+              >Campo requerido</mat-error
+              >
+              </app-select-ex>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-2 col-12">
+            <mat-form-field class="">
+              <mat-label>Semestre</mat-label>
+              <app-select-ex
+                label="Semestre"
+                [items]="semesters"
+                formControlName="semesterId"
+                placeholder="Seleccione un semestre"
+              >
+                
+              <mat-error *ngIf="form.controls['semesterId'].hasError('required')"
+              >Campo requerido</mat-error
+              >
+              </app-select-ex>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-6 col-12">
+            <mat-form-field class="">
+              <mat-label>Asignatura</mat-label>
+              <app-select-ex
+                label="Asignatura"
+                [items]="subjects"
+                formControlName="subjectId"
+                placeholder="Seleccione una asignatura"
+              >
+                
+              <mat-error *ngIf="form.controls['subjectId'].hasError('required')"
+              >Campo requerido</mat-error
+              >
+              </app-select-ex>
+            </mat-form-field>
+          </div>
+
+          <!-- <div class="col-md-4 col-12">
+            <mat-form-field class="">
+              <mat-label>Sección</mat-label>
+              <app-select-ex
+                label="Sección"
+                [items]="sections"
+                formControlName="sectionId"
+                optionTextField="nameTeacher"
+                placeholder="Seleccione una sección"
+              >
+                
+              <mat-error *ngIf="form.controls['sectionId'].hasError('required')"
+              >Campo requerido</mat-error
+              >
+              </app-select-ex>
+            </mat-form-field>
+          </div> -->
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
+<div class="d-flex flex-wrap content-sections">
+  <app-card-section-schedules 
+    *ngFor="let section of sections"
+    [section]="section"
+    (click)="addSection(section)"
+  >
+  </app-card-section-schedules>
+</div>
+<ng-container *ngIf="sectionsSelected?.length">
+  <div class="d-flex justify-content-end content-info">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title-group>
+          <mat-card-subtitle>
+            Asignaturas: {{subjectCounter}}
+          </mat-card-subtitle>
+        </mat-card-title-group>
+      </mat-card-header>
+    </mat-card>
+    <mat-card [ngClass]="{'danger': credits > 18}">
+      <mat-card-header>
+        <mat-card-title-group>
+          <mat-card-subtitle>
+            Creditos: {{credits}}
+          </mat-card-subtitle>
+        </mat-card-title-group>
+      </mat-card-header>
+    </mat-card>
+  </div>
+  <div class="d-flex content-body">
+    <div  class="d-flex flex-column content-subjects align-items-center">
+      <span class="font-weight-bold text-center p-2">
+        Lista de Asignaturas 
+      </span>
+      <app-card-subject-schedules
+        *ngFor="let section of sectionsSelected"
+        [section]="section"
+        [ngClass]="{'danger': !!section?.collapse?.length}"
+        (deleteSection)="addSection(section)"
+      >
+
+      </app-card-subject-schedules>
+    </div>
+    <div class="w-100 mat-container">
+      <div class="schedules" *ngIf="dataSource.length">
+        <mat-card class="table-schedule">
+          <mat-card-content class="mat-card-content">
+            <mat-table [dataSource]="dataSource" class="mat-table">
+              <ng-container matColumnDef="hora" >
+                <mat-header-cell *matHeaderCellDef >Hora/Dia</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{ row.hora }}</mat-cell>
+              </ng-container>
+      
+              <ng-container *ngFor="let day of days" [matColumnDef]="day.name" >
+                <mat-header-cell *matHeaderCellDef>{{ day.name }}</mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                  <span [ngClass]="{'c-pointer': row[day.name]?.text}" (click)="showScheduleDetails(row[day.name]?.schedules || []) ">
+                    {{ row[day.name]?.text || "" }}
+                  </span>
+                </mat-cell>
+              </ng-container>
+      
+              <mat-header-row
+                *matHeaderRowDef="displayedColumns"
+              ></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns">
+              </mat-row>
+            </mat-table>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="mat-container empty-table" *ngIf="!dataSource.length">
+        Seleccione un profesor para visualizar el itinerario
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+

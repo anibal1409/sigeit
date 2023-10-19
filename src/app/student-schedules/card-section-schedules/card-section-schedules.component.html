@@ -1,0 +1,33 @@
+<mat-card class="example-card">
+  <mat-card-header>
+    <mat-card-title-group class="text-break text-nowrap">
+      <mat-card-subtitle class="text-break text-nowrap">
+        {{
+          section.nameTeacher
+        }}
+      </mat-card-subtitle>
+    </mat-card-title-group>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-list >
+      <mat-list-item *ngFor="let schedule of section?.schedules">
+        <span matListItemTitle>
+          {{
+            schedule.day?.name
+          }} - 
+          {{
+            schedule.classroom?.name
+          }}
+        </span>
+        <span matListItemLine>
+          {{
+            schedule.start
+          }} - 
+          {{
+            schedule.end
+          }}
+        </span>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>

@@ -26,7 +26,7 @@ import { SectionsService } from './sections.service';
 import {
   CreateSectionService,
   FindSectionService,
-  GetSetcionsService,
+  GetSectionsService,
   RemoveSectionService,
   UpdateSectionService,
 } from './use-cases';
@@ -57,7 +57,7 @@ import {
     FindSectionService,
     UpdateSectionService,
     RemoveSectionService,
-    GetSetcionsService,
+    GetSectionsService,
     SectionMemoryService,
     ActivePeriodService,
   ],

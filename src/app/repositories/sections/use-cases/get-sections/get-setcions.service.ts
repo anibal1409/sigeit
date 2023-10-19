@@ -16,7 +16,7 @@ import {
 import { UseCase } from '../../../../common/memory-repository';
 
 @Injectable()
-export class GetSetcionsService 
+export class GetSectionsService 
 implements UseCase<Array<SectionItemVM> | null, SectionBaseQuery> {
 
   constructor(

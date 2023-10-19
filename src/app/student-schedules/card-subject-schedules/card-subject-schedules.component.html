@@ -1,0 +1,59 @@
+<mat-card class="example-card">
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>
+        ({{
+          section.subject?.code
+        }})
+        {{
+          section.subject?.name
+        }}
+      </mat-card-title>
+      <mat-card-subtitle class="text-break text-nowrap">
+        Sección: {{
+          section?.nameTeacher
+        }}
+      </mat-card-subtitle>      
+      <mat-icon class="icon-delete" mat-card-sm-image (click)="deleteSectionClick()">delete</mat-icon>
+    </mat-card-title-group>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-accordion class="card-schedule" *ngIf="!!section?.collapse?.length">
+      <mat-expansion-panel class="schedule">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Choques de horarios
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list >
+          <mat-list-item *ngFor="let schedule of section?.collapse">
+            <span matListItemTitle>
+              {{
+                schedule.section?.subject?.name
+              }} 
+              Sección: {{
+                schedule.section?.name
+              }}
+            </span>
+            <span matListItemLine>
+              {{
+                schedule.day?.name
+              }}: 
+              {{
+                schedule.start
+              }} - 
+              {{
+                schedule.end
+              }}
+            </span>
+          </mat-list-item>
+        </mat-list>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-card-content>
+  <!-- <mat-card-actions align="end">
+    <button mat-button (click)="deleteSectionClick()">
+      <mat-icon (click)="deleteSectionClick()">delete</mat-icon>
+    </button>
+  </mat-card-actions> -->
+</mat-card>

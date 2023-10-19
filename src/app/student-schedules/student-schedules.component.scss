@@ -1,0 +1,42 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  gap: 1rem;
+  mat-form-field {
+    width: 100%;
+  }
+  .schedules {
+    overflow: auto;
+  }
+  .mat-container {
+    box-sizing: border-box;
+  }
+  .table-schedule {
+    min-width: 60rem;
+  }
+  
+  mat-card-header {
+  }
+  .content-info {
+    gap: 1rem;
+  }
+  .content-body {
+    gap: 1rem;
+  }
+    
+  @media screen and (max-width: 768px) {
+    .container {
+      padding: 0.5rem;
+    }
+    .content-body {
+      flex-direction: column-reverse;
+    }
+  }
+  .content-sections {
+    gap: 1rem;
+  }
+  .content-subjects {
+    gap: 0.5rem;
+  }
+}

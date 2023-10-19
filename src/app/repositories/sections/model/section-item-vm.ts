@@ -8,6 +8,7 @@ export interface SectionItemVM extends SectionVM {
   subject?: SubjectItemVM;
   schedules?: Array<ScheduleItemVM>;
   nameTeacher?: string;
+  collapse?: Array<ScheduleItemVM>;
   options?: {
     options?: Array<RowOptionVM<RowActionSection>>;
   };

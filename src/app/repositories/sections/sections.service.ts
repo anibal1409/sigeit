@@ -28,7 +28,7 @@ import {
 import {
   CreateSectionService,
   FindSectionService,
-  GetSetcionsService,
+  GetSectionsService,
   RemoveSectionService,
   UpdateSectionService,
 } from './use-cases';
@@ -37,7 +37,7 @@ import {
 export class SectionsService extends ListComponentService<SectionItemVM, SectionBaseQuery> {
 
   constructor(
-    public getEntityService: GetSetcionsService,
+    public getEntityService: GetSectionsService,
     public memoryEntityService: SectionMemoryService,
     public createEntityService: CreateSectionService,
     public deleteEntityService: RemoveSectionService,

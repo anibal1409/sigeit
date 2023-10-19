@@ -1,0 +1,13 @@
+:host {
+  width: 16.5rem;
+  min-width: 16.5rem;
+  mat-list {
+    padding: 0 !important;
+    mat-list-item {
+      padding: 0 !important;
+      .mat-mdc-list-item-title {
+        font-size: 0.875rem !important;
+      }
+    }
+  }
+}

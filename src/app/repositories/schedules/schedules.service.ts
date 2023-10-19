@@ -23,7 +23,7 @@ import {
   SectionBaseQuery,
   SectionItemVM,
 } from '../sections';
-import { GetSetcionsService } from '../sections/use-cases';
+import { GetSectionsService } from '../sections/use-cases';
 import {
   SubjectBaseQuery,
   SubjectVM,
@@ -70,7 +70,7 @@ export class SchedulesService extends ListComponentService<ScheduleItemVM, Sched
     private getTeachersService: GetTeachersService,
     private getSubjectsService: GetSubjectsService,
     private activePeriodService: ActivePeriodService,
-    private getSetcionsService: GetSetcionsService,
+    private getSetcionsService: GetSectionsService,
     private getClassroomsService: GetClassroomsService,
     private getDaysService: GetDaysService,
     private intervalsService: IntervalsService,

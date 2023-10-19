@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GetSetcionsService } from './get-setcions.service';
+import { GetSectionsService } from './get-setcions.service';
 
 describe('GetSetcionsService', () => {
-  let service: GetSetcionsService;
+  let service: GetSectionsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GetSetcionsService);
+    service = TestBed.inject(GetSectionsService);
   });
 
   it('should be created', () => {
