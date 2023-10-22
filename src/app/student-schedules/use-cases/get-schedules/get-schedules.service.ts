@@ -32,6 +32,7 @@ implements UseCase<Array<ScheduleItemVM>, ScheduleBaseQuery> {
         data?.dayId,
         data?.classroomId,
         data?.departmentId,
+        data?.status,
       )
       .pipe(
         map((entities: any) => entities.map(Schedule2ScheduleItemVM)),

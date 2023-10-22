@@ -39,6 +39,7 @@ export class PlannedSchedulesComponent {
   periodId!: number;
   period!: PeriodVM;
   departmentId!: number;
+  departmentIdUser!: number;
 
   dataSource = new MatTableDataSource<any | Group>([]);
 
@@ -116,6 +117,8 @@ export class PlannedSchedulesComponent {
   }
 
   ngOnInit() {
+    this.departmentIdUser = this.userStateService.getDepartmentId() || 0;
+    this.departmentId = this.departmentIdUser;
     this.sub$.add(
       this.schedulesService.getLoading$().subscribe((loading) => {
         this.loading = loading;
@@ -154,6 +157,9 @@ export class PlannedSchedulesComponent {
         if (period?.id) {
           this.periodId = period.id;
           this.period = period;
+          if (this.departmentIdUser) {
+            this.loadSchedules();
+          }
         }
       })
     );
@@ -174,13 +180,17 @@ export class PlannedSchedulesComponent {
         .subscribe((departaments) => {
           this.departments = departaments;
           if (departaments?.length) {
-            this.departmentCtrl.patchValue(departaments[0]?.id);
+            if (this.departmentIdUser) {
+              this.loadSchedules();
+            }
           }
         })
     );
   }
 
   private loadSchedules(): void {
+    console.log(this.periodId, this.departmentId);
+    
     if (this.periodId && this.departmentId) {
       this.loading = true;
       this.stateService.setLoading(this.loading);

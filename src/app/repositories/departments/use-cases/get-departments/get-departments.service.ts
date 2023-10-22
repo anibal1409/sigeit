@@ -27,6 +27,7 @@ implements UseCase<Array<DepartmentItemVM> | null, DepartmentBaseQuery> {
   exec(data: DepartmentBaseQuery = {}, memory = true): Observable<Array<DepartmentItemVM>> {
     return this.departmentService.departmentControllerFindAll(
       data?.schoolId,
+      data?.status,
     )
     .pipe(
       map((departments: any) => departments.map(Department2DepartmentItemVM)),

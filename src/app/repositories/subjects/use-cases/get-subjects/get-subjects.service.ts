@@ -29,6 +29,7 @@ implements UseCase<Array<SubjectItemVM> | null, SubjectBaseQuery> {
       data?.semester,
       data?.carrerId,
       data?.departmentId,
+      data?.status,
     )
     .pipe(
       map((entities: any) => entities.map(Subject2SubjectItemVM)),

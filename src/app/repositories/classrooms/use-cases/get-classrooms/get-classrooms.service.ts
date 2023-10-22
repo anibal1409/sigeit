@@ -28,6 +28,7 @@ implements UseCase<Array<ClassroomItemVM> | null, ClassroomBaseQuery> {
     return this.entityServices.classroomControllerFindAll(
       data?.id,
       data?.departmentId,
+      data?.status,
     )
     .pipe(
       map((entities: any) => entities.map(Classroom2ClassroomItemVM)),

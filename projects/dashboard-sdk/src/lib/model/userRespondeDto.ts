@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Career } from './career';
 import { Department } from './department';
 import { School } from './school';
 import { Teacher } from './teacher';
@@ -28,4 +29,6 @@ export interface UserRespondeDto {
     school: School;
     departmentId: number;
     department: Department;
+    careerId: number;
+    career: Career;
 }

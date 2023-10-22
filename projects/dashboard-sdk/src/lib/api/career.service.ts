@@ -108,13 +108,30 @@ export class CareerService {
     /**
      * 
      * 
+     * @param schoolId 
+     * @param departmentId 
+     * @param status 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public careerControllerFindAll(observe?: 'body', reportProgress?: boolean): Observable<Array<Career>>;
-    public careerControllerFindAll(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Career>>>;
-    public careerControllerFindAll(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Career>>>;
-    public careerControllerFindAll(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public careerControllerFindAll(schoolId?: number, departmentId?: number, status?: boolean, observe?: 'body', reportProgress?: boolean): Observable<Array<Career>>;
+    public careerControllerFindAll(schoolId?: number, departmentId?: number, status?: boolean, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Career>>>;
+    public careerControllerFindAll(schoolId?: number, departmentId?: number, status?: boolean, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Career>>>;
+    public careerControllerFindAll(schoolId?: number, departmentId?: number, status?: boolean, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (schoolId !== undefined && schoolId !== null) {
+            queryParameters = queryParameters.set('schoolId', <any>schoolId);
+        }
+        if (departmentId !== undefined && departmentId !== null) {
+            queryParameters = queryParameters.set('departmentId', <any>departmentId);
+        }
+        if (status !== undefined && status !== null) {
+            queryParameters = queryParameters.set('status', <any>status);
+        }
 
         let headers = this.defaultHeaders;
 
@@ -133,6 +150,7 @@ export class CareerService {
 
         return this.httpClient.request<Array<Career>>('get',`${this.basePath}/career`,
             {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

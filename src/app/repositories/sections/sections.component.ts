@@ -101,6 +101,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
   semester!: number;
   subjectId!: number;
   sectionId!: number;
+  departmentIdUser!: number;
 
   showForm = false;
 
@@ -127,6 +128,8 @@ export class SectionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.departmentIdUser = this.userStateService.getDepartmentId() || 0;
+    this.departmentId = this.departmentIdUser;
     this.createForm();
 
     this.sub$.add(
@@ -177,24 +180,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('departmentId')?.valueChanges.subscribe((departmentId) => {
-        this.departmentId = departmentId;
-        this.semester = 0;
-        this.subjectId = 0;
-        this.sectionId = 0;
-        this.showForm = false;
-        this.cleanList();
-
-        if (departmentId) {
-          this.semester = this.semesters[0].id;
-          this.form.patchValue({
-            semester: this.semesters[0].id,
-            subjectId: null,
-          });
-          this.loadSubjects();
-          this.loadSections();
-        } else {
-          this.form.reset({}, { emitEvent: false });
-        }
+        this.changeDepartmentId(departmentId);
       })
     );
 
@@ -244,12 +230,36 @@ export class SectionsComponent implements OnInit, OnDestroy {
     );
   }
 
+  private changeDepartmentId(departmentId: number): void {
+    this.departmentId = +departmentId;
+    this.semester = 0;
+    this.subjectId = 0;
+    this.sectionId = 0;
+    this.showForm = false;
+    this.cleanList();
+
+    if (departmentId) {
+      this.semester = this.semesters[0].id;
+      this.form.patchValue({
+        semester: this.semesters[0].id,
+        subjectId: null,
+      });
+      this.loadSubjects();
+      this.loadSections();
+    } else {
+      this.form.reset({}, { emitEvent: false });
+    }
+  }
+
   private loadDepartments(): void {
     this.sub$.add(
       this.sectionsService
         .getDepartaments$(this.userStateService.getSchoolId())
         .subscribe((departaments) => {
           this.departments = departaments;
+          if (this.departmentIdUser) {
+            this.changeDepartmentId(this.departmentIdUser);
+          }
         })
     );
   }

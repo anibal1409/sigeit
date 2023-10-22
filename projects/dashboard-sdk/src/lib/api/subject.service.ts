@@ -111,13 +111,15 @@ export class SubjectService {
      * @param semester 
      * @param careerId 
      * @param departmentId 
+     * @param status 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public subjectControllerFindAll(semester?: number, careerId?: number, departmentId?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Subject>>;
-    public subjectControllerFindAll(semester?: number, careerId?: number, departmentId?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Subject>>>;
-    public subjectControllerFindAll(semester?: number, careerId?: number, departmentId?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Subject>>>;
-    public subjectControllerFindAll(semester?: number, careerId?: number, departmentId?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public subjectControllerFindAll(semester?: number, careerId?: number, departmentId?: number, status?: boolean, observe?: 'body', reportProgress?: boolean): Observable<Array<Subject>>;
+    public subjectControllerFindAll(semester?: number, careerId?: number, departmentId?: number, status?: boolean, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Subject>>>;
+    public subjectControllerFindAll(semester?: number, careerId?: number, departmentId?: number, status?: boolean, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Subject>>>;
+    public subjectControllerFindAll(semester?: number, careerId?: number, departmentId?: number, status?: boolean, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
 
 
 
@@ -131,6 +133,9 @@ export class SubjectService {
         }
         if (departmentId !== undefined && departmentId !== null) {
             queryParameters = queryParameters.set('departmentId', <any>departmentId);
+        }
+        if (status !== undefined && status !== null) {
+            queryParameters = queryParameters.set('status', <any>status);
         }
 
         let headers = this.defaultHeaders;

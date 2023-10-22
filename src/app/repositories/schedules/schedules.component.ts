@@ -94,6 +94,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
   sectionId!: number;
   scheduleId!: number;
   teacherId!: number;
+  departmentIdUser!: number;
 
   showForm = false;
   loading = false;
@@ -112,6 +113,8 @@ export class SchedulesComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.departmentIdUser = this.userStateService.getDepartmentId() || 0;
+    this.departmentId = this.departmentIdUser;
     this.createForm();
 
     this.sub$.add(
@@ -165,7 +168,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
 
   private createForm(): void {
     this.form = this.fb.group({
-      departmentId: [null, [Validators.required]],
+      departmentId: [this.departmentIdUser, [Validators.required]],
       subjectId: [null, [Validators.required]],
       semester: [null, [Validators.required]],
       sectionId: [null, [Validators.required]],
@@ -173,28 +176,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('departmentId')?.valueChanges.subscribe((departmentId) => {
-        this.changeShowForm(false);
-        this.departmentId = +departmentId;
-        this.semester = 0;
-        this.subjectId = 0;
-        this.sectionId = 0;
-        
-        this.form.patchValue({
-          semester: null,
-          subjectId: null,
-          sectionId: null,
-        });
-
-        this.clearList();
-
-        if (departmentId) {
-          this.loadTeachers();
-          this.loadSubjects();
-          this.validateForm();
-          this.form.patchValue({
-            semester: this.semesters[0].id,
-          });
-        } 
+        this.changeDepartmentId(departmentId);
       })
     );
 
@@ -246,6 +228,31 @@ export class SchedulesComponent implements OnInit, OnDestroy {
     );
   }
 
+  private changeDepartmentId(departmentId: number): void {
+    this.changeShowForm(false);
+    this.departmentId = +departmentId;
+    this.semester = 0;
+    this.subjectId = 0;
+    this.sectionId = 0;
+    
+    this.form.patchValue({
+      semester: null,
+      subjectId: null,
+      sectionId: null,
+    });
+
+    this.clearList();
+
+    if (departmentId) {
+      this.loadTeachers();
+      this.loadSubjects();
+      this.validateForm();
+      this.form.patchValue({
+        semester: this.semesters[0].id,
+      });
+    } 
+  }
+
   loadTeachers(): void {
     const departmentId = this.form.get('departmentId')?.value;
     this.sub$.add(this.schedulesService.getTeachers$({departmentId}).subscribe());
@@ -276,6 +283,9 @@ export class SchedulesComponent implements OnInit, OnDestroy {
             this.form.patchValue({
               departmentId: departaments[0]?.id,
             });
+            if (this.departmentIdUser) {
+              this.changeDepartmentId(this.departmentIdUser);
+            }
           }
         })
     );

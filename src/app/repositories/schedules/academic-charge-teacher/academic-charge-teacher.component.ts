@@ -56,6 +56,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
   departmentId!: number;
   form!: FormGroup;
   periodActive!: PeriodVM;
+  departmentIdUser!: number;
 
   startIntervals: Array<string> = [];
   endIntervals: Array<string> = [];
@@ -87,6 +88,8 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.departmentIdUser = this.userStateService.getDepartmentId() || 0;
+    this.departmentId = this.departmentIdUser;
     this.createForm();
     this.sub$.add(
       this.schedulesService.getLoading$().subscribe((loading) => {
@@ -108,19 +111,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('departmentId')?.valueChanges.subscribe((departmentId) => {
-        this.departmentId = +departmentId;
-        this.teacherId = 0;
-        this.teachers = [];
-        this.academicCharge = [];
-        this.clearSchedule();
-
-        this.form.patchValue({
-          teacherId: null,
-        });
-
-        if (departmentId) {
-          this.loadTeachers();
-        }
+        this.changeDepartmentId(departmentId);
       })
     );
 
@@ -158,6 +149,22 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
           });
         })
     );
+  }
+
+  private changeDepartmentId(departmentId: number): void {
+    this.departmentId = +departmentId;
+    this.teacherId = 0;
+    this.teachers = [];
+    this.academicCharge = [];
+    this.clearSchedule();
+
+    this.form.patchValue({
+      teacherId: null,
+    });
+
+    if (departmentId) {
+      this.loadTeachers();
+    }
   }
 
   private loadIntervals(): void {
@@ -254,10 +261,8 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
         .getDepartaments$({ schoolId: this.userStateService.getSchoolId() })
         .subscribe((departaments) => {
           this.departments = departaments;
-          if (departaments.length) {
-            this.form.patchValue({
-              departmentId: departaments[0]?.id,
-            });
+          if (departaments.length && this.departmentIdUser) {
+            this.changeDepartmentId(this.departmentIdUser);
           }
         })
     );

@@ -5,4 +5,5 @@ export interface BaseQuery {
   size?: number;
   sort?: string;
   order?: 'ASC' | 'DESC';
+  status?: boolean;
 }

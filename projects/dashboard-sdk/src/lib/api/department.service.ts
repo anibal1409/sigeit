@@ -109,18 +109,23 @@ export class DepartmentService {
      * 
      * 
      * @param schoolId 
+     * @param status 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public departmentControllerFindAll(schoolId?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<Department>>;
-    public departmentControllerFindAll(schoolId?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Department>>>;
-    public departmentControllerFindAll(schoolId?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Department>>>;
-    public departmentControllerFindAll(schoolId?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public departmentControllerFindAll(schoolId?: number, status?: boolean, observe?: 'body', reportProgress?: boolean): Observable<Array<Department>>;
+    public departmentControllerFindAll(schoolId?: number, status?: boolean, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Department>>>;
+    public departmentControllerFindAll(schoolId?: number, status?: boolean, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Department>>>;
+    public departmentControllerFindAll(schoolId?: number, status?: boolean, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
         if (schoolId !== undefined && schoolId !== null) {
             queryParameters = queryParameters.set('schoolId', <any>schoolId);
+        }
+        if (status !== undefined && status !== null) {
+            queryParameters = queryParameters.set('status', <any>status);
         }
 
         let headers = this.defaultHeaders;

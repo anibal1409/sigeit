@@ -25,7 +25,11 @@ export class GetCareersService
   ) { }
 
   exec(data: CareerBaseQuery = {}): Observable<Array<CareerItemVM>> {
-    return this.entityServices.careerControllerFindAll()
+    return this.entityServices.careerControllerFindAll(
+      data?.schoolId,
+      data?.departmentId,
+      data?.status,
+    )
       .pipe(
         map((entities: any) => entities.map(Career2CareerItemVM)),
         tap((entity) => {

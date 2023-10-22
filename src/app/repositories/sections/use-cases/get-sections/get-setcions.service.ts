@@ -31,6 +31,8 @@ implements UseCase<Array<SectionItemVM> | null, SectionBaseQuery> {
       data?.subjectId,
       data?.teacherId,
       data?.semester,
+      data?.dayId,
+      data?.status,
     )
     .pipe(
       map((entities: any) => entities.map(Section2SectionItemVM)),
