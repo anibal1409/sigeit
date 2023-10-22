@@ -1,3 +1,4 @@
+import { CareerVM } from '../../../repositories/careers';
 import { DepartmentVM } from '../../../repositories/departments/model';
 import { SchoolVM } from '../../../repositories/schools/model';
 import { TeacherVM } from '../../../repositories/teachers';
@@ -11,4 +12,5 @@ export interface UserStateVM {
   department?: DepartmentVM;
   school?: SchoolVM;
   teacher?: TeacherVM;
+  career?: CareerVM;
 }

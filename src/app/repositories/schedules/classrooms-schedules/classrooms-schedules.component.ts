@@ -165,7 +165,7 @@ export class ClassroomsSchedulesComponent
               this.classrooms.map(() => {
                 return { text: '', schedules: [] };
               })
-            );            
+            );      
 
             data?.forEach((schedule) => {
               const classroomIndex = this.classrooms.findIndex(
@@ -174,6 +174,10 @@ export class ClassroomsSchedulesComponent
               const startIndex = this.startIntervals.indexOf(schedule.start);
               const endIndex = this.endIntervals.indexOf(schedule.end);
 
+              if (classroomIndex === -1) {
+                return;
+              }
+              
               for (let i = startIndex; i <= endIndex; i++) {
                 this.dataScheduleByDay[i][classroomIndex]?.schedules?.push(schedule);
                 if (this.dataScheduleByDay[i][classroomIndex]?.text) {

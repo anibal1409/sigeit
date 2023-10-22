@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
 import {
   SEMESTERS,
   SemesterVM,
+  UserStateService,
 } from '../common';
 import { StateService } from '../common/state';
 import { CareerVM } from '../repositories/careers';
@@ -64,6 +65,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
   sectionsSelected: Array<SectionItemVM> = [];
   credits = 0;
   subjectCounter = 0;
+  careerIdUser!: number;
   private sub$ = new Subscription();
 
   constructor(
@@ -71,6 +73,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
     private matDialog: MatDialog,
     private stateService: StateService,
     private studentSchedulesService: StudentSchedulesService,
+    private userStateService: UserStateService,
   ) { }
 
   ngOnDestroy(): void {
@@ -78,6 +81,8 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.careerIdUser = this.userStateService.getCareerId() || 0;
+    this.carrerId = this.careerIdUser;
     this.createForm();
     this.sub$.add(
       this.studentSchedulesService.getLoading$().subscribe((loading) => {
@@ -87,7 +92,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
     );
 
     this.loadActivePeriod();
-
+    
   }
 
   private loadActivePeriod(): void {
@@ -133,6 +138,9 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
       this.studentSchedulesService.getCareers$().subscribe(
         (careers) => {
           this.careers = careers;
+          if (this.carrerId) {
+            this.loadSubjects();
+          }
         }
       )
     );
@@ -171,9 +179,9 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
 
   private createForm(): void {
     this.form = this.fb.group({
-      careerId: [null, [Validators.required]],
+      careerId: [this.careerIdUser, [Validators.required]],
       subjectId: [null, [Validators.required]],
-      semesterId: [null, [Validators.required]],
+      semesterId: [-1, [Validators.required]],
     });
 
     this.sub$.add(

@@ -19,4 +19,5 @@ export interface CreateSectionDto {
     teacher: IdCreateEntity;
     status: boolean;
     id?: number;
+    inscribed?: number;
 }

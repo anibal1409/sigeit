@@ -9,6 +9,7 @@ export function User2UserVM(user: any): UserVM {
     status: user.status,
     departmentId: user.departmentId,
     schoolId: user.schoolId,
+    careerId: user.careerId,
     role: user.role,
   };
 }

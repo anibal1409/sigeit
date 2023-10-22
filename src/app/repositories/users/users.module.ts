@@ -12,6 +12,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { StateModule } from '../../common/state';
 import { TableModule } from '../../common/table/';
+import { GetCareersService } from '../careers/use-cases';
 import { GetDepartmentsService } from '../departments';
 import { FormComponent } from './form/form.component';
 import { UserMemoryService } from './memory';
@@ -52,6 +53,7 @@ import { UsersService } from './users.service';
     DeleteUserService,
     FindUserService,
     UserMemoryService,
+    GetCareersService,
   ],
 })
 export class UsersModule {}

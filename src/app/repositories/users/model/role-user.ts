@@ -4,6 +4,7 @@ export enum UserRole {
   HeadDepartment = 'head-department',
   Planner = 'planner',
   Teacher = 'teacher',
+  Student = 'student',
 }
 
 export const USER_ROLES = [
@@ -26,6 +27,10 @@ export const USER_ROLES = [
   {
     name: 'Profesor',
     value: UserRole.Teacher,
+  },
+  {
+    name: 'Estudiante',
+    value: UserRole.Student,
   }
 ];
 
@@ -35,4 +40,5 @@ export const USER_ROLES_VALUE: { [key: string]: { name: string; value: UserRole}
   [UserRole.HeadDepartment]: USER_ROLES[2],
   [UserRole.Planner]: USER_ROLES[3],
   [UserRole.Teacher]: USER_ROLES[4],
+  [UserRole.Student]: USER_ROLES[5],
 };

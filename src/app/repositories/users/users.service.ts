@@ -6,6 +6,8 @@ import {
   BaseQuery,
   ListComponentService,
 } from '../../common/memory-repository';
+import { CareerItemVM } from '../careers';
+import { GetCareersService } from '../careers/use-cases';
 import {
   DepartmentVM,
   GetDepartmentsService,
@@ -35,6 +37,7 @@ export class UsersService extends ListComponentService<UserItemVM, BaseQuery> {
     public updateEntityService: UpdateUserService,
     private getDepartmentsService: GetDepartmentsService,
     private getSchoolsService: GetSchoolsService,
+    private getCareersService: GetCareersService,
   ) {
     super(
       getEntityService,
@@ -47,10 +50,14 @@ export class UsersService extends ListComponentService<UserItemVM, BaseQuery> {
   }
   
   getDepartaments$(schoolId?: number): Observable<Array<DepartmentVM>> {
-    return this.getDepartmentsService.exec({schoolId});
+    return this.getDepartmentsService.exec({schoolId}, false);
   }
 
   getSchools$(): Observable<Array<SchoolItemVM>> {
     return this.getSchoolsService.exec();
+  }
+
+  getCareers$(): Observable<Array<CareerItemVM>> {
+    return this.getCareersService.exec();
   }
 }

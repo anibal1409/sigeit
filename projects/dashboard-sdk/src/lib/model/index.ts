@@ -20,6 +20,7 @@ export * from './documentE';
 export * from './idCreateEntity';
 export * from './loginDto';
 export * from './loginUserResponseDto';
+export * from './models';
 export * from './period';
 export * from './recoveryPasswordDto';
 export * from './recoveryPasswordResponseDto';

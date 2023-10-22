@@ -16,6 +16,7 @@ import { Teacher } from './teacher';
 export interface Section { 
     name: string;
     capacity: number;
+    inscribed: number;
     subject: Subject;
     period: Period;
     teacher: Teacher;

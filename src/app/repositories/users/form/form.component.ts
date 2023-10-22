@@ -17,6 +17,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { isEqual } from 'lodash';
 import { Subscription } from 'rxjs';
 
+import { CareerItemVM } from '../../careers';
 import { DepartmentItemVM } from '../../departments';
 import { SchoolItemVM } from '../../schools';
 import {
@@ -61,9 +62,12 @@ export class FormComponent implements OnInit, OnDestroy {
 
   departments: Array<DepartmentItemVM> = [];
   schools: Array<SchoolItemVM> = [];
+  careers: Array<CareerItemVM> = [];
   roles = USER_ROLES;
   showSelects = false;
   showSchools = false;
+  role!: UserRole;
+  UserRole = UserRole;
 
   constructor(
     private usersService: UsersService,
@@ -94,6 +98,7 @@ export class FormComponent implements OnInit, OnDestroy {
           .find$({ id: this.id })
           .subscribe((entity) => {
             if (entity) {
+              this.changeRole(entity.role);
               this.oldFormValue = entity;
               this.form.patchValue(
                 {
@@ -120,6 +125,11 @@ export class FormComponent implements OnInit, OnDestroy {
         this.schools = schools;
       })
     );
+    this.sub$.add(
+      this.usersService.getCareers$().subscribe((careers) => {
+        this.careers = careers;
+      })
+    );
   }
 
   clickClosed(): void {
@@ -136,6 +146,7 @@ export class FormComponent implements OnInit, OnDestroy {
       role: [null, [Validators.required]],
       departmentId: [null],
       schoolId: [null],
+      careerId: [null],
     });
 
     this.sub$.add(
@@ -148,23 +159,35 @@ export class FormComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('role')?.valueChanges.subscribe((role) => {
-        const {departmentId, schoolId} = this.form.controls;
-        departmentId.clearValidators();
-        departmentId.reset(null, {emitEvent: false});
-        schoolId.clearValidators();
-        schoolId.reset(null, {emitEvent: false});
-        this.showSelects = role !== UserRole.Administrator;
-        if (this.showSelects) {
-          this.showSchools = role === UserRole.Director;
-          if ( this.showSchools) {
-            schoolId.setValidators([Validators.required]);
-          } else {
-            departmentId.setValidators([Validators.required]);
-          }
-        }
+        this.changeRole(role);
       }
       )
     );
+  }
+
+  private changeRole(role: UserRole): void {
+    this.role = role;
+    const {departmentId, schoolId, careerId} = this.form.controls;
+    departmentId.clearValidators();
+    departmentId.reset(null, {emitEvent: false});
+    schoolId.clearValidators();
+    schoolId.reset(null, {emitEvent: false});
+    careerId.clearValidators();
+    careerId.reset(null, {emitEvent: false});
+    this.showSelects = role !== UserRole.Administrator;
+    switch (role) {
+      case UserRole.Director:
+        schoolId.setValidators([Validators.required]);
+        break;
+      case UserRole.HeadDepartment:
+      case UserRole.Planner:
+      case UserRole.Teacher:
+        departmentId.setValidators([Validators.required]);
+        break;
+      case UserRole.Student:
+        careerId.setValidators([Validators.required]);
+        break;      
+    }
   }
 
   clickSave(): void {

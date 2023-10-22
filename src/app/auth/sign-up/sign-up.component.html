@@ -1,0 +1,103 @@
+<div class="container">
+  <div class="login-container">
+    <mat-card>
+      <form [formGroup]="form!">
+        <mat-card-header>
+          <mat-card-title-group>
+            <mat-card-header><h2>Registro</h2></mat-card-header>
+            <div class="image-container">
+              <img
+                src="assets/Logo.png"
+                alt="logo"
+                mat-card-img
+              />
+            </div>
+          </mat-card-title-group>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-form-field>
+            <mat-label>Cédula</mat-label>
+            <input
+              matInput
+              type="text"
+              name="idDocument"
+              id="idDocument"
+              formControlName="idDocument"
+              required
+            />
+            <mat-error *ngIf="form.controls['idDocument'].hasError('required')"
+              >Campo requerido</mat-error
+            >
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Apellido(s)</mat-label>
+            <input
+              matInput
+              type="text"
+              name="lastName"
+              id="lastName"
+              formControlName="lastName"
+              required
+            />
+            <mat-error
+              *ngIf="form.controls['lastName'].hasError('required')"
+              >Campo requerido</mat-error
+            >
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Nombres</mat-label>
+            <input
+              matInput
+              type="text"
+              name="firstName"
+              id="firstName"
+              formControlName="firstName"
+              required
+            />
+            <mat-error
+              *ngIf="form.controls['firstName'].hasError('required')"
+              >Campo requerido</mat-error
+            >
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label for="email">
+              Correo Electrónico
+            </mat-label>
+            <input name="email" formControlName="email" matInput type="email" />
+            <mat-error *ngIf="form.controls['email'].hasError('required')"
+              >Correo Electrónico requerido</mat-error
+            >
+          </mat-form-field>
+          
+          <mat-form-field>
+            <mat-label>Especialidad</mat-label>
+            <mat-select formControlName="careerId">
+              <mat-option *ngFor="let career of careers" [value]="career.id">{{career.name}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.controls['careerId'].hasError('required')"
+            >Campo requerido</mat-error
+            >
+          </mat-form-field>
+        </mat-card-content>
+        <mat-card-actions>
+          <button
+            mat-raised-button
+            color="primary"
+            [disabled]="submitDisable || loading"
+            type="submit"
+            (click)="submit()"
+          >
+            Registrarme
+          </button>
+        </mat-card-actions>
+          
+        <div class="d-flex w-100 mt-3 justify-content-end">
+          <span class="recovery-link" routerLink="/auth/login"
+          >
+            Login
+          </span>
+        </div>
+      </form>
+    </mat-card>
+  </div>
+</div>

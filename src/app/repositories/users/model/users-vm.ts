@@ -6,7 +6,10 @@ export interface UserVM {
   idDocument: string;
   email: string;
   status: boolean | string;
+  lastName?: string;
+  firstName?: string;
   departmentId?: number;
   schoolId?: number;
   role: UserRole;
+  careerId?: number;
 }

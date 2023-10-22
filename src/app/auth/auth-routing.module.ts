@@ -11,29 +11,28 @@ import {
 import {
   ResetPasswordComponent,
 } from './reset-password/reset-password.component';
+import { SignUpComponent } from './sign-up';
 
 const routes: Routes = [
   {
     path: '',
     component: LoginComponent,
-    children: [
-      {
-        path: 'login',
-        component: LoginComponent,
-      },
-      {
-        path: 'recovery-password',
-        component: RecoveryPasswordComponent,
-      },
-      {
-        path: 'reset-password/:token',
-        component: ResetPasswordComponent,
-      },
-      {
-        path: '**',
-        redirectTo: '/auth/login',
-      },
-    ]
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: 'recovery-password',
+    component: RecoveryPasswordComponent,
+  },
+  {
+    path: 'reset-password/:token',
+    component: ResetPasswordComponent,
+  },
+  {
+    path: 'sign-up',
+    component: SignUpComponent,
   },
   {
     path: '**',
@@ -45,4 +44,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class AuthRoutingModule {}
+export class AuthRoutingModule { }

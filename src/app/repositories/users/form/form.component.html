@@ -75,8 +75,8 @@
       >
     </mat-select>
   </mat-form-field>
-  <ng-container *ngIf="showSelects">
-    <mat-form-field *ngIf="showSchools; else showDepartments">
+  <container-element [ngSwitch]="role">
+    <mat-form-field *ngSwitchCase="UserRole.Director">
       <mat-label>Escuela</mat-label>
       <mat-select formControlName="schoolId">
         <mat-option *ngFor="let school of schools" [value]="school.id">{{school.name}}</mat-option>
@@ -85,19 +85,25 @@
       >Campo requerido</mat-error
       >
     </mat-form-field>
-  
-    <ng-template #showDepartments>
-      <mat-form-field>
-        <mat-label>Departamento</mat-label>
-        <mat-select formControlName="departmentId">
-          <mat-option *ngFor="let department of departments" [value]="department.id">{{department.name}}</mat-option>
-        </mat-select>
-        <mat-error *ngIf="form.controls['departmentId'].hasError('required')"
-        >Campo requerido</mat-error
-        >
-      </mat-form-field>
-    </ng-template>
-  </ng-container>
+    <mat-form-field *ngSwitchCase="UserRole.HeadDepartment || UserRole.Planner || UserRole.Teacher">
+      <mat-label>Departamento</mat-label>
+      <mat-select formControlName="departmentId">
+        <mat-option *ngFor="let department of departments" [value]="department.id">{{department.name}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.controls['departmentId'].hasError('required')"
+      >Campo requerido</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field *ngSwitchCase="UserRole.Student">
+      <mat-label>Especialidad</mat-label>
+      <mat-select formControlName="careerId">
+        <mat-option *ngFor="let career of careers" [value]="career.id">{{career.name}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.controls['careerId'].hasError('required')"
+      >Campo requerido</mat-error
+      >
+    </mat-form-field>
+  </container-element>
   
   <mat-form-field>
     <mat-label>Estado</mat-label>

@@ -74,4 +74,16 @@ export const MENU: Array<optionMenu> = [
     icon: 'insert_drive_file',
     permissions: [UserRole.Administrator],
   },
+  {
+    name: 'Horarios',
+    value: 'schedules-students',
+    icon: 'date_range',
+    permissions: [UserRole.Student],
+  },
+  {
+    name: 'Inscripción',
+    value: 'inscription',
+    icon: 'playlist_add_check',
+    permissions: [UserRole.Student],
+  },
 ]

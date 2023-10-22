@@ -16,6 +16,8 @@ import { Teacher } from './teacher';
 export interface UserRespondeDto { 
     id: number;
     name: string;
+    lastName: string;
+    firstName: string;
     email: string;
     role: string;
     idDocument: string;

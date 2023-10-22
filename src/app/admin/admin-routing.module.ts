@@ -91,6 +91,20 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'schedules-students',
+        loadChildren: () =>
+          import('../student-schedules/student-schedules.module').then(
+            (m) => m.StudentSchedulesModule
+          ),
+      },
+      {
+        path: 'inscription',
+        loadChildren: () =>
+          import('../student-schedules/student-schedules.module').then(
+            (m) => m.StudentSchedulesModule
+          ),
+      },
+      {
         path: 'formats',
         loadChildren: () => import('../repositories/documents/documents.module').then((m) => m.DocumentsModule),
       }
@@ -102,4 +116,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class AdminRoutingModule {}
+export class AdminRoutingModule { }

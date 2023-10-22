@@ -132,6 +132,7 @@ export class ScheduleComponent implements OnInit, OnDestroy, OnChanges {
                 return { text: '', schedules: [] };
               })
             );
+            
 
             schedules.forEach((schedule) => {
               const dayIndex = this.days.findIndex(

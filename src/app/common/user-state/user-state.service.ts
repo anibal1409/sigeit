@@ -60,6 +60,10 @@ export class UserStateService {
     return this.getUser()?.teacher?.id;
   }
 
+  getCareerId(): number | undefined {
+    return this.getUser()?.career?.id;
+  }
+
   private validateTimeStamp(): void {
     const user = this.getUserStorage();
     if (user) {

@@ -19,7 +19,6 @@ import {
 } from '../repositories/schedules';
 import {
   GetDaysService,
-  GetSchedulesService,
   IntervalsService,
 } from '../repositories/schedules/use-cases';
 import {
@@ -31,6 +30,7 @@ import {
   SubjectItemVM,
 } from '../repositories/subjects';
 import { GetSubjectsService } from '../repositories/subjects/use-cases';
+import { GetSchedulesService } from './use-cases';
 
 @Injectable()
 export class StudentSchedulesService {

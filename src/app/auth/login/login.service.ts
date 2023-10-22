@@ -34,6 +34,7 @@ export class LoginService {
           department: response.department,
           school: response.school,
           teacher: response.teacher,
+          career: response.career,
         };
       }),
       tap((user: UserStateVM) => {

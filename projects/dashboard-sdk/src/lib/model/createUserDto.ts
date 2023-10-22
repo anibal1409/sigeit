@@ -15,20 +15,24 @@ export interface CreateUserDto {
     email: string;
     role: CreateUserDto.RoleEnum;
     idDocument: string;
+    name: string;
+    lastName?: string;
+    firstName?: string;
     teacher?: IdCreateEntity;
     status: boolean;
     school?: IdCreateEntity;
     department?: IdCreateEntity;
+    career?: IdCreateEntity;
     id?: number;
-    name?: string;
 }
 export namespace CreateUserDto {
-    export type RoleEnum = 'admin' | 'director' | 'head-department' | 'planner' | 'teacher';
+    export type RoleEnum = 'admin' | 'director' | 'head-department' | 'planner' | 'teacher' | 'student';
     export const RoleEnum = {
         Admin: 'admin' as RoleEnum,
         Director: 'director' as RoleEnum,
         HeadDepartment: 'head-department' as RoleEnum,
         Planner: 'planner' as RoleEnum,
-        Teacher: 'teacher' as RoleEnum
+        Teacher: 'teacher' as RoleEnum,
+        Student: 'student' as RoleEnum
     };
 }

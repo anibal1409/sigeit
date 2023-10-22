@@ -52,7 +52,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   loading = false;
 
-  sub$ = new Subscription();
+  private sub$ = new Subscription();
   constructor(
     private tableService: TableService,
     private usersService: UsersService,

@@ -27,6 +27,7 @@ import {
 } from './student-schedules-routing.module';
 import { StudentSchedulesComponent } from './student-schedules.component';
 import { StudentSchedulesService } from './student-schedules.service';
+import { GetSchedulesService } from './use-cases';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { StudentSchedulesService } from './student-schedules.service';
   ],
   providers: [
     StudentSchedulesService,
+    GetSchedulesService,
   ]
 })
 export class StudentSchedulesModule { }
