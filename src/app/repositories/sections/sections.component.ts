@@ -254,7 +254,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
   private loadDepartments(): void {
     this.sub$.add(
       this.sectionsService
-        .getDepartaments$(this.userStateService.getSchoolId())
+        .getDepartaments$({schoolId: this.userStateService.getSchoolId(), status: true})
         .subscribe((departaments) => {
           this.departments = departaments;
           if (this.departmentIdUser) {
@@ -269,7 +269,8 @@ export class SectionsComponent implements OnInit, OnDestroy {
       this.sectionsService
         .getSubjects$({
           departmentId: +this.departmentId,
-          semester: this.semester > 0 ? this.semester : undefined
+          semester: this.semester > 0 ? this.semester : undefined,
+          status: true,
         })
         .subscribe((subjects) => {
           this.subjects = subjects;

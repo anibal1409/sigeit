@@ -204,6 +204,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
             teacherId: this.teacherId,
             periodId: this.periodActive.id,
             departmentId: this.allTeachers ? undefined : this.departmentId,
+            status: true,
           })
           .subscribe((schedules) => {
             this.academicCharge = schedules;
@@ -271,7 +272,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
   private loadTeachers(): void {
     this.sub$.add(
       this.schedulesService
-        .getTeachers$({ departmentId: this.allTeachers ? undefined : +this.departmentId })
+        .getTeachers$({ departmentId: this.allTeachers ? undefined : +this.departmentId, status: true })
         .subscribe((teachers) => {
           this.teachers = teachers;
         })

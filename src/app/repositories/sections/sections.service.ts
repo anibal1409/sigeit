@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { ListComponentService } from '../../common/memory-repository';
 import {
+  DepartmentBaseQuery,
   DepartmentVM,
   GetDepartmentsService,
 } from '../departments';
@@ -18,6 +19,7 @@ import {
 } from '../subjects';
 import {
   GetTeachersService,
+  TeacherBaseQuery,
   TeacherItemVM,
 } from '../teachers';
 import { SectionMemoryService } from './memory';
@@ -58,16 +60,16 @@ export class SectionsService extends ListComponentService<SectionItemVM, Section
     );
   }
 
-  getDepartaments$(schoolId?: number): Observable<Array<DepartmentVM>> {
-    return this.getDepartmentsService.exec({schoolId});
+  getDepartaments$(data: DepartmentBaseQuery): Observable<Array<DepartmentVM>> {
+    return this.getDepartmentsService.exec(data, false);
   }
 
   getSubjects$(data: SubjectBaseQuery): Observable<Array<SubjectVM>> {
     return this.getSubjectsService.exec(data);
   }
 
-  getTeachers$(departmentId?: number): Observable<Array<TeacherItemVM>> {
-    return this.getTeachersService.exec({departmentId});
+  getTeachers$(data: TeacherBaseQuery): Observable<Array<TeacherItemVM>> {
+    return this.getTeachersService.exec(data, false);
   }
 
   getActivePeriod$(): Observable<PeriodVM> {

@@ -125,7 +125,7 @@ export class ScheduleComponent implements OnInit, OnDestroy, OnChanges {
     if (classroomId) {
       this.sub$.add(
         this.schedulesService
-          .getSchedules$({ classroomId, periodId: this.periodId })
+          .getSchedules$({ classroomId, periodId: this.periodId, })
           .subscribe((schedules) => {
             this.dataScheduleByClassroom = this.startIntervals.map(() =>
               this.days.map(() => {

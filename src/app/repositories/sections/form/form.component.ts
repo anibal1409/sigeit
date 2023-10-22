@@ -106,7 +106,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   private loadTeachers(): void {
     this.sub$.add(
       this.sectionsService
-        .getTeachers$(this.allTeachersCtrl.value ? undefined : this.departmentId)
+        .getTeachers$({departmentId: this.allTeachersCtrl.value ? undefined : this.departmentId, status: true })
         .subscribe((teachers) => {
           this.teachers = teachers;
           this.loadSection();

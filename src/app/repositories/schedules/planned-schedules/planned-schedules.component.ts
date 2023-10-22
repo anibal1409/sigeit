@@ -170,7 +170,7 @@ export class PlannedSchedulesComponent {
     this.stateService.setLoading(this.loading);
     this.sub$.add(
       this.schedulesService
-        .getDepartaments$({ schoolId: this.userStateService.getSchoolId() })
+        .getDepartaments$({ schoolId: this.userStateService.getSchoolId(), status: true, })
         .pipe(
           finalize(() => {
             this.loading = false;
@@ -198,7 +198,8 @@ export class PlannedSchedulesComponent {
         this.schedulesService
           .getPlannedSchedules$({
             departmentId: this.departmentId,
-            periodId: this.periodId
+            periodId: this.periodId,
+            status: true,
           })
           .pipe(
             finalize(() => {

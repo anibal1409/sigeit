@@ -63,7 +63,9 @@ export class StudentSchedulesService {
 
   getCareers$(): Observable<Array<CareerItemVM>> {
     this.setLoading(true);
-    return this.getCareersService.exec()
+    return this.getCareersService.exec({
+      status: true,
+    })
       .pipe(
         finalize(() => this.setLoading(false))
       );

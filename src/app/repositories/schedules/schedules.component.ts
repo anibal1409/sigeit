@@ -255,7 +255,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
 
   loadTeachers(): void {
     const departmentId = this.form.get('departmentId')?.value;
-    this.sub$.add(this.schedulesService.getTeachers$({departmentId}).subscribe());
+    this.sub$.add(this.schedulesService.getTeachers$({departmentId, status: true, }).subscribe());
   }
 
   private loadSubjectSchedules(): void {
@@ -276,7 +276,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
   private loadDepartments(): void {
     this.sub$.add(
       this.schedulesService
-        .getDepartaments$({ schoolId: this.userStateService.getSchoolId() })
+        .getDepartaments$({ schoolId: this.userStateService.getSchoolId(), status: true, })
         .subscribe((departaments) => {
           this.departments = departaments;
           if (departaments.length) {
@@ -298,6 +298,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
           .getSubjects$({
             departmentId: +this.departmentId,
             semester: this.semester > 0 ? this.semester : undefined,
+            status: true,
           })
           .subscribe((subjects) => {
             this.subjects = subjects;
@@ -314,6 +315,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
             departmentId: this.departmentId,
             subjectId: this.subjectId,
             periodId: this.periodId,
+            status: true,
           })
           .subscribe((sections) => {
             this.sections = sections;

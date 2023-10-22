@@ -159,7 +159,7 @@ export class ClassroomsSchedulesComponent
     if (dayId) {
       this.sub$.add(
         this.schedulesService
-          .getSchedules$({dayId, periodId: this.periodId})
+          .getSchedules$({dayId, periodId: this.periodId, })
           .subscribe((data) => {
             this.dataScheduleByDay = this.startIntervals.map(() =>
               this.classrooms.map(() => {

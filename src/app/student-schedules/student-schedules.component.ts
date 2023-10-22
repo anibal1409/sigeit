@@ -151,7 +151,8 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
       this.sub$.add(
         this.studentSchedulesService.getSubjects$({
           carrerId: this.carrerId,
-          semester: this.semesterId > 0 ? this.semesterId : undefined
+          semester: this.semesterId > 0 ? this.semesterId : undefined,
+          status: true,
         }).subscribe(
           (subjects) => {
             this.subjects = subjects;
@@ -167,6 +168,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
         this.studentSchedulesService.getSectionWithSchedules$({
           subjectId: this.subjectId,
           periodId: this.period.id,
+          status: true,
         }).subscribe(
           (sections) => {
             console.log(sections);
