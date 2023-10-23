@@ -51,9 +51,14 @@
       </mat-expansion-panel>
     </mat-accordion>
   </mat-card-content>
-  <!-- <mat-card-actions align="end">
-    <button mat-button (click)="deleteSectionClick()">
-      <mat-icon (click)="deleteSectionClick()">delete</mat-icon>
+  <mat-card-actions align="end" *ngIf="inscription">
+    <button *ngIf="!section?.validateId; else cancelBtn" mat-button (click)="validateClick()">
+      Validar
     </button>
-  </mat-card-actions> -->
+    <ng-template #cancelBtn>
+      <button mat-button (click)="canceledClick()">
+        Anular
+      </button>
+    </ng-template>
+  </mat-card-actions>
 </mat-card>

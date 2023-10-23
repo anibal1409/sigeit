@@ -4,13 +4,23 @@ import {
   Routes,
 } from '@angular/router';
 
+import { FinishedComponent } from './finished';
+import { ScheduleComponent } from './schedule';
 import { StudentSchedulesComponent } from './student-schedules.component';
 
 const routes: Routes = [
   {
     path: '',
     component: StudentSchedulesComponent,
-  }
+  },
+  {
+    path: 'finished',
+    component: FinishedComponent,
+  },
+  {
+    path: 'schedule',
+    component: ScheduleComponent,
+  },
 ];
 
 @NgModule({

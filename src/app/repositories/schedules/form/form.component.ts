@@ -168,6 +168,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       end: [null, [Validators.required, timeValidator()]],
       sectionId: [this.sectionId, [Validators.required]],
       periodId: [this.periodId, [Validators.required]],
+      status: [true],
     });
 
     this.sub$.add(

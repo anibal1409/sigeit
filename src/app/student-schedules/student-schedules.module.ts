@@ -1,5 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  NgModule,
+} from '@angular/core';
 import {
   FormsModule,
   ReactiveFormsModule,
@@ -15,25 +18,40 @@ import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { SelectExModule } from '../common';
+import {
+  SelectExModule,
+  StateModule,
+} from '../common';
 import { CareersModule } from '../repositories/careers';
 import { PeriodsModule } from '../repositories/periods';
 import { SchedulesModule } from '../repositories/schedules';
 import { SubjectsModule } from '../repositories/subjects';
 import { CardSectionSchedulesComponent } from './card-section-schedules';
 import { CardSubjectSchedulesComponent } from './card-subject-schedules';
+import { FinishedComponent } from './finished/finished.component';
+import { ScheduleComponent } from './schedule';
 import {
   StudentSchedulesRoutingModule,
 } from './student-schedules-routing.module';
 import { StudentSchedulesComponent } from './student-schedules.component';
 import { StudentSchedulesService } from './student-schedules.service';
-import { GetSchedulesService } from './use-cases';
+import {
+  CloseInscriptionService,
+  CreateInscriptionService,
+  DeleteInscriptionService,
+  FindInscriptionService,
+  GetInscriptionsService,
+  GetSchedulesService,
+  UpdateInscriptionService,
+} from './use-cases';
 
 @NgModule({
   declarations: [
     StudentSchedulesComponent,
     CardSectionSchedulesComponent,
-    CardSubjectSchedulesComponent
+    CardSubjectSchedulesComponent,
+    FinishedComponent,
+    ScheduleComponent,
   ],
   imports: [
     CommonModule,
@@ -55,10 +73,18 @@ import { GetSchedulesService } from './use-cases';
     SchedulesModule,
     MatListModule,
     MatExpansionModule,
+    StateModule,
   ],
   providers: [
     StudentSchedulesService,
     GetSchedulesService,
-  ]
+    CreateInscriptionService,
+    DeleteInscriptionService,
+    FindInscriptionService,
+    GetInscriptionsService,
+    UpdateInscriptionService,
+    CloseInscriptionService,
+  ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
 })
 export class StudentSchedulesModule { }

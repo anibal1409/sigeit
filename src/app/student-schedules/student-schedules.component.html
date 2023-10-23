@@ -57,24 +57,6 @@
               </app-select-ex>
             </mat-form-field>
           </div>
-
-          <!-- <div class="col-md-4 col-12">
-            <mat-form-field class="">
-              <mat-label>Sección</mat-label>
-              <app-select-ex
-                label="Sección"
-                [items]="sections"
-                formControlName="sectionId"
-                optionTextField="nameTeacher"
-                placeholder="Seleccione una sección"
-              >
-                
-              <mat-error *ngIf="form.controls['sectionId'].hasError('required')"
-              >Campo requerido</mat-error
-              >
-              </app-select-ex>
-            </mat-form-field>
-          </div> -->
         </div>
       </form>
     </mat-card-content>
@@ -89,7 +71,16 @@
   </app-card-section-schedules>
 </div>
 <ng-container *ngIf="sectionsSelected?.length">
-  <div class="d-flex justify-content-end content-info">
+  <div class="d-flex justify-content-end content-info align-items-center">
+    <button 
+      *ngIf="isInscription"
+      mat-raised-button 
+      color="primary" 
+      (click)="confirmClose()"
+      [disabled]="loading || disabledSubmit"
+    >
+      Cerrar inscripción
+    </button>
     <mat-card>
       <mat-card-header class="p-3">
         <mat-card-title-group>
@@ -118,7 +109,10 @@
         *ngFor="let section of sectionsSelected"
         [section]="section"
         [ngClass]="{'danger': !!section?.collapse?.length}"
+        [inscription]="isInscription"
         (deleteSection)="addSection(section)"
+        (validate)="createInscription(section)"
+        (canceled)="deleteInscription(section)"
       >
 
       </app-card-subject-schedules>

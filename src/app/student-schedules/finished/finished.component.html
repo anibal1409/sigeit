@@ -1,0 +1,46 @@
+<h3 class="text-center m-0 pb-2 px-3">
+  Asignaturas inscritas
+</h3>
+<div class="d-flex justify-content-end content-info align-items-center">
+  <mat-card>
+    <mat-card-header class="p-3">
+      <mat-card-title-group>
+        <mat-card-subtitle>
+          Asignaturas: <strong>{{subjectCounter}}</strong>
+        </mat-card-subtitle>
+      </mat-card-title-group>
+    </mat-card-header>
+  </mat-card>
+  <mat-card>
+    <mat-card-header class="p-3">
+      <mat-card-title-group>
+        <mat-card-subtitle>
+          Creditos: <strong>{{credits}}</strong>
+        </mat-card-subtitle>
+      </mat-card-title-group>
+    </mat-card-header>
+  </mat-card>
+</div>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <ng-container matColumnDef="code">
+    <th mat-header-cell *matHeaderCellDef>Código</th>
+    <td mat-cell *matCellDef="let element"> {{element.section?.subject?.code}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Asignatura </th>
+    <td mat-cell *matCellDef="let element"> {{element.section?.subject?.name}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="section">
+    <th mat-header-cell *matHeaderCellDef> Sección </th>
+    <td mat-cell *matCellDef="let element"> {{element.section?.name}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<div class="d-flex justify-content-center mt-3">
+  <button mat-raised-button color="primary" [routerLink]="'/dashboard/inscription/schedule'">Ver horario inscrito</button>
+</div>

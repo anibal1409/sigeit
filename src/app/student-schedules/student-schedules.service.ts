@@ -30,11 +30,21 @@ import {
   SubjectItemVM,
 } from '../repositories/subjects';
 import { GetSubjectsService } from '../repositories/subjects/use-cases';
-import { GetSchedulesService } from './use-cases';
+import { InscriptionVM } from './model';
+import { InscriptionBaseQuery } from './model/inscription-base-query';
+import {
+  CloseInscriptionService,
+  CreateInscriptionService,
+  DeleteInscriptionService,
+  FindInscriptionService,
+  GetInscriptionsService,
+  GetSchedulesService,
+  UpdateInscriptionService,
+} from './use-cases';
 
 @Injectable()
 export class StudentSchedulesService {
-  private loading$ = new BehaviorSubject<boolean>(false);
+  private loading$ = new BehaviorSubject<boolean>(true);
 
   constructor(
     private activePeriodService: ActivePeriodService,
@@ -43,6 +53,12 @@ export class StudentSchedulesService {
     private getDaysService: GetDaysService,
     private getSchedulesService: GetSchedulesService,
     private intervalsService: IntervalsService,
+    private createInscriptionService: CreateInscriptionService,
+    private deleteInscriptionService: DeleteInscriptionService,
+    private findInscriptionService: FindInscriptionService,
+    private getInscriptionsService: GetInscriptionsService,
+    private updateInscriptionService: UpdateInscriptionService,
+    private closeInscriptionService: CloseInscriptionService,
   ) { }
 
   getLoading$(): Observable<boolean> {
@@ -119,6 +135,54 @@ export class StudentSchedulesService {
     interval: number,
   ): Intervals {
     return this.intervalsService.exec(startTime, endTime, duration, interval);
+  }
+
+  createInscription$(data: InscriptionVM): Observable<InscriptionVM> {
+    this.setLoading(true);
+    return this.createInscriptionService.exec(data)
+      .pipe(
+        finalize(() => this.setLoading(false))
+      );
+  }
+
+  updateInscription$(data: InscriptionVM): Observable<InscriptionVM> {
+    this.setLoading(true);
+    return this.updateInscriptionService.exec(data)
+      .pipe(
+        finalize(() => this.setLoading(false))
+      );
+  }
+
+  findInscription$(id: number): Observable<InscriptionVM> {
+    this.setLoading(true);
+    return this.findInscriptionService.exec(id)
+      .pipe(
+        finalize(() => this.setLoading(false))
+      );
+  }
+
+  getInscriptions$(data: InscriptionBaseQuery): Observable<Array<InscriptionVM>> {
+    this.setLoading(true);
+    return this.getInscriptionsService.exec(data)
+      .pipe(
+        finalize(() => this.setLoading(false))
+      );
+  }
+
+  deleteInscription$(id: number): Observable<number> {
+    this.setLoading(true);
+    return this.deleteInscriptionService.exec(id)
+      .pipe(
+        finalize(() => this.setLoading(false))
+      );
+  }
+
+  closeInscription$(ids: Array<number>): Observable<any> {
+    this.setLoading(true);
+    return this.closeInscriptionService.exec(ids)
+      .pipe(
+        finalize(() => this.setLoading(false))
+      );
   }
 
 }

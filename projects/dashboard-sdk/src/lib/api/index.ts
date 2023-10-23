@@ -6,6 +6,7 @@ export * from './day.service';
 export * from './default.service';
 export * from './department.service';
 export * from './document.service';
+export * from './inscription.service';
 export * from './period.service';
 export * from './schedule.service';
 export * from './school.service';

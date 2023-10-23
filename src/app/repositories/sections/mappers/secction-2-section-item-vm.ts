@@ -11,7 +11,7 @@ export function Section2SectionItemVM(section: any): SectionItemVM {
     ...sectionVM,
     status: section?.status ? 'Activo' : 'Inactivo',
     subject: Subject2SubjectItemVM(section?.subject),
-    nameTeacher: `${sectionVM.name} - ${teacherVM?.lastName.split(' ')[0]}, ${teacherVM?.firstName.split(' ')[0]}`,
+    nameTeacher: `${sectionVM.name} - ${teacherVM?.lastName?.split(' ')[0]}, ${teacherVM?.firstName?.split(' ')[0]}`,
     collapse: [],
     schedules: (section?.schedules || []).map(Schedule2ScheduleItemVM),
   };

@@ -11,6 +11,6 @@ import { StateComponent } from './state.component';
   declarations: [StateComponent],
   imports: [CommonModule, MatProgressSpinnerModule],
   exports: [StateComponent],
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
 })
 export class StateModule {}

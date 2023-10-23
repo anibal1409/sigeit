@@ -9,10 +9,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 
 import {
+  ConfirmModalComponent,
   SEMESTERS,
   SemesterVM,
   UserStateService,
@@ -30,6 +32,7 @@ import {
 } from '../repositories/schedules';
 import { SectionItemVM } from '../repositories/sections';
 import { SubjectVM } from '../repositories/subjects';
+import { StageInscription } from './model';
 import { StudentSchedulesService } from './student-schedules.service';
 
 @Component({
@@ -48,7 +51,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
   subjectId!: number;
   semesterId!: number;
   sectionId!: number;
-  loading = false;
+  loading = true;
 
 
   startIntervals: Array<string> = [];
@@ -66,6 +69,9 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
   credits = 0;
   subjectCounter = 0;
   careerIdUser!: number;
+  disabledSubmit = true;
+  isInscription = false;
+  lastSection!: SectionItemVM | null;
   private sub$ = new Subscription();
 
   constructor(
@@ -74,13 +80,17 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
     private stateService: StateService,
     private studentSchedulesService: StudentSchedulesService,
     private userStateService: UserStateService,
-  ) { }
+    private router: Router,
+  ) {
+    this.loading = true;
+  }
 
   ngOnDestroy(): void {
     this.sub$.unsubscribe();
   }
 
   ngOnInit(): void {
+    this.isInscription = this.router.url.includes('inscription');
     this.careerIdUser = this.userStateService.getCareerId() || 0;
     this.carrerId = this.careerIdUser;
     this.createForm();
@@ -93,6 +103,45 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
 
     this.loadActivePeriod();
     
+  }
+
+  private validateInscription(): void {
+    const userId = this.userStateService.getUserId() || 0;
+    const periodId = this.period?.id;
+    if (periodId && userId && this.isInscription) {
+      this.sub$.add(
+        this.studentSchedulesService.getInscriptions$({
+          userId,
+          periodId,
+          schedules: true,
+        }).subscribe(
+          (inscriptions) => {
+            if (inscriptions.length) {
+              if (inscriptions[0].stage === StageInscription.Registered) {
+                this.goToFinished();
+              } else if (inscriptions[0].stage === StageInscription.Validated) {
+                inscriptions.forEach(
+                  (inscription) => {
+                    const key = inscription.section?.subject?.id as number;
+                    const section: SectionItemVM = {
+                      ...inscription.section,
+                      validateId: inscription.id,
+                    } as SectionItemVM;
+                    this.subjectsSelected.set(key, section);
+                  }
+                );
+                this.sectionsSelected = [...this.subjectsSelected.values()];
+                this.loadSchedules();
+              }
+            }
+          }
+        )
+      );
+    }
+  }
+
+  private goToFinished(): void {
+    this.router.navigate(['/dashboard/inscription/finished']);
   }
 
   private loadActivePeriod(): void {
@@ -111,6 +160,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
             this.endIntervals = intervals.end;
             this.loadDays();
             this.loadCareers();
+            this.validateInscription();
           }
         }
       )
@@ -211,11 +261,12 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
     this.sub$.add(
       this.form.get('semesterId')?.valueChanges.subscribe((semesterId) => {
         this.semesterId = +semesterId;
+        this.sections = [];
+        this.form.patchValue({
+          subjectId: null,
+          sectionId: null,
+        });
         if (semesterId) {
-          this.form.patchValue({
-            subjectId: null,
-            sectionId: null,
-          });
           this.loadSubjects();
         }
       })
@@ -247,6 +298,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
   }
 
   addSection(section: SectionItemVM): void {
+    this.lastSection = section;
     const key = section.subject?.id as any;
 
     if (!this.subjectsSelected.has(key)) {
@@ -255,6 +307,10 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
       const sectionS = this.subjectsSelected.get(key);
       if (sectionS?.id === section.id) {
         this.subjectsSelected.delete(key);
+        this.lastSection = null;
+        if (section.validateId) {
+          this.deleteInscription(section, true);
+        }
       } else {
         this.subjectsSelected.set(key, section);
       }
@@ -293,7 +349,6 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
       const endIndex = this.endIntervals.indexOf(schedule.end);
 
       for (let i = startIndex; i <= endIndex; i++) {
-
         this.dataSchedule[i][dayIndex].schedules.push(schedule);
         if (this.dataSchedule[i][dayIndex]?.text) {
           this.dataSchedule[i][dayIndex].text = 'Varias';
@@ -315,6 +370,8 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
         return row;
       }
     );
+    this.validateLastSection();
+    this.validateSubmit();
   }
 
   private clearCollapseSections(): void {
@@ -332,6 +389,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
     );
 
     this.sectionsSelected = [...this.subjectsSelected.values()];
+    this.validateSubmit();
   }
 
   private collapseSections(schedules: Array<ScheduleItemVM>): void {
@@ -366,5 +424,102 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
     );
 
     this.sectionsSelected = [...this.subjectsSelected.values()];
+    this.validateSubmit();
+  }
+
+  private validateLastSection(): void {
+    const section = this.subjectsSelected.get(this.lastSection?.subject?.id as number);
+    if (section && !section.collapse?.length && !section.validateId) {
+      this.createInscription(section);
+    }
+  }
+
+  createInscription(section: SectionItemVM): void {
+    if (!this.isInscription) {
+      return;
+    }
+    this.sub$.add(
+      this.studentSchedulesService.createInscription$({
+        stage: StageInscription.Validated,
+        sectionId: section.id as number,
+        userId: this.userStateService.getUserId() as number,
+      }).subscribe(
+        (inscription) => {
+          section.validateId = inscription.id;
+          const key = section.subject?.id as number;
+          this.subjectsSelected.set(key, section);
+          this.sectionsSelected = [...this.subjectsSelected.values()];
+          this.validateSubmit();
+        }
+      )
+    );
+  }
+
+  deleteInscription(section: SectionItemVM, clear = false): void {
+    if (!this.isInscription) {
+      return;
+    }
+    this.sub$.add(
+      this.studentSchedulesService.deleteInscription$(section.validateId as number).subscribe(
+        (inscription) => {
+          if (!clear) {
+            const key = section.subject?.id as number;
+            section.validateId = undefined;
+            this.subjectsSelected.set(key, section);
+            this.sectionsSelected = [...this.subjectsSelected.values()];
+            this.validateSubmit();
+          }
+        }
+      )
+    );
+  }
+
+  private validateSubmit(): void {
+    if (!this.isInscription) {
+      return;
+    }
+    const subjectValidate = this.sectionsSelected.filter((section) => !!section.validateId)?.length;
+    const collapse = this.sectionsSelected.filter((section) => !!section.collapse?.length)?.length;
+    this.disabledSubmit = this.credits > 18 || subjectValidate !== this.subjectCounter || subjectValidate === 0 || collapse > 0;
+  }
+
+  closeInscription(): void {
+    if (!this.isInscription) {
+      return;
+    }
+    if (!this.loading && !this.disabledSubmit) {
+      const inscriptions = this.sectionsSelected.filter((section) => !!section.validateId).flatMap(
+        (section) => section.validateId
+      );
+      this.sub$.add(
+        this.studentSchedulesService.closeInscription$(inscriptions as any).subscribe(
+          (inscription) => {
+            this.goToFinished();
+          }
+        )
+      );
+    }
+  }
+
+  confirmClose(): void {
+    if (!this.isInscription) {
+      return;
+    }
+    const dialogRef = this.matDialog.open(ConfirmModalComponent, {
+      data: {
+        message: {
+          title: 'Cerrar inscripción',
+          body: `¿Está seguro que desea cerrar su proceso de inscripción? Esta acción no puede deshacerse`,
+        },
+      },
+      hasBackdrop: true,
+    });
+
+    dialogRef.componentInstance.closed.subscribe((res) => {
+      dialogRef.close();
+      if (res) {
+        this.closeInscription()
+      }
+    });
   }
 }
