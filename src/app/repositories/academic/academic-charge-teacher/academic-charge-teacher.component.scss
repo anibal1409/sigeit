@@ -1,0 +1,94 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  gap: 1rem;
+  mat-form-field {
+    width: 100%;
+  }
+  .field-name {
+    width: 10rem;
+  }
+  .schedules {
+    overflow: auto;
+  }
+  .mat-container {
+    box-sizing: border-box;
+  }
+  .table-schedule {
+    min-width: 60rem;
+  }
+  
+  mat-card-header {
+  }
+  .content-info {
+    gap: 1rem;
+  }
+  .content-body {
+    gap: 1rem;
+  }
+    
+  @media screen and (max-width: 768px) {
+    .container {
+      padding: 0.5rem;
+    }
+    .content-body {
+      flex-direction: column-reverse;
+    }
+  }
+  .content-sections {
+    gap: 1rem;
+  }
+  .content-subjects {
+    gap: 0.5rem;
+  }
+
+  mat-column {
+    width: max-content;
+  }
+  
+  mat-header-row > mat-header-cell.mat-column-hora {
+    max-width: 7rem;
+  }
+  
+  mat-row > .mat-column-hora {
+    background-color: rgb(67, 146, 237);
+    color: white;
+    font-weight: 800;
+    max-width: 7rem;
+  }
+  
+  mat-row > mat-cell {
+    padding: 0.5rem 1rem;
+  }
+  
+  
+  .mat-mdc-header-cell:not(.mat-column-hora) {
+    min-width: 10rem;
+  }
+  
+  .mat-mdc-header-cell {
+    background-color: rgb(67, 146, 237) !important;
+    color: white;
+    font-weight: 800;
+    text-align: center;
+    font-size: 1rem;
+  }
+  
+  .mat-card-content {
+    overflow-x: scroll;
+    padding: 0;
+  }
+  mat-table {
+    width: max-content;
+  }
+  
+  .empty-table {
+    padding: 1.5rem;
+    text-align: center;
+    background: white;
+    font-size: 1.4rem;
+    font-weight: 100;
+  }
+  
+}

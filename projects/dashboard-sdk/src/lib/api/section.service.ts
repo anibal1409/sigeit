@@ -108,8 +108,8 @@ export class SectionService {
     /**
      * 
      * 
-     * @param departmentId 
      * @param periodId 
+     * @param departmentId 
      * @param subjectId 
      * @param teacherId 
      * @param semester 
@@ -118,14 +118,10 @@ export class SectionService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public sectionControllerFindAll(departmentId: number, periodId: number, subjectId?: number, teacherId?: number, semester?: number, dayId?: number, status?: boolean, observe?: 'body', reportProgress?: boolean): Observable<Array<Section>>;
-    public sectionControllerFindAll(departmentId: number, periodId: number, subjectId?: number, teacherId?: number, semester?: number, dayId?: number, status?: boolean, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Section>>>;
-    public sectionControllerFindAll(departmentId: number, periodId: number, subjectId?: number, teacherId?: number, semester?: number, dayId?: number, status?: boolean, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Section>>>;
-    public sectionControllerFindAll(departmentId: number, periodId: number, subjectId?: number, teacherId?: number, semester?: number, dayId?: number, status?: boolean, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (departmentId === null || departmentId === undefined) {
-            throw new Error('Required parameter departmentId was null or undefined when calling sectionControllerFindAll.');
-        }
+    public sectionControllerFindAll(periodId: number, departmentId?: number, subjectId?: number, teacherId?: number, semester?: number, dayId?: number, status?: boolean, observe?: 'body', reportProgress?: boolean): Observable<Array<Section>>;
+    public sectionControllerFindAll(periodId: number, departmentId?: number, subjectId?: number, teacherId?: number, semester?: number, dayId?: number, status?: boolean, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Section>>>;
+    public sectionControllerFindAll(periodId: number, departmentId?: number, subjectId?: number, teacherId?: number, semester?: number, dayId?: number, status?: boolean, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Section>>>;
+    public sectionControllerFindAll(periodId: number, departmentId?: number, subjectId?: number, teacherId?: number, semester?: number, dayId?: number, status?: boolean, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (periodId === null || periodId === undefined) {
             throw new Error('Required parameter periodId was null or undefined when calling sectionControllerFindAll.');
@@ -136,7 +132,11 @@ export class SectionService {
 
 
 
+
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (departmentId !== undefined && departmentId !== null) {
+            queryParameters = queryParameters.set('departmentId', <any>departmentId);
+        }
         if (subjectId !== undefined && subjectId !== null) {
             queryParameters = queryParameters.set('subjectId', <any>subjectId);
         }
@@ -168,7 +168,7 @@ export class SectionService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<Section>>('get',`${this.basePath}/section/department/${encodeURIComponent(String(departmentId))}/period/${encodeURIComponent(String(periodId))}`,
+        return this.httpClient.request<Array<Section>>('get',`${this.basePath}/section/period/${encodeURIComponent(String(periodId))}`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,

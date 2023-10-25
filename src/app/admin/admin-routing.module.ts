@@ -112,6 +112,10 @@ const routes: Routes = [
         path: 'profile',
         loadChildren: () => import('../repositories/profile/profile.module').then((m) => m.ProfileModule),
       },
+      {
+        path: 'academic-charge',
+        loadChildren: () => import('../repositories/academic/academic.module').then((m) => m.AcademicModule),
+      },
     ],
   },
 ];

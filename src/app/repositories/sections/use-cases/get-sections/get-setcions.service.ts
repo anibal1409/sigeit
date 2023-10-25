@@ -26,8 +26,8 @@ implements UseCase<Array<SectionItemVM> | null, SectionBaseQuery> {
 
   exec(data: SectionBaseQuery, memory = true): Observable<Array<SectionItemVM>> {
     return this.entityServices.sectionControllerFindAll(
-      data?.departmentId || 0,
       data?.periodId || 0,
+      data?.departmentId,
       data?.subjectId,
       data?.teacherId,
       data?.semester,
