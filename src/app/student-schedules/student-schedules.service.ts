@@ -6,6 +6,7 @@ import {
   map,
   Observable,
 } from 'rxjs';
+import { ToastService } from 'toast';
 
 import { CareerItemVM } from '../repositories/careers';
 import { GetCareersService } from '../repositories/careers/use-cases';
@@ -30,7 +31,10 @@ import {
   SubjectItemVM,
 } from '../repositories/subjects';
 import { GetSubjectsService } from '../repositories/subjects/use-cases';
-import { InscriptionVM } from './model';
+import {
+  InscriptionVM,
+  SavedSchedule,
+} from './model';
 import { InscriptionBaseQuery } from './model/inscription-base-query';
 import {
   CloseInscriptionService,
@@ -59,6 +63,7 @@ export class StudentSchedulesService {
     private getInscriptionsService: GetInscriptionsService,
     private updateInscriptionService: UpdateInscriptionService,
     private closeInscriptionService: CloseInscriptionService,
+    private toastService: ToastService,
   ) { }
 
   getLoading$(): Observable<boolean> {
@@ -183,6 +188,73 @@ export class StudentSchedulesService {
       .pipe(
         finalize(() => this.setLoading(false))
       );
+  }
+
+  saveSchedule(name: string, sections: Array<SectionItemVM>, careerId: number, userId?: number, scheduleId?: string): boolean {
+    if (sections.length === 0) {
+      return false;
+    }
+    const key = userId ? `${userId}-${careerId}` : careerId.toString();
+    const schedules = this.getSavedSchedules(careerId, userId);
+    const id = (new Date()).toISOString();
+    const nameSchedule = name ?  name.trim() : `Horario ${id}`;
+    const schedule: SavedSchedule = {
+      id: scheduleId ? scheduleId : id,
+      name: nameSchedule,
+      sections,
+    };
+    const index = schedules.findIndex(
+      (schedule) => schedule.name === nameSchedule && schedule.id !== scheduleId
+    );
+    let res = false;
+
+    if (index >= 0) {
+      this.toastService.error('Ya existe un horario con ese nombre');
+    } else {
+      const indexS = schedules.findIndex(
+        (schedule) => schedule.id === scheduleId
+      );
+      console.log(schedule);
+      
+      if (scheduleId) {
+        schedules[indexS] = schedule;
+      } else {
+        schedules.push(schedule);
+      }
+
+      console.log(schedules);
+      
+      localStorage.setItem(key, JSON.stringify(schedules));
+      res = true;
+    }
+
+    return res;
+  }
+
+  getSavedSchedules(careerId: number, userId?: number): Array<SavedSchedule> {
+    const key = userId ? `${userId}-${careerId}` : careerId.toString();
+    const data = localStorage.getItem(key);
+    let schedules = [];
+    if (data) {
+      schedules = JSON.parse(data);
+    }
+
+    return schedules;
+  }
+
+  removeSavedSchedule(careerId: number, userId?: number, scheduleId?: string): boolean {
+    const schedules = this.getSavedSchedules(careerId, userId);
+    const index = schedules.findIndex(
+      (schedule) => schedule.id === scheduleId
+    );
+    if (index >= 0) {
+      const key = userId ? `${userId}-${careerId}` : careerId.toString();
+      schedules.splice(index, 1);
+      localStorage.setItem(key, JSON.stringify(schedules));
+      return true;
+    }
+
+    return false;
   }
 
 }

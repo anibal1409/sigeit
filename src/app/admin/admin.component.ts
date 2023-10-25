@@ -52,7 +52,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     },
     {
       path: '/dashboard/scheludes',
-      title: 'Horarios',
+      title: 'Planificación Académica',
     },
     {
       path: '/dashboard/scheludes/planned',
@@ -81,6 +81,22 @@ export class AdminComponent implements OnInit, OnDestroy {
     {
       path: '/dashboard/formats',
       title: 'Formatos',
+    },
+    {
+      path: '/dashboard/inscription',
+      title: 'Inscripción',
+    },
+    {
+      path: '/dashboard/schedules-students',
+      title: 'Horarios',
+    },
+    {
+      path: '/dashboard/schedules-students/finished',
+      title: 'Inscripción finalizada',
+    },
+    {
+      path: '/dashboard/schedules-students/schedule',
+      title: 'Horario inscrito',
     },
   ];
 

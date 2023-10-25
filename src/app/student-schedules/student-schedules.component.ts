@@ -5,6 +5,7 @@ import {
 } from '@angular/core';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
@@ -32,7 +33,10 @@ import {
 } from '../repositories/schedules';
 import { SectionItemVM } from '../repositories/sections';
 import { SubjectVM } from '../repositories/subjects';
-import { StageInscription } from './model';
+import {
+  SavedSchedule,
+  StageInscription,
+} from './model';
 import { StudentSchedulesService } from './student-schedules.service';
 
 @Component({
@@ -72,6 +76,9 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
   disabledSubmit = true;
   isInscription = false;
   lastSection!: SectionItemVM | null;
+  nameCtrl = new FormControl();
+  savedSchedules: Array<SavedSchedule> = [];
+  savedScheduleEdit!: SavedSchedule;
   private sub$ = new Subscription();
 
   constructor(
@@ -102,7 +109,6 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
     );
 
     this.loadActivePeriod();
-    
   }
 
   private validateInscription(): void {
@@ -242,6 +248,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
         this.semesterId = 0;
         this.subjectId = 0;
         this.sectionId = 0;
+        this.savedSchedules = [];
 
         this.form.patchValue({
           semesterId: null,
@@ -254,6 +261,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
           this.form.patchValue({
             semesterId: this.semesters[0].id,
           });
+          this.loadSavedSchedules();
         }
       })
     );
@@ -308,8 +316,8 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
       if (sectionS?.id === section.id) {
         this.subjectsSelected.delete(key);
         this.lastSection = null;
-        if (section.validateId) {
-          this.deleteInscription(section, true);
+        if (sectionS?.validateId) {
+          this.deleteInscription(sectionS, true);
         }
       } else {
         this.subjectsSelected.set(key, section);
@@ -521,5 +529,49 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
         this.closeInscription()
       }
     });
+  }
+
+  saveShedule(): void {
+    if (!this.isInscription) {
+      if (this.studentSchedulesService.saveSchedule(
+        this.nameCtrl.value,
+        this.sectionsSelected,
+        this.carrerId,
+        this.userStateService.getUserId(),
+        this.savedScheduleEdit?.id,
+        )) {
+          this.nameCtrl.reset();
+          this.subjectsSelected.clear();
+          this.sectionsSelected = [];
+          this.loadSavedSchedules();
+      }
+    }
+  }
+
+  private loadSavedSchedules(): void {
+    if (!this.isInscription) {
+      this.savedSchedules = this.studentSchedulesService.getSavedSchedules(this.carrerId, this.userStateService.getUserId());
+    }
+  }
+
+  loadSavedSchedule(schedule: SavedSchedule): void {
+    if (!this.isInscription) {
+      this.subjectCounter = 0;
+      this.credits = 0;
+      this.subjectsSelected.clear();
+      this.sectionsSelected = [];
+      this.savedScheduleEdit = schedule;
+      this.nameCtrl.patchValue(schedule.name);
+      schedule.sections.forEach(
+        (section) => {
+          this.addSection(section);
+        }
+      );
+    }
+  }
+
+  removeSavedSchedule(schedule: SavedSchedule): void {
+    this.studentSchedulesService.removeSavedSchedule(this.carrerId, this.userStateService.getUserId(), schedule.id);
+    this.loadSavedSchedules();
   }
 }

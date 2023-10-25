@@ -73,7 +73,7 @@
 <ng-container *ngIf="sectionsSelected?.length">
   <div class="d-flex justify-content-end content-info align-items-center">
     <button 
-      *ngIf="isInscription"
+      *ngIf="isInscription; else Schedules"
       mat-raised-button 
       color="primary" 
       (click)="confirmClose()"
@@ -81,6 +81,25 @@
     >
       Cerrar inscripción
     </button>
+    <ng-template #Schedules>
+      <mat-form-field class="field-name">
+        <mat-label>Nombre</mat-label>
+        <input type="text" matInput [formControl]="nameCtrl" />
+        <mat-error *ngIf="nameCtrl.hasError('required')"
+          >Campo requerido</mat-error
+        >
+      </mat-form-field>
+      <button 
+        mat-raised-button 
+        color="primary" 
+        (click)="saveShedule()"
+        [disabled]="loading"
+      >
+        Guardar horario
+      </button>
+    </ng-template>
+    
+    
     <mat-card>
       <mat-card-header class="p-3">
         <mat-card-title-group>
@@ -146,10 +165,35 @@
         </mat-card>
       </div>
       <div class="mat-container empty-table" *ngIf="!dataSource.length">
-        Seleccione un profesor para visualizar el itinerario
       </div>
     </div>
   </div>
 </ng-container>
+
+<div *ngIf="savedSchedules.length">
+  <h5>
+    Horarios guardados
+  </h5>
+  <div class="d-flex content-info align-items-center">
+    <mat-card *ngFor="let schedule of savedSchedules">
+      <mat-card-header>
+        <mat-card-title-group>
+          <mat-card-subtitle>
+            {{ schedule.name }}
+          </mat-card-subtitle>
+        </mat-card-title-group>
+      </mat-card-header>
+      <mat-card-actions align="end">
+        <button mat-button (click)="loadSavedSchedule(schedule)">
+          Cargar
+        </button>
+        <button mat-button (click)="removeSavedSchedule(schedule)">
+          Eliminar
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
+
 
 

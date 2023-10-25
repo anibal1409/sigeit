@@ -39,13 +39,13 @@ export const MENU: Array<optionMenu> = [
     permissions: [UserRole.Administrator],
   },
   {
-    name: 'Horarios',
+    name: 'Planificación académica',
     value: 'scheludes',
     icon: 'date_range',
     permissions: [UserRole.Administrator, UserRole.Director, UserRole.HeadDepartment, UserRole.Planner,],
   },
   {
-    name: 'Periodos\nAcademicos',
+    name: 'Periodos Académicos',
     value: 'periods',
     icon: 'hourglass_empty',
     permissions: [UserRole.Administrator],
@@ -77,8 +77,8 @@ export const MENU: Array<optionMenu> = [
   {
     name: 'Horarios',
     value: 'schedules-students',
-    icon: 'date_range',
-    permissions: [UserRole.Student],
+    icon: 'dashboard',
+    permissions: [UserRole.Administrator, UserRole.Director, UserRole.HeadDepartment, UserRole.Planner, UserRole.Student],
   },
   {
     name: 'Inscripción',
