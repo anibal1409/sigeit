@@ -7,7 +7,7 @@
       <mat-card-header class="p-3">
         <mat-card-title-group>
           <mat-card-subtitle>
-            Asignaturas: <strong>{{subjectCounter}}</strong>
+            Secciones: <strong>{{subjectCounter}}</strong>
           </mat-card-subtitle>
         </mat-card-title-group>
       </mat-card-header>
@@ -43,16 +43,21 @@
   </table>
 
   <div class="d-flex justify-content-center mt-3">
-    <button mat-raised-button color="primary" [routerLink]="'/dashboard/inscription/schedule'">Ver horario inscrito</button>
+    <button mat-raised-button color="primary" (click)="showScheudules = !showScheudules">
+      {{
+        !showScheudules ? 'Ver ' : 'Ocultar '
+      }}
+      horario
+    </button>
   </div>
 
   <div class="mat-container" *ngIf="dataSource.length && showScheudules">
     <mat-card>
       <mat-card-content class="mat-card-content">
-        <mat-table [dataSource]="dataSource" class="mat-table">
+        <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
           <ng-container matColumnDef="hora" >
             <mat-header-cell *matHeaderCellDef >Hora/Dia</mat-header-cell>
-            <mat-cell *matCellDef="let row">{{ row.hora }}</mat-cell>
+            <mat-cell *matCellDef="let row">{{ row.hour }}</mat-cell>
           </ng-container>
 
           <ng-container *ngFor="let day of days" [matColumnDef]="day.name" >

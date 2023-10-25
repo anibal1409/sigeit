@@ -170,10 +170,11 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
 
             this.dataSource = this.startIntervals.map(
               (hora, index) => {
-                const row: any = { hora };
+                const row: any = { hora, hour: `${hora}/${this.endIntervals[index]}` };
                 this.days.forEach((day, dayIndex) => {
                   row[day.name] = this.dataSchedule[index][dayIndex];
                 });
+                
                 return row;
               }
             );

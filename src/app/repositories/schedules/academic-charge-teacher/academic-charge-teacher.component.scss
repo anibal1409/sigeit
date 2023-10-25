@@ -19,7 +19,8 @@ mat-row > .mat-column-hora {
   background-color: rgb(67, 146, 237);
   color: white;
   font-weight: 800;
-  max-width: 7rem;
+  max-width: 6rem;
+  font-size: 0.75rem !important;
 }
 
 mat-row > mat-cell {
