@@ -85,7 +85,25 @@
       >Campo requerido</mat-error
       >
     </mat-form-field>
-    <mat-form-field *ngSwitchCase="UserRole.HeadDepartment || UserRole.Planner || UserRole.Teacher">
+    <mat-form-field *ngSwitchCase="UserRole.HeadDepartment">
+      <mat-label>Departamento</mat-label>
+      <mat-select formControlName="departmentId">
+        <mat-option *ngFor="let department of departments" [value]="department.id">{{department.name}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.controls['departmentId'].hasError('required')"
+      >Campo requerido</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field *ngSwitchCase="UserRole.Planner">
+      <mat-label>Departamento</mat-label>
+      <mat-select formControlName="departmentId">
+        <mat-option *ngFor="let department of departments" [value]="department.id">{{department.name}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.controls['departmentId'].hasError('required')"
+      >Campo requerido</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field *ngSwitchCase="UserRole.Teacher">
       <mat-label>Departamento</mat-label>
       <mat-select formControlName="departmentId">
         <mat-option *ngFor="let department of departments" [value]="department.id">{{department.name}}</mat-option>

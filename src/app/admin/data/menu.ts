@@ -86,4 +86,10 @@ export const MENU: Array<optionMenu> = [
     icon: 'playlist_add_check',
     permissions: [UserRole.Student],
   },
+  {
+    name: 'Carga Académica',
+    value: 'academic-charge',
+    icon: 'class',
+    permissions: [UserRole.Director, UserRole.HeadDepartment, UserRole.Planner, UserRole.Teacher],
+  },
 ]

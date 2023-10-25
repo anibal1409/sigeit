@@ -107,7 +107,11 @@ const routes: Routes = [
       {
         path: 'formats',
         loadChildren: () => import('../repositories/documents/documents.module').then((m) => m.DocumentsModule),
-      }
+      },
+      {
+        path: 'profile',
+        loadChildren: () => import('../repositories/profile/profile.module').then((m) => m.ProfileModule),
+      },
     ],
   },
 ];

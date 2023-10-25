@@ -10,7 +10,10 @@ import {
 
 import { Subscription } from 'rxjs';
 
-import { UserStateService } from '../common/user-state';
+import {
+  UserStateService,
+  UserStateVM,
+} from '../common/user-state';
 import { AdminService } from './admin.service';
 import { MENU } from './data';
 import { optionMenu } from './models';
@@ -22,10 +25,6 @@ import { optionMenu } from './models';
 })
 export class AdminComponent implements OnInit, OnDestroy {
   title = 'SIGEIT';
-  user = {
-    img: '',
-    name: '',
-  };
 
   optionList: Array<optionMenu> = [];
 
@@ -98,9 +97,25 @@ export class AdminComponent implements OnInit, OnDestroy {
       path: '/dashboard/schedules-students/schedule',
       title: 'Horario inscrito',
     },
+    {
+      path: '/dashboard/academic-charge',
+      title: 'Carga Académica',
+    },
+    {
+      path: '/dashboard/profile',
+      title: 'Mi Perfil',
+    },
   ];
 
   sub$ = new Subscription();
+  user!: UserStateVM;
+
+  optionProfile: optionMenu = {
+    icon: '',
+    name: 'Mi Perfil',
+    permissions: [],
+    value: 'profile'
+  };
 
   constructor(
     private router: Router,
@@ -120,6 +135,15 @@ export class AdminComponent implements OnInit, OnDestroy {
           this.updateTitle(event.url);
         }
       })
+    );
+    this.user = this.userStateService.getUser() as any;
+    this.sub$.add(
+      this.userStateService.getUser$().subscribe((user) => {
+        if (user) {
+          this.user = user;
+        }
+      }
+      )
     );
     const role = this.userStateService.getRole();
     if (role) {
@@ -147,7 +171,7 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   menuOption(option?: optionMenu): void {
     if (option && option.name === 'Salir') {
-      this.adminService.logout();
+      this.logout();
     } else if (option) {
       this.router.navigate([`/dashboard/${option.value}`]);
     } else if (!option) {
@@ -162,5 +186,9 @@ export class AdminComponent implements OnInit, OnDestroy {
     } else {
       this.title = 'SIGEIT';
     }
+  }
+
+  logout(): void {
+    this.adminService.logout();
   }
 }
