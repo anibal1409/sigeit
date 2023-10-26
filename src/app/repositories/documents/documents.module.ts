@@ -11,8 +11,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 
-import { NgxEditorModule } from 'ngx-editor';
-
 import { StateModule } from '../../common';
 import { TableModule } from '../../common/table';
 import { DocumentsRoutingModule } from './documents-routing.module';
@@ -35,7 +33,6 @@ import { UpdateDocumentService } from './use-cases/update-document';
     CommonModule,
     DocumentsRoutingModule,
     ReactiveFormsModule,
-    NgxEditorModule,
     TableModule,
     MatCardModule,
     MatIconModule,

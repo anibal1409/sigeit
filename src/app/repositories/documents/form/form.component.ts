@@ -11,16 +11,12 @@ import {
 import {
   FormBuilder,
   FormGroup,
+  Validators,
 } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
 import { isEqual } from 'lodash';
-import {
-  Editor,
-  Toolbar,
-  Validators,
-} from 'ngx-editor';
 import { Subscription } from 'rxjs';
 
 import { DocumentsFileService } from '../documents.service';
@@ -60,18 +56,6 @@ export class FormComponent implements OnInit, OnDestroy {
     { name: 'Inactivo', value: false, },
   ];
 
-  editor!: Editor;
-  toolbar: Toolbar = [
-    ['bold', 'italic'],
-    ['underline', 'strike'],
-    ['code', 'blockquote'],
-    ['ordered_list', 'bullet_list'],
-    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
-    ['link', 'image'],
-    ['text_color', 'background_color'],
-    ['align_left', 'align_center', 'align_right', 'align_justify'],
-  ];
-
   constructor(
     private documentService: DocumentsFileService,
     private formBuilder: FormBuilder,
@@ -80,7 +64,6 @@ export class FormComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnDestroy(): void {
-    this.editor.destroy();
     this.sub$.unsubscribe();
   }
 
@@ -94,7 +77,6 @@ export class FormComponent implements OnInit, OnDestroy {
         }
       })
     );
-    this.editor = new Editor();
     this.sub$.add(
       this.documentService.getLoading$().subscribe((loading) => {
         this.loading = loading;
@@ -134,7 +116,7 @@ export class FormComponent implements OnInit, OnDestroy {
   private createForm(): void {
     this.form = this.formBuilder.group({
       name: [null, [Validators.required]],
-      description: [null, [Validators.required()]],
+      description: [null, [Validators.required]],
       id: [0],
       status: [true, [Validators.required]],
       departmentId:  [1, [Validators.required]],
