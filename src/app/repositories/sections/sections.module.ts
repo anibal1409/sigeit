@@ -16,7 +16,10 @@ import {
   SelectExModule,
   TableModule,
 } from '../../common';
-import { ActivePeriodService } from '../periods';
+import {
+  ActivePeriodService,
+  ToPlanPeriodService,
+} from '../periods';
 import { GetTeachersService } from '../teachers';
 import { FormComponent } from './form/form.component';
 import { SectionMemoryService } from './memory';
@@ -60,6 +63,7 @@ import {
     GetSectionsService,
     SectionMemoryService,
     ActivePeriodService,
+    ToPlanPeriodService,
   ],
 })
 export class SectionsModule {}

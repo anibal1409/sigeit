@@ -466,7 +466,9 @@ export class PlannedSchedulesComponent {
           Nombre: !this.equalPrevious(schedule, 'teacherName', this.dataSource.data)
             ? schedule?.teacherName
             : '',
-          Capacidad: schedule?.capacity,
+          Capacidad: !this.equalPrevious(schedule, 'capacity', this.dataSource.data)
+          ? schedule?.capacity
+          : '',
         };
 
 

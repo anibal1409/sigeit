@@ -12,4 +12,5 @@ export interface PeriodVM {
   interval: number;
   status: boolean | string;
   stage: StagePeriod;
+  copyPrevious?: boolean;
 }

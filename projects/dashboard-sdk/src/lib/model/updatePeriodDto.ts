@@ -20,12 +20,14 @@ export interface UpdatePeriodDto {
     stage?: UpdatePeriodDto.StageEnum;
     interval?: number;
     duration?: number;
+    copyPrevious?: boolean;
     status?: boolean;
     id?: number;
 }
 export namespace UpdatePeriodDto {
-    export type StageEnum = 'TO_PLAN' | 'PLANNED' | 'FINALIZED';
+    export type StageEnum = 'TO_START' | 'TO_PLAN' | 'PLANNED' | 'FINALIZED';
     export const StageEnum = {
+        TOSTART: 'TO_START' as StageEnum,
         TOPLAN: 'TO_PLAN' as StageEnum,
         PLANNED: 'PLANNED' as StageEnum,
         FINALIZED: 'FINALIZED' as StageEnum

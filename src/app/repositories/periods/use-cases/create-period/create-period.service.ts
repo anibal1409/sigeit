@@ -37,6 +37,7 @@ export class CreatePeriodService
         startTime: entitySave.startTime,
         interval: entitySave.interval,
         stage: entitySave.stage as any,
+        copyPrevious: entitySave.copyPrevious || false,
       })
       .pipe(
         map(Period2PeriodItemVM),

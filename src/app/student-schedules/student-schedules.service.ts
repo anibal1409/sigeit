@@ -11,7 +11,10 @@ import { ToastService } from 'toast';
 import { CareerItemVM } from '../repositories/careers';
 import { GetCareersService } from '../repositories/careers/use-cases';
 import { PeriodVM } from '../repositories/periods/model';
-import { ActivePeriodService } from '../repositories/periods/use-cases';
+import {
+  ActivePeriodService,
+  ToPlanPeriodService,
+} from '../repositories/periods/use-cases';
 import {
   DayVM,
   Intervals,
@@ -52,6 +55,7 @@ export class StudentSchedulesService {
 
   constructor(
     private activePeriodService: ActivePeriodService,
+    private toPlanPeriodService: ToPlanPeriodService,
     private getCareersService: GetCareersService,
     private getSubjectsService: GetSubjectsService,
     private getDaysService: GetDaysService,
@@ -77,6 +81,14 @@ export class StudentSchedulesService {
   getActivePeriod$(): Observable<PeriodVM> {
     this.setLoading(true);
     return this.activePeriodService.exec()
+      .pipe(
+        finalize(() => this.setLoading(false))
+      );
+  }
+
+  getToPlanPeriod$(): Observable<PeriodVM> {
+    this.setLoading(true);
+    return this.toPlanPeriodService.exec()
       .pipe(
         finalize(() => this.setLoading(false))
       );

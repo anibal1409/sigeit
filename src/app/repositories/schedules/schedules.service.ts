@@ -18,7 +18,10 @@ import {
 } from '../departments/model';
 import { GetDepartmentsService } from '../departments/use-cases';
 import { PeriodVM } from '../periods/model';
-import { ActivePeriodService } from '../periods/use-cases';
+import {
+  ActivePeriodService,
+  ToPlanPeriodService,
+} from '../periods/use-cases';
 import {
   SectionBaseQuery,
   SectionItemVM,
@@ -70,6 +73,7 @@ export class SchedulesService extends ListComponentService<ScheduleItemVM, Sched
     private getTeachersService: GetTeachersService,
     private getSubjectsService: GetSubjectsService,
     private activePeriodService: ActivePeriodService,
+    private toPlanPeriodService: ToPlanPeriodService,
     private getSetcionsService: GetSectionsService,
     private getClassroomsService: GetClassroomsService,
     private getDaysService: GetDaysService,
@@ -111,6 +115,14 @@ export class SchedulesService extends ListComponentService<ScheduleItemVM, Sched
 
   getActivePeriod$(): Observable<PeriodVM> {
     return this.activePeriodService.exec();
+  }
+
+  getToPlanPeriod$(): Observable<PeriodVM> {
+    this.setLoading(true);
+    return this.toPlanPeriodService.exec()
+      .pipe(
+        finalize(() => this.setLoading(false))
+      );
   }
 
   getSections$(data: SectionBaseQuery): Observable<Array<SectionItemVM>> {

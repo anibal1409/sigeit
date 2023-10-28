@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <span mat-dialog-title> {{ id ? 'Modificar':  'Crear' }} aula </span>
+  <span mat-dialog-title> {{ id ? 'Modificar':  'Crear' }} Periodo Académico </span>
   <button
     id="modal-close-button"
     mat-dialog-close
@@ -128,12 +128,20 @@
       <mat-option
         *ngFor="let option of stages"
         [value]="option.value"
+        [disabled]="STAGE_PERIODS_VALUE[oldFormValue.stage].order > STAGE_PERIODS_VALUE[option.value].order || option?.disabled"
       >
         {{ option.name }}
       </mat-option
       >
     </mat-select>
   </mat-form-field>
+
+  <mat-checkbox 
+    *ngIf="!id"
+    formControlName="copyPrevious" 
+  >
+    Crear copia de los horarios del semestre actual
+  </mat-checkbox>
 </form>
 
 <div class="modal-footer" mat-dialog-actions>

@@ -20,6 +20,7 @@ import { Subscription } from 'rxjs';
 import {
   PeriodVM,
   STAGE_PERIODS,
+  STAGE_PERIODS_VALUE,
   StagePeriod,
 } from '../model';
 import { PeriodsService } from '../periods.service';
@@ -52,7 +53,7 @@ export class FormComponent implements OnInit, OnDestroy {
     endTime: '',
     interval: 5,
     startTime: '07:00',
-    stage: StagePeriod.toPlan,
+    stage: StagePeriod.toStart,
   };
   
   status = [
@@ -60,6 +61,7 @@ export class FormComponent implements OnInit, OnDestroy {
     { name: 'Inactivo', value: false, },
   ];
   stages = STAGE_PERIODS;
+  STAGE_PERIODS_VALUE = STAGE_PERIODS_VALUE;
   intervalsStart = [];
   intervalsEnd = [];
 
@@ -130,7 +132,8 @@ export class FormComponent implements OnInit, OnDestroy {
       endTime: [null, [Validators.required]],
       duration:  [45, [Validators.required]],
       interval: [5, [Validators.required]],
-      stage: [StagePeriod.toPlan, [Validators.required]],
+      stage: [{value: StagePeriod.toStart, disabled: !this.data?.id}, [Validators.required]],
+      copyPrevious: [true],
     });
 
     this.sub$.add(
@@ -173,7 +176,7 @@ export class FormComponent implements OnInit, OnDestroy {
       this.sub$.add(
         this.periodsService
           .create({
-            ...this.form.value,
+            ...this.form.getRawValue(),
           })
           .subscribe(
             () => {
@@ -190,7 +193,7 @@ export class FormComponent implements OnInit, OnDestroy {
       this.sub$.add(
         this.periodsService
           .update({
-            ...this.form.value,
+            ...this.form.getRawValue(),
             id: this.id,
           })
           .subscribe(

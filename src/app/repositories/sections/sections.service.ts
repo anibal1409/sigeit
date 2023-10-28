@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import {
+  finalize,
+  Observable,
+} from 'rxjs';
 
 import { ListComponentService } from '../../common/memory-repository';
 import {
@@ -11,6 +14,7 @@ import {
 import {
   ActivePeriodService,
   PeriodVM,
+  ToPlanPeriodService,
 } from '../periods';
 import {
   GetSubjectsService,
@@ -49,6 +53,7 @@ export class SectionsService extends ListComponentService<SectionItemVM, Section
     private getTeachersService: GetTeachersService,
     private getSubjectsService: GetSubjectsService,
     private activePeriodService: ActivePeriodService,
+    private toPlanPeriodService: ToPlanPeriodService,
   ) {
     super(
       getEntityService,
@@ -73,8 +78,21 @@ export class SectionsService extends ListComponentService<SectionItemVM, Section
   }
 
   getActivePeriod$(): Observable<PeriodVM> {
-    return this.activePeriodService.exec();
+    this.setLoading(true);
+    return this.activePeriodService.exec()
+    .pipe(
+      finalize(() => this.setLoading(false))
+    );
   }
+  
+  getToPlanPeriod$(): Observable<PeriodVM> {
+    this.setLoading(true);
+    return this.toPlanPeriodService.exec()
+      .pipe(
+        finalize(() => this.setLoading(false))
+      );
+  }
+
 
   getSections$(data: SectionBaseQuery): Observable<Array<SectionItemVM>> {
     return this.getEntityService.exec(data, false);

@@ -7,7 +7,10 @@ import {
 } from 'rxjs';
 
 import { PeriodVM } from '../../periods';
-import { ActivePeriodService } from '../../periods/use-cases';
+import {
+  ActivePeriodService,
+  ToPlanPeriodService,
+} from '../../periods/use-cases';
 import {
   DayVM,
   Intervals,
@@ -31,6 +34,7 @@ export class AcademicChargeTeacherService {
 
   constructor(
     private activePeriodService: ActivePeriodService,
+    private toPlanPeriodService: ToPlanPeriodService,
     private getDaysService: GetDaysService,
     private getSchedulesService: GetSchedulesService,
     private intervalsService: IntervalsService,
@@ -48,6 +52,14 @@ export class AcademicChargeTeacherService {
   getActivePeriod$(): Observable<PeriodVM> {
     this.setLoading(true);
     return this.activePeriodService.exec()
+      .pipe(
+        finalize(() => this.setLoading(false))
+      );
+  }
+
+  getToPlanPeriod$(): Observable<PeriodVM> {
+    this.setLoading(true);
+    return this.toPlanPeriodService.exec()
       .pipe(
         finalize(() => this.setLoading(false))
       );

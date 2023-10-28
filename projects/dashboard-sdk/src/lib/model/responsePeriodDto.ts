@@ -24,8 +24,9 @@ export interface ResponsePeriodDto {
     status: boolean;
 }
 export namespace ResponsePeriodDto {
-    export type StageEnum = 'TO_PLAN' | 'PLANNED' | 'FINALIZED';
+    export type StageEnum = 'TO_START' | 'TO_PLAN' | 'PLANNED' | 'FINALIZED';
     export const StageEnum = {
+        TOSTART: 'TO_START' as StageEnum,
         TOPLAN: 'TO_PLAN' as StageEnum,
         PLANNED: 'PLANNED' as StageEnum,
         FINALIZED: 'FINALIZED' as StageEnum
