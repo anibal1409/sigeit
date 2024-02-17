@@ -79,6 +79,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.loginService.exec(email, password)
       .pipe(
         finalize(() => {
+          this.loading = false;
           this.stateService.setLoading(false);
         }
         )

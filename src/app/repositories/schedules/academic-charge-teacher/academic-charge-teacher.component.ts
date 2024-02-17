@@ -684,7 +684,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
                   (charge, index) => (new TableRow({
                     children: [
                       this.createCellTable(this.calculeText(this.academicCharge, index, charge.section?.subject?.code) ? '' : charge.section?.subject?.code || '', 20),
-                      this.createCellTable(this.calculeText(this.academicCharge, index, charge.section?.subject?.name) ? '' : charge.section?.subject?.name || '', 30, AlignmentType.LEFT),
+                      this.createCellTable(this.calculeText(this.academicCharge, index, charge.section?.subject?.name) ? '' : charge.section?.subject?.name || '', 30, AlignmentType.LEFT as any),
                       this.createCellTable(this.calculeText(this.academicCharge, index, charge.section?.name) ? '' : charge.section?.name || '', 10),
                       this.createCellTable(charge.day?.abbreviation || '', 10),
                       this.createCellTable(charge.classroom?.name || '', 10),
