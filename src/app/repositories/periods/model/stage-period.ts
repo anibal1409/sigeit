@@ -24,7 +24,7 @@ export const STAGE_PERIODS = [
   {
     name: 'Finalizado',
     value: StagePeriod.finalized,
-    disabled: true,
+    disabled: false,
     order: 4,
   },
 ];

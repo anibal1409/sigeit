@@ -35,7 +35,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     },
     {
       path: '/dashboard/classrooms',
-      title: 'Asignaturas',
+      title: 'Aulas',
     },
     {
       path: '/dashboard/careers',
