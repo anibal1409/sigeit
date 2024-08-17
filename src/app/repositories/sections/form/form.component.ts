@@ -103,13 +103,15 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     this.sub$.unsubscribe();
   }
 
-  private loadTeachers(): void {
+  private loadTeachers(sections = true): void {
     this.sub$.add(
       this.sectionsService
         .getTeachers$({departmentId: this.allTeachersCtrl.value ? undefined : this.departmentId, status: true })
         .subscribe((teachers) => {
           this.teachers = teachers;
-          this.loadSection();
+          if (sections) {
+            this.loadSection();
+          }
         })
     );
   }
@@ -128,6 +130,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
                 ...section
               }, { emitEvent: false });
               if (section?.all) {
+                this.loadTeachers(false);
                 this.allTeachersCtrl.patchValue(true, { emitEvent: false });
               }
             }
