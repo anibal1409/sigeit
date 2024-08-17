@@ -159,7 +159,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
                 } else {
                   this.dataSchedule[i][
                     dayIndex
-                  ].text = `${schedule.section?.name} - ${schedule.section?.subject?.name}`;
+                  ].text = `${schedule.section?.name} - ${schedule.section?.subject?.name} (${schedule.classroom?.name})`;
                 }
               }
             });

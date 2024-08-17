@@ -33,6 +33,7 @@ export class UpdateSectionService
         subject: { id: entitySave.subjectId },
         period: { id: entitySave.periodId },
         teacher: { id: entitySave.teacherId },
+        all: entitySave.all,
       }, entitySave.id || 0)
       .pipe(
         map(Section2SectionItemVM),

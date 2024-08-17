@@ -9,6 +9,7 @@ export function Section2SectionVM(section: any): SectionVM {
     teacherId: section?.teacherId,
     name: section?.name,
     status: section?.status,
+    all: section?.all,
     id: section?.id,
     teacher: Teacher2TeacherVM(section?.teacher),
   };

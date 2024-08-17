@@ -20,6 +20,7 @@ export interface Section {
     subject: Subject;
     period: Period;
     teacher: Teacher;
+    all: boolean;
     id: number;
     createdAt: Date;
     updatedAt: Date;

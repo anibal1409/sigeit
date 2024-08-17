@@ -14,6 +14,8 @@ import { User } from './user';
 export interface Activity { 
     id: number;
     user: User;
+    activityType: string;
     activity: string;
+    requestBody: string;
     createdAt: Date;
 }

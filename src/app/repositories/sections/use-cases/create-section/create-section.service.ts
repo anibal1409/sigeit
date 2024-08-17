@@ -33,6 +33,7 @@ export class CreateSectionService
         subject: { id: entitySave.subjectId },
         period: { id: entitySave.periodId },
         teacher: { id: entitySave.teacherId },
+        all: entitySave.all,
       })
       .pipe(
         map(Section2SectionItemVM),

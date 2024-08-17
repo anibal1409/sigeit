@@ -7,6 +7,7 @@ export interface SectionVM {
   teacherId: number;
   name: string;
   status: boolean | string;
+  all?: boolean;
   capacity: number;
   teacher?: TeacherVM;
 }

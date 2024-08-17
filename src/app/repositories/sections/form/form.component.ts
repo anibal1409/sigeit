@@ -127,6 +127,9 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
               this.form?.patchValue({
                 ...section
               }, { emitEvent: false });
+              if (section?.all) {
+                this.allTeachersCtrl.patchValue(true, { emitEvent: false });
+              }
             }
           })
       );
@@ -174,6 +177,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       name: ['01', [Validators.required, Validators.min(0)]],
       status: [true, [Validators.required]],
       capacity: [0, [Validators.required, Validators.min(1)]],
+      all: [false],
     });
 
     this.sub$.add(
@@ -195,6 +199,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     const section = this.form.value;
     section.subjectId = section?.subjectId?.id || section?.subjectId;
     section.teacherId = section?.teacherId?.id || section?.teacherId;
+    section.all = this.allTeachersCtrl.value;
     let obs;
     section.name = +section.name < 10 ? `0${+section.name}` : section.name;
     if (this.sectionId) {

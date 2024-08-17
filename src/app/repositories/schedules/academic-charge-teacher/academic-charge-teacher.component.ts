@@ -225,7 +225,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
                 } else {
                   this.dataSchedule[i][
                     dayIndex
-                  ].text = `${schedule.section?.name} - ${schedule.section?.subject?.name}`;
+                  ].text = `${schedule.section?.name} - ${schedule.section?.subject?.name} (${schedule.classroom?.name})`;
                 }
               }
             });
@@ -285,7 +285,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
       return;
     }
     moment.locale('es');
-    let codeDepartment = sessionStorage.getItem('codeDepartment') || 46;
+    let codeDepartment = sessionStorage.getItem('codeDepartment') || 5;
     codeDepartment = +codeDepartment;
     codeDepartment++;
     const nameTeacher = this.teachers.find((teacher) => teacher.id === this.teacherId)?.fullName?.toUpperCase();
@@ -599,7 +599,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
             new Paragraph({
               children: [
                 new TextRun({
-                  text: 'Maturín, ' + moment('2023-10-16').format('DD MMMM') + ' de ' + moment().format('YYYY'),
+                  text: 'Maturín, ' + moment('2024-04-10').format('DD MMMM') + ' de ' + moment().format('YYYY'),
                   size: '12pt',
                 }),
               ],

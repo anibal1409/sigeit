@@ -18,6 +18,7 @@ export interface CreateSectionDto {
     period: IdCreateEntity;
     teacher: IdCreateEntity;
     status: boolean;
+    all?: boolean;
     id?: number;
     inscribed?: number;
 }

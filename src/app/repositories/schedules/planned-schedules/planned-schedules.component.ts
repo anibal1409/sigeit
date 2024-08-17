@@ -367,7 +367,8 @@ export class PlannedSchedulesComponent {
           schedule.code === scheduleData.code) ||
         (schedule.code === scheduleData.code && field === 'code') ||
         (schedule.name === scheduleData.name && field === 'name') ||
-        (schedule.teacherName === scheduleData.teacherName && field === 'teacherName');
+        ((schedule.code === scheduleData.code) && schedule.teacherName === scheduleData.teacherName && field === 'teacherName') ||
+        ((schedule.code === scheduleData.code) && schedule.documentTeacher === scheduleData.documentTeacher && field === 'documentTeacher');
     }
 
     return equal;
@@ -383,8 +384,10 @@ export class PlannedSchedulesComponent {
 
       const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
 
+      const department = this.departments.find(department => department.id === this.departmentId);
+
       const headers1 = [
-        `PLANIFICACION ACADEMICA ${this.departmentCtrl.value?.abbreviation}-${this.period.name}`,
+        `PLANIFICACION ACADEMICA ${department?.abbreviation}-${this.period.name}`,
       ];
       XLSX.utils.sheet_add_aoa(worksheet, [headers1], {
         origin: 'B' + countRow,
@@ -426,7 +429,7 @@ export class PlannedSchedulesComponent {
         Sheets: { Horarios: worksheet },
         SheetNames: ['Horarios'],
       };
-      const department = this.departments.find(department => department.id === this.departmentId);
+      
       XLSX.writeFile(
         workbook,
         `${this.period.name} planificacion academica departamento de ${department?.name

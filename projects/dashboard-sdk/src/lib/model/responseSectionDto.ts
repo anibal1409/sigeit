@@ -25,4 +25,5 @@ export interface ResponseSectionDto {
     teacherId: number;
     teacher: Teacher;
     status: boolean;
+    all: boolean;
 }
