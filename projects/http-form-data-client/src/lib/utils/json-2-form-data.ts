@@ -1,4 +1,3 @@
-import { type } from 'os';
 import { BlobVM } from '../class';
 import { FormDataParserOptions } from '../interfaces';
 
