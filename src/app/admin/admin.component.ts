@@ -14,6 +14,9 @@ import {
   UserStateService,
   UserStateVM,
 } from '../common/user-state';
+import { GlobalPeriodService } from '../common/global-period';
+import { PeriodItemVM } from '../repositories/periods/model';
+import { ActivePeriodService } from '../repositories/periods/use-cases';
 import { AdminService } from './admin.service';
 import { MENU } from './data';
 import { optionMenu } from './models';
@@ -109,6 +112,8 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   sub$ = new Subscription();
   user!: UserStateVM;
+  activePeriod: PeriodItemVM | null = null;
+  periodDisplayText: string = '';
 
   optionProfile: optionMenu = {
     icon: '',
@@ -121,6 +126,8 @@ export class AdminComponent implements OnInit, OnDestroy {
     private router: Router,
     private userStateService: UserStateService,
     private adminService: AdminService,
+    private globalPeriodService: GlobalPeriodService,
+    private activePeriodService: ActivePeriodService,
   ) { }
 
   ngOnDestroy(): void {
@@ -142,9 +149,12 @@ export class AdminComponent implements OnInit, OnDestroy {
         if (user) {
           this.user = user;
         }
-      }
-      )
+      })
     );
+    
+    // Inicializar el período académico
+    this.initializePeriod();
+    
     const role = this.userStateService.getRole();
     if (role) {
       this.optionList = MENU.filter((item) => (item.permissions.includes(role as any)))
@@ -169,6 +179,36 @@ export class AdminComponent implements OnInit, OnDestroy {
     
   }
 
+  private initializePeriod(): void {
+    this.globalPeriodService.setLoading(true);
+    
+    // Usar el caso de uso existente para obtener el período activo
+    this.sub$.add(
+      this.activePeriodService.exec().subscribe({
+        next: (period) => {
+          if (period?.id) {
+            this.globalPeriodService.updatePeriodFromService(period);
+            this.activePeriod = period;
+            this.updatePeriodDisplayText();
+          }
+          this.globalPeriodService.setLoading(false);
+        },
+        error: (error) => {
+          console.error('Error al cargar el período activo:', error);
+          this.globalPeriodService.setLoading(false);
+        }
+      })
+    );
+    
+    // Suscribirse al período académico activo del servicio global
+    this.sub$.add(
+      this.globalPeriodService.getActivePeriod$().subscribe((period) => {
+        this.activePeriod = period;
+        this.updatePeriodDisplayText();
+      })
+    );
+  }
+
   menuOption(option?: optionMenu): void {
     if (option && option.name === 'Salir') {
       this.logout();
@@ -185,6 +225,14 @@ export class AdminComponent implements OnInit, OnDestroy {
       this.title = item.title;
     } else {
       this.title = 'SIGEIT';
+    }
+  }
+
+  private updatePeriodDisplayText(): void {
+    if (this.activePeriod) {
+      this.periodDisplayText = this.activePeriod.name;
+    } else {
+      this.periodDisplayText = '';
     }
   }
 

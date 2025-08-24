@@ -14,6 +14,7 @@ import {
   StateService,
   UserStateService,
 } from '../../../common';
+import { GlobalPeriodService } from '../../../common/global-period';
 import { DepartmentVM } from '../../departments/model';
 import { PeriodVM } from '../../periods/model';
 import { SchedulesService } from '../schedules.service';
@@ -69,6 +70,7 @@ export class PlannedSchedulesComponent {
     private router: Router,
     private stateService: StateService,
     private userStateService: UserStateService,
+    private globalPeriodService: GlobalPeriodService,
   ) {
     this.columns = [
       {
@@ -119,6 +121,7 @@ export class PlannedSchedulesComponent {
   ngOnInit() {
     this.departmentIdUser = this.userStateService.getDepartmentId() || 0;
     this.departmentId = this.departmentIdUser;
+    
     this.sub$.add(
       this.schedulesService.getLoading$().subscribe((loading) => {
         this.loading = loading;
@@ -130,9 +133,14 @@ export class PlannedSchedulesComponent {
       this.schedulesService.getActivePeriod$().subscribe((period) => {
         if (period?.id) {
           this.periodId = period.id;
+          this.period = period;
+          if (this.departmentIdUser) {
+            this.loadSchedules();
+          }
         }
       })
     );
+    
     this.sub$.add(
       this.groupByCtrl.valueChanges.subscribe((field) => {
         if (field) {
@@ -143,23 +151,14 @@ export class PlannedSchedulesComponent {
         }
       })
     );
+    
     this.loadDepartments();
+    
     this.sub$.add(
       this.departmentCtrl?.valueChanges.subscribe((departmentId) => {
         this.departmentId = +departmentId;
         if (departmentId) {
           this.loadSchedules();
-        }
-      })
-    );
-    this.sub$.add(
-      this.schedulesService.getActivePeriod$().subscribe((period) => {
-        if (period?.id) {
-          this.periodId = period.id;
-          this.period = period;
-          if (this.departmentIdUser) {
-            this.loadSchedules();
-          }
         }
       })
     );

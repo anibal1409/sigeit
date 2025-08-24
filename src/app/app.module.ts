@@ -31,6 +31,7 @@ import { AuthLoginGuard } from './auth/auth-login.guard';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthModule } from './auth/auth.module';
 import { StateModule } from './common/state';
+import { GlobalPeriodModule } from './common/global-period';
 import { CareersModule } from './repositories/careers/careers.module';
 import { ClassroomsModule } from './repositories/classrooms/classrooms.module';
 import {
@@ -58,6 +59,7 @@ function apiConfigFactory(): Configuration {
     AppRoutingModule,
     RouterModule,
     StateModule,
+    GlobalPeriodModule,
     AuthModule,
     SubjectsModule,
     ClassroomsModule,

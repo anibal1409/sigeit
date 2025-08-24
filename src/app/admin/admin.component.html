@@ -10,8 +10,15 @@
         </button>
         <span>{{title}}</span>
         <span class="spacer"></span>
+        
+        <!-- Período Académico -->
+        <div class="period-display" *ngIf="activePeriod">
+          <mat-icon class="period-icon">school</mat-icon>
+          <span class="period-text">{{ periodDisplayText }}</span>
+        </div>
+        
         <ng-container *ngIf="user">
-          <span>{{user.name}}</span>
+          <span class="user-name">{{user.name}}</span>
           <button mat-icon-button [matMenuTriggerFor]="menu" class="example-icon" aria-label="Example icon-button with share icon">
             <mat-icon>more_vert</mat-icon>
           </button>

@@ -17,7 +17,6 @@ import {
   TableModule,
 } from 'src/app/common';
 
-import { IntervalsService } from '../schedules/use-cases';
 import { FormComponent } from './form/form.component';
 import { PeriodMemoryService } from './memory';
 import { PeriodsRoutingModule } from './periods-routing.module';
@@ -59,7 +58,6 @@ import {
     UpdatePeriodService,
     FindPeriodService,
     PeriodMemoryService,
-    IntervalsService,
     ToPlanPeriodService,
   ],
 })
