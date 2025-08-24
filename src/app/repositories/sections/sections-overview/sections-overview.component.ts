@@ -551,10 +551,10 @@ export class SectionsOverviewComponent {
         // Personalizo algunos headers para mayor claridad
         switch (column) {
           case 'code':
-            headerText = 'CÓDIGO ASIGNATURA';
+            headerText = 'CÓDIGO';
             break;
           case 'name':
-            headerText = 'NOMBRE ASIGNATURA';
+            headerText = 'ASIGNATURA';
             break;
           case 'semester':
             headerText = 'SEMESTRE';
@@ -563,7 +563,7 @@ export class SectionsOverviewComponent {
             headerText = 'SECCIÓN';
             break;
           case 'teacherName':
-            headerText = 'PROFESOR ASIGNADO';
+            headerText = 'PROFESOR';
             break;
           case 'capacity':
             headerText = 'CAPACIDAD';
