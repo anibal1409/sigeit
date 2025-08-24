@@ -1,0 +1,208 @@
+.mat-column-hora {
+  width: 2rem;
+  border-right: 1px solid currentColor;
+  padding-right: 24px;
+  text-align: center;
+}
+
+.mat-column-groupHeader, .mat-mdc-header-cell {
+  background-color: var(--primary-color) !important;
+  color: #FFFFFF;
+}
+
+.mat-column-groupHeader {
+  font-weight: 600;
+} 
+
+.mat-mdc-header-cell {
+  font-weight: 900;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-table {
+  mat-cell {
+    min-width: 5rem;
+  }
+}
+
+#modal-close-button {
+  width: 2rem;
+  height: 2rem;
+}
+
+.mat-header {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 2rem;
+  margin-top: 2rem;
+  margin-right: 2rem;
+}
+
+.mat-container {
+  margin: 1.5rem;
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+  overflow-y: scroll;
+}
+
+mat-column {
+  min-width: 5rem;
+}
+
+.empty-table {
+  padding: 1.5rem;
+  text-align: center;
+  background: white;
+  margin: 1.5rem;
+  font-size: 1.4rem;
+  font-weight: 100;
+}
+
+// Estilos específicos para las columnas de secciones
+.mat-column-capacity {
+  text-align: center;
+}
+
+.mat-column-semester {
+  text-align: center;
+}
+
+.mat-column-code {
+  font-family: monospace;
+  font-weight: bold;
+}
+
+// Estilos para los grupos expandibles - CORREGIDOS
+.mat-column-groupHeader {
+  background-color: var(--primary-lighter-color) !important;
+}
+
+.mat-column-groupHeader mat-cell {
+  background-color: var(--primary-lighter-color) !important;
+  color: var(--primary-color) !important;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 12px 16px;
+}
+
+.mat-column-groupHeader mat-cell:hover {
+  background-color: var(--primary-darker-color) !important;
+  color: white !important;
+}
+
+// Estilos para los iconos de expandir/colapsar
+.mat-column-groupHeader mat-icon {
+  color: var(--primary-color);
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+// Estilos para el texto del encabezado de grupo
+.mat-column-groupHeader strong {
+  color: var(--primary-color) !important;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+// Estilos adicionales para asegurar visibilidad del texto
+.mat-column-groupHeader mat-cell strong {
+  color: var(--primary-color) !important;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  display: inline-block;
+  line-height: 1.4;
+}
+
+// Estilos para el contenedor del encabezado de grupo
+.mat-column-groupHeader mat-cell {
+  background-color: var(--primary-lighter-color) !important;
+  color: var(--primary-color) !important;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 12px 16px;
+  text-align: left;
+}
+
+// Estilos para las filas de datos
+mat-row:hover {
+  background-color: #f8f9fa;
+}
+
+// Estilos para las filas de datos normales
+mat-row:not(.mat-column-groupHeader) {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+// Estilos para las celdas de datos
+mat-cell {
+  padding: 8px 16px;
+  border-right: 1px solid #f0f0f0;
+}
+
+// Estilos para la última celda de cada fila
+mat-cell:last-child {
+  border-right: none;
+}
+
+// Estilos para los controles superiores
+.d-flex.p-4.pb-1 {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 1rem;
+}
+
+// Estilos para los botones de acción
+button[mat-fab] {
+  margin-left: 0.5rem;
+}
+
+button[mat-fab]:first-child {
+  margin-left: 0;
+}
+
+// Estilos para los campos de formulario
+mat-form-field {
+  margin-bottom: 1rem;
+}
+
+// Estilos para el mensaje de tabla vacía
+.empty-table {
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  color: #666;
+}
+
+// Estilos para la tabla principal
+mat-table {
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+// Estilos para los encabezados de columna
+mat-header-cell {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+  font-weight: 600;
+  padding: 12px 16px;
+}
+
+// Estilos para las filas alternadas (opcional)
+mat-row:nth-child(even) {
+  background-color: #fafafa;
+}
+
+// Estilos para el hover de las filas de datos
+mat-row:not(.mat-column-groupHeader):hover {
+  background-color: var(--primary-lighter-color) !important;
+  color: var(--primary-color);
+} 

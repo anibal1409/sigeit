@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import {
@@ -25,6 +26,7 @@ import { FormComponent } from './form/form.component';
 import { SectionMemoryService } from './memory';
 import { SectionsRoutingModule } from './sections-routing.module';
 import { SectionsComponent } from './sections.component';
+import { SectionsOverviewComponent } from './sections-overview';
 import { SectionsService } from './sections.service';
 import {
   CreateSectionService,
@@ -35,7 +37,7 @@ import {
 } from './use-cases';
 
 @NgModule({
-  declarations: [SectionsComponent, FormComponent],
+  declarations: [SectionsComponent, FormComponent, SectionsOverviewComponent],
   imports: [
     CommonModule,
     SectionsRoutingModule,
@@ -46,6 +48,7 @@ import {
     MatCardModule,
     MatIconModule,
     MatButtonModule,
+    MatTableModule,
     TableModule,
     MatAutocompleteModule,
     MatSelectModule,

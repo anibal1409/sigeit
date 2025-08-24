@@ -63,6 +63,12 @@ export const MENU: Array<optionMenu> = [
     permissions: [UserRole.Administrator, UserRole.Director, UserRole.HeadDepartment, UserRole.Planner,],
   },
   {
+    name: 'Vista General de Secciones',
+    value: 'sections/overview',
+    icon: 'view_list',
+    permissions: [UserRole.Administrator, UserRole.Director, UserRole.HeadDepartment, UserRole.Planner,],
+  },
+  {
     name: 'Usuarios',
     value: 'users',
     icon: 'person',
