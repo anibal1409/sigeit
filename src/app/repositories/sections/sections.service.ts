@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 import {
   finalize,
@@ -54,6 +55,7 @@ export class SectionsService extends ListComponentService<SectionItemVM, Section
     private getSubjectsService: GetSubjectsService,
     private activePeriodService: ActivePeriodService,
     private toPlanPeriodService: ToPlanPeriodService,
+    private http: HttpClient,
   ) {
     super(
       getEntityService,
@@ -96,6 +98,12 @@ export class SectionsService extends ListComponentService<SectionItemVM, Section
 
   getSections$(data: SectionBaseQuery): Observable<Array<SectionItemVM>> {
     return this.getEntityService.exec(data, false);
+  }
+
+  generateReport(reportParams: any): Observable<Blob> {
+    return this.http.post('/api/section/generate-report', reportParams, {
+      responseType: 'blob'
+    });
   }
 }
 

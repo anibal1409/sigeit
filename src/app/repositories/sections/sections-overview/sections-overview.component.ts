@@ -8,7 +8,6 @@ import {
   finalize,
   Subscription,
 } from 'rxjs';
-import * as XLSX from 'xlsx';
 
 import {
   StateService,
@@ -437,80 +436,49 @@ export class SectionsOverviewComponent {
 
   downloadFile(): void {
     if (this._alldata?.length) {
-      let countRow = 2;
-
-      const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
-
-      const department = this.departments.find(department => department.id === this.departmentId);
-
-      // Título principal del reporte
-      const headers1 = [
-        `SECCIONES ACADEMICAS ${department?.abbreviation}-${this.period.name}`,
-      ];
-      XLSX.utils.sheet_add_aoa(worksheet, [headers1], {
-        origin: 'B' + countRow,
-      });
-      countRow += 2;
-
-      // Información del departamento y período
-      const infoRow = [
-        `Departamento: ${department?.name}`,
-        `Período: ${this.period.name}`,
-        `Fecha de generación: ${moment().format('DD/MM/YYYY HH:mm')}`,
-      ];
-      XLSX.utils.sheet_add_aoa(worksheet, [infoRow], {
-        origin: 'B' + countRow,
-      });
-      countRow += 2;
-
-      const data = this.mapperData();
-      Object.keys(data).forEach((key) => {
-        // Encabezado del grupo (Semestre X o Profesor X)
-        const groupHeader = `${this.groupsBy.find(g => g.field === this.groupsByField)?.text} ${key}`;
-        const headers2 = [groupHeader];
-        XLSX.utils.sheet_add_aoa(worksheet, [headers2], {
-          origin: 'B' + countRow,
-        });
-        countRow++;
-
-        // Headers de las columnas
-        const headers = this.getExcelHeaders();
-        const options = {
-          origin: 'B' + countRow,
-        };
-        XLSX.utils.sheet_add_aoa(worksheet, [headers], options);
-        countRow++;
-
-        // Datos del grupo
-        const options2 = {
-          origin: 'B' + countRow,
-        };
-        XLSX.utils.sheet_add_aoa(worksheet, data[key], options2);
-        countRow += data[key].length + 2; // Espacio adicional entre grupos
-      });
-
-      // Resumen final
-      const totalSections = this._alldata.length;
-      const summaryRow = [`Total de Secciones: ${totalSections}`];
-      XLSX.utils.sheet_add_aoa(worksheet, [summaryRow], {
-        origin: 'B' + countRow,
-      });
-
-      // Aplicar estilos al Excel
-      console.log('Aplicando estilos al Excel...');
-      this.applyExcelStyles(worksheet);
-      console.log('Estilos aplicados. Generando archivo...');
-
-      const workbook: XLSX.WorkBook = {
-        Sheets: { Secciones: worksheet },
-        SheetNames: ['Secciones'],
+      // Preparar parámetros para el reporte
+      const reportParams = {
+        periodId: this.periodId,
+        departmentId: this.departmentId,
+        groupBy: this.groupsByField,
+        semester: this.groupsByField === 'semester' ? undefined : undefined,
+        teacherId: this.groupsByField === 'teacherName' ? undefined : undefined,
+        status: true
       };
-      
-      // Nombre del archivo más descriptivo
-      const fileName = `${this.period.name}_secciones_academicas_${department?.abbreviation}_${moment().format('DD-MM-YYYY_HH-mm')}.xlsx`;
-      
-      console.log('Descargando archivo:', fileName);
-      XLSX.writeFile(workbook, fileName);
+
+      // Llamar al servicio del API para generar el reporte
+      this.sectionsService.generateReport(reportParams).subscribe({
+        next: (blob: Blob) => {
+          // Crear URL del blob y descargar
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          
+          const department = this.departments.find(d => d.id === this.departmentId);
+          const now = new Date();
+          const formattedDate = now.toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+          }).replace(/\//g, '-');
+          const formattedTime = now.toLocaleTimeString('es-ES', {
+            hour: '2-digit',
+            minute: '2-digit'
+          }).replace(/:/g, '-');
+          
+          const fileName = `${this.period.name}_secciones_academicas_${department?.abbreviation}_${formattedDate}_${formattedTime}.xlsx`;
+          
+          link.download = fileName;
+          link.click();
+          
+          // Limpiar URL
+          window.URL.revokeObjectURL(url);
+        },
+        error: (error) => {
+          console.error('Error al generar el reporte:', error);
+          // Aquí podrías mostrar un mensaje de error al usuario
+        }
+      });
     }
   }
 
@@ -518,240 +486,9 @@ export class SectionsOverviewComponent {
     return item?.name;
   }
 
-  private mapperData(): any {
-    const data: any = {};
-    this.dataSource.data.forEach((section) => {
-      if (
-        section instanceof Group &&
-        !data[(section as any)?.[this.groupsByField]]
-      ) {
-        data[(section as any)?.[this.groupsByField]] = [];
-      } else if (!(section instanceof Group)) {
-        const obj: any = [];
-        this.displayedColumns.forEach(column => {
-          const value = !this.equalPrevious(section, column, this.dataSource.data) ? section[column] : '';
-          obj.push(value);
-        });
 
-        data[(section as any)?.[this.groupsByField]]?.push(obj);
-      }
-    });
 
-    return data;
-  }
 
-  private getExcelHeaders(): string[] {
-    const headers: string[] = [];
-    this.displayedColumns.forEach(column => {
-      const columnDefinition = this.columns.find(c => c.field === column);
-      if (columnDefinition) {
-        // Mejoro los nombres de las columnas para el Excel
-        let headerText = columnDefinition.text;
-        
-        // Personalizo algunos headers para mayor claridad
-        switch (column) {
-          case 'code':
-            headerText = 'CÓDIGO';
-            break;
-          case 'name':
-            headerText = 'ASIGNATURA';
-            break;
-          case 'semester':
-            headerText = 'SEMESTRE';
-            break;
-          case 'sectionName':
-            headerText = 'SECCIÓN';
-            break;
-          case 'teacherName':
-            headerText = 'PROFESOR';
-            break;
-          case 'capacity':
-            headerText = 'CAPACIDAD';
-            break;
-        }
-        
-        headers.push(headerText);
-      }
-    });
-    return headers;
-  }
 
-  private applyExcelStyles(worksheet: XLSX.WorkSheet): void {
-    try {
-      console.log('Iniciando aplicación de estilos...');
-      
-      // Aplicar estilos básicos al worksheet
-      if (worksheet['!cols']) {
-        // Ajustar ancho de columnas
-        // Aumentamos asignatura y profesor en 5 veces su tamaño
-        worksheet['!cols'] = [
-          { width: 2 },   // Columna A (vacía)
-          { width: 20 },  // Columna B (títulos)
-          { width: 15 },  // Columna C (código)
-          { width: 75 },  // Columna D (asignatura) - 15 * 5 = 75
-          { width: 15 },  // Columna E (semestre)
-          { width: 15 },  // Columna F (sección)
-          { width: 75 },  // Columna G (profesor) - 15 * 5 = 75
-          { width: 15 },  // Columna H (capacidad)
-        ];
-        console.log('Ancho de columnas configurado:', worksheet['!cols']);
-      }
 
-      // Aplicar estilos a las celdas específicas
-      const range = XLSX.utils.decode_range(worksheet['!ref'] || 'A1');
-      console.log('Rango del worksheet:', range);
-      
-      // Estilo para el título principal
-      if (worksheet['B2']) {
-        worksheet['B2'].s = {
-          font: { bold: true, size: 16, color: { rgb: 'FFFFFF' } },
-          fill: { fgColor: { rgb: '4684FF' } },
-          alignment: { horizontal: 'center' }
-        };
-        console.log('Estilo aplicado al título principal B2');
-      }
-
-      // Estilo para la información del departamento
-      if (worksheet['B4']) {
-        worksheet['B4'].s = {
-          font: { bold: true, size: 12, color: { rgb: '4684FF' } },
-          fill: { fgColor: { rgb: 'E3F2FD' } }
-        };
-        console.log('Estilo aplicado a la información del departamento B4');
-      }
-
-      // Estilo para los encabezados de grupo
-      let groupHeadersStyled = 0;
-      for (let row = 6; row <= range.e.r; row++) {
-        const cell = worksheet[`B${row}`];
-        if (cell && cell.v && typeof cell.v === 'string' && 
-            (cell.v.includes('Semestre') || cell.v.includes('Profesor'))) {
-          cell.s = {
-            font: { bold: true, size: 14, color: { rgb: 'FFFFFF' } },
-            fill: { fgColor: { rgb: 'FF6600' } },
-            alignment: { horizontal: 'center' }
-          };
-          groupHeadersStyled++;
-        }
-      }
-      console.log(`Estilos aplicados a ${groupHeadersStyled} encabezados de grupo`);
-
-      // Estilo para los headers de columnas
-      let columnHeadersStyled = 0;
-      for (let row = 6; row <= range.e.r; row++) {
-        const cell = worksheet[`B${row}`];
-        if (cell && cell.v && typeof cell.v === 'string' && 
-            (cell.v.includes('CÓDIGO') || cell.v.includes('NOMBRE') || 
-             cell.v.includes('SECCIÓN') || cell.v.includes('PROFESOR') || 
-             cell.v.includes('CAPACIDAD'))) {
-          cell.s = {
-            font: { bold: true, size: 12, color: { rgb: 'FFFFFF' } },
-            fill: { fgColor: { rgb: '4684FF' } },
-            alignment: { horizontal: 'center' }
-          };
-          columnHeadersStyled++;
-        }
-      }
-      console.log(`Estilos aplicados a ${columnHeadersStyled} headers de columnas`);
-
-      // Estilo para el resumen final
-      const lastRow = range.e.r;
-      if (worksheet[`B${lastRow}`]) {
-        worksheet[`B${lastRow}`].s = {
-          font: { bold: true, size: 14, color: { rgb: 'FFFFFF' } },
-          fill: { fgColor: { rgb: '28A745' } },
-          alignment: { horizontal: 'center' }
-        };
-        console.log('Estilo aplicado al resumen final');
-      }
-
-      // Aplicar estilos a todas las celdas de datos para asegurar que se vean bien
-      let dataCellsStyled = 0;
-      for (let row = 1; row <= range.e.r; row++) {
-        for (let col = 1; col <= range.e.c; col++) {
-          const cellAddress = XLSX.utils.encode_cell({ r: row - 1, c: col - 1 });
-          const cell = worksheet[cellAddress];
-          
-          if (cell && !cell.s) {
-            // Aplicar estilos básicos a celdas sin estilos
-            cell.s = {
-              font: { size: 11 },
-              alignment: { horizontal: 'left', vertical: 'center' }
-            };
-            dataCellsStyled++;
-          }
-        }
-      }
-      console.log(`Estilos básicos aplicados a ${dataCellsStyled} celdas de datos`);
-
-      // Aplicar estilos específicos a las columnas de datos
-      let specificCellsStyled = 0;
-      for (let row = 8; row <= range.e.r; row++) {
-        // Columna C (Código)
-        const codeCell = worksheet[`C${row}`];
-        if (codeCell && codeCell.v) {
-          codeCell.s = {
-            font: { bold: true, size: 11, color: { rgb: '000000' } },
-            alignment: { horizontal: 'left', vertical: 'center' }
-          };
-          specificCellsStyled++;
-        }
-
-        // Columna D (Asignatura)
-        const nameCell = worksheet[`D${row}`];
-        if (nameCell && nameCell.v) {
-          nameCell.s = {
-            font: { bold: false, size: 11, color: { rgb: '000000' } },
-            alignment: { horizontal: 'left', vertical: 'center' }
-          };
-          specificCellsStyled++;
-        }
-
-        // Columna E (Semestre)
-        const semesterCell = worksheet[`E${row}`];
-        if (semesterCell && semesterCell.v) {
-          semesterCell.s = {
-            font: { bold: false, size: 11, color: { rgb: '000000' } },
-            alignment: { horizontal: 'center', vertical: 'center' }
-          };
-          specificCellsStyled++;
-        }
-
-        // Columna F (Sección)
-        const sectionCell = worksheet[`F${row}`];
-        if (sectionCell && sectionCell.v) {
-          sectionCell.s = {
-            font: { bold: false, size: 11, color: { rgb: '000000' } },
-            alignment: { horizontal: 'center', vertical: 'center' }
-          };
-          specificCellsStyled++;
-        }
-
-        // Columna G (Profesor)
-        const teacherCell = worksheet[`G${row}`];
-        if (teacherCell && teacherCell.v) {
-          teacherCell.s = {
-            font: { bold: false, size: 11, color: { rgb: '000000' } },
-            alignment: { horizontal: 'left', vertical: 'center' }
-          };
-          specificCellsStyled++;
-        }
-
-        // Columna H (Capacidad)
-        const capacityCell = worksheet[`H${row}`];
-        if (capacityCell && capacityCell.v) {
-          capacityCell.s = {
-            font: { bold: false, size: 11, color: { rgb: '000000' } },
-            alignment: { horizontal: 'center', vertical: 'center' }
-          };
-          specificCellsStyled++;
-        }
-      }
-      console.log(`Estilos específicos aplicados a ${specificCellsStyled} celdas de datos`);
-
-      console.log('Aplicación de estilos completada exitosamente');
-    } catch (error) {
-      console.error('Error al aplicar estilos:', error);
-    }
-  }
 } 
