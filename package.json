@@ -10,7 +10,19 @@
     "json-server": "npx json-server --watch db.json",
     "dashboard-sdk": "ng build --project dashboard-sdk",
     "build-projects": "ng build --project api-interfaces & ng build --project form-control-errors & ng build --project http-form-data-client & ng build --project logger & ng build --project login & ng build --project toast",
-    "build-error-handler": "ng build --project error-handler"
+    "build-error-handler": "ng build --project error-handler",
+    "lint": "ng lint",
+    "inject-version": "node scripts/inject-version.js",
+    "build:versioned": "npm run inject-version && ng build",
+    "build:prod": "npm run inject-version && ng build --configuration production",
+    "release": "standard-version",
+    "release:minor": "standard-version --release-as minor",
+    "release:major": "standard-version --release-as major",
+    "release:patch": "standard-version --release-as patch",
+    "release:dry": "standard-version --dry-run",
+    "version:check": "standard-version --dry-run",
+    "changelog": "standard-version --dry-run --skip.commit --skip.tag",
+    "prepare": "husky install"
   },
   "engines": {
     "node": ">=18.17.1 <19.0.0"
@@ -46,11 +58,14 @@
     "@angular-devkit/build-angular": "^16.2.0",
     "@angular/cli": "^16.2.0",
     "@angular/compiler-cli": "^16.2.0",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "@types/file-saver": "^2.0.5",
     "@types/jasmine": "~4.3.0",
     "@types/lodash": "^4.14.197",
     "@types/toastr": "^2.1.40",
     "ajv": "^7.2.4",
+    "husky": "^9.1.7",
     "jasmine-core": "~4.5.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",
@@ -58,6 +73,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
     "ng-packagr": "^16.2.0",
+    "standard-version": "^9.5.0",
     "typescript": "~5.0.0"
   }
 }

@@ -1,0 +1,34 @@
+# <tipo>[ámbito opcional]: <descripción>
+# |<----  Usar hasta 50 caracteres ---->|
+
+# Explicación del cambio (opcional)
+# |<----   Tratar de limitar cada línea a un máximo de 72 caracteres   ---->|
+
+# Proporciona contexto adicional (opcional)
+# Explica qué y por qué en lugar de cómo
+# Puedes usar varias líneas con "-" para crear una lista de viñetas
+
+# Tipos disponibles:
+# feat:     Nueva funcionalidad
+# fix:      Corrección de bug
+# docs:     Documentación
+# style:    Cambios de formato (espacios, comas, etc.)
+# refactor: Refactorización de código
+# perf:     Mejoras de rendimiento
+# test:     Agregar o corregir tests
+# chore:    Cambios en herramientas, configuración, etc.
+# build:    Cambios en el sistema de build
+# ci:       Cambios en CI/CD
+# revert:   Revertir un commit anterior
+
+# Ejemplos:
+# feat(reports): agregar modal de configuración para reportes
+# fix(schedules): corregir filtro por turnos en reportes
+# docs: actualizar guía de uso de reportes
+# refactor(modal): optimizar lógica de validación
+# chore: actualizar dependencias de desarrollo
+
+# Ámbitos comunes:
+# reports, schedules, modal, auth, ui, api, build, config
+
+# Nota: Las líneas que comienzan con '#' serán ignoradas

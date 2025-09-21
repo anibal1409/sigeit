@@ -5,15 +5,21 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { SectionsModule } from '../repositories/sections/sections.module';
 import { SettingsModule } from '../repositories/settings/settings.module';
+import { VersionDisplayComponent, VersionInfoComponent } from '../common/version';
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminComponent } from './admin.component';
 import { AdminService } from './admin.service';
 
 @NgModule({
-  declarations: [AdminComponent],
+  declarations: [
+    AdminComponent,
+    VersionDisplayComponent,
+    VersionInfoComponent
+  ],
   imports: [
     CommonModule,
     AdminRoutingModule,
@@ -24,6 +30,7 @@ import { AdminService } from './admin.service';
     MatButtonModule,
     SectionsModule,
     MatMenuModule,
+    MatDialogModule,
   ],
   providers: [
     AdminService,

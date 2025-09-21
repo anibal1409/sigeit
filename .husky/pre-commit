@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Ejecutar linting antes del commit
+npm run lint
+
+# Ejecutar tests antes del commit (opcional, comentar si es muy lento)
+# npm run test

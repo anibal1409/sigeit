@@ -1,0 +1,88 @@
+{
+  "header": "# Changelog\n\nTodas las modificaciones notables de este proyecto serán documentadas en este archivo.\nEl formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),\ny este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).\n\n",
+  "types": [
+    {
+      "type": "feat",
+      "section": "✨ Características",
+      "hidden": false
+    },
+    {
+      "type": "fix", 
+      "section": "🐛 Correcciones de errores",
+      "hidden": false
+    },
+    {
+      "type": "perf",
+      "section": "⚡️ Mejoras de rendimiento", 
+      "hidden": false
+    },
+    {
+      "type": "refactor",
+      "section": "♻️ Refactorización",
+      "hidden": false
+    },
+    {
+      "type": "docs",
+      "section": "📚 Documentación",
+      "hidden": false
+    },
+    {
+      "type": "style",
+      "section": "💄 Estilos",
+      "hidden": false
+    },
+    {
+      "type": "test",
+      "section": "🧪 Tests",
+      "hidden": false
+    },
+    {
+      "type": "build",
+      "section": "🏗️ Sistema de build",
+      "hidden": false
+    },
+    {
+      "type": "ci",
+      "section": "👷 CI/CD",
+      "hidden": false
+    },
+    {
+      "type": "chore",
+      "section": "🔧 Mantenimiento",
+      "hidden": false
+    },
+    {
+      "type": "revert",
+      "section": "⏪ Reversiones",
+      "hidden": false
+    }
+  ],
+  "commitUrlFormat": "{{host}}/{{owner}}/{{repository}}/commit/{{hash}}",
+  "compareUrlFormat": "{{host}}/{{owner}}/{{repository}}/compare/{{previousTag}}...{{currentTag}}",
+  "issueUrlFormat": "{{host}}/{{owner}}/{{repository}}/issues/{{id}}",
+  "userUrlFormat": "{{host}}/{{user}}",
+  "releaseCommitMessageFormat": "chore(release): {{currentTag}}",
+  "issuePrefixes": ["#"],
+  "skip": {
+    "bump": false,
+    "changelog": false,
+    "commit": false,
+    "tag": false
+  },
+  "packageFiles": [
+    {
+      "filename": "package.json",
+      "type": "json"
+    }
+  ],
+  "bumpFiles": [
+    {
+      "filename": "package.json",
+      "type": "json"
+    }
+  ],
+  "scripts": {
+    "precommit": "npm run lint && npm run test",
+    "prerelease": "npm run inject-version && npm run build"
+  }
+}
