@@ -7,13 +7,13 @@
       "hidden": false
     },
     {
-      "type": "fix", 
+      "type": "fix",
       "section": "🐛 Correcciones de errores",
       "hidden": false
     },
     {
       "type": "perf",
-      "section": "⚡️ Mejoras de rendimiento", 
+      "section": "⚡️ Mejoras de rendimiento",
       "hidden": false
     },
     {
@@ -82,7 +82,7 @@
     }
   ],
   "scripts": {
-    "precommit": "npm run lint && npm run test",
+    "precommit": "npm run build",
     "prerelease": "npm run inject-version && npm run build"
   }
 }

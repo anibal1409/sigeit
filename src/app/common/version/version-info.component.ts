@@ -17,7 +17,7 @@ import { VersionService } from './version.service';
             <mat-icon>tag</mat-icon>
             <div class="version-item-content">
               <span class="version-label">Versión</span>
-              <span class="version-value">{{ versionInfo.version }}</span>
+              <span class="version-value version-number">v{{ versionInfo.version }}</span>
             </div>
           </div>
 
@@ -25,7 +25,7 @@ import { VersionService } from './version.service';
             <mat-icon>build</mat-icon>
             <div class="version-item-content">
               <span class="version-label">Entorno</span>
-              <span class="version-value version-environment">{{ versionInfo.environment }}</span>
+              <span class="version-value version-environment">{{ versionInfo.environment | uppercase }}</span>
             </div>
           </div>
 
@@ -55,8 +55,8 @@ import { VersionService } from './version.service';
         </div>
 
         <div class="version-footer">
+          <mat-icon class="update-icon">update</mat-icon>
           <p class="version-note">
-            <mat-icon>update</mat-icon>
             Esta información se actualiza automáticamente con cada release
           </p>
         </div>
@@ -75,15 +75,24 @@ import { VersionService } from './version.service';
   `,
   styles: [`
     .version-dialog {
-      min-width: 400px;
-      max-width: 500px;
+      min-width: 300px;
+      max-width: 350px;
+    }
+
+    ::ng-deep .mdc-dialog__container {
+      min-width: 300px !important;
+    }
+
+    ::ng-deep .cdk-overlay-pane {
+      width: 350px !important;
+      max-width: 350px !important;
     }
 
     .version-header {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 16px 24px;
+      padding: 12px 16px;
       border-bottom: 1px solid #e0e0e0;
     }
 
@@ -102,7 +111,9 @@ import { VersionService } from './version.service';
     }
 
     .version-content {
-      padding: 24px;
+      padding: 16px;
+      max-height: none;
+      overflow: visible;
     }
 
     .version-info-grid {
@@ -163,30 +174,31 @@ import { VersionService } from './version.service';
     }
 
     .version-footer {
-      margin-top: 24px;
-      padding: 16px;
+      margin-top: 20px;
+      padding: 12px;
       background-color: #f5f5f5;
       border-radius: 8px;
       border-left: 4px solid var(--primary-color);
-    }
-
-    .version-note {
       display: flex;
       align-items: center;
       gap: 8px;
+    }
+
+    .version-note {
       margin: 0;
       font-size: 0.875rem;
       color: #666;
     }
 
-    .version-note mat-icon {
+    .update-icon {
       font-size: 16px;
       width: 16px;
       height: 16px;
+      color: var(--primary-color);
     }
 
     .version-actions {
-      padding: 16px 24px;
+      padding: 12px 16px;
       border-top: 1px solid #e0e0e0;
       justify-content: flex-end;
       gap: 12px;
@@ -247,7 +259,7 @@ export class VersionInfoComponent {
 
   copyVersionInfo(): void {
     const versionText = this.versionService.getDetailedVersionInfo();
-    
+
     if (navigator.clipboard) {
       navigator.clipboard.writeText(versionText).then(() => {
         // Mostrar notificación de éxito

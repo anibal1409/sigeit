@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { VERSION_INFO } from '../../../environments/version';
 
 export interface VersionInfo {
   version: string;
@@ -46,39 +47,38 @@ export class VersionService {
   }
 
   /**
-   * Obtiene la versión desde package.json
+   * Obtiene la versión desde VERSION_INFO
    */
   private getAppVersion(): string {
-    // En un entorno de producción, esto se inyectaría desde el build
-    return (window as any).APP_VERSION || '0.0.0';
+    return VERSION_INFO.APP_VERSION || '0.0.0';
   }
 
   /**
    * Obtiene la fecha de build
    */
   private getBuildDate(): string {
-    return (window as any).BUILD_DATE || new Date().toISOString();
+    return VERSION_INFO.BUILD_DATE || new Date().toISOString();
   }
 
   /**
    * Obtiene el entorno actual
    */
   private getEnvironment(): string {
-    return (window as any).ENVIRONMENT || 'development';
+    return VERSION_INFO.ENVIRONMENT || 'development';
   }
 
   /**
    * Obtiene la versión de Node.js
    */
   private getNodeVersion(): string {
-    return (window as any).NODE_VERSION || 'unknown';
+    return VERSION_INFO.NODE_VERSION || 'unknown';
   }
 
   /**
    * Obtiene la versión de Angular
    */
   private getAngularVersion(): string {
-    return (window as any).ANGULAR_VERSION || 'unknown';
+    return VERSION_INFO.ANGULAR_VERSION || 'unknown';
   }
 
   /**
