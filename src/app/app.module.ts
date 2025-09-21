@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {
   ErrorHandler,
   forwardRef,
@@ -31,6 +31,7 @@ import { AuthLoginGuard } from './auth/auth-login.guard';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthModule } from './auth/auth.module';
 import { StateModule } from './common/state';
+import { HttpInterceptorInterceptor } from './common/http-interceptor';
 import { GlobalPeriodModule } from './common/global-period';
 import { CareersModule } from './repositories/careers/careers.module';
 import { ClassroomsModule } from './repositories/classrooms/classrooms.module';
@@ -93,6 +94,11 @@ function apiConfigFactory(): Configuration {
     {
       provide: ErrorHandler,
       useExisting: forwardRef(() => ErrorHandlerService),
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpInterceptorInterceptor,
+      multi: true,
     },
     AuthGuard,
     AuthLoginGuard

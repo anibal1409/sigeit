@@ -39,9 +39,24 @@ export class HttpInterceptorInterceptor implements HttpInterceptor {
   }
 
   private exec(event: any): void {
-    if(event?.status == 401 &&  event?.error === 'Unauthorized' && event?.message === 'Su sesión ha expirado.') {
-      this.userStateService.clear();
-      this.router.navigate(['/auth']);
+    if(event?.status == 401) {
+      // Array de mensajes de error de autenticación que requieren cierre de sesión
+      const authErrorMessages = [
+        'Debe iniciar sesión antes de continuar.',
+        'Su sesión ha expirado.',
+        'Algo ha ocurrido. Por favor, inicie sesión nuevamente.'
+      ];
+
+      // El mensaje está en event.error.message para errores HTTP
+      const errorMessage = event?.error?.message;
+
+      if (authErrorMessages.includes(errorMessage)) {
+        this.userStateService.clear();
+        // Limpiar todo el localStorage para asegurar un cierre completo
+        localStorage.clear();
+        // Redirigir al login
+        this.router.navigate(['/auth']);
+      }
     }
   }
 }
