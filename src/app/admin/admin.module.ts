@@ -6,6 +6,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
 
 import { SectionsModule } from '../repositories/sections/sections.module';
 import { SettingsModule } from '../repositories/settings/settings.module';
@@ -31,6 +32,7 @@ import { AdminService } from './admin.service';
     SectionsModule,
     MatMenuModule,
     MatDialogModule,
+    MatDividerModule,
   ],
   providers: [
     AdminService,

@@ -36,9 +36,10 @@ Node.js: v22.19.0
 ```
 
 ### **Ubicación en la App**
-- **Navbar**: Muestra versión compacta (ej: `v0.0.0 (development)`)
+- **Menú de Usuario**: Opción "Versión X.X.X" en el menú desplegable del usuario
 - **Click**: Abre modal con información completa
-- **Responsive**: En móviles solo muestra el ícono
+- **Ubicación**: Entre "Cambiar Contraseña" y "Salir" con separadores visuales
+- **Visualización**: Muestra directamente el número de versión (ej: "Versión 0.0.1")
 
 ## 🔧 **Scripts Disponibles**
 
@@ -73,12 +74,12 @@ npm run release
 
 ## 🎨 **Interfaz de Usuario**
 
-### **Display Compacto (Navbar)**
+### **Display en Menú de Usuario**
 ```
-[ℹ️] v0.0.0 (development) [⌄]
+[ℹ️] Versión 0.0.1
 ```
-- Hover: Cambia color y muestra flecha
-- Click: Abre modal detallado
+- Ubicado en el menú desplegable del usuario
+- Click: Abre modal detallado con información completa
 
 ### **Modal Detallado**
 ```

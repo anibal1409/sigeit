@@ -7,6 +7,7 @@ import {
   NavigationEnd,
   Router,
 } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 
@@ -17,6 +18,7 @@ import {
 import { GlobalPeriodService } from '../common/global-period';
 import { PeriodItemVM } from '../repositories/periods/model';
 import { ActivePeriodService } from '../repositories/periods/use-cases';
+import { VersionInfoComponent, VersionService } from '../common/version';
 import { AdminService } from './admin.service';
 import { MENU } from './data';
 import { optionMenu } from './models';
@@ -114,6 +116,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   user!: UserStateVM;
   activePeriod: PeriodItemVM | null = null;
   periodDisplayText: string = '';
+  currentVersion: string = '';
 
   optionProfile: optionMenu = {
     icon: '',
@@ -128,6 +131,8 @@ export class AdminComponent implements OnInit, OnDestroy {
     private adminService: AdminService,
     private globalPeriodService: GlobalPeriodService,
     private activePeriodService: ActivePeriodService,
+    private dialog: MatDialog,
+    private versionService: VersionService,
   ) { }
 
   ngOnDestroy(): void {
@@ -135,6 +140,9 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // Obtener la versión actual
+    this.currentVersion = this.versionService.getCurrentVersion();
+    
     this.updateTitle(this.router.url);
     this.sub$.add(
       this.router.events.subscribe((event) => {
@@ -238,5 +246,14 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   logout(): void {
     this.adminService.logout();
+  }
+
+  showVersionInfo(): void {
+    this.dialog.open(VersionInfoComponent, {
+      width: '500px',
+      maxHeight: '80vh',
+      disableClose: false,
+      data: {}
+    });
   }
 }

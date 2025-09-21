@@ -2,7 +2,7 @@
 // Este archivo se genera automáticamente durante el build
 export const VERSION_INFO = {
   "APP_VERSION": "0.0.0",
-  "BUILD_DATE": "2025-09-21T21:35:08.614Z",
+  "BUILD_DATE": "2025-09-21T21:37:18.551Z",
   "ENVIRONMENT": "development",
   "NODE_VERSION": "v22.19.0",
   "ANGULAR_VERSION": "^16.2.0"
