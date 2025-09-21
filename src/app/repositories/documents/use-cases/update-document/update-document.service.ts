@@ -26,13 +26,12 @@ export class UpdateDocumentService
 
   exec(entitySave: DocumentVM): Observable<DocumentItemVM | null> {
     return this.entityServices
-      .documentControllerUpdate({
+      .documentControllerUpdate(entitySave.id || 0, {
         name: entitySave.name,
-        status: !!entitySave.status,
         description: JSON.stringify(entitySave.description),
         department: { id: entitySave.departmentId },
         type: entitySave.type
-      }, entitySave.id || 0)
+      })
       .pipe(
         map(Document2DocumentItemVM),
         tap((entity) => {

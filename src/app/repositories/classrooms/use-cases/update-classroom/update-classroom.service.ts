@@ -26,13 +26,13 @@ export class UpdateClassroomService
 
   exec(entitySave: ClassroomVM): Observable<ClassroomItemVM | null> {
     return this.entityServices
-      .classroomControllerUpdate({
+      .classroomControllerUpdate(entitySave.id || 0, {
         name: entitySave.name.toUpperCase(),
         status: !!entitySave.status,
         type: entitySave.type,
         description: entitySave.description,
         departments: entitySave?.departmentIds?.map((id) => ({ id })),
-      }, entitySave.id || 0)
+      })
       .pipe(
         map(Classroom2ClassroomItemVM),
         tap((entity) => {

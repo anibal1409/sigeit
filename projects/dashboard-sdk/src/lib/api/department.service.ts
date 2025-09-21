@@ -19,13 +19,11 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { CloseInscriptionDto } from '../model/close-inscription-dto';
+import { CreateDepartmentDto } from '../model/create-department-dto';
 // @ts-ignore
-import { CreateInscriptionDto } from '../model/create-inscription-dto';
+import { ResponseDepartmentDto } from '../model/response-department-dto';
 // @ts-ignore
-import { ResponseInscriptionDto } from '../model/response-inscription-dto';
-// @ts-ignore
-import { UpdateInscriptionDto } from '../model/update-inscription-dto';
+import { UpdateDepartmentDto } from '../model/update-department-dto';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -36,7 +34,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class InscriptionApiService {
+export class DepartmentService {
 
     protected basePath = 'http://localhost';
     public defaultHeaders = new HttpHeaders();
@@ -98,16 +96,16 @@ export class InscriptionApiService {
     }
 
     /**
-     * @param closeInscriptionDto 
+     * @param createDepartmentDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public inscriptionControllerClose(closeInscriptionDto: CloseInscriptionDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseInscriptionDto>;
-    public inscriptionControllerClose(closeInscriptionDto: CloseInscriptionDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseInscriptionDto>>;
-    public inscriptionControllerClose(closeInscriptionDto: CloseInscriptionDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseInscriptionDto>>;
-    public inscriptionControllerClose(closeInscriptionDto: CloseInscriptionDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (closeInscriptionDto === null || closeInscriptionDto === undefined) {
-            throw new Error('Required parameter closeInscriptionDto was null or undefined when calling inscriptionControllerClose.');
+    public departmentControllerCreate(createDepartmentDto: CreateDepartmentDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseDepartmentDto>;
+    public departmentControllerCreate(createDepartmentDto: CreateDepartmentDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseDepartmentDto>>;
+    public departmentControllerCreate(createDepartmentDto: CreateDepartmentDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseDepartmentDto>>;
+    public departmentControllerCreate(createDepartmentDto: CreateDepartmentDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (createDepartmentDto === null || createDepartmentDto === undefined) {
+            throw new Error('Required parameter createDepartmentDto was null or undefined when calling departmentControllerCreate.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -150,11 +148,11 @@ export class InscriptionApiService {
             }
         }
 
-        let localVarPath = `/inscription/close`;
-        return this.httpClient.request<ResponseInscriptionDto>('post', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/department`;
+        return this.httpClient.request<ResponseDepartmentDto>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: closeInscriptionDto,
+                body: createDepartmentDto,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -165,141 +163,25 @@ export class InscriptionApiService {
     }
 
     /**
-     * @param createInscriptionDto 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public inscriptionControllerCreate(createInscriptionDto: CreateInscriptionDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseInscriptionDto>;
-    public inscriptionControllerCreate(createInscriptionDto: CreateInscriptionDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseInscriptionDto>>;
-    public inscriptionControllerCreate(createInscriptionDto: CreateInscriptionDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseInscriptionDto>>;
-    public inscriptionControllerCreate(createInscriptionDto: CreateInscriptionDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (createInscriptionDto === null || createInscriptionDto === undefined) {
-            throw new Error('Required parameter createInscriptionDto was null or undefined when calling inscriptionControllerCreate.');
-        }
-
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/inscription`;
-        return this.httpClient.request<ResponseInscriptionDto>('post', `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                body: createInscriptionDto,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param id 
-     * @param stage 
-     * @param sectionId 
-     * @param careerId 
      * @param schoolId 
-     * @param departmentId 
-     * @param teacherId 
-     * @param subjectId 
-     * @param userId 
-     * @param semester 
      * @param status 
-     * @param schedules 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public inscriptionControllerFindAll(id: number, stage?: string, sectionId?: number, careerId?: number, schoolId?: number, departmentId?: number, teacherId?: number, subjectId?: number, userId?: number, semester?: number, status?: boolean, schedules?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<ResponseInscriptionDto>>;
-    public inscriptionControllerFindAll(id: number, stage?: string, sectionId?: number, careerId?: number, schoolId?: number, departmentId?: number, teacherId?: number, subjectId?: number, userId?: number, semester?: number, status?: boolean, schedules?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<ResponseInscriptionDto>>>;
-    public inscriptionControllerFindAll(id: number, stage?: string, sectionId?: number, careerId?: number, schoolId?: number, departmentId?: number, teacherId?: number, subjectId?: number, userId?: number, semester?: number, status?: boolean, schedules?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<ResponseInscriptionDto>>>;
-    public inscriptionControllerFindAll(id: number, stage?: string, sectionId?: number, careerId?: number, schoolId?: number, departmentId?: number, teacherId?: number, subjectId?: number, userId?: number, semester?: number, status?: boolean, schedules?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling inscriptionControllerFindAll.');
-        }
+    public departmentControllerFindAll(schoolId?: number, status?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<ResponseDepartmentDto>>;
+    public departmentControllerFindAll(schoolId?: number, status?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<ResponseDepartmentDto>>>;
+    public departmentControllerFindAll(schoolId?: number, status?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<ResponseDepartmentDto>>>;
+    public departmentControllerFindAll(schoolId?: number, status?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (stage !== undefined && stage !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>stage, 'stage');
-        }
-        if (sectionId !== undefined && sectionId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>sectionId, 'sectionId');
-        }
-        if (careerId !== undefined && careerId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>careerId, 'careerId');
-        }
         if (schoolId !== undefined && schoolId !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>schoolId, 'schoolId');
-        }
-        if (departmentId !== undefined && departmentId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>departmentId, 'departmentId');
-        }
-        if (teacherId !== undefined && teacherId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>teacherId, 'teacherId');
-        }
-        if (subjectId !== undefined && subjectId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>subjectId, 'subjectId');
-        }
-        if (userId !== undefined && userId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>userId, 'userId');
-        }
-        if (semester !== undefined && semester !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>semester, 'semester');
         }
         if (status !== undefined && status !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>status, 'status');
         }
-        if (schedules !== undefined && schedules !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>schedules, 'schedules');
-        }
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -332,8 +214,8 @@ export class InscriptionApiService {
             }
         }
 
-        let localVarPath = `/inscription/period/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
-        return this.httpClient.request<Array<ResponseInscriptionDto>>('get', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/department`;
+        return this.httpClient.request<Array<ResponseDepartmentDto>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -351,12 +233,12 @@ export class InscriptionApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public inscriptionControllerFindOne(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseInscriptionDto>;
-    public inscriptionControllerFindOne(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseInscriptionDto>>;
-    public inscriptionControllerFindOne(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseInscriptionDto>>;
-    public inscriptionControllerFindOne(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public departmentControllerFindOne(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseDepartmentDto>;
+    public departmentControllerFindOne(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseDepartmentDto>>;
+    public departmentControllerFindOne(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseDepartmentDto>>;
+    public departmentControllerFindOne(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling inscriptionControllerFindOne.');
+            throw new Error('Required parameter id was null or undefined when calling departmentControllerFindOne.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -390,8 +272,8 @@ export class InscriptionApiService {
             }
         }
 
-        let localVarPath = `/inscription/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
-        return this.httpClient.request<ResponseInscriptionDto>('get', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/department/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
+        return this.httpClient.request<ResponseDepartmentDto>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -408,12 +290,12 @@ export class InscriptionApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public inscriptionControllerRemove(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseInscriptionDto>;
-    public inscriptionControllerRemove(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseInscriptionDto>>;
-    public inscriptionControllerRemove(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseInscriptionDto>>;
-    public inscriptionControllerRemove(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public departmentControllerRemove(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseDepartmentDto>;
+    public departmentControllerRemove(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseDepartmentDto>>;
+    public departmentControllerRemove(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseDepartmentDto>>;
+    public departmentControllerRemove(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling inscriptionControllerRemove.');
+            throw new Error('Required parameter id was null or undefined when calling departmentControllerRemove.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -447,8 +329,8 @@ export class InscriptionApiService {
             }
         }
 
-        let localVarPath = `/inscription/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
-        return this.httpClient.request<ResponseInscriptionDto>('delete', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/department/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
+        return this.httpClient.request<ResponseDepartmentDto>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -462,19 +344,19 @@ export class InscriptionApiService {
 
     /**
      * @param id 
-     * @param updateInscriptionDto 
+     * @param updateDepartmentDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public inscriptionControllerUpdate(id: number, updateInscriptionDto: UpdateInscriptionDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseInscriptionDto>;
-    public inscriptionControllerUpdate(id: number, updateInscriptionDto: UpdateInscriptionDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseInscriptionDto>>;
-    public inscriptionControllerUpdate(id: number, updateInscriptionDto: UpdateInscriptionDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseInscriptionDto>>;
-    public inscriptionControllerUpdate(id: number, updateInscriptionDto: UpdateInscriptionDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public departmentControllerUpdate(id: number, updateDepartmentDto: UpdateDepartmentDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseDepartmentDto>;
+    public departmentControllerUpdate(id: number, updateDepartmentDto: UpdateDepartmentDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseDepartmentDto>>;
+    public departmentControllerUpdate(id: number, updateDepartmentDto: UpdateDepartmentDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseDepartmentDto>>;
+    public departmentControllerUpdate(id: number, updateDepartmentDto: UpdateDepartmentDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling inscriptionControllerUpdate.');
+            throw new Error('Required parameter id was null or undefined when calling departmentControllerUpdate.');
         }
-        if (updateInscriptionDto === null || updateInscriptionDto === undefined) {
-            throw new Error('Required parameter updateInscriptionDto was null or undefined when calling inscriptionControllerUpdate.');
+        if (updateDepartmentDto === null || updateDepartmentDto === undefined) {
+            throw new Error('Required parameter updateDepartmentDto was null or undefined when calling departmentControllerUpdate.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -517,11 +399,11 @@ export class InscriptionApiService {
             }
         }
 
-        let localVarPath = `/inscription/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
-        return this.httpClient.request<ResponseInscriptionDto>('patch', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/department/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
+        return this.httpClient.request<ResponseDepartmentDto>('patch', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: updateInscriptionDto,
+                body: updateDepartmentDto,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

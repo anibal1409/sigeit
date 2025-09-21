@@ -30,6 +30,9 @@ export class CreateUserStudentService {
       },
       firstName: data.firstName,
       lastName: data.lastName,
+      teacher: { id: 0 }, // Placeholder para estudiantes
+      school: { id: data.school || 0 },
+      department: { id: data.department || 0 },
     })
     .pipe(
       map(() => 1)

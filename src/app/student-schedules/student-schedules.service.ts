@@ -227,7 +227,7 @@ export class StudentSchedulesService {
         (schedule) => schedule.id === scheduleId
       );
       console.log(schedule);
-      
+
       if (scheduleId) {
         schedules[indexS] = schedule;
       } else {
@@ -235,7 +235,7 @@ export class StudentSchedulesService {
       }
 
       console.log(schedules);
-      
+
       localStorage.setItem(key, JSON.stringify(schedules));
       res = true;
     }

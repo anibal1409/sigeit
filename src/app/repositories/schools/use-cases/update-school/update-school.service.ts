@@ -26,13 +26,13 @@ export class UpdateSchoolService
 
   exec(schoolSave: SchoolVM): Observable<SchoolItemVM | null> {
     return this.schoolService
-      .schoolControllerUpdate({
+      .schoolControllerUpdate(schoolSave.id || 0, {
         name: schoolSave.name,
         status: !!schoolSave.status,
         logo: schoolSave.logo,
         description: schoolSave.description,
         abbreviation: schoolSave.abbreviation,
-      }, schoolSave.id || 0)
+      })
       .pipe(
         map(School2SchoolItemVM),
         tap((school) => {

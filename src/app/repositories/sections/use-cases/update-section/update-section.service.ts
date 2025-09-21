@@ -26,7 +26,7 @@ export class UpdateSectionService
 
   exec(entitySave: SectionVM): Observable<SectionItemVM | null> {
     return this.entityServices
-      .sectionControllerUpdate({
+      .sectionControllerUpdate(entitySave.id || 0, {
         name: entitySave.name,
         status: !!entitySave.status,
         capacity: entitySave.capacity,
@@ -34,7 +34,7 @@ export class UpdateSectionService
         period: { id: entitySave.periodId },
         teacher: { id: entitySave.teacherId },
         all: entitySave.all,
-      }, entitySave.id || 0)
+      })
       .pipe(
         map(Section2SectionItemVM),
         tap((entity) => {

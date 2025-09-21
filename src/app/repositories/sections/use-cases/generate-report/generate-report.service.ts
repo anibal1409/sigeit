@@ -18,7 +18,7 @@ export class GenerateReportService
   ) { }
 
   exec(reportParams: GenerateReportDto): Observable<Blob> {
-    return this.entityService.sectionControllerGenerateReport(reportParams, 'blob')
+    return this.entityService.sectionControllerGenerateReport(reportParams, 'response')
       .pipe(
         map((response: any) => response)
       );

@@ -20,11 +20,11 @@ export class UpdateInscriptionService
 
   exec(entitySave: InscriptionVM): Observable<InscriptionVM> {
     return this.entityServices
-      .inscriptionControllerUpdate({
+      .inscriptionControllerUpdate(entitySave.id || 0, {
         stage: entitySave.stage,
         section: { id: entitySave.sectionId },
         user: { id: entitySave.userId }
-      }, entitySave.id || 0)
+      })
       .pipe(
         map(inscription2InscriptionVM),
       );

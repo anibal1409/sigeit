@@ -19,11 +19,11 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { CreateSchoolDto } from '../model/create-school-dto';
+import { CreateDocumentDto } from '../model/create-document-dto';
 // @ts-ignore
-import { ResponseSchoolDto } from '../model/response-school-dto';
+import { ResponseDocumentDto } from '../model/response-document-dto';
 // @ts-ignore
-import { UpdateSchoolDto } from '../model/update-school-dto';
+import { UpdateDocumentDto } from '../model/update-document-dto';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -34,7 +34,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class SchoolApiService {
+export class DocumentService {
 
     protected basePath = 'http://localhost';
     public defaultHeaders = new HttpHeaders();
@@ -96,16 +96,16 @@ export class SchoolApiService {
     }
 
     /**
-     * @param createSchoolDto 
+     * @param createDocumentDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public schoolControllerCreate(createSchoolDto: CreateSchoolDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseSchoolDto>;
-    public schoolControllerCreate(createSchoolDto: CreateSchoolDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseSchoolDto>>;
-    public schoolControllerCreate(createSchoolDto: CreateSchoolDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseSchoolDto>>;
-    public schoolControllerCreate(createSchoolDto: CreateSchoolDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (createSchoolDto === null || createSchoolDto === undefined) {
-            throw new Error('Required parameter createSchoolDto was null or undefined when calling schoolControllerCreate.');
+    public documentControllerCreate(createDocumentDto: CreateDocumentDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseDocumentDto>;
+    public documentControllerCreate(createDocumentDto: CreateDocumentDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseDocumentDto>>;
+    public documentControllerCreate(createDocumentDto: CreateDocumentDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseDocumentDto>>;
+    public documentControllerCreate(createDocumentDto: CreateDocumentDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (createDocumentDto === null || createDocumentDto === undefined) {
+            throw new Error('Required parameter createDocumentDto was null or undefined when calling documentControllerCreate.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -148,11 +148,11 @@ export class SchoolApiService {
             }
         }
 
-        let localVarPath = `/school`;
-        return this.httpClient.request<ResponseSchoolDto>('post', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/document`;
+        return this.httpClient.request<ResponseDocumentDto>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: createSchoolDto,
+                body: createDocumentDto,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -166,10 +166,10 @@ export class SchoolApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public schoolControllerFindAll(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<ResponseSchoolDto>>;
-    public schoolControllerFindAll(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<ResponseSchoolDto>>>;
-    public schoolControllerFindAll(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<ResponseSchoolDto>>>;
-    public schoolControllerFindAll(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public documentControllerFindActive(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseDocumentDto>;
+    public documentControllerFindActive(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseDocumentDto>>;
+    public documentControllerFindActive(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseDocumentDto>>;
+    public documentControllerFindActive(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -202,8 +202,61 @@ export class SchoolApiService {
             }
         }
 
-        let localVarPath = `/school`;
-        return this.httpClient.request<Array<ResponseSchoolDto>>('get', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/document/active`;
+        return this.httpClient.request<ResponseDocumentDto>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public documentControllerFindAll(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<ResponseDocumentDto>>;
+    public documentControllerFindAll(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<ResponseDocumentDto>>>;
+    public documentControllerFindAll(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<ResponseDocumentDto>>>;
+    public documentControllerFindAll(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/document`;
+        return this.httpClient.request<Array<ResponseDocumentDto>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -220,12 +273,12 @@ export class SchoolApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public schoolControllerFindOne(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseSchoolDto>;
-    public schoolControllerFindOne(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseSchoolDto>>;
-    public schoolControllerFindOne(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseSchoolDto>>;
-    public schoolControllerFindOne(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public documentControllerFindOne(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseDocumentDto>;
+    public documentControllerFindOne(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseDocumentDto>>;
+    public documentControllerFindOne(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseDocumentDto>>;
+    public documentControllerFindOne(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling schoolControllerFindOne.');
+            throw new Error('Required parameter id was null or undefined when calling documentControllerFindOne.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -259,8 +312,8 @@ export class SchoolApiService {
             }
         }
 
-        let localVarPath = `/school/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
-        return this.httpClient.request<ResponseSchoolDto>('get', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/document/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
+        return this.httpClient.request<ResponseDocumentDto>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -277,12 +330,12 @@ export class SchoolApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public schoolControllerRemove(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseSchoolDto>;
-    public schoolControllerRemove(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseSchoolDto>>;
-    public schoolControllerRemove(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseSchoolDto>>;
-    public schoolControllerRemove(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public documentControllerRemove(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseDocumentDto>;
+    public documentControllerRemove(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseDocumentDto>>;
+    public documentControllerRemove(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseDocumentDto>>;
+    public documentControllerRemove(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling schoolControllerRemove.');
+            throw new Error('Required parameter id was null or undefined when calling documentControllerRemove.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -316,8 +369,8 @@ export class SchoolApiService {
             }
         }
 
-        let localVarPath = `/school/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
-        return this.httpClient.request<ResponseSchoolDto>('delete', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/document/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
+        return this.httpClient.request<ResponseDocumentDto>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -331,19 +384,19 @@ export class SchoolApiService {
 
     /**
      * @param id 
-     * @param updateSchoolDto 
+     * @param updateDocumentDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public schoolControllerUpdate(id: number, updateSchoolDto: UpdateSchoolDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseSchoolDto>;
-    public schoolControllerUpdate(id: number, updateSchoolDto: UpdateSchoolDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseSchoolDto>>;
-    public schoolControllerUpdate(id: number, updateSchoolDto: UpdateSchoolDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseSchoolDto>>;
-    public schoolControllerUpdate(id: number, updateSchoolDto: UpdateSchoolDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public documentControllerUpdate(id: number, updateDocumentDto: UpdateDocumentDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseDocumentDto>;
+    public documentControllerUpdate(id: number, updateDocumentDto: UpdateDocumentDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseDocumentDto>>;
+    public documentControllerUpdate(id: number, updateDocumentDto: UpdateDocumentDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseDocumentDto>>;
+    public documentControllerUpdate(id: number, updateDocumentDto: UpdateDocumentDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling schoolControllerUpdate.');
+            throw new Error('Required parameter id was null or undefined when calling documentControllerUpdate.');
         }
-        if (updateSchoolDto === null || updateSchoolDto === undefined) {
-            throw new Error('Required parameter updateSchoolDto was null or undefined when calling schoolControllerUpdate.');
+        if (updateDocumentDto === null || updateDocumentDto === undefined) {
+            throw new Error('Required parameter updateDocumentDto was null or undefined when calling documentControllerUpdate.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -386,11 +439,11 @@ export class SchoolApiService {
             }
         }
 
-        let localVarPath = `/school/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
-        return this.httpClient.request<ResponseSchoolDto>('patch', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/document/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
+        return this.httpClient.request<ResponseDocumentDto>('patch', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: updateSchoolDto,
+                body: updateDocumentDto,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

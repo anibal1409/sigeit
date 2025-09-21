@@ -28,14 +28,15 @@ export class CreateUserService
     return this.entityServices
       .userControllerCreate({
         status: !!entitySave.status,
-        department: entitySave?.departmentId ? { id: entitySave?.departmentId } : undefined,
+        department: { id: entitySave?.departmentId || 0 },
         email: entitySave.email,
         role: entitySave.role,
         name: entitySave.name,
-        school: entitySave?.schoolId ? { id: entitySave?.schoolId } : undefined,
+        school: { id: entitySave?.schoolId || 0 },
         idDocument: entitySave.idDocument,
-      }
-      )
+        teacher: { id: 0 }, // Placeholder - debería venir del contexto
+        career: { id: entitySave?.careerId || 0 },
+      })
       .pipe(
         map(User2UserItemVM),
         tap((entity) => {

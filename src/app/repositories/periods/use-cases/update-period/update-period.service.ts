@@ -26,19 +26,19 @@ export class UpdatePeriodService
 
   exec(entitySave: PeriodVM): Observable<PeriodItemVM | null> {
     return this.entityServices
-      .periodControllerUpdate({
+      .periodControllerUpdate(entitySave.id || 0, {
         name: entitySave.name.toUpperCase(),
         status: !!entitySave.status,
         description: entitySave.description,
         duration: entitySave.duration,
-        end: new Date(entitySave.end),
-        start: new Date(entitySave.start),
+        end: new Date(entitySave.end).toISOString(),
+        start: new Date(entitySave.start).toISOString(),
         endTime: entitySave.endTime,
         startTime: entitySave.startTime,
         interval: entitySave.interval,
         stage: entitySave.stage as any,
         copyPrevious: entitySave.copyPrevious || false,
-      }, entitySave.id || 0)
+      })
       .pipe(
         map(Period2PeriodItemVM),
         tap((entity) => {

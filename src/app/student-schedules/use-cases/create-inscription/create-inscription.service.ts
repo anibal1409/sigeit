@@ -24,7 +24,6 @@ export class CreateInscriptionService
         section: { id: entitySave.sectionId },
         stage: entitySave.stage,
         user: { id: entitySave.userId },
-        status: true,
       })
       .pipe(
         map(inscription2InscriptionVM),

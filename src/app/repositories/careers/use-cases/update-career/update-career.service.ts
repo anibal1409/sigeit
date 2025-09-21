@@ -26,13 +26,13 @@ constructor(
 
 exec(entitySave: CareerVM): Observable<CareerItemVM | null> {
   return this.entityServices
-    .careerControllerUpdate({
+    .careerControllerUpdate(entitySave.id || 0, {
       name: entitySave.name,
       status: !!entitySave.status,
       description: entitySave.description,
       abbreviation: entitySave.abbreviation,
       department: {id: entitySave.departmentId},
-    }, entitySave.id || 0)
+    })
     .pipe(
       map(Career2CareerItemVM),
       tap((entity) => {

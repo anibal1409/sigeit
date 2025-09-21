@@ -20,7 +20,7 @@ implements UseCase<Array<ScheduleItemVM>, ScheduleBaseQuery> {
     constructor(
       private entityServices: ScheduleService,
     ) {}
-  
+
     exec(data: ScheduleBaseQuery = {}, memory = true): Observable<Array<ScheduleItemVM>> {
       return this.entityServices.scheduleControllerFindAllStudents(
         data?.periodId || 0,

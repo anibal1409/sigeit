@@ -12,7 +12,7 @@ export class CloseInscriptionService {
   exec(ids: Array<number>): Observable<any> {
     return this.entityServices
       .inscriptionControllerClose({
-        ids,
+        ids: ids.map(id => id.toString()),
       });
   }
 }

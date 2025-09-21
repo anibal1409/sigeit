@@ -28,7 +28,6 @@ export class CreateSubjectService
     return this.entityServices
       .subjectControllerCreate({
         name: entitySave.name,
-        status: !!entitySave.status,
         code: entitySave.code,
         credits: entitySave.credits,
         hours: entitySave.hours,

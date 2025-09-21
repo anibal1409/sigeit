@@ -23,7 +23,7 @@ implements UseCase<Array<ScheduleItemVM>, ScheduleBaseQuery> {
       private entityServices: ScheduleService,
       private memoryService: ScheduleMemoryService,
     ) {}
-  
+
     exec(data: ScheduleBaseQuery = {}, memory = true): Observable<Array<ScheduleItemVM>> {
       return this.entityServices.scheduleControllerFindAll(
         data?.periodId || 0,

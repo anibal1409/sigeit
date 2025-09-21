@@ -26,9 +26,8 @@ export class UpdateSubjectService
 
   exec(entitySave: SubjectVM): Observable<SubjectItemVM | null> {
     return this.entityServices
-      .subjectControllerUpdate({
+      .subjectControllerUpdate(entitySave.id || 0, {
         name: entitySave.name,
-        status: !!entitySave.status,
         code: entitySave.code,
         credits: entitySave.credits,
         hours: entitySave.hours,
@@ -37,7 +36,7 @@ export class UpdateSubjectService
         description: entitySave.description,
         careers: entitySave.careerIds.map((id) => ({ id })),
         department: { id: entitySave.departmentId },
-      }, entitySave.id || 0)
+      })
       .pipe(
         map(Subject2SubjectItemVM),
         tap((entity) => {

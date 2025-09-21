@@ -26,7 +26,7 @@ export class UpdateScheduleService
 
   exec(entitySave: ScheduleVM): Observable<ScheduleItemVM> {
     return this.entityServices
-      .scheduleControllerUpdate({
+      .scheduleControllerUpdate(entitySave.id || 0, {
         status: !!entitySave.status,
         classroom: { id: entitySave.classroomId },
         day: { id: entitySave.dayId },
@@ -34,7 +34,7 @@ export class UpdateScheduleService
         end: entitySave.end,
         start: entitySave.start,
         section: { id: entitySave.sectionId },
-      }, entitySave.id || 0)
+      })
       .pipe(
         map(Schedule2ScheduleItemVM),
         tap((entity) => {
@@ -42,4 +42,4 @@ export class UpdateScheduleService
         })
       );
   }
-} 
+}

@@ -26,7 +26,6 @@ exec(entitySave: DocumentVM): Observable<DocumentItemVM | null> {
   return this.entityServices
     .documentControllerCreate({
       name: entitySave.name,
-      status: !!entitySave.status,
       description: JSON.stringify(entitySave.description),
       department: {id: entitySave.departmentId},
       type: entitySave.type

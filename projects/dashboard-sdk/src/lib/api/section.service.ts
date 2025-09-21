@@ -19,19 +19,15 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { ChangePasswordDto } from '../model/change-password-dto';
+import { CreateSectionDto } from '../model/create-section-dto';
 // @ts-ignore
-import { ChangePasswordResponseDto } from '../model/change-password-response-dto';
+import { GenerateReportDto } from '../model/generate-report-dto';
 // @ts-ignore
-import { CreateUserDto } from '../model/create-user-dto';
+import { ReportResponseDto } from '../model/report-response-dto';
 // @ts-ignore
-import { LoginDto } from '../model/login-dto';
+import { ResponseSectionDto } from '../model/response-section-dto';
 // @ts-ignore
-import { LoginUserResponseDto } from '../model/login-user-response-dto';
-// @ts-ignore
-import { RecoveryPasswordDto } from '../model/recovery-password-dto';
-// @ts-ignore
-import { RecoveryPasswordResponseDto } from '../model/recovery-password-response-dto';
+import { UpdateSectionDto } from '../model/update-section-dto';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -42,7 +38,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class AuthApiService {
+export class SectionService {
 
     protected basePath = 'http://localhost';
     public defaultHeaders = new HttpHeaders();
@@ -104,16 +100,16 @@ export class AuthApiService {
     }
 
     /**
-     * @param changePasswordDto 
+     * @param createSectionDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public authControllerChangePassword(changePasswordDto: ChangePasswordDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ChangePasswordResponseDto>;
-    public authControllerChangePassword(changePasswordDto: ChangePasswordDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ChangePasswordResponseDto>>;
-    public authControllerChangePassword(changePasswordDto: ChangePasswordDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ChangePasswordResponseDto>>;
-    public authControllerChangePassword(changePasswordDto: ChangePasswordDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (changePasswordDto === null || changePasswordDto === undefined) {
-            throw new Error('Required parameter changePasswordDto was null or undefined when calling authControllerChangePassword.');
+    public sectionControllerCreate(createSectionDto: CreateSectionDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseSectionDto>;
+    public sectionControllerCreate(createSectionDto: CreateSectionDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseSectionDto>>;
+    public sectionControllerCreate(createSectionDto: CreateSectionDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseSectionDto>>;
+    public sectionControllerCreate(createSectionDto: CreateSectionDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (createSectionDto === null || createSectionDto === undefined) {
+            throw new Error('Required parameter createSectionDto was null or undefined when calling sectionControllerCreate.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -156,11 +152,11 @@ export class AuthApiService {
             }
         }
 
-        let localVarPath = `/auth/change-password`;
-        return this.httpClient.request<ChangePasswordResponseDto>('put', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/section`;
+        return this.httpClient.request<ResponseSectionDto>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: changePasswordDto,
+                body: createSectionDto,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -171,16 +167,48 @@ export class AuthApiService {
     }
 
     /**
-     * @param createUserDto 
+     * @param periodId 
+     * @param departmentId 
+     * @param subjectId 
+     * @param teacherId 
+     * @param semester 
+     * @param dayId 
+     * @param status 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public authControllerCreateStudent(createUserDto: CreateUserDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any>;
-    public authControllerCreateStudent(createUserDto: CreateUserDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpResponse<any>>;
-    public authControllerCreateStudent(createUserDto: CreateUserDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpEvent<any>>;
-    public authControllerCreateStudent(createUserDto: CreateUserDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any> {
-        if (createUserDto === null || createUserDto === undefined) {
-            throw new Error('Required parameter createUserDto was null or undefined when calling authControllerCreateStudent.');
+    public sectionControllerFindAll(periodId: number, departmentId?: number, subjectId?: number, teacherId?: number, semester?: number, dayId?: number, status?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<ResponseSectionDto>>;
+    public sectionControllerFindAll(periodId: number, departmentId?: number, subjectId?: number, teacherId?: number, semester?: number, dayId?: number, status?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<ResponseSectionDto>>>;
+    public sectionControllerFindAll(periodId: number, departmentId?: number, subjectId?: number, teacherId?: number, semester?: number, dayId?: number, status?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<ResponseSectionDto>>>;
+    public sectionControllerFindAll(periodId: number, departmentId?: number, subjectId?: number, teacherId?: number, semester?: number, dayId?: number, status?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (periodId === null || periodId === undefined) {
+            throw new Error('Required parameter periodId was null or undefined when calling sectionControllerFindAll.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (departmentId !== undefined && departmentId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>departmentId, 'departmentId');
+        }
+        if (subjectId !== undefined && subjectId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>subjectId, 'subjectId');
+        }
+        if (teacherId !== undefined && teacherId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>teacherId, 'teacherId');
+        }
+        if (semester !== undefined && semester !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>semester, 'semester');
+        }
+        if (dayId !== undefined && dayId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>dayId, 'dayId');
+        }
+        if (status !== undefined && status !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>status, 'status');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -189,6 +217,7 @@ export class AuthApiService {
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
+                'application/json'
             ];
             localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -202,14 +231,63 @@ export class AuthApiService {
         }
 
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
         }
+
+        let localVarPath = `/section/period/${this.configuration.encodeParam({name: "periodId", value: periodId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
+        return this.httpClient.request<Array<ResponseSectionDto>>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public sectionControllerFindOne(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseSectionDto>;
+    public sectionControllerFindOne(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseSectionDto>>;
+    public sectionControllerFindOne(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseSectionDto>>;
+    public sectionControllerFindOne(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling sectionControllerFindOne.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
         if (localVarHttpHeaderAcceptSelected) {
@@ -222,11 +300,10 @@ export class AuthApiService {
             }
         }
 
-        let localVarPath = `/auth/create-student`;
-        return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/section/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
+        return this.httpClient.request<ResponseSectionDto>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: createUserDto,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -237,16 +314,106 @@ export class AuthApiService {
     }
 
     /**
-     * @param recoveryPasswordDto 
+     * @param periodId 
+     * @param departmentId 
+     * @param subjectId 
+     * @param teacherId 
+     * @param semester 
+     * @param dayId 
+     * @param status 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public authControllerGenerateRecovery(recoveryPasswordDto: RecoveryPasswordDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<RecoveryPasswordDto>;
-    public authControllerGenerateRecovery(recoveryPasswordDto: RecoveryPasswordDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<RecoveryPasswordDto>>;
-    public authControllerGenerateRecovery(recoveryPasswordDto: RecoveryPasswordDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<RecoveryPasswordDto>>;
-    public authControllerGenerateRecovery(recoveryPasswordDto: RecoveryPasswordDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (recoveryPasswordDto === null || recoveryPasswordDto === undefined) {
-            throw new Error('Required parameter recoveryPasswordDto was null or undefined when calling authControllerGenerateRecovery.');
+    public sectionControllerFindSectionsByPeriod(periodId: number, departmentId?: number, subjectId?: number, teacherId?: number, semester?: number, dayId?: number, status?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<ResponseSectionDto>>;
+    public sectionControllerFindSectionsByPeriod(periodId: number, departmentId?: number, subjectId?: number, teacherId?: number, semester?: number, dayId?: number, status?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<ResponseSectionDto>>>;
+    public sectionControllerFindSectionsByPeriod(periodId: number, departmentId?: number, subjectId?: number, teacherId?: number, semester?: number, dayId?: number, status?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<ResponseSectionDto>>>;
+    public sectionControllerFindSectionsByPeriod(periodId: number, departmentId?: number, subjectId?: number, teacherId?: number, semester?: number, dayId?: number, status?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (periodId === null || periodId === undefined) {
+            throw new Error('Required parameter periodId was null or undefined when calling sectionControllerFindSectionsByPeriod.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (departmentId !== undefined && departmentId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>departmentId, 'departmentId');
+        }
+        if (subjectId !== undefined && subjectId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>subjectId, 'subjectId');
+        }
+        if (teacherId !== undefined && teacherId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>teacherId, 'teacherId');
+        }
+        if (semester !== undefined && semester !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>semester, 'semester');
+        }
+        if (dayId !== undefined && dayId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>dayId, 'dayId');
+        }
+        if (status !== undefined && status !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>status, 'status');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/section/period/${this.configuration.encodeParam({name: "periodId", value: periodId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}/sections`;
+        return this.httpClient.request<Array<ResponseSectionDto>>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param generateReportDto 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public sectionControllerGenerateReport(generateReportDto: GenerateReportDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ReportResponseDto>;
+    public sectionControllerGenerateReport(generateReportDto: GenerateReportDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ReportResponseDto>>;
+    public sectionControllerGenerateReport(generateReportDto: GenerateReportDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ReportResponseDto>>;
+    public sectionControllerGenerateReport(generateReportDto: GenerateReportDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (generateReportDto === null || generateReportDto === undefined) {
+            throw new Error('Required parameter generateReportDto was null or undefined when calling sectionControllerGenerateReport.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -289,11 +456,11 @@ export class AuthApiService {
             }
         }
 
-        let localVarPath = `/auth/recovery-password`;
-        return this.httpClient.request<RecoveryPasswordDto>('post', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/section/generate-report`;
+        return this.httpClient.request<ReportResponseDto>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: recoveryPasswordDto,
+                body: generateReportDto,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -304,16 +471,16 @@ export class AuthApiService {
     }
 
     /**
-     * @param recoveryToken 
+     * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public authControllerGetRecoveryById(recoveryToken: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<RecoveryPasswordResponseDto>;
-    public authControllerGetRecoveryById(recoveryToken: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<RecoveryPasswordResponseDto>>;
-    public authControllerGetRecoveryById(recoveryToken: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<RecoveryPasswordResponseDto>>;
-    public authControllerGetRecoveryById(recoveryToken: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (recoveryToken === null || recoveryToken === undefined) {
-            throw new Error('Required parameter recoveryToken was null or undefined when calling authControllerGetRecoveryById.');
+    public sectionControllerRemove(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseSectionDto>;
+    public sectionControllerRemove(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseSectionDto>>;
+    public sectionControllerRemove(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseSectionDto>>;
+    public sectionControllerRemove(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling sectionControllerRemove.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -347,8 +514,8 @@ export class AuthApiService {
             }
         }
 
-        let localVarPath = `/auth/recovery-password/${this.configuration.encodeParam({name: "recoveryToken", value: recoveryToken, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<RecoveryPasswordResponseDto>('get', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/section/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
+        return this.httpClient.request<ResponseSectionDto>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -361,139 +528,20 @@ export class AuthApiService {
     }
 
     /**
-     * @param loginDto 
+     * @param id 
+     * @param updateSectionDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public authControllerLogin(loginDto: LoginDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<LoginUserResponseDto>;
-    public authControllerLogin(loginDto: LoginDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<LoginUserResponseDto>>;
-    public authControllerLogin(loginDto: LoginDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<LoginUserResponseDto>>;
-    public authControllerLogin(loginDto: LoginDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (loginDto === null || loginDto === undefined) {
-            throw new Error('Required parameter loginDto was null or undefined when calling authControllerLogin.');
+    public sectionControllerUpdate(id: number, updateSectionDto: UpdateSectionDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseSectionDto>;
+    public sectionControllerUpdate(id: number, updateSectionDto: UpdateSectionDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseSectionDto>>;
+    public sectionControllerUpdate(id: number, updateSectionDto: UpdateSectionDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseSectionDto>>;
+    public sectionControllerUpdate(id: number, updateSectionDto: UpdateSectionDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling sectionControllerUpdate.');
         }
-
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/auth/login`;
-        return this.httpClient.request<LoginUserResponseDto>('post', `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                body: loginDto,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public authControllerLogout(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any>;
-    public authControllerLogout(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpResponse<any>>;
-    public authControllerLogout(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpEvent<any>>;
-    public authControllerLogout(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any> {
-
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-            ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/auth/logout`;
-        return this.httpClient.request<any>('get', `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param recoveryToken 
-     * @param changePasswordDto 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public authControllerPostRecoveryById(recoveryToken: string, changePasswordDto: ChangePasswordDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<RecoveryPasswordResponseDto>;
-    public authControllerPostRecoveryById(recoveryToken: string, changePasswordDto: ChangePasswordDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<RecoveryPasswordResponseDto>>;
-    public authControllerPostRecoveryById(recoveryToken: string, changePasswordDto: ChangePasswordDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<RecoveryPasswordResponseDto>>;
-    public authControllerPostRecoveryById(recoveryToken: string, changePasswordDto: ChangePasswordDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (recoveryToken === null || recoveryToken === undefined) {
-            throw new Error('Required parameter recoveryToken was null or undefined when calling authControllerPostRecoveryById.');
-        }
-        if (changePasswordDto === null || changePasswordDto === undefined) {
-            throw new Error('Required parameter changePasswordDto was null or undefined when calling authControllerPostRecoveryById.');
+        if (updateSectionDto === null || updateSectionDto === undefined) {
+            throw new Error('Required parameter updateSectionDto was null or undefined when calling sectionControllerUpdate.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -536,11 +584,11 @@ export class AuthApiService {
             }
         }
 
-        let localVarPath = `/auth/recovery-password/${this.configuration.encodeParam({name: "recoveryToken", value: recoveryToken, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<RecoveryPasswordResponseDto>('post', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/section/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
+        return this.httpClient.request<ResponseSectionDto>('patch', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: changePasswordDto,
+                body: updateSectionDto,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

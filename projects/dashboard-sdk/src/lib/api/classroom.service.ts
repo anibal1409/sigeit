@@ -19,11 +19,11 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { CreateTeacherDto } from '../model/create-teacher-dto';
+import { CreateClassroomDto } from '../model/create-classroom-dto';
 // @ts-ignore
-import { ResponseTeacherDto } from '../model/response-teacher-dto';
+import { ResponseClassroomDto } from '../model/response-classroom-dto';
 // @ts-ignore
-import { UpdateTeacherDto } from '../model/update-teacher-dto';
+import { UpdateClassroomDto } from '../model/update-classroom-dto';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -34,7 +34,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class TeacherApiService {
+export class ClassroomService {
 
     protected basePath = 'http://localhost';
     public defaultHeaders = new HttpHeaders();
@@ -96,16 +96,16 @@ export class TeacherApiService {
     }
 
     /**
-     * @param createTeacherDto 
+     * @param createClassroomDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public teacherControllerCreate(createTeacherDto: CreateTeacherDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseTeacherDto>;
-    public teacherControllerCreate(createTeacherDto: CreateTeacherDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseTeacherDto>>;
-    public teacherControllerCreate(createTeacherDto: CreateTeacherDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseTeacherDto>>;
-    public teacherControllerCreate(createTeacherDto: CreateTeacherDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (createTeacherDto === null || createTeacherDto === undefined) {
-            throw new Error('Required parameter createTeacherDto was null or undefined when calling teacherControllerCreate.');
+    public classroomControllerCreate(createClassroomDto: CreateClassroomDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseClassroomDto>;
+    public classroomControllerCreate(createClassroomDto: CreateClassroomDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseClassroomDto>>;
+    public classroomControllerCreate(createClassroomDto: CreateClassroomDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseClassroomDto>>;
+    public classroomControllerCreate(createClassroomDto: CreateClassroomDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (createClassroomDto === null || createClassroomDto === undefined) {
+            throw new Error('Required parameter createClassroomDto was null or undefined when calling classroomControllerCreate.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -148,11 +148,11 @@ export class TeacherApiService {
             }
         }
 
-        let localVarPath = `/teacher`;
-        return this.httpClient.request<ResponseTeacherDto>('post', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/classroom`;
+        return this.httpClient.request<ResponseClassroomDto>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: createTeacherDto,
+                body: createClassroomDto,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -163,21 +163,21 @@ export class TeacherApiService {
     }
 
     /**
-     * @param schoolId 
+     * @param classroomId 
      * @param departmentId 
      * @param status 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public teacherControllerFindAll(schoolId?: number, departmentId?: number, status?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<ResponseTeacherDto>>;
-    public teacherControllerFindAll(schoolId?: number, departmentId?: number, status?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<ResponseTeacherDto>>>;
-    public teacherControllerFindAll(schoolId?: number, departmentId?: number, status?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<ResponseTeacherDto>>>;
-    public teacherControllerFindAll(schoolId?: number, departmentId?: number, status?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public classroomControllerFindAll(classroomId?: number, departmentId?: number, status?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<ResponseClassroomDto>>;
+    public classroomControllerFindAll(classroomId?: number, departmentId?: number, status?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<ResponseClassroomDto>>>;
+    public classroomControllerFindAll(classroomId?: number, departmentId?: number, status?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<ResponseClassroomDto>>>;
+    public classroomControllerFindAll(classroomId?: number, departmentId?: number, status?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (schoolId !== undefined && schoolId !== null) {
+        if (classroomId !== undefined && classroomId !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>schoolId, 'schoolId');
+            <any>classroomId, 'classroomId');
         }
         if (departmentId !== undefined && departmentId !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -219,8 +219,8 @@ export class TeacherApiService {
             }
         }
 
-        let localVarPath = `/teacher`;
-        return this.httpClient.request<Array<ResponseTeacherDto>>('get', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/classroom`;
+        return this.httpClient.request<Array<ResponseClassroomDto>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -238,12 +238,12 @@ export class TeacherApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public teacherControllerFindAllDepartment(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<ResponseTeacherDto>>;
-    public teacherControllerFindAllDepartment(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<ResponseTeacherDto>>>;
-    public teacherControllerFindAllDepartment(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<ResponseTeacherDto>>>;
-    public teacherControllerFindAllDepartment(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public classroomControllerFindOne(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseClassroomDto>;
+    public classroomControllerFindOne(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseClassroomDto>>;
+    public classroomControllerFindOne(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseClassroomDto>>;
+    public classroomControllerFindOne(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling teacherControllerFindAllDepartment.');
+            throw new Error('Required parameter id was null or undefined when calling classroomControllerFindOne.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -277,8 +277,8 @@ export class TeacherApiService {
             }
         }
 
-        let localVarPath = `/teacher/department/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
-        return this.httpClient.request<Array<ResponseTeacherDto>>('get', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/classroom/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
+        return this.httpClient.request<ResponseClassroomDto>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -295,12 +295,12 @@ export class TeacherApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public teacherControllerFindOne(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseTeacherDto>;
-    public teacherControllerFindOne(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseTeacherDto>>;
-    public teacherControllerFindOne(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseTeacherDto>>;
-    public teacherControllerFindOne(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public classroomControllerRemove(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseClassroomDto>;
+    public classroomControllerRemove(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseClassroomDto>>;
+    public classroomControllerRemove(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseClassroomDto>>;
+    public classroomControllerRemove(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling teacherControllerFindOne.');
+            throw new Error('Required parameter id was null or undefined when calling classroomControllerRemove.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -334,8 +334,8 @@ export class TeacherApiService {
             }
         }
 
-        let localVarPath = `/teacher/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
-        return this.httpClient.request<ResponseTeacherDto>('get', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/classroom/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
+        return this.httpClient.request<ResponseClassroomDto>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -349,76 +349,19 @@ export class TeacherApiService {
 
     /**
      * @param id 
+     * @param updateClassroomDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public teacherControllerRemove(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseTeacherDto>;
-    public teacherControllerRemove(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseTeacherDto>>;
-    public teacherControllerRemove(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseTeacherDto>>;
-    public teacherControllerRemove(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public classroomControllerUpdate(id: number, updateClassroomDto: UpdateClassroomDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseClassroomDto>;
+    public classroomControllerUpdate(id: number, updateClassroomDto: UpdateClassroomDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseClassroomDto>>;
+    public classroomControllerUpdate(id: number, updateClassroomDto: UpdateClassroomDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseClassroomDto>>;
+    public classroomControllerUpdate(id: number, updateClassroomDto: UpdateClassroomDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling teacherControllerRemove.');
+            throw new Error('Required parameter id was null or undefined when calling classroomControllerUpdate.');
         }
-
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/teacher/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
-        return this.httpClient.request<ResponseTeacherDto>('delete', `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param id 
-     * @param updateTeacherDto 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public teacherControllerUpdate(id: number, updateTeacherDto: UpdateTeacherDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseTeacherDto>;
-    public teacherControllerUpdate(id: number, updateTeacherDto: UpdateTeacherDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseTeacherDto>>;
-    public teacherControllerUpdate(id: number, updateTeacherDto: UpdateTeacherDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseTeacherDto>>;
-    public teacherControllerUpdate(id: number, updateTeacherDto: UpdateTeacherDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling teacherControllerUpdate.');
-        }
-        if (updateTeacherDto === null || updateTeacherDto === undefined) {
-            throw new Error('Required parameter updateTeacherDto was null or undefined when calling teacherControllerUpdate.');
+        if (updateClassroomDto === null || updateClassroomDto === undefined) {
+            throw new Error('Required parameter updateClassroomDto was null or undefined when calling classroomControllerUpdate.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -461,11 +404,11 @@ export class TeacherApiService {
             }
         }
 
-        let localVarPath = `/teacher/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
-        return this.httpClient.request<ResponseTeacherDto>('patch', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/classroom/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
+        return this.httpClient.request<ResponseClassroomDto>('patch', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: updateTeacherDto,
+                body: updateClassroomDto,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

@@ -31,8 +31,8 @@ implements UseCase<Array<InscriptionVM> | null, InscriptionBaseQuery> {
       data?.subjectId,
       data?.userId,
       data?.semester,
-      data?.status,   
-      data?.schedules,   
+      data?.status,
+      data?.schedules,
     )
     .pipe(
       map((entities: any) => entities.map(inscription2InscriptionVM)),

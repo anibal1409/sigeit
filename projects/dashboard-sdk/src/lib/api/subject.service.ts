@@ -19,11 +19,11 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { CreateDepartmentDto } from '../model/create-department-dto';
+import { CreateSubjectDto } from '../model/create-subject-dto';
 // @ts-ignore
-import { ResponseDepartmentDto } from '../model/response-department-dto';
+import { ResponseSubjectDto } from '../model/response-subject-dto';
 // @ts-ignore
-import { UpdateDepartmentDto } from '../model/update-department-dto';
+import { UpdateSubjectDto } from '../model/update-subject-dto';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -34,7 +34,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class DepartmentApiService {
+export class SubjectService {
 
     protected basePath = 'http://localhost';
     public defaultHeaders = new HttpHeaders();
@@ -96,16 +96,16 @@ export class DepartmentApiService {
     }
 
     /**
-     * @param createDepartmentDto 
+     * @param createSubjectDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public departmentControllerCreate(createDepartmentDto: CreateDepartmentDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseDepartmentDto>;
-    public departmentControllerCreate(createDepartmentDto: CreateDepartmentDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseDepartmentDto>>;
-    public departmentControllerCreate(createDepartmentDto: CreateDepartmentDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseDepartmentDto>>;
-    public departmentControllerCreate(createDepartmentDto: CreateDepartmentDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (createDepartmentDto === null || createDepartmentDto === undefined) {
-            throw new Error('Required parameter createDepartmentDto was null or undefined when calling departmentControllerCreate.');
+    public subjectControllerCreate(createSubjectDto: CreateSubjectDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseSubjectDto>;
+    public subjectControllerCreate(createSubjectDto: CreateSubjectDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseSubjectDto>>;
+    public subjectControllerCreate(createSubjectDto: CreateSubjectDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseSubjectDto>>;
+    public subjectControllerCreate(createSubjectDto: CreateSubjectDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (createSubjectDto === null || createSubjectDto === undefined) {
+            throw new Error('Required parameter createSubjectDto was null or undefined when calling subjectControllerCreate.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -148,11 +148,11 @@ export class DepartmentApiService {
             }
         }
 
-        let localVarPath = `/department`;
-        return this.httpClient.request<ResponseDepartmentDto>('post', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/subject`;
+        return this.httpClient.request<ResponseSubjectDto>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: createDepartmentDto,
+                body: createSubjectDto,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -163,20 +163,30 @@ export class DepartmentApiService {
     }
 
     /**
-     * @param schoolId 
+     * @param semester 
+     * @param careerId 
+     * @param departmentId 
      * @param status 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public departmentControllerFindAll(schoolId?: number, status?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<ResponseDepartmentDto>>;
-    public departmentControllerFindAll(schoolId?: number, status?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<ResponseDepartmentDto>>>;
-    public departmentControllerFindAll(schoolId?: number, status?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<ResponseDepartmentDto>>>;
-    public departmentControllerFindAll(schoolId?: number, status?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public subjectControllerFindAll(semester?: number, careerId?: number, departmentId?: number, status?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<ResponseSubjectDto>>;
+    public subjectControllerFindAll(semester?: number, careerId?: number, departmentId?: number, status?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<ResponseSubjectDto>>>;
+    public subjectControllerFindAll(semester?: number, careerId?: number, departmentId?: number, status?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<ResponseSubjectDto>>>;
+    public subjectControllerFindAll(semester?: number, careerId?: number, departmentId?: number, status?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (schoolId !== undefined && schoolId !== null) {
+        if (semester !== undefined && semester !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>schoolId, 'schoolId');
+            <any>semester, 'semester');
+        }
+        if (careerId !== undefined && careerId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>careerId, 'careerId');
+        }
+        if (departmentId !== undefined && departmentId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>departmentId, 'departmentId');
         }
         if (status !== undefined && status !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -214,8 +224,8 @@ export class DepartmentApiService {
             }
         }
 
-        let localVarPath = `/department`;
-        return this.httpClient.request<Array<ResponseDepartmentDto>>('get', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/subject`;
+        return this.httpClient.request<Array<ResponseSubjectDto>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -233,12 +243,12 @@ export class DepartmentApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public departmentControllerFindOne(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseDepartmentDto>;
-    public departmentControllerFindOne(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseDepartmentDto>>;
-    public departmentControllerFindOne(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseDepartmentDto>>;
-    public departmentControllerFindOne(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public subjectControllerFindOne(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseSubjectDto>;
+    public subjectControllerFindOne(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseSubjectDto>>;
+    public subjectControllerFindOne(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseSubjectDto>>;
+    public subjectControllerFindOne(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling departmentControllerFindOne.');
+            throw new Error('Required parameter id was null or undefined when calling subjectControllerFindOne.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -272,8 +282,8 @@ export class DepartmentApiService {
             }
         }
 
-        let localVarPath = `/department/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
-        return this.httpClient.request<ResponseDepartmentDto>('get', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/subject/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
+        return this.httpClient.request<ResponseSubjectDto>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -290,12 +300,12 @@ export class DepartmentApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public departmentControllerRemove(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseDepartmentDto>;
-    public departmentControllerRemove(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseDepartmentDto>>;
-    public departmentControllerRemove(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseDepartmentDto>>;
-    public departmentControllerRemove(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public subjectControllerRemove(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseSubjectDto>;
+    public subjectControllerRemove(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseSubjectDto>>;
+    public subjectControllerRemove(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseSubjectDto>>;
+    public subjectControllerRemove(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling departmentControllerRemove.');
+            throw new Error('Required parameter id was null or undefined when calling subjectControllerRemove.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -329,8 +339,8 @@ export class DepartmentApiService {
             }
         }
 
-        let localVarPath = `/department/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
-        return this.httpClient.request<ResponseDepartmentDto>('delete', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/subject/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
+        return this.httpClient.request<ResponseSubjectDto>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -344,19 +354,19 @@ export class DepartmentApiService {
 
     /**
      * @param id 
-     * @param updateDepartmentDto 
+     * @param updateSubjectDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public departmentControllerUpdate(id: number, updateDepartmentDto: UpdateDepartmentDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseDepartmentDto>;
-    public departmentControllerUpdate(id: number, updateDepartmentDto: UpdateDepartmentDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseDepartmentDto>>;
-    public departmentControllerUpdate(id: number, updateDepartmentDto: UpdateDepartmentDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseDepartmentDto>>;
-    public departmentControllerUpdate(id: number, updateDepartmentDto: UpdateDepartmentDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public subjectControllerUpdate(id: number, updateSubjectDto: UpdateSubjectDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseSubjectDto>;
+    public subjectControllerUpdate(id: number, updateSubjectDto: UpdateSubjectDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseSubjectDto>>;
+    public subjectControllerUpdate(id: number, updateSubjectDto: UpdateSubjectDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseSubjectDto>>;
+    public subjectControllerUpdate(id: number, updateSubjectDto: UpdateSubjectDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling departmentControllerUpdate.');
+            throw new Error('Required parameter id was null or undefined when calling subjectControllerUpdate.');
         }
-        if (updateDepartmentDto === null || updateDepartmentDto === undefined) {
-            throw new Error('Required parameter updateDepartmentDto was null or undefined when calling departmentControllerUpdate.');
+        if (updateSubjectDto === null || updateSubjectDto === undefined) {
+            throw new Error('Required parameter updateSubjectDto was null or undefined when calling subjectControllerUpdate.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -399,11 +409,11 @@ export class DepartmentApiService {
             }
         }
 
-        let localVarPath = `/department/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
-        return this.httpClient.request<ResponseDepartmentDto>('patch', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/subject/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
+        return this.httpClient.request<ResponseSubjectDto>('patch', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: updateDepartmentDto,
+                body: updateSubjectDto,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

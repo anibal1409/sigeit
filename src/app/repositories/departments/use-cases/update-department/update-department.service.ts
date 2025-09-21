@@ -26,7 +26,7 @@ export class UpdateDepartmentService
 
   exec(departmentSave: DepartmentVM): Observable<DepartmentItemVM | null> {
     return this.departmentService
-      .departmentControllerUpdate({
+      .departmentControllerUpdate(departmentSave.id || 0, {
         name: departmentSave.name,
         status: !!departmentSave.status,
         logo: departmentSave.logo,
@@ -35,7 +35,7 @@ export class UpdateDepartmentService
         school: {
           id: departmentSave.schoolId,
         }
-      }, departmentSave.id || 0)
+      })
       .pipe(
         map(Department2DepartmentItemVM),
         tap((department) => {

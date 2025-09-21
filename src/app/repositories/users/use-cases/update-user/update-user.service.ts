@@ -26,7 +26,7 @@ export class UpdateUserService
 
   exec(entitySave: UserVM): Observable<UserItemVM | null> {
     return this.entityServices
-      .userControllerUpdate({
+      .userControllerUpdate(entitySave.id || 0, {
         status: !!entitySave.status,
         department: { id: entitySave?.departmentId || 0 },
         email: entitySave.email as any,
@@ -34,7 +34,7 @@ export class UpdateUserService
         name: entitySave.name,
         school: { id: entitySave?.schoolId || 0 },
         idDocument: entitySave.idDocument,
-      }, entitySave.id || 0)
+      })
       .pipe(
         map(User2UserItemVM),
         tap((entity) => {
