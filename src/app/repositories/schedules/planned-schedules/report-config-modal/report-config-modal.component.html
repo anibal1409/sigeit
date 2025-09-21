@@ -1,0 +1,130 @@
+<div class="modal-header">
+  <h2 mat-dialog-title>Configuración del Reporte</h2>
+</div>
+
+<mat-dialog-content class="modal-content">
+  <form [formGroup]="form">
+    <!-- Tipo de Reporte -->
+    <div class="form-section">
+      <h3>Tipo de Reporte</h3>
+      <mat-radio-group formControlName="reportType" class="radio-group">
+        <mat-radio-button
+          *ngFor="let type of reportTypes"
+          [value]="type.value"
+          class="radio-option">
+          {{ type.label }}
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <!-- Configuración por Semestre -->
+    <div *ngIf="selectedReportType === 'semester'" class="form-section">
+      <h3>Seleccionar Semestres</h3>
+      <div class="selection-controls">
+        <button type="button" mat-button (click)="onSelectAllSemesters()">
+          Seleccionar Todos
+        </button>
+        <button type="button" mat-button (click)="onDeselectAllSemesters()">
+          Deseleccionar Todos
+        </button>
+      </div>
+      <div class="checkbox-list">
+        <mat-checkbox
+          *ngFor="let semester of semesters"
+          [checked]="isSemesterSelected(semester.id)"
+          (change)="onSemesterToggle(semester.id)"
+          class="checkbox-item">
+          {{ semester.name }}
+        </mat-checkbox>
+      </div>
+      <mat-error *ngIf="form.get('selectedSemesters')?.hasError('required') && form.get('selectedSemesters')?.touched">
+        Debe seleccionar al menos un semestre
+      </mat-error>
+    </div>
+
+    <!-- Configuración por Profesor -->
+    <div *ngIf="selectedReportType === 'teacher'" class="form-section">
+      <h3>Seleccionar Profesores</h3>
+      <p class="info-text">
+        El reporte se generará para todos los profesores disponibles en los datos actuales.
+      </p>
+    </div>
+
+    <!-- Configuración por Turno -->
+    <div *ngIf="selectedReportType === 'shift'" class="form-section">
+      <h3>Seleccionar Turnos</h3>
+      <mat-radio-group formControlName="shiftType" class="radio-group">
+        <mat-radio-button
+          *ngFor="let shift of shiftTypes"
+          [value]="shift.value"
+          class="radio-option">
+          {{ shift.label }}
+        </mat-radio-button>
+      </mat-radio-group>
+      <mat-error *ngIf="form.get('shiftType')?.hasError('required') && form.get('shiftType')?.touched">
+        Debe seleccionar un tipo de turno
+      </mat-error>
+
+      <div class="info-section">
+        <mat-icon>info</mat-icon>
+        <div>
+          <p><strong>Descripción de las opciones:</strong></p>
+          <ul>
+            <li><strong>Solo Mañana:</strong> Muestra únicamente las asignaturas que inician antes de las 12:00 PM</li>
+            <li><strong>Solo Tarde:</strong> Muestra únicamente las asignaturas que inician a las 12:00 PM o después</li>
+            <li><strong>Ambos turnos:</strong> Clasificación completa con secciones separadas para mañana y tarde, más resumen general</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Selección de Campos -->
+    <div class="form-section">
+      <h3>Campos a Mostrar</h3>
+      <div class="selection-controls">
+        <button type="button" mat-button (click)="onSelectAllFields()">
+          Seleccionar Todos
+        </button>
+        <button type="button" mat-button (click)="onDeselectAllFields()">
+          Deseleccionar Todos
+        </button>
+      </div>
+      <div class="checkbox-list">
+        <mat-checkbox
+          *ngFor="let field of fieldOptions"
+          [checked]="isFieldSelected(field.field)"
+          (change)="onFieldToggle(field.field)"
+          class="checkbox-item">
+          {{ field.label }}
+        </mat-checkbox>
+      </div>
+      <mat-error *ngIf="form.get('selectedFields')?.hasError('required') && form.get('selectedFields')?.touched">
+        Debe seleccionar al menos un campo
+      </mat-error>
+    </div>
+
+    <!-- Información adicional para reporte por turno -->
+    <div *ngIf="selectedReportType === 'shift'" class="info-section">
+      <mat-icon>info</mat-icon>
+      <p>
+        <strong>Nota:</strong> La clasificación por turno se basa en la hora de inicio de cada sección.
+        Las secciones que inician antes de las 12:00 PM se consideran de mañana,
+        y las que inician a las 12:00 PM o después se consideran de tarde.
+      </p>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions class="modal-actions">
+  <button mat-button (click)="onCancel()" type="button">
+    Cancelar
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="onConfirm()"
+    [disabled]="!form.valid"
+    type="button">
+    Generar Reporte
+  </button>
+</mat-dialog-actions>

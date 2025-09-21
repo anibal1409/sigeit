@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 import moment from 'moment';
 import {
@@ -18,6 +19,7 @@ import { GlobalPeriodService } from '../../../common/global-period';
 import { DepartmentVM } from '../../departments/model';
 import { PeriodVM } from '../../periods/model';
 import { SchedulesService } from '../schedules.service';
+import { ReportConfigModalComponent, ReportConfig } from './report-config-modal';
 
 export class Group {
   level = 0;
@@ -71,6 +73,7 @@ export class PlannedSchedulesComponent {
     private stateService: StateService,
     private userStateService: UserStateService,
     private globalPeriodService: GlobalPeriodService,
+    private dialog: MatDialog,
   ) {
     this.columns = [
       {
@@ -121,7 +124,7 @@ export class PlannedSchedulesComponent {
   ngOnInit() {
     this.departmentIdUser = this.userStateService.getDepartmentId() || 0;
     this.departmentId = this.departmentIdUser;
-    
+
     this.sub$.add(
       this.schedulesService.getLoading$().subscribe((loading) => {
         this.loading = loading;
@@ -140,7 +143,7 @@ export class PlannedSchedulesComponent {
         }
       })
     );
-    
+
     this.sub$.add(
       this.groupByCtrl.valueChanges.subscribe((field) => {
         if (field) {
@@ -151,9 +154,9 @@ export class PlannedSchedulesComponent {
         }
       })
     );
-    
+
     this.loadDepartments();
-    
+
     this.sub$.add(
       this.departmentCtrl?.valueChanges.subscribe((departmentId) => {
         this.departmentId = +departmentId;
@@ -189,7 +192,7 @@ export class PlannedSchedulesComponent {
 
   private loadSchedules(): void {
     console.log(this.periodId, this.departmentId);
-    
+
     if (this.periodId && this.departmentId) {
       this.loading = true;
       this.stateService.setLoading(this.loading);
@@ -379,62 +382,319 @@ export class PlannedSchedulesComponent {
 
   downloadFile(): void {
     if (this._alldata?.length) {
-      let countRow = 2;
-
-      const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
-
-      const department = this.departments.find(department => department.id === this.departmentId);
-
-      const headers1 = [
-        `PLANIFICACION ACADEMICA ${department?.abbreviation}-${this.period.name}`,
-      ];
-      XLSX.utils.sheet_add_aoa(worksheet, [headers1], {
-        origin: 'B' + countRow,
-      });
-      countRow += 2;
-
-      const data = this.mapperData();
-      Object.keys(data).forEach((key) => {
-        const headers2 = [`${this.groupsBy[0]?.text} ${key}`];
-        XLSX.utils.sheet_add_aoa(worksheet, [headers2], {
-          origin: 'B' + countRow,
-        });
-        countRow++;
-        const headers = [
-          'Código',
-          'Asignatura',
-          'Sección',
-          'Día',
-          'Aula',
-          'Desde',
-          'Hasta',
-          'Profesor',
-          'Nombre',
-          'Capacidad',
-        ];
-        const options = {
-          origin: 'B' + countRow,
-        };
-        XLSX.utils.sheet_add_aoa(worksheet, [headers], options);
-        countRow++;
-        const options2 = {
-          origin: 'B' + countRow,
-        };
-        XLSX.utils.sheet_add_aoa(worksheet, data[key], options2);
-        countRow += data[key].length + 1;
+      const dialogRef = this.dialog.open(ReportConfigModalComponent, {
+        width: '800px',
+        maxHeight: '90vh',
+        disableClose: true,
+        data: {
+          availableFields: this.columns.map(col => ({ field: col.field, label: col.text })),
+          availableSemesters: this.getUniqueSemesters(),
+          availableTeachers: this.getUniqueTeachers()
+        }
       });
 
-      const workbook: XLSX.WorkBook = {
-        Sheets: { Horarios: worksheet },
-        SheetNames: ['Horarios'],
-      };
-      
-      XLSX.writeFile(
-        workbook,
-        `${this.period.name} planificacion academica departamento de ${department?.name
-        } ${moment().format('DD-MM-YYYY HH:mm')}.xlsx`
+      dialogRef.afterClosed().subscribe((config: ReportConfig) => {
+        if (config) {
+          this.generateReport(config);
+        }
+      });
+    }
+  }
+
+  private generateReport(config: ReportConfig): void {
+    let filteredData = this._alldata;
+
+    // Aplicar filtros según la configuración
+    filteredData = this.applyFilters(filteredData, config);
+
+    // Generar el archivo Excel
+    this.createExcelFile(filteredData, config);
+  }
+
+  private applyFilters(data: any[], config: ReportConfig): any[] {
+    let filtered = [...data];
+
+    // Filtro por semestre
+    if (config.reportType === 'semester' && config.selectedSemesters?.length) {
+      filtered = filtered.filter(item =>
+        config.selectedSemesters.includes(item.semester)
       );
     }
+
+    // Filtro por profesor
+    if (config.reportType === 'teacher') {
+      // Mantener todos los datos pero agrupar por profesor
+      // El agrupamiento se manejará en la generación del Excel
+    }
+
+    // Filtro por turno
+    if (config.reportType === 'shift') {
+      filtered = filtered.filter(item => {
+        const startTime = moment(item.start, 'HH:mm');
+        const noon = moment('12:00', 'HH:mm');
+
+        switch (config.shiftType) {
+          case 'morning':
+            return startTime.isBefore(noon);
+          case 'afternoon':
+            return startTime.isSameOrAfter(noon);
+          case 'both':
+          default:
+            return true; // Para 'both' no se aplica filtro aquí, se maneja en generateReportData
+        }
+      });
+    }
+
+    return filtered;
+  }
+
+  private createExcelFile(data: any[], config: ReportConfig): void {
+    let countRow = 2;
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
+    const department = this.departments.find(department => department.id === this.departmentId);
+
+    // Título principal
+    let title = `PLANIFICACION ACADEMICA ${department?.abbreviation}-${this.period.name}`;
+
+    if (config.reportType === 'shift') {
+      if (config.shiftType === 'morning') {
+        title += ` - TURNO MAÑANA`;
+      } else if (config.shiftType === 'afternoon') {
+        title += ` - TURNO TARDE`;
+      } else {
+        title += ` - CLASIFICACION POR TURNOS`;
+      }
+    }
+
+    const headers1 = [title];
+    XLSX.utils.sheet_add_aoa(worksheet, [headers1], {
+      origin: 'B' + countRow,
+    });
+    countRow += 2;
+
+    // Generar datos según el tipo de reporte
+    const reportData = this.generateReportData(data, config);
+
+    // Agregar datos al Excel
+    Object.keys(reportData).forEach((key) => {
+      const groupTitle = this.getGroupTitle(key, config);
+      XLSX.utils.sheet_add_aoa(worksheet, [groupTitle], {
+        origin: 'B' + countRow,
+      });
+      countRow++;
+
+      // Headers de columnas seleccionadas
+      const headers = this.getSelectedHeaders(config);
+      XLSX.utils.sheet_add_aoa(worksheet, [headers], {
+        origin: 'B' + countRow,
+      });
+      countRow++;
+
+      // Datos
+      XLSX.utils.sheet_add_aoa(worksheet, reportData[key], {
+        origin: 'B' + countRow,
+      });
+      countRow += reportData[key].length + 1;
+    });
+
+    const workbook: XLSX.WorkBook = {
+      Sheets: { Horarios: worksheet },
+      SheetNames: ['Horarios'],
+    };
+
+    const fileName = this.generateFileName(config, department);
+    XLSX.writeFile(workbook, fileName);
+  }
+
+  private generateReportData(data: any[], config: ReportConfig): any {
+    const reportData: any = {};
+
+    if (config.reportType === 'teacher') {
+      // Agrupar por profesor
+      data.forEach(schedule => {
+        const teacherKey = schedule.teacherName || 'Sin Profesor';
+        if (!reportData[teacherKey]) {
+          reportData[teacherKey] = [];
+        }
+        reportData[teacherKey].push(this.mapScheduleToRow(schedule, config));
+      });
+    } else if (config.reportType === 'semester') {
+      // Agrupar por semestre
+      data.forEach(schedule => {
+        const semesterKey = `Semestre ${schedule.semester}`;
+        if (!reportData[semesterKey]) {
+          reportData[semesterKey] = [];
+        }
+        reportData[semesterKey].push(this.mapScheduleToRow(schedule, config));
+      });
+    } else if (config.reportType === 'shift') {
+      if (config.shiftType === 'both') {
+        // Para 'both', mostrar clasificación completa con todos los datos
+        const allData = [...data];
+        const morningData: any[] = [];
+        const afternoonData: any[] = [];
+
+        allData.forEach(schedule => {
+          const startTime = moment(schedule.start, 'HH:mm');
+          const noon = moment('12:00', 'HH:mm');
+          const isMorning = startTime.isBefore(noon);
+
+          if (isMorning) {
+            morningData.push(this.mapScheduleToRow(schedule, config));
+          } else {
+            afternoonData.push(this.mapScheduleToRow(schedule, config));
+          }
+        });
+
+        // Agregar sección de mañana
+        if (morningData.length > 0) {
+          reportData[`TURNO MAÑANA (${morningData.length} asignaturas)`] = morningData;
+        }
+
+        // Agregar sección de tarde
+        if (afternoonData.length > 0) {
+          reportData[`TURNO TARDE (${afternoonData.length} asignaturas)`] = afternoonData;
+        }
+
+        // Agregar resumen general
+        reportData[`RESUMEN GENERAL (${allData.length} asignaturas total)`] = this.createSummaryRow(morningData.length, afternoonData.length, allData.length);
+      } else {
+        // Para 'morning' o 'afternoon', mostrar solo los datos filtrados
+        const shiftLabel = config.shiftType === 'morning' ? 'MAÑANA' : 'TARDE';
+        const shiftData = data.map(schedule => this.mapScheduleToRow(schedule, config));
+        reportData[`TURNO ${shiftLabel} (${shiftData.length} asignaturas)`] = shiftData;
+      }
+    }
+
+    return reportData;
+  }
+
+  private mapScheduleToRow(schedule: any, config: ReportConfig): any[] {
+    const fieldMapping: { [key: string]: string } = {
+      'code': 'Código',
+      'name': 'Asignatura',
+      'sectionName': 'Sección',
+      'dayName': 'Día',
+      'classroomName': 'Aula',
+      'start': 'Desde',
+      'end': 'Hasta',
+      'documentTeacher': 'Documento Profesor',
+      'teacherName': 'Nombre Profesor',
+      'capacity': 'Capacidad'
+    };
+
+    const row: any[] = [];
+
+    config.selectedFields.forEach(field => {
+      const label = fieldMapping[field] || field;
+      let value = schedule[field] || '';
+
+      // Aplicar lógica de duplicados para ciertos campos
+      if (['code', 'name', 'sectionName', 'documentTeacher', 'teacherName', 'capacity'].includes(field)) {
+        const shouldShow = !this.equalPrevious(schedule, field, this._alldata);
+        value = shouldShow ? value : '';
+      }
+
+      row.push(value);
+    });
+
+    return row;
+  }
+
+  private getSelectedHeaders(config: ReportConfig): string[] {
+    const fieldMapping: { [key: string]: string } = {
+      'code': 'Código',
+      'name': 'Asignatura',
+      'sectionName': 'Sección',
+      'dayName': 'Día',
+      'classroomName': 'Aula',
+      'start': 'Desde',
+      'end': 'Hasta',
+      'documentTeacher': 'Documento Profesor',
+      'teacherName': 'Nombre Profesor',
+      'capacity': 'Capacidad'
+    };
+
+    return config.selectedFields.map(field => fieldMapping[field] || field);
+  }
+
+  private getGroupTitle(key: string, config: ReportConfig): string[] {
+    let title = '';
+
+    switch (config.reportType) {
+      case 'teacher':
+        title = `PROFESOR: ${key}`;
+        break;
+      case 'semester':
+        title = key;
+        break;
+      case 'shift':
+        title = key;
+        break;
+      default:
+        title = key;
+    }
+
+    return [title];
+  }
+
+  private generateFileName(config: ReportConfig, department: any): string {
+    let fileName = `${this.period.name} planificacion academica departamento de ${department?.name}`;
+
+    if (config.reportType === 'shift') {
+      if (config.shiftType === 'morning') {
+        fileName += ` - TURNO MAÑANA`;
+      } else if (config.shiftType === 'afternoon') {
+        fileName += ` - TURNO TARDE`;
+      } else {
+        fileName += ` - CLASIFICACION POR TURNOS`;
+      }
+    }
+
+    fileName += ` ${moment().format('DD-MM-YYYY HH:mm')}.xlsx`;
+
+    return fileName;
+  }
+
+  private getUniqueSemesters(): number[] {
+    const semesters = new Set(this._alldata.map(item => item.semester));
+    return Array.from(semesters).sort();
+  }
+
+  private getUniqueTeachers(): string[] {
+    const teachers = new Set(this._alldata.map(item => item.teacherName).filter(Boolean));
+    return Array.from(teachers).sort();
+  }
+
+  private createSummaryRow(morningCount: number, afternoonCount: number, totalCount: number): any[] {
+    const summaryRow: any[] = [];
+
+    // Crear una fila de resumen con información de conteos
+    summaryRow.push(''); // Código vacío
+    summaryRow.push('RESUMEN DE ASIGNATURAS POR TURNO');
+    summaryRow.push(''); // Sección vacía
+    summaryRow.push(''); // Día vacío
+    summaryRow.push(''); // Aula vacía
+    summaryRow.push(''); // Desde vacío
+    summaryRow.push(''); // Hasta vacío
+    summaryRow.push(''); // Profesor vacío
+    summaryRow.push(''); // Nombre vacío
+    summaryRow.push(''); // Capacidad vacía
+
+    // Agregar fila con detalles de conteo
+    const detailRow: any[] = [];
+    detailRow.push(''); // Código vacío
+    detailRow.push(`Mañana: ${morningCount} | Tarde: ${afternoonCount} | Total: ${totalCount}`);
+    detailRow.push(''); // Sección vacía
+    detailRow.push(''); // Día vacío
+    detailRow.push(''); // Aula vacía
+    detailRow.push(''); // Desde vacío
+    detailRow.push(''); // Hasta vacío
+    detailRow.push(''); // Profesor vacío
+    detailRow.push(''); // Nombre vacío
+    detailRow.push(''); // Capacidad vacía
+
+    return [summaryRow, detailRow];
   }
 
   displayFn(item: DepartmentVM | any): string {

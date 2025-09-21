@@ -15,6 +15,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatRadioModule } from '@angular/material/radio';
 
 import { SelectExModule } from '../../common/select-ex';
 import { TableModule } from '../../common/table';
@@ -36,6 +38,9 @@ import { ScheduleMemoryService } from './memory';
 import {
   PlannedSchedulesComponent,
 } from './planned-schedules/planned-schedules.component';
+import {
+  ReportConfigModalComponent,
+} from './planned-schedules/report-config-modal/report-config-modal.component';
 import {
   ScheduleDetailsComponent,
 } from './schedule-details/schedule-details.component';
@@ -64,7 +69,8 @@ import {
     ScheduleDetailsComponent,
     ClassroomsSchedulesComponent,
     PlannedSchedulesComponent,
-    AcademicChargeTeacherComponent
+    AcademicChargeTeacherComponent,
+    ReportConfigModalComponent
   ],
   imports: [
     CommonModule,
@@ -84,6 +90,8 @@ import {
     MatTableModule,
     MatTabsModule,
     MatTooltipModule,
+    MatDialogModule,
+    MatRadioModule,
     SelectExModule,
   ],
   providers: [
