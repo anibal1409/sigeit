@@ -96,6 +96,9 @@ export class ReportConfigModalComponent implements OnInit {
     if (reportType === 'semester') {
       semesterControl?.setValidators([Validators.required]);
     } else if (reportType === 'teacher') {
+      // Para reporte por profesor, inicializar con todos los profesores disponibles
+      const allTeachers = this.data?.availableTeachers?.map((t: any) => t.document) || [];
+      this.form.patchValue({ selectedTeachers: allTeachers });
       teacherControl?.setValidators([Validators.required]);
     } else if (reportType === 'shift') {
       shiftControl?.setValidators([Validators.required]);

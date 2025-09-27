@@ -12,7 +12,7 @@
                 formControlName="careerId"
                 placeholder="Seleccione un departamento"
               >
-                
+
               <mat-error *ngIf="form.controls['careerId'].hasError('required')"
               >Campo requerido</mat-error
               >
@@ -31,7 +31,7 @@
                 formControlName="semesterId"
                 placeholder="Seleccione un semestre"
               >
-                
+
               <mat-error *ngIf="form.controls['semesterId'].hasError('required')"
               >Campo requerido</mat-error
               >
@@ -50,7 +50,7 @@
                 formControlName="subjectId"
                 placeholder="Seleccione una asignatura"
               >
-                
+
               <mat-error *ngIf="form.controls['subjectId'].hasError('required')"
               >Campo requerido</mat-error
               >
@@ -63,108 +63,204 @@
   </mat-card>
 </div>
 <div class="d-flex flex-wrap content-sections">
-  <app-card-section-schedules 
-    *ngFor="let section of sections"
+  <app-card-section-schedules
+    *ngFor="let section of sections; trackBy: trackBySection"
     [section]="section"
     (click)="addSection(section)"
   >
   </app-card-section-schedules>
 </div>
 <ng-container *ngIf="sectionsSelected?.length">
-  <div class="d-flex justify-content-end content-info align-items-center">
-    <button 
-      *ngIf="isInscription; else Schedules"
-      mat-raised-button 
-      color="primary" 
-      (click)="confirmClose()"
-      [disabled]="loading || disabledSubmit"
-    >
-      Cerrar inscripción
-    </button>
-    <ng-template #Schedules>
-      <mat-form-field class="field-name">
-        <mat-label>Nombre</mat-label>
-        <input type="text" matInput [formControl]="nameCtrl" />
-        <mat-error *ngIf="nameCtrl.hasError('required')"
-          >Campo requerido</mat-error
-        >
-      </mat-form-field>
-      <button 
-        mat-raised-button 
-        color="primary" 
-        (click)="saveShedule()"
-        [disabled]="loading"
-      >
-        Guardar horario
-      </button>
-    </ng-template>
-    
-    
-    <mat-card>
-      <mat-card-header class="p-3">
-        <mat-card-title-group>
-          <mat-card-subtitle>
-            Asignaturas: {{subjectCounter}}
-          </mat-card-subtitle>
-        </mat-card-title-group>
-      </mat-card-header>
-    </mat-card>
-    <mat-card [ngClass]="{'danger': credits > 18}">
-      <mat-card-header class="p-3">
-        <mat-card-title-group>
-          <mat-card-subtitle>
-            Creditos: {{credits}}
-          </mat-card-subtitle>
-        </mat-card-title-group>
-      </mat-card-header>
-    </mat-card>
-  </div>
-  <div class="d-flex content-body">
-    <div  class="d-flex flex-column content-subjects align-items-center">
-      <span class="font-weight-bold text-center p-2">
-        Lista de Asignaturas 
-      </span>
-      <app-card-subject-schedules
-        *ngFor="let section of sectionsSelected"
-        [section]="section"
-        [ngClass]="{'danger': !!section?.collapse?.length}"
-        [inscription]="isInscription"
-        (deleteSection)="addSection(section)"
-        (validate)="createInscription(section)"
-        (canceled)="deleteInscription(section)"
-      >
+  <!-- Sección de información optimizada -->
+  <div class="info-section">
+    <div class="info-cards">
+      <div class="info-card subjects-info">
+        <mat-icon class="info-icon">school</mat-icon>
+        <div class="info-content">
+          <span class="info-label">Asignaturas</span>
+          <span class="info-value">{{subjectCounter}}</span>
+        </div>
+      </div>
 
-      </app-card-subject-schedules>
+      <div class="info-card credits-info" [ngClass]="{'danger': credits > 18}">
+        <mat-icon class="info-icon">credit_card</mat-icon>
+        <div class="info-content">
+          <span class="info-label">Créditos</span>
+          <span class="info-value">{{credits}}</span>
+        </div>
+      </div>
     </div>
-    <div class="w-100 mat-container">
-      <div class="schedules" *ngIf="dataSource.length">
-        <mat-card class="table-schedule">
-          <mat-card-content class="mat-card-content">
-            <mat-table [dataSource]="dataSource" class="mat-table">
-              <ng-container matColumnDef="hora" >
-                <mat-header-cell *matHeaderCellDef >Hora/Dia</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{ row.hora }}</mat-cell>
-              </ng-container>
-      
-              <ng-container *ngFor="let day of days" [matColumnDef]="day.name" >
-                <mat-header-cell *matHeaderCellDef>{{ day.name }}</mat-header-cell>
-                <mat-cell *matCellDef="let row">
-                  <span [ngClass]="{'c-pointer': row[day.name]?.text}" (click)="showScheduleDetails(row[day.name]?.schedules || []) ">
-                    {{ row[day.name]?.text || "" }}
-                  </span>
-                </mat-cell>
-              </ng-container>
-      
-              <mat-header-row
-                *matHeaderRowDef="displayedColumns"
-              ></mat-header-row>
-              <mat-row *matRowDef="let row; columns: displayedColumns">
-              </mat-row>
-            </mat-table>
+
+    <div class="action-section">
+      <button
+        *ngIf="isInscription; else Schedules"
+        mat-raised-button
+        color="primary"
+        (click)="confirmClose()"
+        [disabled]="loading || disabledSubmit"
+        class="action-btn"
+      >
+        <mat-icon>check_circle</mat-icon>
+        Cerrar inscripción
+      </button>
+      <ng-template #Schedules>
+        <div class="save-section">
+          <mat-form-field class="name-field">
+            <mat-label>Nombre del horario</mat-label>
+            <input type="text" matInput [formControl]="nameCtrl" placeholder="Ej: Mi horario 2024" />
+            <mat-error *ngIf="nameCtrl.hasError('required')">Campo requerido</mat-error>
+          </mat-form-field>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="saveShedule()"
+            [disabled]="loading || !nameCtrl.value"
+            class="save-btn"
+          >
+            <mat-icon>save</mat-icon>
+            Guardar
+          </button>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  <div class="content-body">
+    <!-- Lista de Asignaturas - Mejorada -->
+    <div class="subjects-panel">
+      <div class="subjects-header">
+        <div class="subjects-header-left">
+          <mat-icon class="subjects-icon">school</mat-icon>
+          <h3 class="subjects-title">Asignaturas Seleccionadas</h3>
+        </div>
+        <div class="subjects-header-right">
+          <span class="subjects-count">{{ sectionsSelected.length }}</span>
+          <button
+            *ngIf="sectionsSelected.length > 0"
+            mat-icon-button
+            class="clear-all-btn"
+            (click)="clearAllSelectedSubjects()"
+            matTooltip="Borrar todas las asignaturas"
+            matTooltipPosition="left"
+          >
+            <mat-icon>clear_all</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <!-- Indicador de conflictos -->
+      <div *ngIf="hasConflicts" class="conflict-indicator">
+        <mat-icon class="conflict-icon">warning</mat-icon>
+        <span class="conflict-text">Existen choques de horarios</span>
+      </div>
+
+      <div class="subjects-list">
+        <app-card-subject-schedules
+          *ngFor="let section of sectionsSelected; trackBy: trackBySection"
+          [section]="section"
+          [ngClass]="{'danger': !!section?.collapse?.length}"
+          [inscription]="isInscription"
+          (deleteSection)="addSection(section)"
+          (validate)="createInscription(section)"
+          (canceled)="deleteInscription(section)"
+          class="subject-card"
+        >
+        </app-card-subject-schedules>
+      </div>
+    </div>
+
+    <!-- Horario - Mejorado -->
+    <div class="schedule-panel">
+      <div class="schedule-header">
+        <mat-icon class="schedule-icon">schedule</mat-icon>
+        <h3 class="schedule-title">Horario de Clases</h3>
+      </div>
+
+      <div class="schedules" *ngIf="unifiedScheduleData.length">
+        <mat-card class="table-schedule unified-schedule">
+        <mat-card-content class="mat-card-content">
+          <!-- Alerta de conflictos en la tabla -->
+          <div *ngIf="hasConflicts" class="schedule-conflict-alert">
+            <mat-icon class="alert-icon">warning</mat-icon>
+            <div class="alert-content">
+              <h4 class="alert-title">¡Atención! Choques de horarios detectados</h4>
+              <p class="alert-message">Las asignaturas seleccionadas tienen horarios que se superponen. Revisa los bloques resaltados en rojo.</p>
+            </div>
+          </div>
+
+          <div class="schedule-grid">
+            <!-- Header -->
+            <div class="grid-header time-header">
+              <mat-icon class="header-icon">access_time</mat-icon>
+              Hora
+            </div>
+            <div *ngFor="let day of usedDays; trackBy: trackByDay" class="grid-header day-header">
+              <mat-icon class="day-icon">event</mat-icon>
+              {{ day.name }}
+            </div>
+
+            <!-- Grid Rows -->
+            <div *ngFor="let row of unifiedScheduleData; trackBy: trackByTimeSlot; let i = index" class="grid-row">
+              <!-- Time Cell -->
+              <div class="grid-cell time-cell">
+                <div class="time-display">
+                  <span class="time-start">{{ row.hora }}</span>
+                  <span class="time-end">{{ getEndTimeForSlot(row) }}</span>
+                </div>
+              </div>
+
+              <!-- Day Cells -->
+              <div *ngFor="let day of usedDays; trackBy: trackByDay" class="grid-cell schedule-cell">
+                <!-- Mostrar la clase solo en el primer slot de tiempo -->
+                <div
+                  *ngIf="row[day.name] && isFirstTimeSlotOfSchedule(row, day.name, i)"
+                  class="schedule-item"
+                  [ngClass]="{
+                    'c-pointer': row[day.name]?.text,
+                    'unified-block': row[day.name]?.isUnified,
+                    'single-block': !row[day.name]?.isUnified,
+                    'multiple-schedules': row[day.name]?.text === 'Varias',
+                    'conflict-block': hasScheduleConflict(day.name, row[day.name]?.timeSlot || row[day.name]?.timeRange)
+                  }"
+                  [style.height]="(70 * (row[day.name]?.duration || 1)) + 'px'"
+                  [style.position]="'relative'"
+                  [style.z-index]="'10'"
+                  (click)="showScheduleDetails(row[day.name]?.allSchedules || row[day.name]?.schedules || [])"
+                >
+                  <!-- Indicador de conflicto -->
+                  <div *ngIf="hasScheduleConflict(day.name, row[day.name]?.timeSlot || row[day.name]?.timeRange)" class="conflict-badge">
+                    <mat-icon class="conflict-icon-small">warning</mat-icon>
+                  </div>
+
+                  <div class="schedule-content">
+                    <div class="schedule-header-item">
+                      <span class="schedule-text">{{ row[day.name]?.text }}</span>
+                      <div class="schedule-actions">
+                        <mat-icon *ngIf="row[day.name]?.text === 'Varias'" class="expand-icon">expand_more</mat-icon>
+                        <mat-icon *ngIf="hasScheduleConflict(day.name, row[day.name]?.timeSlot || row[day.name]?.timeRange)" class="conflict-icon-inline">warning</mat-icon>
+                      </div>
+                    </div>
+                    <div *ngIf="row[day.name]?.scheduleInfo" class="schedule-duration">
+                      <mat-icon class="duration-icon">schedule</mat-icon>
+                      <span class="duration-text">{{ row[day.name]?.scheduleInfo?.start }} - {{ row[day.name]?.scheduleInfo?.end }}</span>
+                    </div>
+                    <div *ngIf="hasScheduleConflict(day.name, row[day.name]?.timeSlot || row[day.name]?.timeRange)" class="conflict-message">
+                      <span class="conflict-text-small">Choque de horarios</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           </mat-card-content>
         </mat-card>
       </div>
-      <div class="mat-container empty-table" *ngIf="!dataSource.length">
+
+      <div class="mat-container empty-table" *ngIf="!unifiedScheduleData.length">
+        <div class="empty-state">
+          <mat-icon class="empty-icon">schedule</mat-icon>
+          <p class="empty-text">No hay horarios seleccionados</p>
+          <p class="empty-subtext">Selecciona algunas secciones para ver el horario</p>
+        </div>
       </div>
     </div>
   </div>
@@ -175,7 +271,7 @@
     Horarios guardados
   </h5>
   <div class="d-flex content-info align-items-center">
-    <mat-card *ngFor="let schedule of savedSchedules">
+    <mat-card *ngFor="let schedule of savedSchedules; trackBy: trackBySavedSchedule">
       <mat-card-header>
         <mat-card-title-group>
           <mat-card-subtitle>
@@ -194,6 +290,3 @@
     </mat-card>
   </div>
 </div>
-
-
-

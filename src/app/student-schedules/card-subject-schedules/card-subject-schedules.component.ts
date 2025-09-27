@@ -40,4 +40,12 @@ export class CardSubjectSchedulesComponent {
     this.canceled.emit(this.section);
   }
 
+  getConflictConflictingWith(conflict: any): any[] {
+    return conflict['conflictingWith'] || [];
+  }
+
+  getConflictTimeSlot(conflict: any): any {
+    return conflict['timeSlot'] || {};
+  }
+
 }

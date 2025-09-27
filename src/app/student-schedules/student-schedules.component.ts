@@ -1,7 +1,10 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   OnDestroy,
   OnInit,
+  TrackByFunction,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -42,7 +45,8 @@ import { StudentSchedulesService } from './student-schedules.service';
 @Component({
   selector: 'app-student-schedules',
   templateUrl: './student-schedules.component.html',
-  styleUrls: ['./student-schedules.component.scss']
+  styleUrls: ['./student-schedules.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StudentSchedulesComponent implements OnInit, OnDestroy {
   form!: FormGroup;
@@ -79,6 +83,21 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
   nameCtrl = new FormControl();
   savedSchedules: Array<SavedSchedule> = [];
   savedScheduleEdit!: SavedSchedule;
+
+  // Nuevas propiedades para optimización
+  usedDays: Array<DayVM> = [];
+  usedTimeSlots: Array<{start: string, end: string, index: number}> = [];
+  optimizedDataSource: any[] = [];
+  optimizedDisplayedColumns: string[] = ['hora'];
+
+  // Propiedades para unificación de bloques
+  unifiedScheduleData: any[] = [];
+  scheduleBlocks: Map<string, any[]> = new Map();
+
+  // Propiedades para detección de conflictos
+  scheduleConflicts: Map<string, any[]> = new Map();
+  hasConflicts = false;
+
   private sub$ = new Subscription();
 
   constructor(
@@ -88,6 +107,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
     private studentSchedulesService: StudentSchedulesService,
     private userStateService: UserStateService,
     private router: Router,
+    private cdr: ChangeDetectorRef,
   ) {
     this.loading = true;
   }
@@ -105,6 +125,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
       this.studentSchedulesService.getLoading$().subscribe((loading) => {
         this.loading = loading;
         this.stateService.setLoading(loading);
+        this.cdr.markForCheck();
       })
     );
 
@@ -138,6 +159,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
                 );
                 this.sectionsSelected = [...this.subjectsSelected.values()];
                 this.loadSchedules();
+                this.cdr.markForCheck();
               }
             }
           }
@@ -167,6 +189,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
             this.loadDays();
             this.loadCareers();
             this.validateInscription();
+            this.cdr.markForCheck();
           }
         }
       )
@@ -183,6 +206,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
             days.forEach((day) => {
               this.displayedColumns.push(day.name);
             });
+            this.cdr.markForCheck();
           }
         )
       );
@@ -197,6 +221,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
           if (this.carrerId) {
             this.loadSubjects();
           }
+          this.cdr.markForCheck();
         }
       )
     );
@@ -212,6 +237,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
         }).subscribe(
           (subjects) => {
             this.subjects = subjects;
+            this.cdr.markForCheck();
           }
         )
       );
@@ -229,6 +255,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
           (sections) => {
             console.log(sections);
             this.sections = sections;
+            this.cdr.markForCheck();
           }
         )
       );
@@ -294,15 +321,36 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
   }
 
   showScheduleDetails(schedules: Array<ScheduleItemVM>): void {
-    const dialogRef = this.matDialog.open(ScheduleDetailsComponent, {
-      data: {
-        schedules: schedules,
-      },
-    });
+    // Si hay schedules, obtener todos los horarios de la misma sección
+    if (schedules && schedules.length > 0) {
+      const firstSchedule = schedules[0];
+      const sectionId = firstSchedule.section?.id;
+      const subjectId = firstSchedule.section?.subject?.id;
 
-    dialogRef.componentInstance.closed.subscribe((res) => {
-      dialogRef.close();
-    });
+      // Buscar todos los horarios de esta sección en todos los días
+      const allSectionSchedules: ScheduleItemVM[] = [];
+
+      this.sectionsSelected.forEach(section => {
+        if (section.id === sectionId && section.subject?.id === subjectId) {
+          section.schedules?.forEach(schedule => {
+            allSectionSchedules.push(schedule);
+          });
+        }
+      });
+
+      console.log('All schedules for section:', allSectionSchedules);
+      console.log('Number of schedules for section:', allSectionSchedules.length);
+
+      const dialogRef = this.matDialog.open(ScheduleDetailsComponent, {
+        data: {
+          schedules: allSectionSchedules,
+        },
+      });
+
+      dialogRef.componentInstance.closed.subscribe((res) => {
+        dialogRef.close();
+      });
+    }
   }
 
   addSection(section: SectionItemVM): void {
@@ -326,6 +374,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
 
     this.sectionsSelected = [...this.subjectsSelected.values()];
     this.loadSchedules();
+    this.cdr.markForCheck();
   }
 
   private clearSchedule(): void {
@@ -335,6 +384,9 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
       })
     );
     this.dataSource = [];
+    this.optimizedDataSource = [];
+    this.usedDays = [];
+    this.usedTimeSlots = [];
   }
 
   private loadSchedules(): void {
@@ -346,6 +398,11 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
     );
     this.clearCollapseSections();
 
+
+    // Primero, procesar todos los horarios para identificar días y horarios utilizados
+    const usedDaysSet = new Set<number>();
+    const usedTimeSlotsSet = new Set<number>();
+
     schedules.forEach((schedule) => {
       if (!schedule) {
         return;
@@ -356,19 +413,91 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
       const startIndex = this.startIntervals.indexOf(schedule.start);
       const endIndex = this.endIntervals.indexOf(schedule.end);
 
+
+      if (dayIndex >= 0) {
+        usedDaysSet.add(dayIndex);
+      }
+
+      // Si no encontramos los índices exactos, buscar el rango más cercano
+      if (startIndex === -1 || endIndex === -1) {
+        return;
+      }
+
+      // Agregar todos los time slots utilizados por este horario
       for (let i = startIndex; i <= endIndex; i++) {
-        this.dataSchedule[i][dayIndex].schedules.push(schedule);
-        if (this.dataSchedule[i][dayIndex]?.text) {
-          this.dataSchedule[i][dayIndex].text = 'Varias';
-          this.collapseSections(this.dataSchedule[i][dayIndex].schedules);
+        if (i >= 0) {
+          usedTimeSlotsSet.add(i);
+        }
+      }
+
+      // Solo colocar el schedule en la celda de inicio, no en todas las celdas del rango
+      // Esto evita la duplicación y permite que el CSS maneje la extensión visual
+      if (startIndex >= 0 && dayIndex >= 0) {
+        // Verificar si el schedule ya existe en este slot para evitar duplicados
+        const existingSchedule = this.dataSchedule[startIndex][dayIndex].schedules.find(
+          (existing: any) => existing.id === schedule.id
+        );
+
+        if (!existingSchedule) {
+          this.dataSchedule[startIndex][dayIndex].schedules.push(schedule);
+        }
+
+        // Calcular la duración en número de intervalos para el CSS
+        const durationInSlots = endIndex - startIndex + 1;
+
+        if (this.dataSchedule[startIndex][dayIndex]?.text) {
+          this.dataSchedule[startIndex][dayIndex].text = 'Varias';
+          this.collapseSections(this.dataSchedule[startIndex][dayIndex].schedules);
         } else {
-          this.dataSchedule[i][
-            dayIndex
-          ].text = `${schedule.section?.name} - ${schedule.section?.subject?.name}`;
+          this.dataSchedule[startIndex][dayIndex].text = `${schedule.section?.name} - ${schedule.section?.subject?.name}`;
+          this.dataSchedule[startIndex][dayIndex].duration = durationInSlots;
+          this.dataSchedule[startIndex][dayIndex].scheduleInfo = {
+            start: schedule.start,
+            end: schedule.end,
+            duration: durationInSlots
+          };
         }
       }
     });
 
+    // Crear arrays optimizados con solo los días y horarios utilizados
+    this.usedDays = Array.from(usedDaysSet)
+      .sort((a, b) => a - b)
+      .map(index => this.days[index]);
+
+    this.usedTimeSlots = Array.from(usedTimeSlotsSet)
+      .sort((a, b) => a - b)
+      .map(index => ({
+        start: this.startIntervals[index],
+        end: this.endIntervals[index],
+        index: index
+      }));
+
+    // Actualizar columnas mostradas
+    this.optimizedDisplayedColumns = ['hora', ...this.usedDays.map(day => day.name)];
+
+    // Establecer las variables CSS después del renderizado
+    setTimeout(() => {
+      this.setDayCount();
+      this.setTimeSlotsCount();
+    }, 0);
+
+    // Crear dataSource optimizado
+    this.optimizedDataSource = this.usedTimeSlots.map(
+      (timeSlot) => {
+        const row: any = {
+          hora: timeSlot.start,
+          originalIndex: timeSlot.index
+        };
+        this.usedDays.forEach((day, dayIndex) => {
+          const originalDayIndex = this.days.findIndex(d => d.id === day.id);
+          row[day.name] = this.dataSchedule[timeSlot.index][originalDayIndex];
+        });
+        return row;
+      }
+    );
+
+    // Mantener dataSource original para compatibilidad
     this.dataSource = this.startIntervals.map(
       (hora, index) => {
         const row: any = { hora };
@@ -378,8 +507,17 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
         return row;
       }
     );
+
+    // Detectar conflictos de horarios
+    this.detectScheduleConflicts();
+
+    // Unificar bloques consecutivos
+    this.unifyConsecutiveBlocks();
+
+
     this.validateLastSection();
     this.validateSubmit();
+    this.cdr.markForCheck();
   }
 
   private clearCollapseSections(): void {
@@ -573,5 +711,462 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
   removeSavedSchedule(schedule: SavedSchedule): void {
     this.studentSchedulesService.removeSavedSchedule(this.carrerId, this.userStateService.getUserId(), schedule.id);
     this.loadSavedSchedules();
+  }
+
+  // Método para borrar todas las asignaturas seleccionadas
+  clearAllSelectedSubjects(): void {
+    // Limpiar todas las asignaturas seleccionadas
+    this.subjectsSelected.clear();
+    this.sectionsSelected = [];
+
+    // Limpiar el formulario si es necesario
+    this.form.patchValue({
+      subjectId: null,
+      sectionId: null,
+    });
+
+    // Limpiar el horario
+    this.clearSchedule();
+
+    // Resetear contadores
+    this.credits = 0;
+    this.subjectCounter = 0;
+    this.hasConflicts = false;
+
+    // Actualizar la vista
+    this.cdr.markForCheck();
+  }
+
+  // Funciones trackBy para optimizar el rendimiento
+  trackBySection: TrackByFunction<SectionItemVM> = (index: number, section: SectionItemVM) => section.id;
+
+  trackByDay: TrackByFunction<DayVM> = (index: number, day: DayVM) => day.id;
+
+  trackByTimeSlot: TrackByFunction<any> = (index: number, timeSlot: any) => timeSlot.originalIndex || index;
+
+  trackBySavedSchedule: TrackByFunction<SavedSchedule> = (index: number, schedule: SavedSchedule) => schedule.id;
+
+  trackByCareer: TrackByFunction<CareerVM> = (index: number, career: CareerVM) => career.id;
+
+  trackBySubject: TrackByFunction<SubjectVM> = (index: number, subject: SubjectVM) => subject.id;
+
+  trackBySemester: TrackByFunction<SemesterVM> = (index: number, semester: SemesterVM) => semester.id;
+
+  // Método para establecer el número de días en el CSS
+  private setDayCount(): void {
+    const scheduleGrid = document.querySelector('.schedule-grid');
+    if (scheduleGrid) {
+      (scheduleGrid as HTMLElement).style.setProperty('--day-count', this.usedDays.length.toString());
+    }
+  }
+
+  // Método para establecer el número de slots de tiempo en el CSS
+  private setTimeSlotsCount(): void {
+    const scheduleGrid = document.querySelector('.schedule-grid');
+    if (scheduleGrid) {
+      (scheduleGrid as HTMLElement).style.setProperty('--time-slots-count', this.usedTimeSlots.length.toString());
+    }
+  }
+
+  // Método para verificar si es el primer slot de tiempo de un horario
+  isFirstTimeSlotOfSchedule(row: any, dayName: string, currentIndex: number): boolean {
+    if (!row[dayName]) {
+      return false;
+    }
+
+    // Si no tiene duración, mostrar siempre
+    if (!row[dayName].duration || row[dayName].duration === 1) {
+      return true;
+    }
+
+    // Verificar si es el primer slot de este horario
+    // Buscar hacia atrás para ver si hay otro slot con el mismo horario
+    for (let i = currentIndex - 1; i >= 0; i--) {
+      const previousRow = this.unifiedScheduleData[i];
+      if (previousRow && previousRow[dayName] &&
+          previousRow[dayName].schedules && row[dayName].schedules &&
+          previousRow[dayName].schedules.length > 0 && row[dayName].schedules.length > 0) {
+
+        // Comparar si es el mismo horario (mismo ID de schedule)
+        const currentScheduleId = row[dayName].schedules[0].id;
+        const previousScheduleId = previousRow[dayName].schedules[0].id;
+
+        if (currentScheduleId === previousScheduleId) {
+          return false; // No es el primer slot
+        }
+      }
+    }
+
+    return true; // Es el primer slot
+  }
+
+  // Método para obtener la hora de fin de un slot de tiempo
+  getEndTimeForSlot(row: any): string {
+    const startIndex = this.startIntervals.indexOf(row.hora);
+    if (startIndex >= 0 && startIndex < this.endIntervals.length) {
+      return this.endIntervals[startIndex];
+    }
+    return '';
+  }
+
+  // Método para obtener la hora de fin de un bloque unificado
+  getEndTime(row: any): string {
+    if (!row.isUnified) return '';
+
+    // Buscar el primer día que tenga datos para obtener la hora de fin
+    for (const day of this.usedDays) {
+      if (row[day.name]?.timeRange?.end) {
+        return row[day.name].timeRange.end;
+      }
+    }
+    return '';
+  }
+
+  // Método para detectar conflictos de horarios
+  private detectScheduleConflicts(): void {
+    this.scheduleConflicts.clear();
+    this.hasConflicts = false;
+
+    // Solo detectar conflictos si hay más de una asignatura seleccionada
+    if (this.sectionsSelected.length < 2) {
+      return;
+    }
+
+    // Detectar conflictos en los horarios originales antes de la unificación
+    this.usedDays.forEach(day => {
+      const dayConflicts: any[] = [];
+      const daySchedules: any[] = [];
+
+      // Recopilar todos los horarios del día desde el dataSchedule original
+      this.startIntervals.forEach((startTime, index) => {
+        const originalDayIndex = this.days.findIndex(d => d.id === day.id);
+        const scheduleData = this.dataSchedule[index][originalDayIndex];
+
+        if (scheduleData?.text && scheduleData.text !== 'Varias' && scheduleData.schedules?.length > 0) {
+          // Agregar cada horario individual con información de la sección
+          scheduleData.schedules.forEach((schedule: any) => {
+            // Verificar que no se haya agregado ya este horario específico
+            const alreadyExists = daySchedules.some(existing =>
+              existing.sectionId === schedule.section?.id &&
+              existing.subjectId === schedule.section?.subject?.id &&
+              existing.timeSlot.start === schedule.start &&
+              existing.timeSlot.end === schedule.end
+            );
+
+            if (!alreadyExists) {
+              const scheduleInfo = {
+                ...scheduleData,
+                schedule: schedule,
+                timeSlot: {
+                  start: schedule.start,
+                  end: schedule.end,
+                  index: index
+                },
+                day: day,
+                originalIndex: index,
+                sectionId: schedule.section?.id,
+                subjectId: schedule.section?.subject?.id
+              };
+              daySchedules.push(scheduleInfo);
+            }
+          });
+        }
+      });
+
+      // Ordenar por tiempo de inicio
+      daySchedules.sort((a, b) => this.timeToMinutes(a.timeSlot.start) - this.timeToMinutes(b.timeSlot.start));
+
+
+      // Detectar conflictos solo entre asignaturas/secciones diferentes
+      for (let i = 0; i < daySchedules.length; i++) {
+        for (let j = i + 1; j < daySchedules.length; j++) {
+          const schedule1 = daySchedules[i];
+          const schedule2 = daySchedules[j];
+
+          // Verificar que sean asignaturas/secciones diferentes
+          const isDifferentSubject = schedule1.subjectId !== schedule2.subjectId;
+          const isDifferentSection = schedule1.sectionId !== schedule2.sectionId;
+
+          // Solo considerar conflicto si son asignaturas/secciones diferentes Y hay solapamiento
+          if ((isDifferentSubject || isDifferentSection) && this.schedulesOverlap(schedule1, schedule2)) {
+            const conflict = {
+              timeSlot: schedule1.timeSlot,
+              conflictingSchedules: [schedule1, schedule2],
+              conflictType: 'time_overlap'
+            };
+            dayConflicts.push(conflict);
+            this.hasConflicts = true;
+          }
+        }
+      }
+
+      if (dayConflicts.length > 0) {
+        this.scheduleConflicts.set(day.name, dayConflicts);
+      }
+    });
+
+    // Actualizar las secciones con información de conflictos
+    this.updateSectionsWithConflicts();
+  }
+
+  // Método para actualizar las secciones con información de conflictos
+  private updateSectionsWithConflicts(): void {
+
+    // Limpiar conflictos previos
+    this.sectionsSelected.forEach(section => {
+      section.collapse = [];
+    });
+
+    // Procesar cada conflicto y actualizar las secciones afectadas
+    this.scheduleConflicts.forEach((dayConflicts, dayName) => {
+      dayConflicts.forEach(conflict => {
+        conflict.conflictingSchedules.forEach((conflictingSchedule: any) => {
+          const sectionId = conflictingSchedule.sectionId;
+          const section = this.sectionsSelected.find(s => s.id === sectionId);
+
+          if (section) {
+            // Agregar información del conflicto
+            const conflictInfo = {
+              ...conflictingSchedule,
+              conflictType: conflict.conflictType,
+              conflictingWith: conflict.conflictingSchedules
+                .filter((cs: any) => cs.sectionId !== sectionId)
+                .map((cs: any) => ({
+                  subjectCode: cs.schedule?.section?.subject?.code,
+                  subjectName: cs.schedule?.section?.subject?.name,
+                  sectionName: cs.schedule?.section?.name,
+                  timeSlot: cs.timeSlot
+                }))
+            };
+
+            if (!section.collapse) {
+              section.collapse = [];
+            }
+            section.collapse.push(conflictInfo);
+          }
+        });
+      });
+    });
+
+    // Actualizar subjectsSelected con las secciones modificadas
+    this.subjectsSelected.clear();
+    this.sectionsSelected.forEach(section => {
+      const key = section.subject?.id as number;
+      this.subjectsSelected.set(key, section);
+    });
+  }
+
+  // Método para verificar si dos horarios se solapan
+  private schedulesOverlap(schedule1: any, schedule2: any): boolean {
+    const start1 = this.timeToMinutes(schedule1.timeSlot.start);
+    const end1 = this.timeToMinutes(schedule1.timeSlot.end);
+    const start2 = this.timeToMinutes(schedule2.timeSlot.start);
+    const end2 = this.timeToMinutes(schedule2.timeSlot.end);
+
+    // Verificar solapamiento: dos horarios se solapan si uno empieza antes de que termine el otro
+    return start1 < end2 && start2 < end1;
+  }
+
+  // Método para convertir tiempo a minutos
+  private timeToMinutes(time: string): number {
+    const [hours, minutes] = time.split(':').map(Number);
+    return hours * 60 + minutes;
+  }
+
+  // Método para verificar si un horario tiene conflictos
+  hasScheduleConflict(day: string, timeSlot: any): boolean {
+    if (!timeSlot) return false;
+
+    const dayConflicts = this.scheduleConflicts.get(day) || [];
+
+    // Verificar si el timeSlot coincide con algún conflicto
+    return dayConflicts.some(conflict => {
+      const conflictStart = this.timeToMinutes(conflict.timeSlot.start);
+      const conflictEnd = this.timeToMinutes(conflict.timeSlot.end);
+      const slotStart = this.timeToMinutes(timeSlot.start);
+      const slotEnd = this.timeToMinutes(timeSlot.end);
+
+      // Verificar si hay solapamiento
+      return (slotStart < conflictEnd && slotEnd > conflictStart);
+    });
+  }
+
+  // Método para obtener los conflictos de un horario específico
+  getScheduleConflicts(day: string, timeSlot: any): any[] {
+    const dayConflicts = this.scheduleConflicts.get(day) || [];
+    return dayConflicts.filter(conflict =>
+      conflict.timeSlot.start === timeSlot.start &&
+      conflict.timeSlot.end === timeSlot.end
+    );
+  }
+
+  // Método para unificar bloques consecutivos de la misma asignatura
+  private unifyConsecutiveBlocks(): void {
+    this.scheduleBlocks.clear();
+    this.unifiedScheduleData = [];
+
+
+    // Agrupar horarios por día y asignatura
+    this.usedDays.forEach(day => {
+      const daySchedules: any[] = [];
+      const originalDayIndex = this.days.findIndex(d => d.id === day.id);
+
+      // Recorrer todos los slots de tiempo para encontrar horarios
+      this.startIntervals.forEach((startTime, index) => {
+        const scheduleData = this.dataSchedule[index][originalDayIndex];
+
+
+        if (scheduleData?.text && scheduleData.text !== 'Varias' && scheduleData.schedules?.length > 0) {
+          daySchedules.push({
+            ...scheduleData,
+            timeSlot: {
+              start: startTime,
+              end: this.endIntervals[index],
+              index: index
+            },
+            day: day,
+            originalIndex: index
+          });
+        }
+      });
+
+      // Ordenar por índice de tiempo
+      daySchedules.sort((a, b) => a.originalIndex - b.originalIndex);
+
+
+      // Unificar bloques consecutivos
+      let currentBlock: any[] = [];
+      let lastSubject = '';
+
+      daySchedules.forEach((schedule, index) => {
+        const subjectKey = `${schedule.schedules[0]?.section?.subject?.id}-${schedule.schedules[0]?.section?.id}`;
+
+        if (subjectKey === lastSubject && currentBlock.length > 0) {
+          // Es la misma asignatura, agregar al bloque actual
+          currentBlock.push(schedule);
+        } else {
+          // Nueva asignatura o primera vez
+          if (currentBlock.length > 0) {
+            // Guardar bloque anterior
+            this.saveScheduleBlock(currentBlock, day);
+          }
+          currentBlock = [schedule];
+          lastSubject = subjectKey;
+        }
+      });
+
+      // Guardar último bloque
+      if (currentBlock.length > 0) {
+        this.saveScheduleBlock(currentBlock, day);
+      }
+    });
+
+    // Crear dataSource unificado
+    this.createUnifiedDataSource();
+  }
+
+  private getUniqueSchedules(schedules: any[]): any[] {
+    const uniqueSchedules = new Map();
+    schedules.forEach(schedule => {
+      if (schedule.id) {
+        uniqueSchedules.set(schedule.id, schedule);
+      }
+    });
+    return Array.from(uniqueSchedules.values());
+  }
+
+  private saveScheduleBlock(block: any[], day: DayVM): void {
+    if (block.length === 0) return;
+
+    const firstSchedule = block[0];
+    const lastSchedule = block[block.length - 1];
+    const subjectKey = `${firstSchedule.schedules[0]?.section?.subject?.id}-${firstSchedule.schedules[0]?.section?.id}`;
+
+    const unifiedBlock = {
+      ...firstSchedule,
+      timeRange: {
+        start: firstSchedule.timeSlot.start,
+        end: firstSchedule.scheduleInfo?.end || lastSchedule.timeSlot.end,
+        duration: block.length
+      },
+      isUnified: block.length > 1,
+      blockSize: block.length,
+      allSchedules: this.getUniqueSchedules(block.flatMap(s => s.schedules))
+    };
+
+    const dayKey = day.name;
+    if (!this.scheduleBlocks.has(dayKey)) {
+      this.scheduleBlocks.set(dayKey, []);
+    }
+    this.scheduleBlocks.get(dayKey)!.push(unifiedBlock);
+  }
+
+  private createUnifiedDataSource(): void {
+    // Obtener todos los slots de tiempo individuales que se necesitan mostrar
+    const allTimeSlots = new Set<string>();
+
+
+    this.scheduleBlocks.forEach(blocks => {
+      blocks.forEach(block => {
+        // Para cada bloque, agregar todos los slots de tiempo desde inicio hasta fin
+        const startIndex = this.startIntervals.indexOf(block.timeRange.start);
+        const endIndex = this.endIntervals.indexOf(block.timeRange.end);
+
+        if (startIndex >= 0 && endIndex >= 0) {
+          for (let i = startIndex; i <= endIndex; i++) {
+            if (i < this.startIntervals.length) {
+              allTimeSlots.add(this.startIntervals[i]);
+            }
+          }
+        }
+      });
+    });
+
+    // Convertir a array y ordenar
+    const sortedTimeSlots = Array.from(allTimeSlots)
+      .sort((a, b) => a.localeCompare(b));
+
+
+    // Crear dataSource con todos los slots de tiempo necesarios
+    this.unifiedScheduleData = sortedTimeSlots.map(timeSlot => {
+      const row: any = {
+        hora: timeSlot,
+        isUnified: false
+      };
+
+      this.usedDays.forEach(day => {
+        const dayBlocks = this.scheduleBlocks.get(day.name) || [];
+
+        // Buscar el bloque que contiene este slot de tiempo
+        const matchingBlock = dayBlocks.find(block => {
+          const startIndex = this.startIntervals.indexOf(block.timeRange.start);
+          const endIndex = this.endIntervals.indexOf(block.timeRange.end);
+          const currentIndex = this.startIntervals.indexOf(timeSlot);
+
+          return currentIndex >= startIndex && currentIndex <= endIndex;
+        });
+
+        if (matchingBlock) {
+          // Solo mostrar el bloque en el primer slot de tiempo
+          const startIndex = this.startIntervals.indexOf(matchingBlock.timeRange.start);
+          const currentIndex = this.startIntervals.indexOf(timeSlot);
+
+          if (currentIndex === startIndex) {
+            row[day.name] = {
+              ...matchingBlock,
+              isUnified: matchingBlock.isUnified,
+              timeRange: matchingBlock.timeRange
+            };
+            row.isUnified = true;
+          } else {
+            row[day.name] = null;
+          }
+        } else {
+          row[day.name] = null;
+        }
+      });
+
+      return row;
+    });
   }
 }

@@ -661,9 +661,19 @@ export class PlannedSchedulesComponent {
     return Array.from(semesters).sort();
   }
 
-  private getUniqueTeachers(): string[] {
-    const teachers = new Set(this._alldata.map(item => item.teacherName).filter(Boolean));
-    return Array.from(teachers).sort();
+  private getUniqueTeachers(): Array<{document: string, name: string}> {
+    const teacherMap = new Map<string, {document: string, name: string}>();
+
+    this._alldata.forEach(item => {
+      if (item.documentTeacher && item.teacherName) {
+        teacherMap.set(item.documentTeacher, {
+          document: item.documentTeacher,
+          name: item.teacherName
+        });
+      }
+    });
+
+    return Array.from(teacherMap.values()).sort((a, b) => a.name.localeCompare(b.name));
   }
 
   private createSummaryRow(morningCount: number, afternoonCount: number, totalCount: number): any[] {

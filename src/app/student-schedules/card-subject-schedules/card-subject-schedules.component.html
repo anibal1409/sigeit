@@ -13,7 +13,7 @@
         Sección: {{
           section.nameTeacher
         }}
-      </mat-card-subtitle>      
+      </mat-card-subtitle>
       <mat-icon class="icon-delete" mat-card-sm-image (click)="deleteSectionClick()">delete</mat-icon>
     </mat-card-title-group>
   </mat-card-header>
@@ -26,24 +26,26 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
         <mat-list >
-          <mat-list-item *ngFor="let schedule of section?.collapse">
-            <span matListItemTitle>
-              {{
-                schedule.section?.subject?.name
-              }} 
+          <mat-list-item *ngFor="let conflict of section?.collapse">
+            <span matListItemTitle *ngFor="let conflictingWith of getConflictConflictingWith(conflict)">
+              ({{
+                conflictingWith.subjectCode
+              }}) {{
+                conflictingWith.subjectName
+              }},
               Sección: {{
-                schedule.section?.name
+                conflictingWith.sectionName
               }}
             </span>
             <span matListItemLine>
               {{
-                schedule.day?.name
-              }}: 
+                conflict.day?.name
+              }}:
               {{
-                schedule.start
-              }} - 
+                getConflictTimeSlot(conflict).start
+              }} -
               {{
-                schedule.end
+                getConflictTimeSlot(conflict).end
               }}
             </span>
           </mat-list-item>
