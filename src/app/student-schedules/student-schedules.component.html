@@ -173,16 +173,6 @@
       <div class="schedule-header">
         <mat-icon class="schedule-icon">schedule</mat-icon>
         <h3 class="schedule-title">Horario de Clases</h3>
-        <!-- Botón temporal para depuración -->
-        <button
-          *ngIf="sectionsSelected.length > 0"
-          mat-icon-button
-          (click)="debugConflictState()"
-          matTooltip="Debug conflictos"
-          style="margin-left: auto; color: white;"
-        >
-          <mat-icon>bug_report</mat-icon>
-        </button>
       </div>
 
       <div class="schedules" *ngIf="unifiedScheduleData.length">

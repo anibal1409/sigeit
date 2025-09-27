@@ -45,7 +45,15 @@ export class CardSubjectSchedulesComponent {
   }
 
   getConflictTimeSlot(conflict: any): any {
-    // El conflict es un ScheduleItemVM que tiene start y end directamente
+    // El conflict puede tener timeSlot con start y end, o start y end directamente
+    if (conflict?.timeSlot) {
+      return {
+        start: conflict.timeSlot.start || '',
+        end: conflict.timeSlot.end || ''
+      };
+    }
+
+    // Fallback para conflictos que tienen start y end directamente
     return {
       start: conflict?.start || '',
       end: conflict?.end || ''

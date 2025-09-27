@@ -9,7 +9,7 @@
           [formControl]="departmentCtrl"
           placeholder="Seleccione un departamento"
         >
-          
+
         <mat-error *ngIf="departmentCtrl.hasError('required')"
         >Campo requerido</mat-error
         >
@@ -41,7 +41,7 @@
     >
       <mat-icon>get_app</mat-icon>
     </button>
-  
+
     <button
       id="modal-close-button"
       type="button"
@@ -81,7 +81,7 @@
       <mat-cell colspan="999" *matCellDef="let group">
         <mat-icon *ngIf="group.expanded">expand_less</mat-icon>
         <mat-icon *ngIf="!group.expanded">expand_more</mat-icon>
-        <strong (click)="print(groupByColumns, group)"
+        <strong (click)="groupHeaderClick(group)"
           >{{ group.name }} {{ group[groupByColumns[group.level - 1]]  }}</strong
         >
       </mat-cell>

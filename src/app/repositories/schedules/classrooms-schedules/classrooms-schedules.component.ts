@@ -19,15 +19,15 @@ import {
   DayVM,
   ScheduleItemVM,
 } from '../model';
-import { ScheduleDetailsComponent } from '../schedule-details';
 import { SchedulesService } from '../schedules.service';
+import { ScheduleDisplayService } from '../shared/schedule-display.service';
 
 @Component({
   selector: 'app-classrooms-schedules',
   templateUrl: './classrooms-schedules.component.html',
   styleUrls: ['./classrooms-schedules.component.scss']
 })
-export class ClassroomsSchedulesComponent 
+export class ClassroomsSchedulesComponent
   implements OnInit, OnDestroy, OnChanges
 {
   @Input()
@@ -41,11 +41,7 @@ export class ClassroomsSchedulesComponent
   endIntervals: Array<string> = [];
   classrooms: Array<ClassroomVM> = [];
   days: Array<DayVM> = [];
-  dataScheduleByDay: any[][] = this.startIntervals.map(() =>
-    this.classrooms.map(() => {
-      return { text: '', schedules: [] };
-    })
-  );
+  dataScheduleByDay: any[][] = [];
   dataSourceByDay: any[] = [];
   displayedColumnsByDay: string[] = ['hora'];
 
@@ -59,7 +55,7 @@ export class ClassroomsSchedulesComponent
 
   constructor(
     private schedulesService: SchedulesService,
-    private matDialog: MatDialog,
+    private scheduleDisplayService: ScheduleDisplayService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -161,57 +157,31 @@ export class ClassroomsSchedulesComponent
         this.schedulesService
           .getSchedules$({dayId, periodId: this.periodId, })
           .subscribe((data) => {
-            this.dataScheduleByDay = this.startIntervals.map(() =>
-              this.classrooms.map(() => {
-                return { text: '', schedules: [] };
-              })
-            );      
+            this.dataScheduleByDay = this.scheduleDisplayService.initializeScheduleMatrix(
+              this.startIntervals,
+              this.classrooms
+            );
 
-            data?.forEach((schedule) => {
-              const classroomIndex = this.classrooms.findIndex(
-                (classroom) => classroom.id === schedule?.classroom?.id
-              );
-              const startIndex = this.startIntervals.indexOf(schedule.start);
-              const endIndex = this.endIntervals.indexOf(schedule.end);
+            this.scheduleDisplayService.processSchedulesIntoMatrix(
+              data || [],
+              this.dataScheduleByDay,
+              this.startIntervals,
+              this.endIntervals,
+              this.classrooms
+            );
 
-              if (classroomIndex === -1) {
-                return;
-              }
-              
-              for (let i = startIndex; i <= endIndex; i++) {
-                this.dataScheduleByDay[i][classroomIndex]?.schedules?.push(schedule);
-                if (this.dataScheduleByDay[i][classroomIndex]?.text) {
-                  this.dataScheduleByDay[i][classroomIndex].text = 'Varias';
-                } else {
-                  this.dataScheduleByDay[i][
-                    classroomIndex
-                  ].text = `${schedule.section?.name} - ${schedule.section?.subject?.name}`;
-                }
-              }
-            });
-            
-            this.dataSourceByDay = this.startIntervals.map((hora, index) => {
-              const row: any = { hora };
-              this.classrooms.forEach((classroom, classroomIndex) => {
-                row[classroom.name] =
-                  this.dataScheduleByDay[index][classroomIndex];
-              });
-              return row;
-            });
+            this.dataSourceByDay = this.scheduleDisplayService.createDataSource(
+              this.startIntervals,
+              this.endIntervals,
+              this.classrooms,
+              this.dataScheduleByDay
+            );
           })
       );
     }
   }
 
   showScheduleDetails(schedules: Array<ScheduleItemVM>): void {
-    const dialogRef = this.matDialog.open(ScheduleDetailsComponent, {
-      data: {
-        schedules: schedules,
-      },
-    });
-
-    dialogRef.componentInstance.closed.subscribe((res) => {
-      dialogRef.close();
-    });
+    this.scheduleDisplayService.showScheduleDetails(schedules);
   }
 }

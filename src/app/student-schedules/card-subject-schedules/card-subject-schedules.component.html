@@ -27,27 +27,29 @@
         </mat-expansion-panel-header>
         <mat-list >
           <mat-list-item *ngFor="let conflict of section?.collapse">
-            <span matListItemTitle *ngFor="let conflictingWith of getConflictConflictingWith(conflict)">
-              ({{
-                conflictingWith.subjectCode
-              }}) {{
-                conflictingWith.subjectName
-              }},
-              Sección: {{
-                conflictingWith.sectionName
-              }}
-            </span>
-            <span matListItemLine>
-              {{
-                conflict.day?.name
-              }}:
-              {{
-                getConflictTimeSlot(conflict).start || 'N/A'
-              }} -
-              {{
-                getConflictTimeSlot(conflict).end || 'N/A'
-              }}
-            </span>
+            <ng-container *ngFor="let conflictingWith of getConflictConflictingWith(conflict)">
+              <span matListItemTitle>
+                ({{
+                  conflictingWith.subjectCode
+                }}) {{
+                  conflictingWith.subjectName
+                }},
+                Sección: {{
+                  conflictingWith.sectionName
+                }}
+              </span>
+              <span matListItemLine>
+                {{
+                  conflictingWith.day?.name
+                }}:
+                {{
+                  getConflictTimeSlot(conflictingWith).start || 'N/A'
+                }} -
+                {{
+                  getConflictTimeSlot(conflictingWith).end || 'N/A'
+                }}
+              </span>
+            </ng-container>
           </mat-list-item>
         </mat-list>
       </mat-expansion-panel>

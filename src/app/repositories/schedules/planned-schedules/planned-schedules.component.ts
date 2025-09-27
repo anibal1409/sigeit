@@ -191,8 +191,6 @@ export class PlannedSchedulesComponent {
   }
 
   private loadSchedules(): void {
-    console.log(this.periodId, this.departmentId);
-
     if (this.periodId && this.departmentId) {
       this.loading = true;
       this.stateService.setLoading(this.loading);
@@ -376,9 +374,6 @@ export class PlannedSchedulesComponent {
     return equal;
   }
 
-  print(...data: any): void {
-    console.log(data);
-  }
 
   downloadFile(): void {
     if (this._alldata?.length) {

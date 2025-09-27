@@ -42,8 +42,8 @@ import {
   DayVM,
   ScheduleItemVM,
 } from '../model';
-import { ScheduleDetailsComponent } from '../schedule-details';
 import { SchedulesService } from '../schedules.service';
+import { ScheduleDisplayService } from '../shared/schedule-display.service';
 
 @Component({
   selector: 'app-academic-charge-teacher',
@@ -63,11 +63,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
   teachers: Array<TeacherItemVM> = [];
   departments: Array<DepartmentItemVM> = [];
   days: Array<DayVM> = [];
-  dataSchedule: any[][] = this.startIntervals.map(() =>
-    this.days.map(() => {
-      return { text: '', schedules: [] };
-    })
-  );
+  dataSchedule: any[][] = [];
   dataSource: any[] = [];
   displayedColumns: string[] = ['hora'];
 
@@ -77,7 +73,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
 
   constructor(
     private schedulesService: SchedulesService,
-    private matDialog: MatDialog,
+    private scheduleDisplayService: ScheduleDisplayService,
     private fb: FormBuilder,
     private stateService: StateService,
     private userStateService: UserStateService,
@@ -188,10 +184,9 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
   }
 
   private clearSchedule(): void {
-    this.dataSchedule = this.startIntervals.map(() =>
-      this.days.map(() => {
-        return { text: '', schedules: [] };
-      })
+    this.dataSchedule = this.scheduleDisplayService.initializeScheduleMatrix(
+      this.startIntervals,
+      this.days
     );
     this.dataSource = [];
   }
@@ -210,25 +205,13 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
             this.academicCharge = schedules;
             this.clearSchedule();
 
-            schedules.forEach((schedule) => {
-              const dayIndex = this.days.findIndex(
-                (day) => day.id === schedule.day?.id
-              );
-              const startIndex = this.startIntervals.indexOf(schedule.start);
-              const endIndex = this.endIntervals.indexOf(schedule.end);
-
-              for (let i = startIndex; i <= endIndex; i++) {
-
-                this.dataSchedule[i][dayIndex].schedules.push(schedule);
-                if (this.dataSchedule[i][dayIndex]?.text) {
-                  this.dataSchedule[i][dayIndex].text = 'Varias';
-                } else {
-                  this.dataSchedule[i][
-                    dayIndex
-                  ].text = `${schedule.section?.name} - ${schedule.section?.subject?.name} (${schedule.classroom?.name})`;
-                }
-              }
-            });
+            this.scheduleDisplayService.processSchedulesIntoMatrix(
+              schedules,
+              this.dataSchedule,
+              this.startIntervals,
+              this.endIntervals,
+              this.days
+            );
 
             this.dataSource = this.startIntervals.map(
               (hora, index) => {
@@ -236,7 +219,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
                 this.days.forEach((day, dayIndex) => {
                   row[day.name] = this.dataSchedule[index][dayIndex];
                 });
-                
+
                 return row;
               }
             );
@@ -246,15 +229,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
   }
 
   showScheduleDetails(schedules: Array<ScheduleItemVM>): void {
-    const dialogRef = this.matDialog.open(ScheduleDetailsComponent, {
-      data: {
-        schedules: schedules,
-      },
-    });
-
-    dialogRef.componentInstance.closed.subscribe((res) => {
-      dialogRef.close();
-    });
+    this.scheduleDisplayService.showScheduleDetails(schedules);
   }
 
   private loadDepartments(): void {
@@ -836,7 +811,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
     if (index !== 0) {
       repeat = (academicCharge[index - 1].section?.subject?.code === str ||
         academicCharge[index - 1].section?.subject?.name === str ||
-        academicCharge[index - 1].section?.name === str) && 
+        academicCharge[index - 1].section?.name === str) &&
         academicCharge[index - 1].section?.subject?.code === academicCharge[index].section?.subject?.code;
     }
 

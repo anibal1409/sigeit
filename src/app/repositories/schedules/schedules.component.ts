@@ -142,13 +142,6 @@ export class SchedulesComponent implements OnInit, OnDestroy {
         }
       })
     );
-    this.sub$.add(
-      this.schedulesService.getActivePeriod$().subscribe((period) => {
-        if (period?.id) {
-          this.periodId = period.id;
-        }
-      })
-    );
     this.loadDepartments();
     this.loadTeachers();
   }
@@ -234,7 +227,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
     this.semester = 0;
     this.subjectId = 0;
     this.sectionId = 0;
-    
+
     this.form.patchValue({
       semester: null,
       subjectId: null,
@@ -250,7 +243,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
       this.form.patchValue({
         semester: this.semesters[0].id,
       });
-    } 
+    }
   }
 
   loadTeachers(): void {

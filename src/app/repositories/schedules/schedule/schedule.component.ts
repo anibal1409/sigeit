@@ -19,8 +19,8 @@ import {
   DayVM,
   ScheduleItemVM,
 } from '../model';
-import { ScheduleDetailsComponent } from '../schedule-details';
 import { SchedulesService } from '../schedules.service';
+import { ScheduleDisplayService } from '../shared/schedule-display.service';
 
 @Component({
   selector: 'app-schedule',
@@ -38,11 +38,7 @@ export class ScheduleComponent implements OnInit, OnDestroy, OnChanges {
   endIntervals: Array<string> = [];
   classrooms: Array<ClassroomVM> = [];
   days: Array<DayVM> = [];
-  dataScheduleByClassroom: any[][] = this.startIntervals.map(() =>
-    this.days.map(() => {
-      return { text: '', schedules: [] };
-    })
-  );
+  dataScheduleByClassroom: any[][] = [];
   dataSourceByClassroom: any[] = [];
   displayedColumnsByClassroom: string[] = ['hora'];
 
@@ -56,7 +52,7 @@ export class ScheduleComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(
     private schedulesService: SchedulesService,
-    private matDialog: MatDialog,
+    private scheduleDisplayService: ScheduleDisplayService,
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -127,41 +123,24 @@ export class ScheduleComponent implements OnInit, OnDestroy, OnChanges {
         this.schedulesService
           .getSchedules$({ classroomId, periodId: this.periodId, })
           .subscribe((schedules) => {
-            this.dataScheduleByClassroom = this.startIntervals.map(() =>
-              this.days.map(() => {
-                return { text: '', schedules: [] };
-              })
+            this.dataScheduleByClassroom = this.scheduleDisplayService.initializeScheduleMatrix(
+              this.startIntervals,
+              this.days
             );
-            
 
-            schedules.forEach((schedule) => {
-              const dayIndex = this.days.findIndex(
-                (day) => day.id === schedule.day?.id
-              );
-              const startIndex = this.startIntervals.indexOf(schedule.start);
-              const endIndex = this.endIntervals.indexOf(schedule.end);
+            this.scheduleDisplayService.processSchedulesIntoMatrix(
+              schedules,
+              this.dataScheduleByClassroom,
+              this.startIntervals,
+              this.endIntervals,
+              this.days
+            );
 
-              for (let i = startIndex; i <= endIndex; i++) {
-                
-                this.dataScheduleByClassroom[i][dayIndex].schedules.push(schedule);
-                if (this.dataScheduleByClassroom[i][dayIndex]?.text) {
-                  this.dataScheduleByClassroom[i][dayIndex].text = 'Varias';
-                } else {
-                  this.dataScheduleByClassroom[i][
-                    dayIndex
-                  ].text = `${schedule.section?.name} - ${schedule.section?.subject?.name}`;
-                }
-              }
-            });
-
-            this.dataSourceByClassroom = this.startIntervals.map(
-              (hora, index) => {
-                const row: any = { hora };
-                this.days.forEach((day, dayIndex) => {
-                  row[day.name] = this.dataScheduleByClassroom[index][dayIndex];
-                });
-                return row;
-              }
+            this.dataSourceByClassroom = this.scheduleDisplayService.createDataSource(
+              this.startIntervals,
+              this.endIntervals,
+              this.days,
+              this.dataScheduleByClassroom
             );
           })
       );
@@ -202,14 +181,6 @@ export class ScheduleComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   showScheduleDetails(schedules: Array<ScheduleItemVM>): void {
-    const dialogRef = this.matDialog.open(ScheduleDetailsComponent, {
-      data: {
-        schedules: schedules,
-      },
-    });
-
-    dialogRef.componentInstance.closed.subscribe((res) => {
-      dialogRef.close();
-    });
+    this.scheduleDisplayService.showScheduleDetails(schedules);
   }
 }
