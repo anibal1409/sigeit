@@ -1,94 +1,110 @@
-<mat-card-header id="modal-header">
-  <mat-card-title><p id="modal-title">Horarios planificados</p></mat-card-title>
-  <button
-    id="modal-close-button"
-    type="button"
-    mat-fab
-    color="basic"
-    aria-label="Close"
-    (click)="clickClosed()"
-  >
-    <mat-icon>close</mat-icon>
-  </button>
-</mat-card-header>
-<div class="schedule-body">
-  <div *ngFor="let schedule of schedules" class="border mb-4">
-    <div class="schedule-row">
-      <div class="col-12 floating-label">
-        <label>Asignatura</label>
-        <span class="text-truncate">
-          (
-          {{
-          schedule?.section?.subject?.code
-          }}
-          )
-          {{
-          schedule?.section?.subject?.name
-          }}
-        </span>
-      </div>
+<div class="modal-container">
+  <!-- Header -->
+  <div class="modal-header">
+    <div class="header-content">
+      <mat-icon class="header-icon">schedule</mat-icon>
+      <h2 class="modal-title">Horarios Planificados</h2>
     </div>
-  
-    <div class="schedule-row">
-      <div class="col-md-8 col-12  floating-label">
-        <label>Profesor</label>
-        <span class="text-truncate">
-          <ng-container *ngIf="schedule?.section?.teacher?.lastName; else noLastName">
-            {{
-            schedule?.section?.teacher?.lastName + ', ' + schedule?.section?.teacher?.firstName
-            }}
-          </ng-container>
-          <ng-template #noLastName>
-            {{
-            schedule?.section?.teacher?.firstName
-            }}
-          </ng-template>
-        </span>
-      </div>
-      <div class="col-md-2 col-12  floating-label">
-        <label>Seccion</label>
-        <span class="text-truncate">
-          {{
-          schedule?.section?.name
-          }}
-        </span>
-      </div>
+    <button
+      class="close-button"
+      type="button"
+      mat-icon-button
+      aria-label="Cerrar"
+      (click)="clickClosed()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Content -->
+  <div class="modal-content">
+    <div *ngIf="schedules.length === 0" class="empty-state">
+      <mat-icon class="empty-icon">event_busy</mat-icon>
+      <p class="empty-text">No hay horarios disponibles</p>
     </div>
-  
-    <div class="schedule-row">
-      <div class="col-md-3 col-12 floating-label">
-        <label>Aula</label>
-        <span class="text-truncate">
-          {{
-          schedule?.classroom?.name
-          }}
-        </span>
+
+    <!-- Agrupar horarios por sección -->
+    <div *ngFor="let sectionGroup of getGroupedSchedules(); let i = index" class="section-card">
+      <div class="card-header">
+        <div class="schedule-number">{{ i + 1 }}</div>
+        <div class="schedule-info">
+          <h3 class="subject-title">
+            <span class="subject-code">({{ sectionGroup.section?.subject?.code }})</span>
+            {{ sectionGroup.section?.subject?.name }}
+          </h3>
+          <div class="section-info">
+            <mat-icon class="info-icon">group</mat-icon>
+            <span>Sección {{ sectionGroup.section?.name }}</span>
+          </div>
+        </div>
       </div>
-      <div class="col-md-3 col-12 floating-label">
-        <label>Dia</label>
-        <span class="text-truncate">
-          {{
-          schedule?.day?.name
-          }}
-        </span>
-      </div>
-      <div class="col-md-3 col-12 floating-label">
-        <label>Desde</label>
-        <span class="text-truncate">
-          {{
-          schedule?.start
-          }}
-        </span>
-      </div>
-      <div class="col-md-3 col-12 floating-label">
-        <label>Hasta</label>
-        <span class="text-truncate">
-          {{
-          schedule?.end
-          }}
-        </span>
+
+      <div class="card-body">
+        <!-- Información general de la sección -->
+        <div class="section-info-grid">
+          <!-- Profesor -->
+          <div class="info-item">
+            <div class="info-label">
+              <mat-icon class="label-icon">person</mat-icon>
+              <span>Profesor</span>
+            </div>
+            <div class="info-value">
+              <ng-container *ngIf="sectionGroup.section?.teacher?.lastName; else noLastName">
+                {{ sectionGroup.section?.teacher?.lastName + ', ' + sectionGroup.section?.teacher?.firstName }}
+              </ng-container>
+              <ng-template #noLastName>
+                {{ sectionGroup.section?.teacher?.firstName }}
+              </ng-template>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lista de horarios -->
+        <div class="schedules-list">
+          <div class="schedules-header">
+            <mat-icon class="schedules-icon">schedule</mat-icon>
+            <span>Horarios de la sección</span>
+          </div>
+
+          <div class="schedule-items">
+            <div *ngFor="let schedule of sectionGroup.schedules; let j = index" class="schedule-item">
+              <div class="schedule-item-header">
+                <div class="schedule-item-number">{{ j + 1 }}</div>
+                <div class="schedule-item-info">
+                  <div class="schedule-day">{{ schedule?.day?.name }}</div>
+                  <div class="schedule-time">
+                    <span class="time-start">{{ schedule?.start }}</span>
+                    <mat-icon class="time-separator">arrow_forward</mat-icon>
+                    <span class="time-end">{{ schedule?.end }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="schedule-item-details">
+                <div class="detail-item">
+                  <mat-icon class="detail-icon">room</mat-icon>
+                  <span class="detail-label">Aula:</span>
+                  <span class="detail-value">{{ schedule?.classroom?.name }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
+  <!-- Footer -->
+  <div class="modal-footer">
+    <button
+      class="close-footer-button"
+      type="button"
+      mat-raised-button
+      color="primary"
+      (click)="clickClosed()"
+    >
+      <mat-icon>check</mat-icon>
+      <span>Cerrar</span>
+    </button>
+  </div>
+</div>

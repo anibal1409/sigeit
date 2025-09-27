@@ -243,7 +243,14 @@
                       <mat-icon class="duration-icon">schedule</mat-icon>
                       <span class="duration-text">{{ row[day.name]?.scheduleInfo?.start }} - {{ row[day.name]?.scheduleInfo?.end }}</span>
                     </div>
-                    <div *ngIf="hasScheduleConflict(day.name, row[day.name]?.timeSlot || row[day.name]?.timeRange)" class="conflict-message">
+                    <!-- Mostrar asignaturas en conflicto -->
+                    <div *ngIf="row[day.name]?.isConflictBlock && row[day.name]?.conflictingSubjects" class="conflict-subjects">
+                      <div *ngFor="let subject of row[day.name].conflictingSubjects" class="conflict-subject-item">
+                        <span class="conflict-subject-name">({{ subject.code }}) {{ subject.name }}</span>
+                        <span class="conflict-subject-section">Sección: {{ subject.section }}</span>
+                      </div>
+                    </div>
+                    <div *ngIf="hasScheduleConflict(day.name, row[day.name]?.timeSlot || row[day.name]?.timeRange) && !row[day.name]?.isConflictBlock" class="conflict-message">
                       <span class="conflict-text-small">Choque de horarios</span>
                     </div>
                   </div>

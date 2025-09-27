@@ -31,6 +31,23 @@ export class ScheduleDetailsComponent implements OnInit {
     }
   }
 
+  getGroupedSchedules(): any[] {
+    const grouped = new Map();
+
+    this.schedules.forEach(schedule => {
+      const sectionId = schedule.section?.id;
+      if (!grouped.has(sectionId)) {
+        grouped.set(sectionId, {
+          section: schedule.section,
+          schedules: []
+        });
+      }
+      grouped.get(sectionId).schedules.push(schedule);
+    });
+
+    return Array.from(grouped.values());
+  }
+
   clickClosed(): void {
     this.closed.emit();
   }

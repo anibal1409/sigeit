@@ -1,0 +1,37 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+# Reglas de Desarrollo - Sigeit
+
+## Estilos CSS/SCSS
+
+### Medidas
+- **SIEMPRE usar unidades `rem` para todas las medidas en estilos**
+- Evitar usar `px` para medidas de espaciado, tamaños, etc.
+- Usar `rem` para: padding, margin, width, height, border-radius, font-size, etc.
+- Solo usar `px` para valores muy específicos como border-width (1px, 2px)
+
+### Ejemplos correctos:
+```scss
+.modal {
+  padding: 1.5rem 2rem;
+  margin: 1rem 0;
+  border-radius: 1rem;
+  font-size: 1.125rem;
+  width: 37.5rem;
+  height: 25rem;
+}
+```
+
+### Ejemplos incorrectos:
+```scss
+.modal {
+  padding: 24px 32px;  // ❌ Usar rem
+  margin: 16px 0;      // ❌ Usar rem
+  border-radius: 16px; // ❌ Usar rem
+  font-size: 18px;     // ❌ Usar rem
+}
+```

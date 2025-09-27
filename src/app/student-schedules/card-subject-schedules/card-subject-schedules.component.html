@@ -42,10 +42,10 @@
                 conflict.day?.name
               }}:
               {{
-                getConflictTimeSlot(conflict).start
+                getConflictTimeSlot(conflict).start || 'N/A'
               }} -
               {{
-                getConflictTimeSlot(conflict).end
+                getConflictTimeSlot(conflict).end || 'N/A'
               }}
             </span>
           </mat-list-item>

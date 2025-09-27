@@ -45,7 +45,11 @@ export class CardSubjectSchedulesComponent {
   }
 
   getConflictTimeSlot(conflict: any): any {
-    return conflict['timeSlot'] || {};
+    // El conflict es un ScheduleItemVM que tiene start y end directamente
+    return {
+      start: conflict?.start || '',
+      end: conflict?.end || ''
+    };
   }
 
 }

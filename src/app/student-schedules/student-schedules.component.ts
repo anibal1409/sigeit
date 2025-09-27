@@ -13,9 +13,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 
-import { Subscription } from 'rxjs';
+import { Subscription, filter } from 'rxjs';
 
 import {
   ConfirmModalComponent,
@@ -100,6 +100,14 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
 
   private sub$ = new Subscription();
 
+  // Clave para localStorage
+  private readonly FILTERS_STORAGE_KEY = 'student-schedules-filters';
+  private readonly SCHEDULES_ROUTE = '/dashboard/schedules-students';
+  private readonly SELECTED_SECTIONS_KEY = 'student-schedules-selected-sections';
+
+  // Flag para evitar guardar filtros durante la carga inicial
+  private isLoadingFromStorage = false;
+
   constructor(
     private fb: FormBuilder,
     private matDialog: MatDialog,
@@ -113,6 +121,8 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.saveFiltersToStorage();
+    this.saveSelectedSectionsToStorage();
     this.sub$.unsubscribe();
   }
 
@@ -120,7 +130,12 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
     this.isInscription = this.router.url.includes('inscription');
     this.careerIdUser = this.userStateService.getCareerId() || 0;
     this.carrerId = this.careerIdUser;
+
     this.createForm();
+    this.loadFiltersFromStorage();
+    this.loadSelectedSectionsFromStorage();
+    this.setupRouteNavigationListener();
+
     this.sub$.add(
       this.studentSchedulesService.getLoading$().subscribe((loading) => {
         this.loading = loading;
@@ -130,6 +145,251 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
     );
 
     this.loadActivePeriod();
+  }
+
+  /**
+   * Guarda los filtros actuales en localStorage
+   */
+  private saveFiltersToStorage(): void {
+    // No guardar durante la carga inicial desde localStorage
+    if (this.isLoadingFromStorage) {
+      return;
+    }
+
+    if (this.form) {
+      const subjectId = this.form.get('subjectId')?.value;
+
+      // No guardar si subjectId es 0 o null
+      if (subjectId === 0 || subjectId === null) {
+        return;
+      }
+
+      const filters = {
+        careerId: this.form.get('careerId')?.value,
+        subjectId: subjectId,
+        semesterId: this.form.get('semesterId')?.value,
+        timestamp: Date.now()
+      };
+
+      try {
+        localStorage.setItem(this.FILTERS_STORAGE_KEY, JSON.stringify(filters));
+      } catch (error) {
+        console.warn('No se pudieron guardar los filtros en localStorage:', error);
+      }
+    }
+  }
+
+  /**
+   * Carga los filtros desde localStorage
+   */
+  private loadFiltersFromStorage(): void {
+    try {
+      const storedFilters = localStorage.getItem(this.FILTERS_STORAGE_KEY);
+
+      if (storedFilters) {
+        const filters = JSON.parse(storedFilters);
+
+        // Verificar que los filtros no sean muy antiguos (máximo 24 horas)
+        const maxAge = 24 * 60 * 60 * 1000; // 24 horas en milisegundos
+        if (Date.now() - filters.timestamp < maxAge) {
+          // Activar flag para evitar guardar durante la carga
+          this.isLoadingFromStorage = true;
+
+          // Aplicar los filtros guardados
+          setTimeout(() => {
+            // Actualizar las propiedades del componente primero
+            this.carrerId = filters.careerId || this.careerIdUser;
+            this.subjectId = filters.subjectId || 0;
+            this.semesterId = filters.semesterId || 0;
+
+            // Cargar las asignaturas si hay carrera y semestre
+            if (this.carrerId && this.semesterId > 0) {
+              this.loadSubjects();
+            }
+
+            // Aplicar los valores al formulario después de cargar las asignaturas
+            setTimeout(() => {
+              // Aplicar patchValue sin emitir eventos
+              this.form.patchValue({
+                careerId: this.carrerId,
+                subjectId: this.subjectId || null,
+                semesterId: this.semesterId,
+              }, { emitEvent: false });
+
+              this.cdr.markForCheck();
+
+              // Desactivar flag después de aplicar los valores
+              setTimeout(() => {
+                this.isLoadingFromStorage = false;
+              }, 100);
+            }, 200);
+          }, 100);
+        } else {
+          // Eliminar filtros antiguos
+          this.clearFiltersFromStorage();
+        }
+      }
+    } catch (error) {
+      console.warn('No se pudieron cargar los filtros desde localStorage:', error);
+      this.clearFiltersFromStorage();
+    }
+  }
+
+  /**
+   * Elimina los filtros del localStorage
+   */
+  private clearFiltersFromStorage(): void {
+    try {
+      localStorage.removeItem(this.FILTERS_STORAGE_KEY);
+    } catch (error) {
+      console.warn('No se pudieron eliminar los filtros del localStorage:', error);
+    }
+  }
+
+  /**
+   * Guarda las secciones seleccionadas en localStorage
+   */
+  private saveSelectedSectionsToStorage(): void {
+    try {
+      const selectedSections = {
+        sections: this.sectionsSelected.map(section => ({
+          id: section.id,
+          name: section.name,
+          subjectId: section.subjectId,
+          subject: section.subject, // Guardar también el objeto subject completo
+          teacherId: section.teacherId,
+          teacher: section.teacher, // Guardar también el objeto teacher completo
+          capacity: section.capacity,
+          periodId: section.periodId,
+          validateId: section.validateId
+        })),
+        timestamp: Date.now()
+      };
+
+      localStorage.setItem(this.SELECTED_SECTIONS_KEY, JSON.stringify(selectedSections));
+    } catch (error) {
+      console.warn('No se pudieron guardar las secciones seleccionadas en localStorage:', error);
+    }
+  }
+
+  /**
+   * Carga las secciones seleccionadas desde localStorage
+   */
+  private loadSelectedSectionsFromStorage(): void {
+    try {
+      const storedSections = localStorage.getItem(this.SELECTED_SECTIONS_KEY);
+
+      if (storedSections) {
+        const sectionsData = JSON.parse(storedSections);
+
+        // Verificar que las secciones no sean muy antiguas (máximo 24 horas)
+        const maxAge = 24 * 60 * 60 * 1000; // 24 horas en milisegundos
+        if (Date.now() - sectionsData.timestamp < maxAge) {
+          // Cargar las secciones después de que se carguen los filtros y asignaturas
+          setTimeout(() => {
+            this.sectionsSelected = sectionsData.sections.map((sectionData: any) => ({
+              ...sectionData,
+              subjectId: sectionData.subject?.id, // Extraer subjectId del objeto subject
+              schedules: [] // Las schedules se cargarán cuando se seleccione la asignatura
+            }));
+
+            // Restaurar también en subjectsSelected para mantener consistencia
+            this.sectionsSelected.forEach(section => {
+              if (section.subjectId) {
+                this.subjectsSelected.set(section.subjectId, section);
+              }
+            });
+
+            // Si hay secciones seleccionadas, cargar los horarios
+            if (this.sectionsSelected.length > 0) {
+              // Esperar a que las asignaturas estén cargadas antes de cargar horarios
+              setTimeout(() => {
+                this.loadSchedulesForRestoredSections();
+              }, 300);
+            }
+
+            this.cdr.markForCheck();
+          }, 800); // Esperar más tiempo para que se carguen los filtros y asignaturas
+        } else {
+          this.clearSelectedSectionsFromStorage();
+        }
+      }
+    } catch (error) {
+      console.warn('No se pudieron cargar las secciones seleccionadas desde localStorage:', error);
+      this.clearSelectedSectionsFromStorage();
+    }
+  }
+
+  /**
+   * Elimina las secciones seleccionadas del localStorage
+   */
+  private clearSelectedSectionsFromStorage(): void {
+    try {
+      localStorage.removeItem(this.SELECTED_SECTIONS_KEY);
+    } catch (error) {
+      console.warn('No se pudieron eliminar las secciones seleccionadas del localStorage:', error);
+    }
+  }
+
+  /**
+   * Carga los horarios para las secciones restauradas desde localStorage
+   */
+  private loadSchedulesForRestoredSections(): void {
+    if (this.sectionsSelected.length === 0) {
+      return;
+    }
+
+    // Cargar horarios para cada sección restaurada
+    this.sectionsSelected.forEach((section, index) => {
+      if (section.subjectId) {
+        this.sub$.add(
+          this.studentSchedulesService.getSectionWithSchedules$({
+            subjectId: section.subjectId,
+            carrerId: this.carrerId,
+            semester: this.semesterId > 0 ? this.semesterId : undefined,
+          }).subscribe(
+            (sections) => {
+              // Encontrar la sección correspondiente y actualizar sus schedules
+              const foundSection = sections.find(s => s.id === section.id);
+              if (foundSection) {
+                (section as any).schedules = (foundSection as any).schedules || [];
+
+                // Actualizar en subjectsSelected también
+                const key = section.subjectId;
+                if (this.subjectsSelected.has(key)) {
+                  this.subjectsSelected.set(key, section);
+                }
+
+                // Si es la última sección, cargar los horarios
+                if (index === this.sectionsSelected.length - 1) {
+                  this.loadSchedules();
+                }
+              }
+            },
+            (error) => {
+              console.error(`Error cargando horarios para subjectId ${section.subjectId}:`, error);
+            }
+          )
+        );
+      }
+    });
+  }
+
+  /**
+   * Configura el listener para detectar cambios de ruta
+   */
+  private setupRouteNavigationListener(): void {
+    this.sub$.add(
+      this.router.events
+        .pipe(filter(event => event instanceof NavigationEnd))
+        .subscribe((event) => {
+          // Si se sale de la ruta de horarios, limpiar los filtros y secciones
+          if (event instanceof NavigationEnd && !event.url.includes(this.SCHEDULES_ROUTE)) {
+            this.clearFiltersFromStorage();
+            this.clearSelectedSectionsFromStorage();
+          }
+        })
+    );
   }
 
   private validateInscription(): void {
@@ -253,7 +513,6 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
           status: true,
         }).subscribe(
           (sections) => {
-            console.log(sections);
             this.sections = sections;
             this.cdr.markForCheck();
           }
@@ -273,7 +532,13 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
       this.form.get('careerId')?.valueChanges.subscribe((carrerId) => {
         this.carrerId = +carrerId;
         this.semesterId = 0;
-        this.subjectId = 0;
+
+        // Solo resetear subjectId si no estamos cargando desde localStorage
+        if (!this.isLoadingFromStorage) {
+          this.subjectId = 0;
+        }
+
+        this.saveFiltersToStorage();
         this.sectionId = 0;
         this.savedSchedules = [];
 
@@ -301,6 +566,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
           subjectId: null,
           sectionId: null,
         });
+        this.saveFiltersToStorage();
         if (semesterId) {
           this.loadSubjects();
         }
@@ -313,6 +579,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
         this.form.patchValue({
           sectionId: null,
         });
+        this.saveFiltersToStorage();
         if (subjectId) {
           this.loadSectionsWithSchedules();
         }
@@ -338,8 +605,6 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
         }
       });
 
-      console.log('All schedules for section:', allSectionSchedules);
-      console.log('Number of schedules for section:', allSectionSchedules.length);
 
       const dialogRef = this.matDialog.open(ScheduleDetailsComponent, {
         data: {
@@ -374,15 +639,21 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
 
     this.sectionsSelected = [...this.subjectsSelected.values()];
     this.loadSchedules();
+    this.saveSelectedSectionsToStorage(); // Guardar después de agregar/remover
     this.cdr.markForCheck();
   }
 
   private clearSchedule(): void {
-    this.dataSchedule = this.startIntervals.map(() =>
-      this.days.map(() => {
-        return { text: '', schedules: [] };
-      })
-    );
+    // Verificar que los intervalos estén inicializados antes de crear el dataSchedule
+    if (!this.startIntervals.length || !this.days.length) {
+      this.dataSchedule = [];
+    } else {
+      this.dataSchedule = this.startIntervals.map(() =>
+        this.days.map(() => {
+          return { text: '', schedules: [] };
+        })
+      );
+    }
     this.dataSource = [];
     this.optimizedDataSource = [];
     this.usedDays = [];
@@ -394,7 +665,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
     this.subjectCounter = this.sectionsSelected.length;
     this.clearSchedule();
     const schedules = this.sectionsSelected.flatMap(
-      (section) => section.schedules
+      (section) => section?.schedules || []
     );
     this.clearCollapseSections();
 
@@ -404,9 +675,15 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
     const usedTimeSlotsSet = new Set<number>();
 
     schedules.forEach((schedule) => {
-      if (!schedule) {
+      if (!schedule || !schedule.start || !schedule.end) {
         return;
       }
+
+      // Verificar que los intervalos estén inicializados
+      if (!this.startIntervals.length || !this.endIntervals.length) {
+        return;
+      }
+
       const dayIndex = this.days.findIndex(
         (day) => day.id === schedule.day?.id
       );
@@ -845,6 +1122,11 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
         if (scheduleData?.text && scheduleData.text !== 'Varias' && scheduleData.schedules?.length > 0) {
           // Agregar cada horario individual con información de la sección
           scheduleData.schedules.forEach((schedule: any) => {
+            // Verificar que el schedule tenga las propiedades necesarias
+            if (!schedule || !schedule.start || !schedule.end) {
+              return;
+            }
+
             // Verificar que no se haya agregado ya este horario específico
             const alreadyExists = daySchedules.some(existing =>
               existing.sectionId === schedule.section?.id &&
@@ -973,6 +1255,13 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
     return hours * 60 + minutes;
   }
 
+  // Método para convertir minutos a formato de tiempo
+  private minutesToTime(minutes: number): string {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+  }
+
   // Método para verificar si un horario tiene conflictos
   hasScheduleConflict(day: string, timeSlot: any): boolean {
     if (!timeSlot) return false;
@@ -1002,6 +1291,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
 
   // Método para unificar bloques consecutivos de la misma asignatura
   private unifyConsecutiveBlocks(): void {
+
     this.scheduleBlocks.clear();
     this.unifiedScheduleData = [];
 
@@ -1015,9 +1305,8 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
       this.startIntervals.forEach((startTime, index) => {
         const scheduleData = this.dataSchedule[index][originalDayIndex];
 
-
         if (scheduleData?.text && scheduleData.text !== 'Varias' && scheduleData.schedules?.length > 0) {
-          daySchedules.push({
+          const scheduleItem = {
             ...scheduleData,
             timeSlot: {
               start: startTime,
@@ -1026,32 +1315,47 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
             },
             day: day,
             originalIndex: index
-          });
+          };
+          daySchedules.push(scheduleItem);
         }
       });
 
       // Ordenar por índice de tiempo
       daySchedules.sort((a, b) => a.originalIndex - b.originalIndex);
 
+      // Primero, crear bloques de conflicto si existen
+      this.createConflictBlocks(day, daySchedules);
 
-      // Unificar bloques consecutivos
+      // Luego, unificar bloques consecutivos normales
       let currentBlock: any[] = [];
       let lastSubject = '';
 
       daySchedules.forEach((schedule, index) => {
         const subjectKey = `${schedule.schedules[0]?.section?.subject?.id}-${schedule.schedules[0]?.section?.id}`;
 
-        if (subjectKey === lastSubject && currentBlock.length > 0) {
-          // Es la misma asignatura, agregar al bloque actual
-          currentBlock.push(schedule);
-        } else {
-          // Nueva asignatura o primera vez
-          if (currentBlock.length > 0) {
-            // Guardar bloque anterior
-            this.saveScheduleBlock(currentBlock, day);
+        // Verificar si este horario ya está en un bloque de conflicto
+        const isInConflictBlock = this.isScheduleInConflictBlock(schedule, day.name);
+
+        if (!isInConflictBlock) {
+          if (subjectKey === lastSubject && currentBlock.length > 0) {
+            // Es la misma asignatura, agregar al bloque actual
+            currentBlock.push(schedule);
+          } else {
+            // Nueva asignatura o primera vez
+            if (currentBlock.length > 0) {
+              // Guardar bloque anterior
+              this.saveScheduleBlock(currentBlock, day);
+            }
+            currentBlock = [schedule];
+            lastSubject = subjectKey;
           }
-          currentBlock = [schedule];
-          lastSubject = subjectKey;
+        } else {
+          // Si está en un bloque de conflicto, guardar el bloque actual si existe
+          if (currentBlock.length > 0) {
+            this.saveScheduleBlock(currentBlock, day);
+            currentBlock = [];
+            lastSubject = '';
+          }
         }
       });
 
@@ -1075,11 +1379,97 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
     return Array.from(uniqueSchedules.values());
   }
 
+  // Método para crear bloques de conflicto
+  private createConflictBlocks(day: DayVM, daySchedules: any[]): void {
+    const dayConflicts = this.scheduleConflicts.get(day.name) || [];
+
+    dayConflicts.forEach(conflict => {
+      // Obtener todos los horarios involucrados en el conflicto
+      const conflictingSchedules = conflict.conflictingSchedules;
+
+      if (conflictingSchedules.length > 0) {
+        // Encontrar el rango de tiempo completo del conflicto
+        const allTimeSlots = conflictingSchedules.map((cs: any) => cs.timeSlot);
+        const minStart = Math.min(...allTimeSlots.map((ts: any) => this.timeToMinutes(ts.start)));
+        const maxEnd = Math.max(...allTimeSlots.map((ts: any) => this.timeToMinutes(ts.end)));
+
+        // Encontrar los índices correspondientes en los intervalos
+        const startIndex = this.startIntervals.findIndex(start => this.timeToMinutes(start) === minStart);
+        const endIndex = this.endIntervals.findIndex(end => this.timeToMinutes(end) === maxEnd);
+
+        if (startIndex >= 0 && endIndex >= 0) {
+          // Crear un bloque de conflicto unificado
+          const conflictBlock = {
+            text: 'Choque de horarios',
+            schedules: conflictingSchedules.map((cs: any) => cs.schedule),
+            duration: endIndex - startIndex + 1,
+            scheduleInfo: {
+              start: this.minutesToTime(minStart),
+              end: this.minutesToTime(maxEnd),
+              duration: endIndex - startIndex + 1
+            },
+            timeSlot: {
+              start: this.minutesToTime(minStart),
+              end: this.minutesToTime(maxEnd),
+              index: startIndex
+            },
+            timeRange: {
+              start: this.minutesToTime(minStart),
+              end: this.minutesToTime(maxEnd),
+              duration: endIndex - startIndex + 1
+            },
+            day: day,
+            originalIndex: startIndex,
+            isConflictBlock: true,
+            conflictingSubjects: conflictingSchedules.map((cs: any) => ({
+              name: cs.schedule?.section?.subject?.name,
+              section: cs.schedule?.section?.name,
+              code: cs.schedule?.section?.subject?.code
+            }))
+          };
+
+          // Guardar el bloque de conflicto
+          this.saveConflictBlock(conflictBlock, day);
+        }
+      }
+    });
+  }
+
+  // Método para verificar si un horario está en un bloque de conflicto
+  private isScheduleInConflictBlock(schedule: any, dayName: string): boolean {
+    const dayConflicts = this.scheduleConflicts.get(dayName) || [];
+
+    return dayConflicts.some(conflict => {
+      return conflict.conflictingSchedules.some((cs: any) =>
+        cs.sectionId === schedule.schedules[0]?.section?.id &&
+        cs.timeSlot.start === schedule.timeSlot.start &&
+        cs.timeSlot.end === schedule.timeSlot.end
+      );
+    });
+  }
+
+  // Método para guardar un bloque de conflicto
+  private saveConflictBlock(conflictBlock: any, day: DayVM): void {
+    const dayKey = day.name;
+    if (!this.scheduleBlocks.has(dayKey)) {
+      this.scheduleBlocks.set(dayKey, []);
+    }
+    this.scheduleBlocks.get(dayKey)!.push(conflictBlock);
+  }
+
   private saveScheduleBlock(block: any[], day: DayVM): void {
+
     if (block.length === 0) return;
 
     const firstSchedule = block[0];
     const lastSchedule = block[block.length - 1];
+
+    // Verificar que los timeSlot estén definidos
+    if (!firstSchedule?.timeSlot?.start || !lastSchedule?.timeSlot?.end) {
+      console.warn('timeSlot.start o timeSlot.end no están definidos:', { firstSchedule, lastSchedule });
+      return;
+    }
+
     const subjectKey = `${firstSchedule.schedules[0]?.section?.subject?.id}-${firstSchedule.schedules[0]?.section?.id}`;
 
     const unifiedBlock = {
@@ -1102,12 +1492,19 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
   }
 
   private createUnifiedDataSource(): void {
+
     // Obtener todos los slots de tiempo individuales que se necesitan mostrar
     const allTimeSlots = new Set<string>();
 
 
     this.scheduleBlocks.forEach(blocks => {
       blocks.forEach(block => {
+        // Verificar que timeRange esté definido
+        if (!block?.timeRange?.start || !block?.timeRange?.end) {
+          console.warn('timeRange no está definido en el bloque:', block);
+          return;
+        }
+
         // Para cada bloque, agregar todos los slots de tiempo desde inicio hasta fin
         const startIndex = this.startIntervals.indexOf(block.timeRange.start);
         const endIndex = this.endIntervals.indexOf(block.timeRange.end);
@@ -1127,6 +1524,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
       .sort((a, b) => a.localeCompare(b));
 
 
+
     // Crear dataSource con todos los slots de tiempo necesarios
     this.unifiedScheduleData = sortedTimeSlots.map(timeSlot => {
       const row: any = {
@@ -1139,6 +1537,9 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
 
         // Buscar el bloque que contiene este slot de tiempo
         const matchingBlock = dayBlocks.find(block => {
+          if (!block?.timeRange?.start || !block?.timeRange?.end) {
+            return false;
+          }
           const startIndex = this.startIntervals.indexOf(block.timeRange.start);
           const endIndex = this.endIntervals.indexOf(block.timeRange.end);
           const currentIndex = this.startIntervals.indexOf(timeSlot);
@@ -1146,7 +1547,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
           return currentIndex >= startIndex && currentIndex <= endIndex;
         });
 
-        if (matchingBlock) {
+        if (matchingBlock && matchingBlock.timeRange) {
           // Solo mostrar el bloque en el primer slot de tiempo
           const startIndex = this.startIntervals.indexOf(matchingBlock.timeRange.start);
           const currentIndex = this.startIntervals.indexOf(timeSlot);
@@ -1168,5 +1569,6 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
 
       return row;
     });
+
   }
 }
