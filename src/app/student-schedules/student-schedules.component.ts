@@ -661,12 +661,30 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
   }
 
   private loadSchedules(): void {
+    console.log('🔍 [DEBUG] Iniciando loadSchedules');
+    console.log('🔍 [DEBUG] Secciones seleccionadas:', this.sectionsSelected.length);
+
     this.credits = this.sectionsSelected.reduce((acc, section) => acc + (section?.subject?.credits || 0), 0);
     this.subjectCounter = this.sectionsSelected.length;
     this.clearSchedule();
     const schedules = this.sectionsSelected.flatMap(
       (section) => section?.schedules || []
     );
+
+    console.log('🔍 [DEBUG] Horarios totales encontrados:', schedules.length);
+    console.log('🔍 [DEBUG] Horarios por sección:', this.sectionsSelected.map(s => ({
+      section: s.name,
+      subject: s.subject?.name,
+      schedules: s.schedules?.length || 0,
+      schedulesData: s.schedules?.map(sch => ({
+        id: sch.id,
+        start: sch.start,
+        end: sch.end,
+        day: sch.day?.name,
+        dayId: sch.day?.id
+      })) || []
+    })));
+
     this.clearCollapseSections();
 
 
@@ -675,12 +693,24 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
     const usedTimeSlotsSet = new Set<number>();
 
     schedules.forEach((schedule) => {
+      console.log('🔍 [DEBUG] Procesando schedule:', {
+        id: schedule.id,
+        start: schedule.start,
+        end: schedule.end,
+        day: schedule.day?.name,
+        dayId: schedule.day?.id,
+        section: schedule.section?.name,
+        subject: schedule.section?.subject?.name
+      });
+
       if (!schedule || !schedule.start || !schedule.end) {
+        console.log('🔍 [DEBUG] Schedule inválido, saltando:', schedule);
         return;
       }
 
       // Verificar que los intervalos estén inicializados
       if (!this.startIntervals.length || !this.endIntervals.length) {
+        console.log('🔍 [DEBUG] Intervalos no inicializados, saltando schedule');
         return;
       }
 
@@ -690,6 +720,15 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
       const startIndex = this.startIntervals.indexOf(schedule.start);
       const endIndex = this.endIntervals.indexOf(schedule.end);
 
+      console.log('🔍 [DEBUG] Índices encontrados:', {
+        dayIndex,
+        startIndex,
+        endIndex,
+        dayName: schedule.day?.name,
+        startTime: schedule.start,
+        endTime: schedule.end
+      });
+
 
       if (dayIndex >= 0) {
         usedDaysSet.add(dayIndex);
@@ -697,6 +736,14 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
 
       // Si no encontramos los índices exactos, buscar el rango más cercano
       if (startIndex === -1 || endIndex === -1) {
+        console.log('🔍 [DEBUG] No se encontraron índices exactos, saltando schedule:', {
+          startIndex,
+          endIndex,
+          startTime: schedule.start,
+          endTime: schedule.end,
+          availableStartTimes: this.startIntervals,
+          availableEndTimes: this.endIntervals
+        });
         return;
       }
 
@@ -710,6 +757,13 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
       // Solo colocar el schedule en la celda de inicio, no en todas las celdas del rango
       // Esto evita la duplicación y permite que el CSS maneje la extensión visual
       if (startIndex >= 0 && dayIndex >= 0) {
+        console.log('🔍 [DEBUG] Agregando schedule al dataSchedule:', {
+          startIndex,
+          dayIndex,
+          dayName: schedule.day?.name,
+          scheduleId: schedule.id
+        });
+
         // Verificar si el schedule ya existe en este slot para evitar duplicados
         const existingSchedule = this.dataSchedule[startIndex][dayIndex].schedules.find(
           (existing: any) => existing.id === schedule.id
@@ -717,6 +771,9 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
 
         if (!existingSchedule) {
           this.dataSchedule[startIndex][dayIndex].schedules.push(schedule);
+          console.log('🔍 [DEBUG] Schedule agregado exitosamente al dataSchedule');
+        } else {
+          console.log('🔍 [DEBUG] Schedule ya existe en este slot, no se duplica');
         }
 
         // Calcular la duración en número de intervalos para el CSS
@@ -725,6 +782,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
         if (this.dataSchedule[startIndex][dayIndex]?.text) {
           this.dataSchedule[startIndex][dayIndex].text = 'Varias';
           this.collapseSections(this.dataSchedule[startIndex][dayIndex].schedules);
+          console.log('🔍 [DEBUG] Múltiples horarios en el mismo slot, marcado como "Varias"');
         } else {
           this.dataSchedule[startIndex][dayIndex].text = `${schedule.section?.name} - ${schedule.section?.subject?.name}`;
           this.dataSchedule[startIndex][dayIndex].duration = durationInSlots;
@@ -733,6 +791,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
             end: schedule.end,
             duration: durationInSlots
           };
+          console.log('🔍 [DEBUG] Texto del horario establecido:', this.dataSchedule[startIndex][dayIndex].text);
         }
       }
     });
@@ -791,6 +850,15 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
     // Unificar bloques consecutivos
     this.unifyConsecutiveBlocks();
 
+    console.log('🔍 [DEBUG] Estado final después de loadSchedules:', {
+      hasConflicts: this.hasConflicts,
+      scheduleConflicts: Object.fromEntries(this.scheduleConflicts),
+      sectionsWithConflicts: this.sectionsSelected.filter(s => s.collapse?.length && s.collapse.length > 0).map(s => ({
+        name: s.name,
+        subject: s.subject?.name,
+        conflicts: s.collapse?.length || 0
+      }))
+    });
 
     this.validateLastSection();
     this.validateSubmit();
@@ -1101,16 +1169,22 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
 
   // Método para detectar conflictos de horarios
   private detectScheduleConflicts(): void {
+    console.log('🔍 [DEBUG] Iniciando detección de conflictos de horarios');
+    console.log('🔍 [DEBUG] Secciones seleccionadas:', this.sectionsSelected.length);
+    console.log('🔍 [DEBUG] Secciones:', this.sectionsSelected.map(s => ({ id: s.id, name: s.name, subject: s.subject?.name })));
+
     this.scheduleConflicts.clear();
     this.hasConflicts = false;
 
     // Solo detectar conflictos si hay más de una asignatura seleccionada
     if (this.sectionsSelected.length < 2) {
+      console.log('🔍 [DEBUG] No hay suficientes secciones para detectar conflictos (mínimo 2)');
       return;
     }
 
     // Detectar conflictos en los horarios originales antes de la unificación
     this.usedDays.forEach(day => {
+      console.log(`🔍 [DEBUG] Procesando día: ${day.name}`);
       const dayConflicts: any[] = [];
       const daySchedules: any[] = [];
 
@@ -1119,11 +1193,23 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
         const originalDayIndex = this.days.findIndex(d => d.id === day.id);
         const scheduleData = this.dataSchedule[index][originalDayIndex];
 
-        if (scheduleData?.text && scheduleData.text !== 'Varias' && scheduleData.schedules?.length > 0) {
+        if (scheduleData?.text && scheduleData.schedules?.length > 0) {
+          console.log(`🔍 [DEBUG] Encontrado horario en ${day.name} a las ${startTime}:`, {
+            text: scheduleData.text,
+            schedules: scheduleData.schedules.map((s: any) => ({
+              id: s.id,
+              start: s.start,
+              end: s.end,
+              section: s.section?.name,
+              subject: s.section?.subject?.name
+            }))
+          });
+
           // Agregar cada horario individual con información de la sección
           scheduleData.schedules.forEach((schedule: any) => {
             // Verificar que el schedule tenga las propiedades necesarias
             if (!schedule || !schedule.start || !schedule.end) {
+              console.log('🔍 [DEBUG] Schedule inválido:', schedule);
               return;
             }
 
@@ -1150,6 +1236,11 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
                 subjectId: schedule.section?.subject?.id
               };
               daySchedules.push(scheduleInfo);
+              console.log(`🔍 [DEBUG] Agregado horario a ${day.name}:`, {
+                section: schedule.section?.name,
+                subject: schedule.section?.subject?.name,
+                time: `${schedule.start} - ${schedule.end}`
+              });
             }
           });
         }
@@ -1158,6 +1249,11 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
       // Ordenar por tiempo de inicio
       daySchedules.sort((a, b) => this.timeToMinutes(a.timeSlot.start) - this.timeToMinutes(b.timeSlot.start));
 
+      console.log(`🔍 [DEBUG] Horarios ordenados para ${day.name}:`, daySchedules.map(s => ({
+        subject: s.schedule?.section?.subject?.name,
+        section: s.schedule?.section?.name,
+        time: `${s.timeSlot.start} - ${s.timeSlot.end}`
+      })));
 
       // Detectar conflictos solo entre asignaturas/secciones diferentes
       for (let i = 0; i < daySchedules.length; i++) {
@@ -1169,6 +1265,22 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
           const isDifferentSubject = schedule1.subjectId !== schedule2.subjectId;
           const isDifferentSection = schedule1.sectionId !== schedule2.sectionId;
 
+          console.log(`🔍 [DEBUG] Comparando horarios en ${day.name}:`, {
+            schedule1: {
+              subject: schedule1.schedule?.section?.subject?.name,
+              section: schedule1.schedule?.section?.name,
+              time: `${schedule1.timeSlot.start} - ${schedule1.timeSlot.end}`
+            },
+            schedule2: {
+              subject: schedule2.schedule?.section?.subject?.name,
+              section: schedule2.schedule?.section?.name,
+              time: `${schedule2.timeSlot.start} - ${schedule2.timeSlot.end}`
+            },
+            isDifferentSubject,
+            isDifferentSection,
+            overlap: this.schedulesOverlap(schedule1, schedule2)
+          });
+
           // Solo considerar conflicto si son asignaturas/secciones diferentes Y hay solapamiento
           if ((isDifferentSubject || isDifferentSection) && this.schedulesOverlap(schedule1, schedule2)) {
             const conflict = {
@@ -1178,13 +1290,27 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
             };
             dayConflicts.push(conflict);
             this.hasConflicts = true;
+            console.log(`🚨 [DEBUG] CONFLICTO DETECTADO en ${day.name}:`, {
+              time: `${schedule1.timeSlot.start} - ${schedule1.timeSlot.end}`,
+              conflictingSubjects: [
+                schedule1.schedule?.section?.subject?.name,
+                schedule2.schedule?.section?.subject?.name
+              ]
+            });
           }
         }
       }
 
       if (dayConflicts.length > 0) {
         this.scheduleConflicts.set(day.name, dayConflicts);
+        console.log(`🔍 [DEBUG] Conflictos guardados para ${day.name}:`, dayConflicts.length);
       }
+    });
+
+    console.log('🔍 [DEBUG] Resumen de detección de conflictos:', {
+      hasConflicts: this.hasConflicts,
+      totalConflicts: Array.from(this.scheduleConflicts.values()).flat().length,
+      conflictsByDay: Object.fromEntries(this.scheduleConflicts)
     });
 
     // Actualizar las secciones con información de conflictos
@@ -1193,6 +1319,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
 
   // Método para actualizar las secciones con información de conflictos
   private updateSectionsWithConflicts(): void {
+    console.log('🔍 [DEBUG] Actualizando secciones con información de conflictos');
 
     // Limpiar conflictos previos
     this.sectionsSelected.forEach(section => {
@@ -1201,12 +1328,16 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
 
     // Procesar cada conflicto y actualizar las secciones afectadas
     this.scheduleConflicts.forEach((dayConflicts, dayName) => {
+      console.log(`🔍 [DEBUG] Procesando conflictos para ${dayName}:`, dayConflicts.length);
+
       dayConflicts.forEach(conflict => {
         conflict.conflictingSchedules.forEach((conflictingSchedule: any) => {
           const sectionId = conflictingSchedule.sectionId;
           const section = this.sectionsSelected.find(s => s.id === sectionId);
 
           if (section) {
+            console.log(`🔍 [DEBUG] Actualizando sección ${section.name} con conflicto`);
+
             // Agregar información del conflicto
             const conflictInfo = {
               ...conflictingSchedule,
@@ -1225,6 +1356,9 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
               section.collapse = [];
             }
             section.collapse.push(conflictInfo);
+            console.log(`🔍 [DEBUG] Conflicto agregado a sección ${section.name}:`, conflictInfo);
+          } else {
+            console.log(`🔍 [DEBUG] No se encontró sección con ID ${sectionId}`);
           }
         });
       });
@@ -1236,6 +1370,13 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
       const key = section.subject?.id as number;
       this.subjectsSelected.set(key, section);
     });
+
+    console.log('🔍 [DEBUG] Secciones actualizadas con conflictos:', this.sectionsSelected.map(s => ({
+      name: s.name,
+      subject: s.subject?.name,
+      hasConflicts: !!s.collapse?.length,
+      conflicts: s.collapse?.length || 0
+    })));
   }
 
   // Método para verificar si dos horarios se solapan
@@ -1245,8 +1386,18 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
     const start2 = this.timeToMinutes(schedule2.timeSlot.start);
     const end2 = this.timeToMinutes(schedule2.timeSlot.end);
 
+    const overlap = start1 < end2 && start2 < end1;
+
+    console.log(`🔍 [DEBUG] Verificando solapamiento:`, {
+      schedule1: `${schedule1.timeSlot.start} - ${schedule1.timeSlot.end} (${start1} - ${end1})`,
+      schedule2: `${schedule2.timeSlot.start} - ${schedule2.timeSlot.end} (${start2} - ${end2})`,
+      overlap,
+      condition1: start1 < end2,
+      condition2: start2 < end1
+    });
+
     // Verificar solapamiento: dos horarios se solapan si uno empieza antes de que termine el otro
-    return start1 < end2 && start2 < end1;
+    return overlap;
   }
 
   // Método para convertir tiempo a minutos
@@ -1264,19 +1415,55 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
 
   // Método para verificar si un horario tiene conflictos
   hasScheduleConflict(day: string, timeSlot: any): boolean {
-    if (!timeSlot) return false;
+    if (!timeSlot) {
+      console.log(`🔍 [DEBUG] hasScheduleConflict: timeSlot es null/undefined para ${day}`);
+      return false;
+    }
 
     const dayConflicts = this.scheduleConflicts.get(day) || [];
+    console.log(`🔍 [DEBUG] hasScheduleConflict para ${day}:`, {
+      timeSlot,
+      dayConflicts: dayConflicts.length,
+      conflicts: dayConflicts
+    });
 
     // Verificar si el timeSlot coincide con algún conflicto
-    return dayConflicts.some(conflict => {
+    const hasConflict = dayConflicts.some(conflict => {
       const conflictStart = this.timeToMinutes(conflict.timeSlot.start);
       const conflictEnd = this.timeToMinutes(conflict.timeSlot.end);
       const slotStart = this.timeToMinutes(timeSlot.start);
       const slotEnd = this.timeToMinutes(timeSlot.end);
 
       // Verificar si hay solapamiento
-      return (slotStart < conflictEnd && slotEnd > conflictStart);
+      const overlap = (slotStart < conflictEnd && slotEnd > conflictStart);
+
+      console.log(`🔍 [DEBUG] Comparando timeSlot con conflicto:`, {
+        timeSlot: `${timeSlot.start} - ${timeSlot.end} (${slotStart} - ${slotEnd})`,
+        conflict: `${conflict.timeSlot.start} - ${conflict.timeSlot.end} (${conflictStart} - ${conflictEnd})`,
+        overlap
+      });
+
+      return overlap;
+    });
+
+    console.log(`🔍 [DEBUG] hasScheduleConflict resultado para ${day}:`, hasConflict);
+    return hasConflict;
+  }
+
+  // Método de depuración para verificar el estado de conflictos en el template
+  debugConflictState(): void {
+    console.log('🔍 [DEBUG] Estado completo de conflictos:', {
+      hasConflicts: this.hasConflicts,
+      scheduleConflicts: Object.fromEntries(this.scheduleConflicts),
+      sectionsSelected: this.sectionsSelected.map(s => ({
+        name: s.name,
+        subject: s.subject?.name,
+        hasCollapse: !!s.collapse,
+        collapseLength: s.collapse?.length || 0,
+        collapse: s.collapse
+      })),
+      unifiedScheduleData: this.unifiedScheduleData.length,
+      usedDays: this.usedDays.map(d => d.name)
     });
   }
 
