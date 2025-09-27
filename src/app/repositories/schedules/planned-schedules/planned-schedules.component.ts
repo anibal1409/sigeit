@@ -328,6 +328,19 @@ export class PlannedSchedulesComponent {
         (row) => group[currentColumn] === row[currentColumn]
       );
       group.totalCounts = rowsInGroup.length;
+
+      // Calcular horas si es agrupamiento por profesor
+      if (currentColumn === 'teacherName') {
+        let totalHours = 0;
+        rowsInGroup.forEach((schedule: any) => {
+          if (schedule.start && schedule.end) {
+            const hours = moment(schedule.end, 'HH:mm').diff(moment(schedule.start, 'HH:mm'), 'minutes');
+            totalHours += Math.floor(hours / this.period.duration);
+          }
+        });
+        group.teacherName = `${group.teacherName} (${totalHours})`;
+      }
+
       const subGroup = this.getSublevel(
         rowsInGroup,
         level + 1,
@@ -511,7 +524,9 @@ export class PlannedSchedulesComponent {
         if (!reportData[teacherKey]) {
           reportData[teacherKey] = [];
         }
-        reportData[teacherKey].push(this.mapScheduleToRow(schedule, config));
+        // Obtener todos los datos del profesor para la lógica de duplicados
+        const teacherData = data.filter(s => s.teacherName === teacherKey);
+        reportData[teacherKey].push(this.mapScheduleToRow(schedule, config, teacherData));
       });
     } else if (config.reportType === 'semester') {
       // Agrupar por semestre
@@ -564,7 +579,7 @@ export class PlannedSchedulesComponent {
     return reportData;
   }
 
-  private mapScheduleToRow(schedule: any, config: ReportConfig): any[] {
+  private mapScheduleToRow(schedule: any, config: ReportConfig, teacherData: any[] = []): any[] {
     const fieldMapping: { [key: string]: string } = {
       'code': 'Código',
       'name': 'Asignatura',
@@ -586,7 +601,16 @@ export class PlannedSchedulesComponent {
 
       // Aplicar lógica de duplicados para ciertos campos
       if (['code', 'name', 'sectionName', 'documentTeacher', 'teacherName', 'capacity'].includes(field)) {
-        const shouldShow = !this.equalPrevious(schedule, field, this._alldata);
+        let shouldShow = true;
+
+        if (config.reportType === 'teacher') {
+          // Para reporte por profesor, usar los datos del profesor específico
+          shouldShow = !this.equalPreviousInTeacherData(schedule, field, teacherData);
+        } else {
+          // Para otros reportes, usar la lógica original
+          shouldShow = !this.equalPrevious(schedule, field, this._alldata);
+        }
+
         value = shouldShow ? value : '';
       }
 
@@ -618,7 +642,9 @@ export class PlannedSchedulesComponent {
 
     switch (config.reportType) {
       case 'teacher':
-        title = `PROFESOR: ${key}`;
+        // Calcular horas totales del profesor
+        const totalHours = this.calculateTeacherTotalHoursFromData(key);
+        title = `PROFESOR: ${key} (${totalHours} Horas)`;
         break;
       case 'semester':
         title = key;
@@ -749,24 +775,53 @@ export class PlannedSchedulesComponent {
   }
 
   calculateHourlyLoad(): void {
-    if (this.groupsByField === 'teacherName') {
-      let count = 0;
-      let index = -1;
-      this.dataSource.data.forEach((schedule, i) => {
-        if (schedule instanceof Group) {
-          if (index > -1) {
-            this.dataSource.data[index].teacherName += ` (${count})`;
-          }
-          count = 0;
-          index = i;
-        } else {
-          const hours = (moment(schedule.end, 'HH:mm').diff(moment(schedule.start, 'HH:mm'), 'minutes'));
-          count += Math.floor(hours / this.period.duration);
-        }
-        if (this.dataSource.data?.length === i + 1) {
-          this.dataSource.data[index].teacherName += ` (${count})`;
-        }
-      });
+    // Las horas ahora se calculan directamente en getSublevel
+    // Este método se mantiene por compatibilidad pero ya no es necesario
+  }
+
+  private calculateTeacherTotalHoursFromData(teacherName: string): number {
+    // Filtrar datos del profesor específico
+    const teacherData = this._alldata.filter(schedule => schedule.teacherName === teacherName);
+
+    // Usar la misma lógica que calculateHourlyLoad
+    let count = 0;
+    teacherData.forEach(schedule => {
+      if (schedule.start && schedule.end) {
+        const hours = moment(schedule.end, 'HH:mm').diff(moment(schedule.start, 'HH:mm'), 'minutes');
+        count += Math.floor(hours / this.period.duration);
+      }
+    });
+
+    return count;
+  }
+
+  private equalPreviousInTeacherData(schedule: any, field: string, teacherData: any[]): boolean {
+    let equal = false;
+    const index = teacherData.findIndex(
+      (item) => item.scheduleId === schedule.scheduleId
+    );
+
+    if (index > 0) {
+      const previousSchedule = teacherData[index - 1];
+
+      // Para el reporte por profesor, solo comparar si es la misma asignatura
+      if (field === 'name' || field === 'code') {
+        equal = schedule[field] === previousSchedule[field];
+      } else if (field === 'sectionName') {
+        equal = schedule.sectionName === previousSchedule.sectionName &&
+                schedule.code === previousSchedule.code;
+      } else if (field === 'documentTeacher') {
+        equal = schedule.documentTeacher === previousSchedule.documentTeacher &&
+                schedule.code === previousSchedule.code;
+      } else if (field === 'teacherName') {
+        equal = schedule.teacherName === previousSchedule.teacherName &&
+                schedule.code === previousSchedule.code;
+      } else if (field === 'capacity') {
+        equal = schedule.capacity === previousSchedule.capacity &&
+                schedule.code === previousSchedule.code;
+      }
     }
+
+    return equal;
   }
 }
