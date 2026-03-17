@@ -103,12 +103,24 @@ mat-column {
   vertical-align: middle;
 }
 
+// Resumen de horas por asignatura/sección al agrupar por profesor
+.teacher-hours-summary {
+  font-weight: 500;
+  font-size: 0.875rem;
+  margin-left: 0.5rem;
+  opacity: 0.95;
+}
+
+.hours-item {
+  white-space: nowrap;
+}
+
 // Estilos para el texto del encabezado de grupo
 .mat-column-groupHeader strong {
   color: var(--primary-color) !important;
   font-weight: 600;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 // Estilos adicionales para asegurar visibilidad del texto
@@ -116,7 +128,7 @@ mat-column {
   color: var(--primary-color) !important;
   font-weight: 600;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 0.875rem;
   display: inline-block;
   line-height: 1.4;
 }

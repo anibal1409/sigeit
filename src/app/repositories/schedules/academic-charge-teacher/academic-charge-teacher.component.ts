@@ -260,7 +260,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
       return;
     }
     moment.locale('es');
-    let codeDepartment = sessionStorage.getItem('codeDepartment') || 5;
+    let codeDepartment = sessionStorage.getItem('codeDepartment') || 248;
     codeDepartment = +codeDepartment;
     codeDepartment++;
     const nameTeacher = this.teachers.find((teacher) => teacher.id === this.teacherId)?.fullName?.toUpperCase();
