@@ -162,7 +162,7 @@ export class ClassroomsSchedulesComponent
               this.classrooms
             );
 
-            this.scheduleDisplayService.processSchedulesIntoMatrix(
+            this.scheduleDisplayService.processSchedulesIntoMatrixByClassroom(
               data || [],
               this.dataScheduleByDay,
               this.startIntervals,

@@ -80,9 +80,15 @@
       <mat-cell colspan="999" *matCellDef="let group">
         <mat-icon *ngIf="group.expanded">expand_less</mat-icon>
         <mat-icon *ngIf="!group.expanded">expand_more</mat-icon>
-        <strong (click)="groupHeaderClick(group)"
-          >{{ group.name }} {{ group[groupByColumns[group.level - 1]]  }}</strong
-        >
+        <strong (click)="groupHeaderClick(group)">
+          {{ group.name }} {{ group[groupByColumns[group.level - 1]] }}
+        </strong>
+        <span *ngIf="groupsByField === 'teacherName' && group.teacherHoursSummary?.length" class="teacher-hours-summary">
+          —
+          <ng-container *ngFor="let item of group.teacherHoursSummary; let last = last">
+            <span class="hours-item">{{ item.subjectName }} {{ item.sectionName }}: {{ item.hours }} h</span><ng-container *ngIf="!last">, </ng-container>
+          </ng-container>
+        </span>
       </mat-cell>
     </ng-container>
 

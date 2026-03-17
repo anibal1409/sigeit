@@ -375,6 +375,14 @@ export class SectionsOverviewComponent {
         (row) => group[currentColumn] === row[currentColumn]
       );
       group.totalCounts = rowsInGroup.length;
+      // Al agrupar por profesor, calcular horas por asignatura/sección para mostrar en el encabezado
+      if (this.groupsByField === 'teacherName' && currentColumn === 'teacherName') {
+        group.teacherHoursSummary = rowsInGroup.map((row: any) => ({
+          subjectName: row.name || '',
+          sectionName: row.sectionName || '',
+          hours: row.subject?.hours ?? 0,
+        }));
+      }
       const subGroup = this.getSublevel(
         rowsInGroup,
         level + 1,
