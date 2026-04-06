@@ -28,7 +28,7 @@ export class GetUsersService
     return this.entityServices.userControllerFindAll()
       .pipe(
         map((entities: any) => entities.map(User2UserItemVM)),
-        tap((entity) => {
+        tap((entity: UserItemVM[]) => {
           this.memoryService.setDataSource(entity);
         })
       );

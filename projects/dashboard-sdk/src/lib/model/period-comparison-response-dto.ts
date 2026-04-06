@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { SubjectDemandIncreaseItemDto } from './subject-demand-increase-item-dto';
 import { PeriodMetricResponseDto } from './period-metric-response-dto';
 import { PeriodComparisonDeltaDto } from './period-comparison-delta-dto';
 
@@ -19,5 +20,9 @@ export interface PeriodComparisonResponseDto {
      * El primer elemento corresponde al primer periodId enviado (deltas en 0).
      */
     deltasFromFirst: Array<PeriodComparisonDeltaDto>;
+    /**
+     * Asignaturas cuyo cupo o número de secciones aumentó entre el primer y el último período comparado.
+     */
+    subjectDemandIncreases: Array<SubjectDemandIncreaseItemDto>;
 }
 

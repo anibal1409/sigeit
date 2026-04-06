@@ -38,8 +38,8 @@ export class CreateUserService
         career: { id: entitySave?.careerId || 0 },
       })
       .pipe(
-        map(User2UserItemVM),
-        tap((entity) => {
+        map((raw: unknown) => User2UserItemVM(raw)),
+        tap((entity: UserItemVM) => {
           this.memoryService.create(entity);
         })
       );

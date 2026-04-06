@@ -1,0 +1,11 @@
+export { GetStatisticsByCareerService } from './get-statistics-by-career/get-statistics-by-career.service';
+export { GetStatisticsByCurriculumSemesterService } from './get-statistics-by-curriculum-semester/get-statistics-by-curriculum-semester.service';
+export { GetStatisticsByDepartmentService } from './get-statistics-by-department/get-statistics-by-department.service';
+export { GetStatisticsBySubjectService } from './get-statistics-by-subject/get-statistics-by-subject.service';
+export { GetStatisticsClassroomUsageService } from './get-statistics-classroom-usage/get-statistics-classroom-usage.service';
+export { GetStatisticsPeriodComparisonService } from './get-statistics-period-comparison/get-statistics-period-comparison.service';
+export { GetStatisticsSectionOpenDistributionService } from './get-statistics-section-open-distribution/get-statistics-section-open-distribution.service';
+export { GetStatisticsStartTimeDistributionService } from './get-statistics-start-time-distribution/get-statistics-start-time-distribution.service';
+export { GetStatisticsTeacherWorkloadService } from './get-statistics-teacher-workload/get-statistics-teacher-workload.service';
+export { GetStatisticsTeachersByDayService } from './get-statistics-teachers-by-day/get-statistics-teachers-by-day.service';
+export { GetStatisticsTimelineService } from './get-statistics-timeline/get-statistics-timeline.service';

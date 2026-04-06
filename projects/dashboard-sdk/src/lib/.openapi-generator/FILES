@@ -73,6 +73,7 @@ model/response-teacher-dto.ts
 model/schedule-controller-download-planned-schedules200-response.ts
 model/section-open-distribution-item-dto.ts
 model/start-time-slot-item-dto.ts
+model/subject-demand-increase-item-dto.ts
 model/subject-stat-item-dto.ts
 model/teacher-workload-item-dto.ts
 model/teachers-by-day-item-dto.ts

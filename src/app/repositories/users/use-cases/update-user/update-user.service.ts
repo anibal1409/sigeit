@@ -36,8 +36,8 @@ export class UpdateUserService
         idDocument: entitySave.idDocument,
       })
       .pipe(
-        map(User2UserItemVM),
-        tap((entity) => {
+        map((raw: unknown) => User2UserItemVM(raw)),
+        tap((entity: UserItemVM) => {
           this.memoryService.update(entity);
         })
       );

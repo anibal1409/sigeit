@@ -36,8 +36,8 @@ export class UpdateSectionService
         all: entitySave.all,
       })
       .pipe(
-        map(Section2SectionItemVM),
-        tap((entity) => {
+        map((raw: unknown) => Section2SectionItemVM(raw)),
+        tap((entity: SectionItemVM) => {
           this.memoryService.update(entity);
         })
       );

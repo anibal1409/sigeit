@@ -33,6 +33,7 @@
         "dist/api-interfaces"
       ],
       "dashboard-sdk": [
+        "projects/dashboard-sdk/src/public-api.ts",
         "dist/dashboard-sdk"
       ],
       "error-handler": [

@@ -33,7 +33,7 @@ implements UseCase<Array<SubjectItemVM> | null, SubjectBaseQuery> {
     )
     .pipe(
       map((entities: any) => entities.map(Subject2SubjectItemVM)),
-      tap((entity) => {
+      tap((entity: SubjectItemVM[]) => {
         if(memory) {
           this.memoryService.setDataSource(entity);
         }

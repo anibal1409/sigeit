@@ -38,8 +38,8 @@ export class CreateSubjectService
         department: { id: entitySave.departmentId },
       })
       .pipe(
-        map(Subject2SubjectItemVM),
-        tap((entity) => {
+        map((raw: unknown) => Subject2SubjectItemVM(raw)),
+        tap((entity: SubjectItemVM) => {
           this.memoryService.create(entity);
         })
       );

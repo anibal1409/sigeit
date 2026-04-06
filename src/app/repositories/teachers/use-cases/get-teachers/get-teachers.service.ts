@@ -32,7 +32,7 @@ implements UseCase<Array<TeacherItemVM> | null, TeacherBaseQuery> {
     )
     .pipe(
       map((entities: any) => entities.map(Teacher2TeacherItemVM)),
-      tap((entity) => {
+      tap((entity: TeacherItemVM[]) => {
         if(memory) {
           this.memoryService.setDataSource(entity);
         }

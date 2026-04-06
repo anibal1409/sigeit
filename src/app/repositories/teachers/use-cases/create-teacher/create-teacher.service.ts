@@ -35,8 +35,8 @@ export class CreateTeacherService
         email: entitySave.email,
       })
       .pipe(
-        map(Teacher2TeacherItemVM),
-        tap((entity) => {
+        map((raw: unknown) => Teacher2TeacherItemVM(raw)),
+        tap((entity: TeacherItemVM) => {
           this.memoryService.create(entity);
         })
       );

@@ -110,6 +110,10 @@ export class AdminComponent implements OnInit, OnDestroy {
       path: '/dashboard/profile',
       title: 'Mi Perfil',
     },
+    {
+      path: '/dashboard/statistics',
+      title: 'Estadísticas',
+    },
   ];
 
   sub$ = new Subscription();

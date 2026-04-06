@@ -442,8 +442,8 @@ export class StatisticsService {
     }
 
     /**
-     * Comparar períodos: secciones, cupo y horas-materia
-     * @param periodIds IDs de períodos separados por coma (mínimo uno).
+     * Comparar períodos: secciones, cupo, horas-materia y aumento de demanda por asignatura
+     * @param periodIds IDs separados por coma, o repetidos (?periodIds&#x3D;1&amp;periodIds&#x3D;2).
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

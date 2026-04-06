@@ -24,12 +24,17 @@ implements UseCase<Array<PeriodItemVM> | null, BaseQuery> {
     private memoryService: PeriodMemoryService,
   ) {}
 
-  exec(data: BaseQuery = {}): Observable<Array<PeriodItemVM>> {
+  exec(
+    data: BaseQuery = {},
+    memory = true,
+  ): Observable<Array<PeriodItemVM>> {
     return this.entityServices.periodControllerFindAll()
     .pipe(
       map((entities: any) => entities.map(Period2PeriodItemVM)),
       tap((entity) => {
-        this.memoryService.setDataSource(entity);
+        if (memory) {
+          this.memoryService.setDataSource(entity);
+        }
       })
     );
   }

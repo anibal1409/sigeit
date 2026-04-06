@@ -46,6 +46,7 @@ export * from './response-teacher-dto';
 export * from './schedule-controller-download-planned-schedules200-response';
 export * from './section-open-distribution-item-dto';
 export * from './start-time-slot-item-dto';
+export * from './subject-demand-increase-item-dto';
 export * from './subject-stat-item-dto';
 export * from './teacher-workload-item-dto';
 export * from './teachers-by-day-item-dto';

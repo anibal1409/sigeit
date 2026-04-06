@@ -116,6 +116,13 @@ const routes: Routes = [
         path: 'academic-charge',
         loadChildren: () => import('../repositories/academic/academic.module').then((m) => m.AcademicModule),
       },
+      {
+        path: 'statistics',
+        loadChildren: () =>
+          import('../repositories/statistics/statistics.module').then(
+            (m) => m.StatisticsModule
+          ),
+      },
     ],
   },
 ];
