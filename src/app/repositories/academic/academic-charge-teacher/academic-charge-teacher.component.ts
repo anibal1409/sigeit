@@ -40,6 +40,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
     status: '',
     interval: 0,
     stage: '' as any,
+    isVacationCourse: false,
   };
   loading = false;
   hours = 0;

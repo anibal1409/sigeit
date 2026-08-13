@@ -13,4 +13,6 @@ export interface PeriodVM {
   status: boolean | string;
   stage: StagePeriod;
   copyPrevious?: boolean;
+  /** Indica si el período académico es un curso vacacional */
+  isVacationCourse?: boolean;
 }

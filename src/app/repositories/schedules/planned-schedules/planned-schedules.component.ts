@@ -463,6 +463,9 @@ export class PlannedSchedulesComponent {
 
     // Título principal
     let title = `PLANIFICACION ACADEMICA ${department?.abbreviation}-${this.period.name}`;
+    if (this.period.isVacationCourse) {
+      title += ' VACACIONAL';
+    }
 
     if (config.reportType === 'shift') {
       if (config.shiftType === 'morning') {
@@ -661,6 +664,9 @@ export class PlannedSchedulesComponent {
 
   private generateFileName(config: ReportConfig, department: any): string {
     let fileName = `${this.period.name} planificacion academica departamento de ${department?.name}`;
+    if (this.period.isVacationCourse) {
+      fileName += ' VACACIONAL';
+    }
 
     if (config.reportType === 'shift') {
       if (config.shiftType === 'morning') {

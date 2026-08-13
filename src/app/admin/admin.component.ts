@@ -238,7 +238,8 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   private updatePeriodDisplayText(): void {
     if (this.activePeriod) {
-      this.periodDisplayText = this.activePeriod.name;
+      const vacationLabel = this.activePeriod.isVacationCourse ? ' (Vacacional)' : '';
+      this.periodDisplayText = `${this.activePeriod.name}${vacationLabel}`;
     } else {
       this.periodDisplayText = '';
     }

@@ -474,7 +474,8 @@ export class SectionsOverviewComponent {
             minute: '2-digit'
           }).replace(/:/g, '-');
           
-          const fileName = `${this.period.name}_secciones_academicas_${department?.abbreviation}_${formattedDate}_${formattedTime}.xlsx`;
+          const vacationSuffix = this.period.isVacationCourse ? '_vacacional' : '';
+          const fileName = `${this.period.name}${vacationSuffix}_secciones_academicas_${department?.abbreviation}_${formattedDate}_${formattedTime}.xlsx`;
           
           link.download = fileName;
           link.click();

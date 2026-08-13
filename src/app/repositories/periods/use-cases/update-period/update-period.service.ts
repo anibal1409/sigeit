@@ -38,6 +38,7 @@ export class UpdatePeriodService
         interval: entitySave.interval,
         stage: entitySave.stage as any,
         copyPrevious: entitySave.copyPrevious || false,
+        isVacationCourse: !!entitySave.isVacationCourse,
       })
       .pipe(
         map(Period2PeriodItemVM),

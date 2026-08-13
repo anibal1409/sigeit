@@ -52,6 +52,11 @@ export class PeriodsComponent implements OnInit, OnDestroy {
         header: 'Estado',
         cell: (element: { [key: string]: string }) => `${element['stageText']}`,
       },
+      {
+        columnDef: 'isVacationCourseText',
+        header: 'Tipo',
+        cell: (element: { [key: string]: string }) => `${element['isVacationCourseText'] || 'Regular'}`,
+      },
     ],
     body: [],
     options: [],

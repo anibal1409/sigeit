@@ -54,6 +54,7 @@ export class FormComponent implements OnInit, OnDestroy {
     interval: 5,
     startTime: '07:00',
     stage: StagePeriod.toStart,
+    isVacationCourse: false,
   };
   
   status = [
@@ -134,6 +135,7 @@ export class FormComponent implements OnInit, OnDestroy {
       interval: [5, [Validators.required]],
       stage: [{value: StagePeriod.toStart, disabled: !this.data?.id}, [Validators.required]],
       copyPrevious: [true],
+      isVacationCourse: [false],
     });
 
     this.sub$.add(

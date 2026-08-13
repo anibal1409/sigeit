@@ -13,5 +13,6 @@ export function Period2PeriodVM(period: any): PeriodVM {
     status: period?.status,
     id: period?.id,
     description: period?.description,
+    isVacationCourse: !!period?.isVacationCourse,
   };
 }
