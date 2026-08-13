@@ -1,0 +1,54 @@
+<h2 mat-dialog-title>Carga académica masiva</h2>
+
+<mat-dialog-content [formGroup]="form" class="bulk-modal">
+  <p class="hint">
+    Indique la fecha del oficio, el número inicial del código de oficio (se incrementará por cada profesor seleccionado) y marque a quiénes se les generará el documento.
+  </p>
+
+  <div class="fields">
+    <mat-form-field appearance="outline" class="field-code">
+      <mat-label>Código de oficio (inicial)</mat-label>
+      <input matInput type="number" formControlName="officeCode" min="1" />
+      <mat-hint>Número base (p. ej. 5 → DIS-005/AAAA); mínimo 3 dígitos en el código</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="field-date">
+      <mat-label>Fecha del oficio</mat-label>
+      <input matInput type="date" formControlName="letterDate" />
+    </mat-form-field>
+  </div>
+
+  <p class="section-label">Descarga</p>
+  <mat-radio-group formControlName="downloadMode" class="download-mode">
+    <mat-radio-button value="separate">Un archivo .docx por profesor (varias descargas)</mat-radio-button>
+    <mat-radio-button value="zip">Un solo archivo .zip con todos los .docx</mat-radio-button>
+  </mat-radio-group>
+
+  <div class="actions-row">
+    <button mat-button type="button" (click)="setAllSelected(true)">Marcar todos</button>
+    <button mat-button type="button" (click)="setAllSelected(false)">Desmarcar todos</button>
+  </div>
+
+  <div class="teacher-list">
+    <div class="teacher-row" *ngFor="let t of teachersWithId">
+      <mat-checkbox [formControlName]="'sel_' + t.id">
+        {{ t.fullName || (t.firstName + ' ' + t.lastName) }}
+      </mat-checkbox>
+      <span class="badge" *ngIf="form.get('sel_' + t.id)?.value === true">Se generará carga</span>
+      <span class="badge muted" *ngIf="form.get('sel_' + t.id)?.value !== true">Sin carga</span>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="cancel()">Cancelar</button>
+  <button
+    mat-raised-button
+    color="primary"
+    type="button"
+    [disabled]="form.invalid"
+    (click)="submit()"
+  >
+    Generar cargas
+  </button>
+</mat-dialog-actions>

@@ -1,6 +1,6 @@
 /**
  * SIGEIT-API Documentation
- * API completa para el Sistema de Gestión de Información Educativa y Tecnológica
+ * API completa para el Sistema de Gestión de Información Educativa y Tecnológica. Módulo **statistics** (`/statistics/_*`): métricas en camelCase para dashboards (comparación de períodos, docentes por día, carga, aulas, etc.); no usa datos de inscripciones.
  *
  * The version of the OpenAPI document: 1.0
  * 

@@ -35,22 +35,35 @@
       </app-select-ex>
     </mat-form-field>
   </div>
-  <div class="col-md-4 col-12 d-flex align-items-center justify-content-between">
+  <div class="col-md-4 col-12 charge-toolbar">
     <mat-checkbox 
       formControlName="allTeachers"
     >
       Mostrar todos 
     </mat-checkbox>
-    <button
-      mat-raised-button
-      color="primary"
-     (click)="createCharge()"
-     [disabled]="!teacherId"
-    >
-     
-      <mat-icon>get_app</mat-icon>
-      Carga académica
-    </button>
+    <div class="charge-buttons">
+      <button
+        mat-raised-button
+        color="primary"
+        type="button"
+        class="bulk-charge-btn"
+        (click)="openBulkChargeModal()"
+        [disabled]="loading || !periodActive?.id"
+      >
+        <mat-icon>library_add</mat-icon>
+        Carga masiva
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="button"
+        (click)="createCharge()"
+        [disabled]="!teacherId"
+      >
+        <mat-icon>get_app</mat-icon>
+        Carga académica
+      </button>
+    </div>
   </div>
 </div>
 

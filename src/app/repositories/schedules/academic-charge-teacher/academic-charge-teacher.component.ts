@@ -30,8 +30,12 @@ import {
   WidthType,
 } from 'docx';
 import { saveAs } from 'file-saver';
+import JSZip from 'jszip';
 import moment from 'moment';
-import { Subscription } from 'rxjs';
+import {
+  firstValueFrom,
+  Subscription,
+} from 'rxjs';
 
 import { StateService } from '../../../common/state';
 import { UserStateService } from '../../../common/user-state';
@@ -44,6 +48,10 @@ import {
 } from '../model';
 import { SchedulesService } from '../schedules.service';
 import { ScheduleDisplayService } from '../shared/schedule-display.service';
+import {
+  BulkAcademicChargeModalComponent,
+  BulkAcademicChargeModalResult,
+} from './bulk-academic-charge-modal.component';
 
 @Component({
   selector: 'app-academic-charge-teacher',
@@ -55,7 +63,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
   allTeachers: boolean = false;
   departmentId!: number;
   form!: FormGroup;
-  periodActive!: PeriodVM;
+  periodActive?: PeriodVM;
   departmentIdUser!: number;
 
   startIntervals: Array<string> = [];
@@ -77,6 +85,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private stateService: StateService,
     private userStateService: UserStateService,
+    private dialog: MatDialog,
   ) { }
 
   ngOnDestroy(): void {
@@ -192,12 +201,13 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
   }
 
   private loadSchedules(): void {
-    if (this.teacherId) {
+    const periodId = this.periodActive?.id;
+    if (this.teacherId && periodId) {
       this.sub$.add(
         this.schedulesService
           .getSchedules$({
             teacherId: this.teacherId,
-            periodId: this.periodActive.id,
+            periodId,
             departmentId: this.allTeachers ? undefined : this.departmentId,
             status: true,
           })
@@ -255,20 +265,174 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
     );
   }
 
-  async createCharge(): Promise<void> {
-    if (!this.teacherId) {
+  openBulkChargeModal(): void {
+    if (!this.periodActive?.id) {
+      return;
+    }
+    void firstValueFrom(
+      this.schedulesService.getTeachers$({
+        schoolId: this.userStateService.getSchoolId(),
+        status: true,
+      }),
+    ).then((allActiveTeachers) => {
+      if (!allActiveTeachers.length) {
+        return;
+      }
+      const suggestedNext = +(sessionStorage.getItem('codeDepartment') || 248) + 1;
+      this.dialog
+        .open(BulkAcademicChargeModalComponent, {
+          width: '40rem',
+          maxWidth: '95vw',
+          data: {
+            teachers: allActiveTeachers.slice(),
+            suggestedNextOfficeCode: suggestedNext,
+          },
+        })
+        .afterClosed()
+        .subscribe((result: BulkAcademicChargeModalResult | undefined) => {
+          if (result?.selectedTeacherIds?.length) {
+            void this.runBulkAcademicCharges(result, allActiveTeachers);
+          }
+        });
+    });
+  }
+
+  private formatDisCode(codeDepartment: number, year: string): string {
+    const n = Math.max(0, Math.floor(Number(codeDepartment)));
+    return `DIS-${String(n).padStart(3, '0')}/${year}`;
+  }
+
+  private async runBulkAcademicCharges(
+    result: BulkAcademicChargeModalResult,
+    teacherList: TeacherItemVM[],
+  ): Promise<void> {
+    const period = this.periodActive;
+    if (!period?.id) {
       return;
     }
     moment.locale('es');
-    let codeDepartment = sessionStorage.getItem('codeDepartment') || 248;
-    codeDepartment = +codeDepartment;
-    codeDepartment++;
-    const nameTeacher = this.teachers.find((teacher) => teacher.id === this.teacherId)?.fullName?.toUpperCase();
-    const nameSemester = this.periodActive.name;
-    const totalHours = this.academicCharge.reduce((acc, curr) => acc + (curr?.hours || 0), 0);
-    const code = `DIS-${codeDepartment < 99 ? `0${codeDepartment}` : codeDepartment}/${moment().format('YYYY')}`;
+    const letterMoment = moment(result.letterDate, 'YYYY-MM-DD', true);
+    if (!letterMoment.isValid()) {
+      return;
+    }
+    const year = letterMoment.format('YYYY');
+    const nameSemester = period.name;
     const img = await this.schedulesService.getFile('assets/circle-logo-udo.png');
-    const doc = new Document({
+    const logoBuffer = (await img?.arrayBuffer()) as ArrayBuffer;
+    let officeNum = result.officeCodeStart;
+    const downloadMode = result.downloadMode ?? 'separate';
+    const zipEntries: { name: string; blob: Blob }[] = [];
+
+    for (const teacherId of result.selectedTeacherIds) {
+      const schedules = await firstValueFrom(
+        this.schedulesService.getSchedules$({
+          teacherId,
+          periodId: period.id,
+          departmentId: undefined,
+          status: true,
+        }),
+      );
+      const nameTeacher = teacherList
+        .find((t) => t.id === teacherId)
+        ?.fullName?.toUpperCase() || '';
+      const code = this.formatDisCode(officeNum, year);
+      const doc = this.buildAcademicChargeDocument(
+        logoBuffer,
+        schedules,
+        nameTeacher,
+        code,
+        letterMoment,
+        nameSemester,
+      );
+      const blob = await Packer.toBlob(doc);
+      const fileName = this.buildAcademicChargeFileName(code, nameTeacher, nameSemester);
+      if (downloadMode === 'zip') {
+        zipEntries.push({ name: fileName, blob });
+      } else {
+        saveAs(blob, fileName);
+      }
+      officeNum += 1;
+    }
+
+    if (downloadMode === 'zip' && zipEntries.length) {
+      const zip = new JSZip();
+      const zipBase = `cargas-academicas-${nameSemester.replace(/\s+/g, '-')}-${letterMoment.format('YYYY-MM-DD')}`;
+      const zipInnerFolder =
+        this.sanitizePathSegment(zipBase) || 'cargas-academicas';
+      const folder = zip.folder(zipInnerFolder);
+      const target = folder ?? zip;
+      zipEntries.forEach((entry) => {
+        target.file(entry.name, entry.blob);
+      });
+      const zipBlob = await zip.generateAsync({
+        type: 'blob',
+        compression: 'DEFLATE',
+      });
+      saveAs(zipBlob, `${zipInnerFolder}.zip`);
+    }
+
+    sessionStorage.setItem('codeDepartment', String(officeNum - 1));
+  }
+
+  private buildAcademicChargeFileName(
+    code: string,
+    nameTeacher: string,
+    nameSemester: string,
+  ): string {
+    const safeCode = code.replace(/\//g, '-');
+    const safeTeacher = this.sanitizePathSegment(
+      (nameTeacher || '').replaceAll(/ /gi, '-').replaceAll(',', ''),
+    );
+    const safeSemester = this.sanitizePathSegment(nameSemester || '');
+    return `${safeCode}-CA-${safeTeacher}-${safeSemester}.docx`;
+  }
+
+  /** Evita /, \\ y caracteres inválidos en rutas ZIP o nombres de archivo. */
+  private sanitizePathSegment(value: string): string {
+    return value
+      .replace(/[/\\:*?"<>|]+/g, '-')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+  }
+
+  async createCharge(): Promise<void> {
+    const period = this.periodActive;
+    if (!this.teacherId || !period?.id) {
+      return;
+    }
+    moment.locale('es');
+    let codeDepartment = +(sessionStorage.getItem('codeDepartment') || 248);
+    codeDepartment += 1;
+    const nameTeacher = this.teachers.find((teacher) => teacher.id === this.teacherId)?.fullName?.toUpperCase();
+    const nameSemester = period.name;
+    const letterMoment = moment();
+    const code = this.formatDisCode(codeDepartment, letterMoment.format('YYYY'));
+    const img = await this.schedulesService.getFile('assets/circle-logo-udo.png');
+    const logoBuffer = (await img?.arrayBuffer()) as ArrayBuffer;
+    const doc = this.buildAcademicChargeDocument(
+      logoBuffer,
+      this.academicCharge,
+      nameTeacher || '',
+      code,
+      letterMoment,
+      nameSemester,
+    );
+    const blob = await Packer.toBlob(doc);
+    saveAs(blob, this.buildAcademicChargeFileName(code, nameTeacher || '', nameSemester));
+    sessionStorage.setItem('codeDepartment', codeDepartment.toString());
+  }
+
+  private buildAcademicChargeDocument(
+    logoBuffer: ArrayBuffer,
+    academicCharge: Array<ScheduleItemVM>,
+    nameTeacher: string,
+    code: string,
+    letterMoment: moment.Moment,
+    nameSemester: string,
+  ): Document {
+    const totalHours = academicCharge.reduce((acc, curr) => acc + (curr?.hours || 0), 0);
+    return new Document({
       sections: [
         {
           headers: {
@@ -277,7 +441,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
                 new Paragraph({
                   children: [
                     new ImageRun({
-                      data: (await img?.arrayBuffer() as any),
+                      data: logoBuffer as any,
                       transformation: {
                         width: 98,
                         height: 98,
@@ -574,7 +738,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
             new Paragraph({
               children: [
                 new TextRun({
-                  text: 'Maturín, ' + moment('2024-04-10').format('DD MMMM') + ' de ' + moment().format('YYYY'),
+                  text: 'Maturín, ' + letterMoment.format('DD MMMM') + ' de ' + letterMoment.format('YYYY'),
                   size: '12pt',
                 }),
               ],
@@ -655,12 +819,12 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
                     this.createCellHeadTable('Hasta', 10),
                   ],
                 }),
-                ...this.academicCharge.map(
+                ...academicCharge.map(
                   (charge, index) => (new TableRow({
                     children: [
-                      this.createCellTable(this.calculeText(this.academicCharge, index, charge.section?.subject?.code) ? '' : charge.section?.subject?.code || '', 20),
-                      this.createCellTable(this.calculeText(this.academicCharge, index, charge.section?.subject?.name) ? '' : charge.section?.subject?.name || '', 30, AlignmentType.LEFT as any),
-                      this.createCellTable(this.calculeText(this.academicCharge, index, charge.section?.name) ? '' : charge.section?.name || '', 10),
+                      this.createCellTable(this.calculeText(academicCharge, index, charge.section?.subject?.code) ? '' : charge.section?.subject?.code || '', 20),
+                      this.createCellTable(this.calculeText(academicCharge, index, charge.section?.subject?.name) ? '' : charge.section?.subject?.name || '', 30, AlignmentType.LEFT as any),
+                      this.createCellTable(this.calculeText(academicCharge, index, charge.section?.name) ? '' : charge.section?.name || '', 10),
                       this.createCellTable(charge.day?.abbreviation || '', 10),
                       this.createCellTable(charge.classroom?.name || '', 10),
                       this.createCellTable(charge.start || '', 10),
@@ -750,11 +914,6 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
           ],
         },
       ],
-    });
-
-    Packer.toBlob(doc).then(blob => {
-      saveAs(blob, `${code}-CA-${nameTeacher?.replaceAll(/ /gi, '-')?.replaceAll(',', '')}-${nameSemester}.docx`);
-      sessionStorage.setItem('codeDepartment', codeDepartment.toString())
     });
   }
 

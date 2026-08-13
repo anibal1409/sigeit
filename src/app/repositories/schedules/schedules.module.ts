@@ -31,6 +31,9 @@ import {
   AcademicChargeTeacherComponent,
 } from './academic-charge-teacher/academic-charge-teacher.component';
 import {
+  BulkAcademicChargeModalComponent,
+} from './academic-charge-teacher/bulk-academic-charge-modal.component';
+import {
   ClassroomsSchedulesComponent,
 } from './classrooms-schedules/classrooms-schedules.component';
 import { FormComponent } from './form/form.component';
@@ -70,6 +73,7 @@ import {
     ClassroomsSchedulesComponent,
     PlannedSchedulesComponent,
     AcademicChargeTeacherComponent,
+    BulkAcademicChargeModalComponent,
     ReportConfigModalComponent
   ],
   imports: [

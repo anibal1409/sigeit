@@ -45,7 +45,8 @@
               "jquery",
               "moment",
               "escape-string-regexp",
-              "file-saver"
+              "file-saver",
+              "jszip"
             ]
           },
           "configurations": {

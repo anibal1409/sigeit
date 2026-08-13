@@ -1,0 +1,77 @@
+.bulk-modal {
+  min-width: 0;
+  max-height: 65vh;
+  overflow-y: auto;
+}
+
+.hint {
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.section-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.download-mode {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.field-code {
+  flex: 1 1 12rem;
+  min-width: 12rem;
+}
+
+.field-date {
+  flex: 1 1 12rem;
+  min-width: 12rem;
+}
+
+.actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.teacher-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.teacher-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 0.0625rem solid rgba(0, 0, 0, 0.08);
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+  background: rgba(25, 118, 210, 0.12);
+  color: #1565c0;
+}
+
+.badge.muted {
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.55);
+}
