@@ -1,21 +1,29 @@
 import { Injectable } from '@angular/core';
 
 import {
+  PeriodService,
   ResponseSubjectDemandDto,
   SubjectDemandService,
 } from 'dashboard-sdk';
 import {
   BehaviorSubject,
   catchError,
+  concatMap,
+  first,
+  from,
   map,
   Observable,
   of,
   shareReplay,
+  switchMap,
 } from 'rxjs';
 
 export const DEMAND_FACTOR_KEY = 'sigeit-demand-factor';
 export const DEFAULT_DEMAND_FACTOR = 0.3;
 export const TYPICAL_SECTION_CAPACITY = 40;
+export const SECTION_CAPACITY_KEY = 'sigeit-section-capacities';
+/** Preferencias de demanda que deben sobrevivir al cierre de sesión */
+export const DEMAND_PREFERENCE_KEYS = [DEMAND_FACTOR_KEY, SECTION_CAPACITY_KEY];
 
 export interface SubjectDemandSummary {
   subjectId: number;
@@ -26,6 +34,14 @@ export interface SubjectDemandSummary {
   byLevel: Array<number>;
   peakLevel: number;
 }
+
+export interface DemandSource {
+  /** Período del que proviene la demanda; null si ninguno tiene */
+  period: { id: number; name: string } | null;
+  summaries: Map<number, SubjectDemandSummary>;
+}
+
+const EMPTY_SOURCE: DemandSource = { period: null, summaries: new Map() };
 
 export type CoverageStatus = 'low' | 'ok' | 'high' | 'none';
 
@@ -56,7 +72,12 @@ export function summarizeDemand(rows: Array<ResponseSubjectDemandDto>): Map<numb
   return summaries;
 }
 
-export function computeCoverage(total: number, offered: number, factor: number): SubjectCoverage {
+export function computeCoverage(
+  total: number,
+  offered: number,
+  factor: number,
+  sectionCapacity = TYPICAL_SECTION_CAPACITY,
+): SubjectCoverage {
   const estimated = Math.round(total * factor);
   const coverage = estimated > 0 ? offered / estimated : null;
   let status: CoverageStatus = 'none';
@@ -68,7 +89,7 @@ export function computeCoverage(total: number, offered: number, factor: number):
     offered,
     coverage,
     status,
-    suggestedSections: Math.ceil(estimated / TYPICAL_SECTION_CAPACITY),
+    suggestedSections: Math.ceil(estimated / sectionCapacity),
   };
 }
 
@@ -76,33 +97,56 @@ export function computeCoverage(total: number, offered: number, factor: number):
   providedIn: 'root',
 })
 export class SubjectDemandStoreService {
-  private cache = new Map<number, Observable<Map<number, SubjectDemandSummary>>>();
+  private cache = new Map<number, Observable<DemandSource>>();
   private factor$ = new BehaviorSubject<number>(this.readFactor());
 
-  constructor(private subjectDemandService: SubjectDemandService) {}
+  constructor(
+    private subjectDemandService: SubjectDemandService,
+    private periodService: PeriodService,
+  ) {}
 
-  getSummaries$(periodId: number): Observable<Map<number, SubjectDemandSummary>> {
-    let summaries$ = this.cache.get(periodId);
-    if (!summaries$) {
-      summaries$ = this.subjectDemandService.subjectDemandControllerFindAllPeriod(periodId).pipe(
-        map(summarizeDemand),
+  /**
+   * Demanda del período o, si no tiene (p. ej. un curso vacacional), la del
+   * período anterior más reciente que sí tenga demanda cargada.
+   */
+  getSource$(periodId: number): Observable<DemandSource> {
+    let source$ = this.cache.get(periodId);
+    if (!source$) {
+      source$ = this.periodService.periodControllerFindAll().pipe(
+        switchMap((periods) => {
+          const current = periods.find((period) => period.id === periodId);
+          const previous = current
+            ? periods
+              .filter((period) => period.id !== periodId && period.start <= current.start)
+              .sort((a, b) => b.start.localeCompare(a.start))
+            : [];
+          return from([current || { id: periodId, name: '' }, ...previous]).pipe(
+            concatMap((period) =>
+              this.subjectDemandService.subjectDemandControllerFindAllPeriod(period.id).pipe(
+                map((rows) => ({ period: { id: period.id, name: period.name }, summaries: summarizeDemand(rows) })),
+              ),
+            ),
+            first((source: DemandSource) => source.summaries.size > 0, EMPTY_SOURCE),
+          );
+        }),
         catchError(() => {
           this.cache.delete(periodId);
-          return of(new Map<number, SubjectDemandSummary>());
+          return of(EMPTY_SOURCE);
         }),
         shareReplay(1),
       );
-      this.cache.set(periodId, summaries$);
+      this.cache.set(periodId, source$);
     }
-    return summaries$;
+    return source$;
   }
 
-  getSummary$(periodId: number, subjectId: number): Observable<SubjectDemandSummary | null> {
-    return this.getSummaries$(periodId).pipe(map((summaries) => summaries.get(subjectId) || null));
+  getSummaries$(periodId: number): Observable<Map<number, SubjectDemandSummary>> {
+    return this.getSource$(periodId).pipe(map((source) => source.summaries));
   }
 
-  invalidate(periodId: number): void {
-    this.cache.delete(periodId);
+  /** Una importación puede cambiar el período de origen de cualquier otro. */
+  invalidate(): void {
+    this.cache.clear();
   }
 
   getFactor$(): Observable<number> {
@@ -119,6 +163,27 @@ export class SubjectDemandStoreService {
     }
     localStorage.setItem(DEMAND_FACTOR_KEY, String(factor));
     this.factor$.next(factor);
+  }
+
+  getSectionCapacity(subjectId: number): number {
+    return this.readSectionCapacities()[subjectId] || TYPICAL_SECTION_CAPACITY;
+  }
+
+  setSectionCapacity(subjectId: number, capacity: number): void {
+    if (!(Number.isInteger(capacity) && capacity > 0 && capacity <= 500)) {
+      return;
+    }
+    const capacities = this.readSectionCapacities();
+    capacities[subjectId] = capacity;
+    localStorage.setItem(SECTION_CAPACITY_KEY, JSON.stringify(capacities));
+  }
+
+  private readSectionCapacities(): Record<number, number> {
+    try {
+      return JSON.parse(localStorage.getItem(SECTION_CAPACITY_KEY) || '{}');
+    } catch {
+      return {};
+    }
   }
 
   private readFactor(): number {

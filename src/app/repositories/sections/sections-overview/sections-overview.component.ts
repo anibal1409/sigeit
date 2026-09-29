@@ -219,7 +219,7 @@ export class SectionsOverviewComponent {
             periodId: this.periodId,
             status: true,
           }),
-          this.subjectDemandStore.getSummaries$(this.periodId),
+          this.subjectDemandStore.getSource$(this.periodId),
           this.sectionsService.getSubjects$({ departmentId: this.departmentId, status: true }),
         ])
           .pipe(
@@ -228,8 +228,12 @@ export class SectionsOverviewComponent {
               this.stateService.setLoading(this.loading);
             })
           )
-          .subscribe(([sections, summaries, subjects]) => {
-            this._alldata = this.addDemandData(this.mapSectionsData(sections), summaries, subjects);
+          .subscribe(([sections, source, subjects]) => {
+            const demandColumn = this.columns.find((column) => column.field === 'demandEstimated');
+            demandColumn.text = source.period && source.period.id !== this.periodId
+              ? `Demanda est. (${source.period.name})`
+              : 'Demanda est.';
+            this._alldata = this.addDemandData(this.mapSectionsData(sections), source.summaries, subjects);
             this.updateDisplayedColumns();
             console.log('Sections data:', this._alldata);
             this.dataSource.data = this.addGroups(

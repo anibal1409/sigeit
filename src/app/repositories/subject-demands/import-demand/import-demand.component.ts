@@ -50,7 +50,7 @@ export class ImportDemandComponent {
       .import$(this.data.periodId, this.file)
       .pipe(finalize(() => (this.loading = false)))
       .subscribe((result) => {
-        this.subjectDemandStore.invalidate(this.data.periodId);
+        this.subjectDemandStore.invalidate();
         this.result = result;
         this.file = null;
       });

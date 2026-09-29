@@ -13,7 +13,7 @@ import {
   tap,
 } from 'rxjs';
 
-import { DEMAND_FACTOR_KEY } from '../subject-demand/subject-demand-store.service';
+import { DEMAND_PREFERENCE_KEYS } from '../subject-demand/subject-demand-store.service';
 import { UserStateService } from '../user-state';
 
 @Injectable()
@@ -54,11 +54,9 @@ export class HttpInterceptorInterceptor implements HttpInterceptor {
       if (authErrorMessages.includes(errorMessage)) {
         this.userStateService.clear();
         // Limpiar todo el localStorage para asegurar un cierre completo
-        const demandFactor = localStorage.getItem(DEMAND_FACTOR_KEY);
+        const preferences = DEMAND_PREFERENCE_KEYS.map((key) => [key, localStorage.getItem(key)]);
         localStorage.clear();
-        if (demandFactor) {
-          localStorage.setItem(DEMAND_FACTOR_KEY, demandFactor);
-        }
+        preferences.forEach(([key, value]) => value && localStorage.setItem(key as string, value));
         // Redirigir al login
         this.router.navigate(['/auth']);
       }

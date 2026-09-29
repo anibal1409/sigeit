@@ -23,6 +23,7 @@ import {
   SubjectCoverage,
   SubjectDemandStoreService,
   SubjectDemandSummary,
+  TYPICAL_SECTION_CAPACITY,
 } from '../subject-demand-store.service';
 
 const BAR_COLOR = '#90caf9';
@@ -41,8 +42,11 @@ export class SubjectDemandPanelComponent implements OnInit, OnChanges, OnDestroy
   @Input() compact = false;
 
   summary: SubjectDemandSummary | null = null;
+  /** Nombre del período de origen cuando la demanda no es del período actual */
+  sourcePeriodName = '';
   coverage: SubjectCoverage | null = null;
   factor = 0;
+  sectionCapacity = TYPICAL_SECTION_CAPACITY;
   loaded = false;
 
   chartData: ChartData<'bar'> = { labels: [], datasets: [] };
@@ -69,12 +73,13 @@ export class SubjectDemandPanelComponent implements OnInit, OnChanges, OnDestroy
       combineLatest([
         this.inputs$.pipe(
           switchMap(({ periodId, subjectId }) =>
-            periodId && subjectId ? this.store.getSummary$(periodId, subjectId) : of(null),
+            periodId && subjectId ? this.store.getSource$(periodId) : of(null),
           ),
         ),
         this.store.getFactor$(),
-      ]).subscribe(([summary, factor]) => {
-        this.summary = summary;
+      ]).subscribe(([source, factor]) => {
+        this.summary = (this.subjectId && source?.summaries.get(this.subjectId)) || null;
+        this.sourcePeriodName = source?.period && source.period.id !== this.periodId ? source.period.name : '';
         this.factor = factor;
         this.loaded = true;
         this.update();
@@ -100,8 +105,18 @@ export class SubjectDemandPanelComponent implements OnInit, OnChanges, OnDestroy
     this.store.setFactor(Number(value.replace(',', '.')));
   }
 
+  changeSectionCapacity(value: string): void {
+    if (this.subjectId) {
+      this.store.setSectionCapacity(this.subjectId, Number(value));
+      this.update();
+    }
+  }
+
   private update(): void {
-    this.coverage = this.summary ? computeCoverage(this.summary.total, this.offered || 0, this.factor) : null;
+    this.sectionCapacity = this.subjectId ? this.store.getSectionCapacity(this.subjectId) : TYPICAL_SECTION_CAPACITY;
+    this.coverage = this.summary
+      ? computeCoverage(this.summary.total, this.offered || 0, this.factor, this.sectionCapacity)
+      : null;
     if (this.summary && !this.compact) {
       const peak = this.summary.peakLevel;
       this.chartData = {
