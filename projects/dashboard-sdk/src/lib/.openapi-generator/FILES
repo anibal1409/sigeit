@@ -17,6 +17,7 @@ api/schedule.service.ts
 api/school.service.ts
 api/section.service.ts
 api/statistics.service.ts
+api/subject-demand.service.ts
 api/subject.service.ts
 api/teacher.service.ts
 api/user.service.ts
@@ -48,6 +49,7 @@ model/department-stat-item-dto.ts
 model/entity-audit-history-dto.ts
 model/generate-report-dto.ts
 model/id-create-entity.ts
+model/import-subject-demand-result-dto.ts
 model/login-dto.ts
 model/login-user-response-dto.ts
 model/models.ts
@@ -68,11 +70,13 @@ model/response-period-dto.ts
 model/response-schedule-dto.ts
 model/response-school-dto.ts
 model/response-section-dto.ts
+model/response-subject-demand-dto.ts
 model/response-subject-dto.ts
 model/response-teacher-dto.ts
 model/schedule-controller-download-planned-schedules200-response.ts
 model/section-open-distribution-item-dto.ts
 model/start-time-slot-item-dto.ts
+model/subject-demand-controller-import-request.ts
 model/subject-demand-increase-item-dto.ts
 model/subject-stat-item-dto.ts
 model/teacher-workload-item-dto.ts
