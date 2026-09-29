@@ -42,6 +42,7 @@ import { ScheduleMemoryService } from './memory';
 import {
   PlannedSchedulesComponent,
 } from './planned-schedules/planned-schedules.component';
+import { PlanningAuditComponent } from './planning-audit';
 import {
   ReportConfigModalComponent,
 } from './planned-schedules/report-config-modal/report-config-modal.component';
@@ -61,9 +62,6 @@ import {
   GetSchedulesService,
   IntervalsService,
   UpdateScheduleService,
-  ValidateClassroomSchedulesService,
-  ValidateLevelSchedulesService,
-  ValidateTeacherSchedulesService,
 } from './use-cases';
 
 @NgModule({
@@ -76,7 +74,8 @@ import {
     PlannedSchedulesComponent,
     AcademicChargeTeacherComponent,
     BulkAcademicChargeModalComponent,
-    ReportConfigModalComponent
+    ReportConfigModalComponent,
+    PlanningAuditComponent,
   ],
   imports: [
     CommonModule,
@@ -111,9 +110,6 @@ import {
     GetSchedulesService,
     IntervalsService,
     GetDaysService,
-    ValidateClassroomSchedulesService,
-    ValidateTeacherSchedulesService,
-    ValidateLevelSchedulesService,
     GetPlannedSchedulesService,
 
     GetSectionsService,

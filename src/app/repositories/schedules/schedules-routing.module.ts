@@ -6,6 +6,7 @@ import {
 
 import { AcademicChargeTeacherComponent } from './academic-charge-teacher';
 import { PlannedSchedulesComponent } from './planned-schedules';
+import { PlanningAuditComponent } from './planning-audit';
 import { SchedulesComponent } from './schedules.component';
 
 const routes: Routes = [
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'planned',
     component: PlannedSchedulesComponent,
+  },
+  {
+    path: 'audit',
+    component: PlanningAuditComponent,
   },
   {
     path: 'academic-charge',

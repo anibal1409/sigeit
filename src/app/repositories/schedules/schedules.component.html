@@ -81,6 +81,12 @@
         [subjectId]="subjectId"
         [offered]="offeredCapacity"
       ></app-subject-demand-panel>
+      <div *ngIf="sectionId && sectionCoverage" class="coverage" [ngClass]="'coverage-' + sectionCoverage.status">
+        <mat-icon>schedule</mat-icon>
+        Horas programadas de la sección:
+        <strong>{{ sectionCoverage.assignedHours }} / {{ sectionCoverage.requiredHours }}</strong>
+        · {{ coverageText }}
+      </div>
     </mat-card-content>
   </mat-card>
 </div>
@@ -104,8 +110,6 @@
     [scheduleId]="scheduleId"
     [periodId]="periodId"
     [departmentId]="departmentId"
-    [teacherId]="teacherId"
-    [subjectId]="subjectId"
     (closed)="loadSchedules(); changeShowForm(false)"
     (cancel)="changeShowForm(false)"
   >
@@ -155,6 +159,18 @@
   [routerLink]="['academic-charge']" 
 >
   <mat-icon>account_circle</mat-icon>
+</button>
+
+<button
+  mat-fab
+  matTooltip="Auditar planificación del período"
+  matTooltipPosition="left"
+  aria-label="Auditar planificación del período"
+  class="btn-fixed btn-audit"
+  color="basic"
+  [routerLink]="['audit']"
+>
+  <mat-icon>fact_check</mat-icon>
 </button>
 
 <button

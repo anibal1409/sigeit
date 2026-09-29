@@ -1,0 +1,28 @@
+:host {
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.mat-container {
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+
+.hint {
+  margin: 1rem 0;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+table {
+  margin-top: 1rem;
+}
+
+.status-EMPTY,
+.status-INCOMPLETE {
+  color: #ef6c00;
+}
+
+.status-EXCEEDED {
+  color: #c62828;
+}

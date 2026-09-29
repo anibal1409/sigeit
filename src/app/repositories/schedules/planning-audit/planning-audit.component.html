@@ -1,0 +1,84 @@
+<div class="d-flex p-4 pb-1 align-items-center">
+  <div class="col-md-6">
+    <h2 class="m-0">Auditoría de planificación {{ periodName }}</h2>
+  </div>
+  <div *ngIf="!departmentIdUser" class="col-md-4">
+    <mat-form-field>
+      <mat-label>Departamento</mat-label>
+      <app-select-ex
+        label="Departamento"
+        [items]="departments"
+        [formControl]="departmentCtrl"
+        placeholder="Todos los departamentos"
+      ></app-select-ex>
+    </mat-form-field>
+  </div>
+  <div class="col justify-content-end d-flex gap-2">
+    <button type="button" mat-fab color="primary" matTooltip="Actualizar" aria-label="Actualizar" (click)="load()">
+      <mat-icon>refresh</mat-icon>
+    </button>
+    <button type="button" mat-fab color="basic" matTooltip="Volver" aria-label="Volver" (click)="navigateBack()">
+      <mat-icon>keyboard_backspace</mat-icon>
+    </button>
+  </div>
+</div>
+
+<div *ngIf="audit" class="mat-container">
+  <mat-card>
+    <mat-card-content>
+      <mat-tab-group mat-stretch-tabs="false" animationDuration="0ms">
+        <mat-tab [label]="'Aulas (' + audit.summary.classroom + ')'">
+          <ng-container *ngTemplateOutlet="pairs; context: { $implicit: audit.classroom, extra: 'Aula' }"></ng-container>
+        </mat-tab>
+        <mat-tab [label]="'Profesores (' + audit.summary.teacher + ')'">
+          <ng-container *ngTemplateOutlet="pairs; context: { $implicit: audit.teacher, extra: 'Profesor' }"></ng-container>
+        </mat-tab>
+        <mat-tab [label]="'Nivel (' + audit.summary.level + ')'">
+          <p class="hint">Asignaturas cuya demanda se concentra en el mismo nivel dictadas a la misma hora (advertencia).</p>
+          <ng-container *ngTemplateOutlet="pairs; context: { $implicit: audit.level, extra: null }"></ng-container>
+        </mat-tab>
+        <mat-tab [label]="'Fuera de franja (' + audit.summary.outOfRange + ')'">
+          <p *ngIf="!audit.outOfRange.length" class="hint">Sin bloques fuera de la franja del período.</p>
+          <table *ngIf="audit.outOfRange.length" class="table table-sm">
+            <thead><tr><th>Día</th><th>Horario</th><th>Aula</th><th>Profesor</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let item of audit.outOfRange">
+                <td>{{ item.dayName }}</td><td>{{ describe(item) }}</td><td>{{ item.classroomName }}</td><td>{{ item.teacherName }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-tab>
+        <mat-tab [label]="'Horas incompletas (' + audit.summary.incompleteSections + ')'">
+          <p *ngIf="!audit.incompleteSections.length" class="hint">Todas las secciones tienen sus horas completas.</p>
+          <table *ngIf="audit.incompleteSections.length" class="table table-sm">
+            <thead>
+              <tr><th>Sem.</th><th>Código</th><th>Asignatura</th><th>Sección</th><th>Profesor</th><th>Horas</th><th>Estado</th></tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of audit.incompleteSections" [ngClass]="'status-' + item.status">
+                <td>{{ item.semester }}</td><td>{{ item.subjectCode }}</td><td>{{ item.subjectName }}</td>
+                <td>{{ item.sectionName }}</td><td>{{ item.teacherName }}</td>
+                <td>{{ item.assignedHours }} / {{ item.requiredHours }}</td><td>{{ coverageLabels[item.status] }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<ng-template #pairs let-items let-extra="extra">
+  <p *ngIf="!items.length" class="hint">Sin choques.</p>
+  <table *ngIf="items.length" class="table table-sm">
+    <thead><tr><th>Día</th><th *ngIf="extra">{{ extra }}</th><th>Bloque</th><th>Choca con</th></tr></thead>
+    <tbody>
+      <tr *ngFor="let pair of items">
+        <td>{{ pair.first.dayName }}</td>
+        <td *ngIf="extra">{{ extra === 'Aula' ? pair.first.classroomName : pair.first.teacherName }}</td>
+        <td>{{ describe(pair.first) }}</td>
+        <td>{{ describe(pair.second) }}</td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>

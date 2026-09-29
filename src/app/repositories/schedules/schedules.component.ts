@@ -10,6 +10,10 @@ import {
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
+import {
+  CoverageStatus,
+  SectionCoverageDto,
+} from 'dashboard-sdk';
 import { Subscription } from 'rxjs';
 
 import { ConfirmModalComponent } from '../../common/confirm-modal';
@@ -30,6 +34,7 @@ import { SectionVM } from '../sections/model';
 import { SubjectVM } from '../subjects/model';
 import {
   RowActionSchedule,
+  ScheduleItemVM,
   ScheduleVM,
 } from './model';
 import { SchedulesService } from './schedules.service';
@@ -93,7 +98,8 @@ export class SchedulesComponent implements OnInit, OnDestroy {
   subjectId!: number;
   sectionId!: number;
   scheduleId!: number;
-  teacherId!: number;
+  /** Horas programadas vs. requeridas de la sección seleccionada. */
+  sectionCoverage: Pick<SectionCoverageDto, 'assignedHours' | 'requiredHours' | 'status'> | null = null;
   departmentIdUser!: number;
   offeredCapacity = 0;
 
@@ -133,6 +139,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
         };
 
         this.tableService.setData(this.data);
+        this.updateCoverage(data || []);
       })
     );
 
@@ -145,6 +152,40 @@ export class SchedulesComponent implements OnInit, OnDestroy {
     );
     this.loadDepartments();
     this.loadTeachers();
+  }
+
+  /** Texto del estado de horas de la sección seleccionada. */
+  get coverageText(): string {
+    const coverage = this.sectionCoverage;
+    if (!coverage) {
+      return '';
+    }
+    const diff = coverage.requiredHours - coverage.assignedHours;
+    const texts: Record<string, string> = {
+      EMPTY: 'Sin horario',
+      INCOMPLETE: `Faltan ${diff} h`,
+      COMPLETE: 'Completa',
+      EXCEEDED: `Excede ${-diff} h`,
+    };
+    return texts[coverage.status];
+  }
+
+  /** Cobertura de horas de la sección a partir del listado ya cargado (misma regla que el backend). */
+  private updateCoverage(schedules: Array<ScheduleItemVM>): void {
+    const requiredHours = this.subjects.find((subject) => subject.id === this.subjectId)?.hours;
+    if (!this.sectionId || !requiredHours) {
+      this.sectionCoverage = null;
+      return;
+    }
+    const assignedHours = schedules
+      .filter((item) => (item.section?.id ?? item.sectionId) === this.sectionId)
+      .reduce((sum, item) => sum + (item.hours || 0), 0);
+    const status =
+      assignedHours === 0 ? CoverageStatus.Empty
+        : assignedHours < requiredHours ? CoverageStatus.Incomplete
+          : assignedHours === requiredHours ? CoverageStatus.Complete
+            : CoverageStatus.Exceeded;
+    this.sectionCoverage = { assignedHours, requiredHours, status };
   }
 
   ngOnDestroy(): void {
@@ -203,13 +244,8 @@ export class SchedulesComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.form.get('sectionId')?.valueChanges.subscribe((sectionId) => {
-        this.teacherId = 0;
         this.sectionId = +sectionId;
         if (sectionId) {
-          const section = this.sections.find((s) => s.id === sectionId);
-          if (section?.teacher?.id) {
-            this.teacherId = section.teacher.id;
-          }
           this.loadSchedules();
           this.validateForm();
         }
@@ -341,10 +377,8 @@ export class SchedulesComponent implements OnInit, OnDestroy {
   clickOption(event: OptionAction): void {
     switch (event.option.value) {
       case RowActionSchedule.update:
-        if (this.teacherId) {
-          this.scheduleId = +event.data['id'];
-          this.changeShowForm(true);
-        }
+        this.scheduleId = +event.data['id'];
+        this.changeShowForm(true);
         break;
       case RowActionSchedule.delete:
         this.showConfirm(event.data as any);

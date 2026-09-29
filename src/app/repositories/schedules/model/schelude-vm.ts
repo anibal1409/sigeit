@@ -8,4 +8,6 @@ export interface ScheduleVM {
   periodId: number;
   hours?: number;
   status: boolean;
+  /** Guarda aunque el backend detecte choques de aula o profesor. */
+  force?: boolean;
 }

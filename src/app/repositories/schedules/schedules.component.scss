@@ -13,6 +13,19 @@
     margin-bottom: 12rem;
     background: #FFFFFF;
   }
+  .btn-audit {
+    margin-bottom: 16rem;
+    background: #FFFFFF;
+  }
+  .coverage {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+    &.coverage-COMPLETE { color: #2e7d32; }
+    &.coverage-INCOMPLETE, &.coverage-EMPTY { color: #ef6c00; }
+    &.coverage-EXCEEDED { color: #c62828; }
+  }
   .demand-summary {
     display: block;
     margin-top: 0.5rem;

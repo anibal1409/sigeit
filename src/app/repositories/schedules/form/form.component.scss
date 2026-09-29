@@ -22,6 +22,18 @@ mat-card-header {
   margin-bottom: 1rem;
 }
 
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+
+  p {
+    width: 100%;
+    margin: 0;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .container {
     padding: 0.5rem;

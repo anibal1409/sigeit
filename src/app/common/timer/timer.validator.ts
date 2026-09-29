@@ -17,7 +17,7 @@ export function timeValidator(startName = 'start') {
     const startDate = moment(startCtrl.value, format);
     const endDate = moment(endCtrl.value, format);
     
-    if (startDate.isAfter(endDate)) {
+    if (!startDate.isBefore(endDate)) {
       return { 'invalidTimeRange': true };
     }
     return null;

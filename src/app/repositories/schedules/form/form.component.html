@@ -3,7 +3,7 @@
     <mat-card-header class="d-flex justify-content-between align-items-center">
       <mat-card-title>{{ title }}</mat-card-title>
 
-      <button *ngIf="classroomScheduleClash || teacherScheduleClash || levelScheduleClash" color="basic" mat-raised-button
+      <button *ngIf="crashWarning" color="basic" mat-raised-button
         class="btn-error text-danger " matTooltip="Mostrar choque de horarios" matTooltipPosition="left"
         aria-label="Mostrar choque de horarios" (click)="showSchedulesClash()">
         <span class="parpadeo">
@@ -48,7 +48,7 @@
               </app-select-ex>
             </mat-form-field>
           </div>
-          <div class="col-md-3 align-items-end d-flex">
+          <div class="col-md-2 align-items-end d-flex">
             <mat-form-field class="">
               <mat-label>Desde</mat-label>
               <app-select-ex
@@ -64,7 +64,15 @@
               </app-select-ex>
             </mat-form-field>
           </div>
-          <div class="col-md-3 align-items-end d-flex">
+          <div class="col-md-2 align-items-end d-flex">
+            <mat-form-field class="">
+              <mat-label>Horas académicas</mat-label>
+              <mat-select formControlName="hours">
+                <mat-option *ngFor="let hours of hoursOptions" [value]="hours">{{ hours }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2 align-items-end d-flex">
             <mat-form-field class="">
               <mat-label>Hasta</mat-label>
               <app-select-ex
@@ -82,12 +90,44 @@
           </div>
         </div>
 
+        <div class="row align-items-center">
+          <div *ngIf="!scheduleId" class="col-md-6">
+            <mat-form-field>
+              <mat-label>Repetir también en</mat-label>
+              <mat-select [formControl]="extraDaysCtrl" multiple>
+                <mat-option *ngFor="let day of extraDays" [value]="day.id">{{ day.name }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <button type="button" mat-stroked-button color="primary" (click)="suggestSlots()"
+              [disabled]="!sectionId || loadingSuggestions"
+              matTooltip="Bloques donde el profesor está libre y hay aulas disponibles (filtra por el día y las horas elegidas)">
+              <mat-icon>auto_awesome</mat-icon>
+              Sugerir horarios
+            </button>
+          </div>
+        </div>
+
+        <div *ngIf="suggestionsLoaded" class="suggestions">
+          <p *ngIf="!suggestions.length" class="text-muted">No hay bloques libres con esos criterios.</p>
+          <p *ngIf="suggestionsTotal > suggestions.length" class="text-muted">
+            Mostrando {{ suggestions.length }} de {{ suggestionsTotal }}; elija un día para acotar.
+          </p>
+          <button *ngFor="let slot of suggestions" type="button" mat-stroked-button class="suggestion"
+            [color]="slot.levelConflict ? 'accent' : undefined" (click)="applySlot(slot)"
+            [matTooltip]="slot.levelConflict ? 'Coincide con otra asignatura del mismo nivel de demanda' : slot.classrooms.length + ' aulas libres'">
+            <mat-icon *ngIf="slot.levelConflict">warning</mat-icon>
+            {{ slot.dayName }} {{ slot.start }} - {{ slot.end }}
+          </button>
+        </div>
+
         <div class="row">
           <div class="col d-flex justify-content-end">
-            <button (click)="saveWarning()" mat-raised-button [color]="crashWarning ? 'accent' : 'primary'"
+            <button (click)="saveWarning()" mat-raised-button [color]="blocking ? 'warn' : crashWarning ? 'accent' : 'primary'"
               [disabled]="submitDisabled || loading">
               <mat-icon *ngIf="crashWarning">report_problem</mat-icon>
-              Guardar
+              Guardar{{ dayIds.length > 1 ? ' (' + dayIds.length + ' días)' : '' }}
             </button>
           </div>
           <div class="col">

@@ -34,6 +34,7 @@ export class UpdateScheduleService
         end: entitySave.end,
         start: entitySave.start,
         section: { id: entitySave.sectionId },
+        force: entitySave.force,
       })
       .pipe(
         map(Schedule2ScheduleItemVM),
