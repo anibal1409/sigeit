@@ -33,7 +33,7 @@ export class ValidateTeacherSchedulesService {
             const end1 = moment(scheduleVm.end, 'HH:mm');
             const start2 = moment(schedule.start, 'HH:mm');
             const end2 = moment(schedule.end, 'HH:mm');
-            return start1.isSameOrBefore(end2) && end1.isSameOrAfter(start2);
+            return start1.isBefore(end2) && end1.isAfter(start2);
           });
   
           return collapsedSchedules;
