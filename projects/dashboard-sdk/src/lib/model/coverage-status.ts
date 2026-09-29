@@ -9,20 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { IdCreateEntity } from './id-create-entity';
 
 
-export interface CreateScheduleDto { 
-    start: string;
-    end: string;
-    classroom: IdCreateEntity;
-    day: IdCreateEntity;
-    section: IdCreateEntity;
-    period: IdCreateEntity;
-    status: boolean;
-    /**
-     * Guarda aunque existan choques de aula o profesor
-     */
-    force?: boolean;
-}
+export type CoverageStatus = 'EMPTY' | 'INCOMPLETE' | 'COMPLETE' | 'EXCEEDED';
+
+export const CoverageStatus = {
+    Empty: 'EMPTY' as CoverageStatus,
+    Incomplete: 'INCOMPLETE' as CoverageStatus,
+    Complete: 'COMPLETE' as CoverageStatus,
+    Exceeded: 'EXCEEDED' as CoverageStatus
+};
 

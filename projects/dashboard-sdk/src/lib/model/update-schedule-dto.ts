@@ -20,5 +20,9 @@ export interface UpdateScheduleDto {
     section?: IdCreateEntity;
     period?: IdCreateEntity;
     status?: boolean;
+    /**
+     * Guarda aunque existan choques de aula o profesor
+     */
+    force?: boolean;
 }
 

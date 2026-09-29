@@ -9,20 +9,18 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { IdCreateEntity } from './id-create-entity';
+import { FreeClassroomDto } from './free-classroom-dto';
 
 
-export interface CreateScheduleDto { 
+export interface FreeSlotDto { 
+    dayId: number;
+    dayName: string;
     start: string;
     end: string;
-    classroom: IdCreateEntity;
-    day: IdCreateEntity;
-    section: IdCreateEntity;
-    period: IdCreateEntity;
-    status: boolean;
     /**
-     * Guarda aunque existan choques de aula o profesor
+     * true si coincide con otra asignatura del mismo nivel pico
      */
-    force?: boolean;
+    levelConflict: boolean;
+    classrooms: Array<FreeClassroomDto>;
 }
 

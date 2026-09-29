@@ -21,9 +21,19 @@ import { Observable }                                        from 'rxjs';
 // @ts-ignore
 import { CreateScheduleDto } from '../model/create-schedule-dto';
 // @ts-ignore
+import { CreateSchedulesBulkDto } from '../model/create-schedules-bulk-dto';
+// @ts-ignore
+import { FreeSlotDto } from '../model/free-slot-dto';
+// @ts-ignore
+import { PeriodAuditDto } from '../model/period-audit-dto';
+// @ts-ignore
 import { ResponseScheduleDto } from '../model/response-schedule-dto';
 // @ts-ignore
+import { ScheduleConflictsDto } from '../model/schedule-conflicts-dto';
+// @ts-ignore
 import { ScheduleControllerDownloadPlannedSchedules200Response } from '../model/schedule-controller-download-planned-schedules200-response';
+// @ts-ignore
+import { SectionCoverageDto } from '../model/section-coverage-dto';
 // @ts-ignore
 import { UpdateScheduleDto } from '../model/update-schedule-dto';
 
@@ -98,6 +108,78 @@ export class ScheduleService {
     }
 
     /**
+     * Auditoría completa de la planificación de un período
+     * @param periodId Período académico
+     * @param departmentId Filtra por departamento de la asignatura
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public scheduleControllerAudit(periodId: number, departmentId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PeriodAuditDto>;
+    public scheduleControllerAudit(periodId: number, departmentId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PeriodAuditDto>>;
+    public scheduleControllerAudit(periodId: number, departmentId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PeriodAuditDto>>;
+    public scheduleControllerAudit(periodId: number, departmentId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (periodId === null || periodId === undefined) {
+            throw new Error('Required parameter periodId was null or undefined when calling scheduleControllerAudit.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (periodId !== undefined && periodId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>periodId, 'periodId');
+        }
+        if (departmentId !== undefined && departmentId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>departmentId, 'departmentId');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/schedule/planning/audit`;
+        return this.httpClient.request<PeriodAuditDto>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Crea un horario
+     * Valida horas HH:mm, franja del período y sección. Responde 409 con &#x60;conflicts&#x60; si choca en aula o profesor, salvo &#x60;force: true&#x60;.
      * @param createScheduleDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -155,6 +237,75 @@ export class ScheduleService {
             {
                 context: localVarHttpContext,
                 body: createScheduleDto,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Crea el mismo bloque en varios días
+     * Valida todos los días y guarda todos o ninguno. 409 con &#x60;conflicts&#x60; por día.
+     * @param createSchedulesBulkDto 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public scheduleControllerCreateBulk(createSchedulesBulkDto: CreateSchedulesBulkDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<ResponseScheduleDto>>;
+    public scheduleControllerCreateBulk(createSchedulesBulkDto: CreateSchedulesBulkDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<ResponseScheduleDto>>>;
+    public scheduleControllerCreateBulk(createSchedulesBulkDto: CreateSchedulesBulkDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<ResponseScheduleDto>>>;
+    public scheduleControllerCreateBulk(createSchedulesBulkDto: CreateSchedulesBulkDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (createSchedulesBulkDto === null || createSchedulesBulkDto === undefined) {
+            throw new Error('Required parameter createSchedulesBulkDto was null or undefined when calling scheduleControllerCreateBulk.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/schedule/bulk`;
+        return this.httpClient.request<Array<ResponseScheduleDto>>('post', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: createSchedulesBulkDto,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -525,6 +676,279 @@ export class ScheduleService {
 
         let localVarPath = `/schedule/students/period/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
         return this.httpClient.request<Array<ResponseScheduleDto>>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Choques de aula, profesor y nivel de un bloque candidato
+     * @param periodId 
+     * @param dayId 
+     * @param start Hora de inicio HH:mm
+     * @param end Hora de fin HH:mm
+     * @param classroomId 
+     * @param sectionId 
+     * @param excludeId Horario que se está editando (se ignora)
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public scheduleControllerFindConflicts(periodId: number, dayId: number, start: string, end: string, classroomId: number, sectionId: number, excludeId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ScheduleConflictsDto>;
+    public scheduleControllerFindConflicts(periodId: number, dayId: number, start: string, end: string, classroomId: number, sectionId: number, excludeId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ScheduleConflictsDto>>;
+    public scheduleControllerFindConflicts(periodId: number, dayId: number, start: string, end: string, classroomId: number, sectionId: number, excludeId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ScheduleConflictsDto>>;
+    public scheduleControllerFindConflicts(periodId: number, dayId: number, start: string, end: string, classroomId: number, sectionId: number, excludeId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (periodId === null || periodId === undefined) {
+            throw new Error('Required parameter periodId was null or undefined when calling scheduleControllerFindConflicts.');
+        }
+        if (dayId === null || dayId === undefined) {
+            throw new Error('Required parameter dayId was null or undefined when calling scheduleControllerFindConflicts.');
+        }
+        if (start === null || start === undefined) {
+            throw new Error('Required parameter start was null or undefined when calling scheduleControllerFindConflicts.');
+        }
+        if (end === null || end === undefined) {
+            throw new Error('Required parameter end was null or undefined when calling scheduleControllerFindConflicts.');
+        }
+        if (classroomId === null || classroomId === undefined) {
+            throw new Error('Required parameter classroomId was null or undefined when calling scheduleControllerFindConflicts.');
+        }
+        if (sectionId === null || sectionId === undefined) {
+            throw new Error('Required parameter sectionId was null or undefined when calling scheduleControllerFindConflicts.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (periodId !== undefined && periodId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>periodId, 'periodId');
+        }
+        if (dayId !== undefined && dayId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>dayId, 'dayId');
+        }
+        if (start !== undefined && start !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>start, 'start');
+        }
+        if (end !== undefined && end !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>end, 'end');
+        }
+        if (classroomId !== undefined && classroomId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>classroomId, 'classroomId');
+        }
+        if (sectionId !== undefined && sectionId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sectionId, 'sectionId');
+        }
+        if (excludeId !== undefined && excludeId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>excludeId, 'excludeId');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/schedule/planning/conflicts`;
+        return this.httpClient.request<ScheduleConflictsDto>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Bloques libres para una sección, con las aulas disponibles
+     * @param periodId 
+     * @param sectionId 
+     * @param hours Horas académicas seguidas del bloque
+     * @param dayId Limita la búsqueda a un día
+     * @param allClassrooms Incluye aulas de otros departamentos
+     * @param excludeId Horario que se está editando (se ignora)
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public scheduleControllerFindFreeSlots(periodId: number, sectionId: number, hours?: number, dayId?: number, allClassrooms?: boolean, excludeId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<FreeSlotDto>>;
+    public scheduleControllerFindFreeSlots(periodId: number, sectionId: number, hours?: number, dayId?: number, allClassrooms?: boolean, excludeId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<FreeSlotDto>>>;
+    public scheduleControllerFindFreeSlots(periodId: number, sectionId: number, hours?: number, dayId?: number, allClassrooms?: boolean, excludeId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<FreeSlotDto>>>;
+    public scheduleControllerFindFreeSlots(periodId: number, sectionId: number, hours?: number, dayId?: number, allClassrooms?: boolean, excludeId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (periodId === null || periodId === undefined) {
+            throw new Error('Required parameter periodId was null or undefined when calling scheduleControllerFindFreeSlots.');
+        }
+        if (sectionId === null || sectionId === undefined) {
+            throw new Error('Required parameter sectionId was null or undefined when calling scheduleControllerFindFreeSlots.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (periodId !== undefined && periodId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>periodId, 'periodId');
+        }
+        if (sectionId !== undefined && sectionId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sectionId, 'sectionId');
+        }
+        if (hours !== undefined && hours !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>hours, 'hours');
+        }
+        if (dayId !== undefined && dayId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>dayId, 'dayId');
+        }
+        if (allClassrooms !== undefined && allClassrooms !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>allClassrooms, 'allClassrooms');
+        }
+        if (excludeId !== undefined && excludeId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>excludeId, 'excludeId');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/schedule/planning/free-slots`;
+        return this.httpClient.request<Array<FreeSlotDto>>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Horas académicas asignadas vs. requeridas por sección
+     * @param periodId Período académico
+     * @param departmentId Filtra por departamento de la asignatura
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public scheduleControllerFindHoursCoverage(periodId: number, departmentId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<SectionCoverageDto>>;
+    public scheduleControllerFindHoursCoverage(periodId: number, departmentId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<SectionCoverageDto>>>;
+    public scheduleControllerFindHoursCoverage(periodId: number, departmentId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<SectionCoverageDto>>>;
+    public scheduleControllerFindHoursCoverage(periodId: number, departmentId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (periodId === null || periodId === undefined) {
+            throw new Error('Required parameter periodId was null or undefined when calling scheduleControllerFindHoursCoverage.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (periodId !== undefined && periodId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>periodId, 'periodId');
+        }
+        if (departmentId !== undefined && departmentId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>departmentId, 'departmentId');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/schedule/planning/hours-coverage`;
+        return this.httpClient.request<Array<SectionCoverageDto>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,

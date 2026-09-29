@@ -9,20 +9,28 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { IdCreateEntity } from './id-create-entity';
+import { CoverageStatus } from './coverage-status';
 
 
-export interface CreateScheduleDto { 
-    start: string;
-    end: string;
-    classroom: IdCreateEntity;
-    day: IdCreateEntity;
-    section: IdCreateEntity;
-    period: IdCreateEntity;
-    status: boolean;
+export interface SectionCoverageDto { 
+    sectionId: number;
+    sectionName: string;
+    subjectId: number;
+    subjectCode: string;
+    subjectName: string;
+    semester: number;
+    teacherName?: string | null;
     /**
-     * Guarda aunque existan choques de aula o profesor
+     * Horas semanales de la asignatura
      */
-    force?: boolean;
+    requiredHours: number;
+    /**
+     * Horas académicas programadas
+     */
+    assignedHours: number;
+    status: CoverageStatus;
 }
+export namespace SectionCoverageDto {
+}
+
 

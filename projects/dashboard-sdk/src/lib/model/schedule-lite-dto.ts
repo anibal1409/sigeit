@@ -9,20 +9,21 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { IdCreateEntity } from './id-create-entity';
 
 
-export interface CreateScheduleDto { 
+export interface ScheduleLiteDto { 
+    id: number;
+    dayId: number;
+    dayName: string;
     start: string;
     end: string;
-    classroom: IdCreateEntity;
-    day: IdCreateEntity;
-    section: IdCreateEntity;
-    period: IdCreateEntity;
-    status: boolean;
-    /**
-     * Guarda aunque existan choques de aula o profesor
-     */
-    force?: boolean;
+    classroomId: number;
+    classroomName: string;
+    sectionId: number;
+    sectionName: string;
+    subjectId: number;
+    subjectCode: string;
+    subjectName: string;
+    teacherName?: string | null;
 }
 

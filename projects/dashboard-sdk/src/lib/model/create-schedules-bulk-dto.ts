@@ -12,11 +12,10 @@
 import { IdCreateEntity } from './id-create-entity';
 
 
-export interface CreateScheduleDto { 
+export interface CreateSchedulesBulkDto { 
     start: string;
     end: string;
     classroom: IdCreateEntity;
-    day: IdCreateEntity;
     section: IdCreateEntity;
     period: IdCreateEntity;
     status: boolean;
@@ -24,5 +23,9 @@ export interface CreateScheduleDto {
      * Guarda aunque existan choques de aula o profesor
      */
     force?: boolean;
+    /**
+     * Días en los que se repite el bloque
+     */
+    dayIds: Array<number>;
 }
 
