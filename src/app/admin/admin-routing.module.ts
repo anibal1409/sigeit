@@ -70,6 +70,13 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'subject-demands',
+        loadChildren: () =>
+          import('../repositories/subject-demands/subject-demands.module').then(
+            (m) => m.SubjectDemandsModule
+          ),
+      },
+      {
         path: 'teachers',
         loadChildren: () =>
           import('../repositories/teachers/teachers.module').then(

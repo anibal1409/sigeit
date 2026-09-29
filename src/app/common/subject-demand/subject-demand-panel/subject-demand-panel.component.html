@@ -1,0 +1,75 @@
+<ng-container *ngIf="loaded && subjectId">
+  <ng-container *ngIf="summary && coverage; else noDemand">
+    <div class="compact" *ngIf="compact; else full">
+      <mat-icon class="status" [ngClass]="coverage.status">groups</mat-icon>
+      <span>Demanda potencial <strong>{{ summary.total.toLocaleString('es-VE') }}</strong></span>
+      <span>Estimada <strong>{{ coverage.estimated.toLocaleString('es-VE') }}</strong></span>
+      <span>Cupo <strong>{{ coverage.offered.toLocaleString('es-VE') }}</strong></span>
+      <span class="badge" [ngClass]="coverage.status">
+        Cobertura {{ coverage.coverage === null ? '—' : (coverage.coverage | percent: '1.0-0') }}
+      </span>
+      <span>Nivel pico <strong>{{ summary.peakLevel }}</strong></span>
+      <span>Sugeridas <strong>{{ coverage.suggestedSections }}</strong> secciones</span>
+    </div>
+
+    <ng-template #full>
+      <div class="full">
+        <div class="header">
+          <span class="title">Demanda de la asignatura</span>
+          <label class="factor">
+            Factor de conversión
+            <input
+              type="number"
+              min="0.05"
+              max="1"
+              step="0.05"
+              [value]="factor"
+              (change)="changeFactor($any($event.target).value)"
+              aria-label="Factor de conversión"
+            />
+          </label>
+        </div>
+
+        <div class="kpis">
+          <div class="kpi">
+            <span class="label">Demanda potencial</span>
+            <span class="value">{{ summary.total.toLocaleString('es-VE') }}</span>
+          </div>
+          <div class="kpi">
+            <span class="label">Demanda estimada</span>
+            <span class="value">{{ coverage.estimated.toLocaleString('es-VE') }}</span>
+          </div>
+          <div class="kpi">
+            <span class="label">Cupo ofertado</span>
+            <span class="value">{{ coverage.offered.toLocaleString('es-VE') }}</span>
+          </div>
+          <div class="kpi">
+            <span class="label">Cobertura</span>
+            <span class="value badge" [ngClass]="coverage.status">
+              {{ coverage.coverage === null ? '—' : (coverage.coverage | percent: '1.0-0') }}
+            </span>
+          </div>
+          <div class="kpi">
+            <span class="label">Secciones sugeridas</span>
+            <span class="value">{{ coverage.suggestedSections }}</span>
+          </div>
+        </div>
+
+        <div class="chart">
+          <canvas baseChart type="bar" [data]="chartData" [options]="chartOptions"></canvas>
+        </div>
+        <p class="note">
+          Nivel pico: <strong>{{ summary.peakLevel }}</strong>. Demanda estimada = demanda potencial × factor; secciones
+          sugeridas con capacidad típica de 40.
+        </p>
+      </div>
+    </ng-template>
+  </ng-container>
+
+  <ng-template #noDemand>
+    <p class="empty" [class.compact]="compact">
+      <mat-icon>info</mat-icon>
+      No hay demanda cargada para esta asignatura en el período.
+    </p>
+  </ng-template>
+</ng-container>

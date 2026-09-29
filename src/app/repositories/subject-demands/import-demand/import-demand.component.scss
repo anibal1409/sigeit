@@ -1,0 +1,43 @@
+.warning,
+.imported {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.warning {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background: #fff4e5;
+  color: #8a5300;
+}
+
+.help {
+  font-size: 0.875rem;
+}
+
+.file {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.error {
+  color: #d32f2f;
+}
+
+.result {
+  margin-top: 1rem;
+
+  .imported {
+    color: #2e7d32;
+    font-weight: 600;
+  }
+
+  .list {
+    max-height: 8rem;
+    overflow-y: auto;
+    font-family: monospace;
+    font-size: 0.875rem;
+  }
+}

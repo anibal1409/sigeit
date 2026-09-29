@@ -1,0 +1,78 @@
+<div class="modal-header">
+  <span mat-dialog-title>Cargar demanda · {{ data.periodName }}</span>
+  <button
+    mat-mini-fab
+    type="button"
+    aria-label="Cerrar"
+    color="basic"
+    [disabled]="loading"
+    (click)="close()"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div mat-dialog-content>
+  <p class="warning">
+    <mat-icon>warning</mat-icon>
+    <span>La importación <strong>reemplaza toda la demanda</strong> cargada para este período.</span>
+  </p>
+
+  <p class="help">
+    Archivo .xlsx, .csv o .tsv (máximo 5 MB) con las columnas <strong>CODIGO</strong>, <strong>NIVEL</strong> y
+    <strong>CANTIDAD</strong> en la primera fila.
+  </p>
+
+  <input
+    #fileInput
+    type="file"
+    accept=".xlsx,.csv,.tsv,.txt"
+    hidden
+    (change)="selectFile(fileInput)"
+  />
+  <div class="file">
+    <button mat-stroked-button type="button" [disabled]="loading" (click)="fileInput.click()">
+      <mat-icon>attach_file</mat-icon>
+      Seleccionar archivo
+    </button>
+    <span *ngIf="file">{{ file.name }}</span>
+  </div>
+  <p class="error" *ngIf="fileError">{{ fileError }}</p>
+
+  <div class="result" *ngIf="result">
+    <p class="imported">
+      <mat-icon>check_circle</mat-icon>
+      {{ result.imported.toLocaleString('es-VE') }} registros importados
+    </p>
+
+    <div *ngIf="result.unknownCodes.length">
+      <p>
+        <strong>
+          {{ result.unknownCodes.length }}
+          {{ result.unknownCodes.length === 1 ? 'código no existe' : 'códigos no existen' }} como asignatura
+        </strong>
+        y se {{ result.unknownCodes.length === 1 ? 'omitió' : 'omitieron' }}:
+      </p>
+      <p class="list">{{ result.unknownCodes.join(', ') }}</p>
+    </div>
+
+    <div *ngIf="result.invalidRows.length">
+      <p>
+        <strong>
+          {{ result.invalidRows.length }} {{ result.invalidRows.length === 1 ? 'fila descartada' : 'filas descartadas' }}
+        </strong>
+        por código vacío, nivel o cantidad inválidos:
+      </p>
+      <p class="list">{{ result.invalidRows.join(', ') }}</p>
+    </div>
+  </div>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button type="button" [disabled]="loading" (click)="close()">
+    {{ result ? 'Cerrar' : 'Cancelar' }}
+  </button>
+  <button mat-flat-button color="primary" type="button" [disabled]="!file || loading" (click)="import()">
+    {{ loading ? 'Importando...' : 'Importar' }}
+  </button>
+</div>

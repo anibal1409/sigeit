@@ -6,6 +6,7 @@ export * from './password-match-validator.directive';
 export * from './select-ex';
 export * from './semester';
 export * from './state';
+export * from './subject-demand';
 export * from './table';
 export * from './timer';
 export * from './url-access-guard';

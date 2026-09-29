@@ -27,6 +27,12 @@ export const MENU: Array<optionMenu> = [
     permissions: [UserRole.Administrator],
   },
   {
+    name: 'Demanda por asignatura',
+    value: 'subject-demands',
+    icon: 'groups',
+    permissions: [UserRole.Administrator],
+  },
+  {
     name: 'Departamentos',
     value: 'departments',
     icon: 'apartment',

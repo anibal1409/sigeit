@@ -1,0 +1,78 @@
+<div class="mat-container">
+  <mat-card>
+    <mat-card-content>
+      <div class="filters">
+        <mat-form-field>
+          <mat-label>Período</mat-label>
+          <mat-select [formControl]="periodCtrl">
+            <mat-option *ngFor="let period of periods" [value]="period.id">
+              {{ period.name }}{{ period.isActive ? ' (activo)' : '' }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Departamento</mat-label>
+          <mat-select [formControl]="departmentCtrl">
+            <mat-option [value]="null">Todos</mat-option>
+            <mat-option *ngFor="let department of departments" [value]="department.id">
+              {{ department.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <p class="summary" *ngIf="rows.length">
+        {{ subjectsCount }} asignaturas · Demanda potencial total: <strong>{{ total.toLocaleString('es-VE') }}</strong>
+        <span class="hint">(estudiantes aptos para cursar, no inscritos)</span>
+      </p>
+
+      <table mat-table [dataSource]="rows" *ngIf="rows.length; else empty">
+        <ng-container matColumnDef="subjectCode">
+          <th mat-header-cell *matHeaderCellDef>Código</th>
+          <td mat-cell *matCellDef="let row">{{ row.subjectCode }}</td>
+          <td mat-footer-cell *matFooterCellDef>Total</td>
+        </ng-container>
+
+        <ng-container matColumnDef="subjectName">
+          <th mat-header-cell *matHeaderCellDef>Asignatura</th>
+          <td mat-cell *matCellDef="let row">{{ row.subjectName }}</td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <ng-container matColumnDef="level">
+          <th mat-header-cell *matHeaderCellDef>Nivel del estudiante</th>
+          <td mat-cell *matCellDef="let row">{{ row.level }}</td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <ng-container matColumnDef="quantity">
+          <th mat-header-cell *matHeaderCellDef>Demanda potencial</th>
+          <td mat-cell *matCellDef="let row">{{ row.quantity.toLocaleString('es-VE') }}</td>
+          <td mat-footer-cell *matFooterCellDef>{{ total.toLocaleString('es-VE') }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+      </table>
+
+      <ng-template #empty>
+        <p class="empty" *ngIf="!loading">No hay demanda cargada para este período.</p>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+
+  <button
+    mat-fab
+    color="primary"
+    matTooltip="Cargar demanda"
+    matTooltipPosition="left"
+    aria-label="Cargar demanda"
+    class="btn-fixed"
+    [disabled]="!periodCtrl.value"
+    (click)="openImport()"
+  >
+    <mat-icon>upload_file</mat-icon>
+  </button>
+</div>
