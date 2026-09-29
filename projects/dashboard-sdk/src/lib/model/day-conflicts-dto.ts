@@ -12,7 +12,7 @@
 import { ScheduleLiteDto } from './schedule-lite-dto';
 
 
-export interface ScheduleConflictsDto { 
+export interface DayConflictsDto { 
     /**
      * true si hay choques de aula o profesor (bloquean el guardado)
      */
@@ -33,5 +33,6 @@ export interface ScheduleConflictsDto {
      * Otras asignaturas con el mismo nivel pico (solo advertencia)
      */
     level: Array<ScheduleLiteDto>;
+    dayId: number;
 }
 

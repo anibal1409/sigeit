@@ -49,6 +49,7 @@ model/create-subject-dto.ts
 model/create-teacher-dto.ts
 model/create-user-dto.ts
 model/curriculum-semester-stat-item-dto.ts
+model/day-conflicts-dto.ts
 model/department-stat-item-dto.ts
 model/entity-audit-history-dto.ts
 model/free-classroom-dto.ts
@@ -80,7 +81,6 @@ model/response-section-dto.ts
 model/response-subject-demand-dto.ts
 model/response-subject-dto.ts
 model/response-teacher-dto.ts
-model/schedule-conflicts-dto.ts
 model/schedule-controller-download-planned-schedules200-response.ts
 model/schedule-lite-dto.ts
 model/section-coverage-dto.ts

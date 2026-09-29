@@ -23,13 +23,13 @@ import { CreateScheduleDto } from '../model/create-schedule-dto';
 // @ts-ignore
 import { CreateSchedulesBulkDto } from '../model/create-schedules-bulk-dto';
 // @ts-ignore
+import { DayConflictsDto } from '../model/day-conflicts-dto';
+// @ts-ignore
 import { FreeSlotDto } from '../model/free-slot-dto';
 // @ts-ignore
 import { PeriodAuditDto } from '../model/period-audit-dto';
 // @ts-ignore
 import { ResponseScheduleDto } from '../model/response-schedule-dto';
-// @ts-ignore
-import { ScheduleConflictsDto } from '../model/schedule-conflicts-dto';
 // @ts-ignore
 import { ScheduleControllerDownloadPlannedSchedules200Response } from '../model/schedule-controller-download-planned-schedules200-response';
 // @ts-ignore
@@ -689,9 +689,9 @@ export class ScheduleService {
     }
 
     /**
-     * Choques de aula, profesor y nivel de un bloque candidato
+     * Choques de aula, profesor y nivel de un bloque candidato en cada día pedido
      * @param periodId 
-     * @param dayId 
+     * @param dayIds Días a evaluar (se repite el parámetro por cada día)
      * @param start Hora de inicio HH:mm
      * @param end Hora de fin HH:mm
      * @param classroomId 
@@ -700,15 +700,15 @@ export class ScheduleService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public scheduleControllerFindConflicts(periodId: number, dayId: number, start: string, end: string, classroomId: number, sectionId: number, excludeId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ScheduleConflictsDto>;
-    public scheduleControllerFindConflicts(periodId: number, dayId: number, start: string, end: string, classroomId: number, sectionId: number, excludeId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ScheduleConflictsDto>>;
-    public scheduleControllerFindConflicts(periodId: number, dayId: number, start: string, end: string, classroomId: number, sectionId: number, excludeId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ScheduleConflictsDto>>;
-    public scheduleControllerFindConflicts(periodId: number, dayId: number, start: string, end: string, classroomId: number, sectionId: number, excludeId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public scheduleControllerFindConflicts(periodId: number, dayIds: Array<number>, start: string, end: string, classroomId: number, sectionId: number, excludeId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<DayConflictsDto>>;
+    public scheduleControllerFindConflicts(periodId: number, dayIds: Array<number>, start: string, end: string, classroomId: number, sectionId: number, excludeId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<DayConflictsDto>>>;
+    public scheduleControllerFindConflicts(periodId: number, dayIds: Array<number>, start: string, end: string, classroomId: number, sectionId: number, excludeId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<DayConflictsDto>>>;
+    public scheduleControllerFindConflicts(periodId: number, dayIds: Array<number>, start: string, end: string, classroomId: number, sectionId: number, excludeId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (periodId === null || periodId === undefined) {
             throw new Error('Required parameter periodId was null or undefined when calling scheduleControllerFindConflicts.');
         }
-        if (dayId === null || dayId === undefined) {
-            throw new Error('Required parameter dayId was null or undefined when calling scheduleControllerFindConflicts.');
+        if (dayIds === null || dayIds === undefined) {
+            throw new Error('Required parameter dayIds was null or undefined when calling scheduleControllerFindConflicts.');
         }
         if (start === null || start === undefined) {
             throw new Error('Required parameter start was null or undefined when calling scheduleControllerFindConflicts.');
@@ -728,9 +728,11 @@ export class ScheduleService {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>periodId, 'periodId');
         }
-        if (dayId !== undefined && dayId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>dayId, 'dayId');
+        if (dayIds) {
+            dayIds.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'dayIds');
+            })
         }
         if (start !== undefined && start !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -785,7 +787,7 @@ export class ScheduleService {
         }
 
         let localVarPath = `/schedule/planning/conflicts`;
-        return this.httpClient.request<ScheduleConflictsDto>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Array<DayConflictsDto>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
