@@ -73,6 +73,14 @@
           </div>
         </div>
       </form>
+      <app-subject-demand-panel
+        *ngIf="subjectId && periodId"
+        class="demand-summary"
+        [compact]="true"
+        [periodId]="periodId"
+        [subjectId]="subjectId"
+        [offered]="offeredCapacity"
+      ></app-subject-demand-panel>
     </mat-card-content>
   </mat-card>
 </div>
@@ -97,6 +105,7 @@
     [periodId]="periodId"
     [departmentId]="departmentId"
     [teacherId]="teacherId"
+    [subjectId]="subjectId"
     (closed)="loadSchedules(); changeShowForm(false)"
     (cancel)="changeShowForm(false)"
   >

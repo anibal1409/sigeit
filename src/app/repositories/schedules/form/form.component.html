@@ -3,7 +3,7 @@
     <mat-card-header class="d-flex justify-content-between align-items-center">
       <mat-card-title>{{ title }}</mat-card-title>
 
-      <button *ngIf="classroomScheduleClash || teacherScheduleClash" color="basic" mat-raised-button
+      <button *ngIf="classroomScheduleClash || teacherScheduleClash || levelScheduleClash" color="basic" mat-raised-button
         class="btn-error text-danger " matTooltip="Mostrar choque de horarios" matTooltipPosition="left"
         aria-label="Mostrar choque de horarios" (click)="showSchedulesClash()">
         <span class="parpadeo">

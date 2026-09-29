@@ -19,6 +19,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 
 import { SelectExModule } from '../../common/select-ex';
+import { SubjectDemandModule } from '../../common/subject-demand';
 import { TableModule } from '../../common/table';
 import { GetClassroomsService } from '../classrooms/use-cases';
 import { GetDepartmentsService } from '../departments/use-cases';
@@ -61,6 +62,7 @@ import {
   IntervalsService,
   UpdateScheduleService,
   ValidateClassroomSchedulesService,
+  ValidateLevelSchedulesService,
   ValidateTeacherSchedulesService,
 } from './use-cases';
 
@@ -97,6 +99,7 @@ import {
     MatDialogModule,
     MatRadioModule,
     SelectExModule,
+    SubjectDemandModule,
   ],
   providers: [
     SchedulesService,
@@ -110,6 +113,7 @@ import {
     GetDaysService,
     ValidateClassroomSchedulesService,
     ValidateTeacherSchedulesService,
+    ValidateLevelSchedulesService,
     GetPlannedSchedulesService,
 
     GetSectionsService,

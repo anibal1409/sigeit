@@ -51,6 +51,9 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   @Input()
   teacherId!: number;
 
+  @Input()
+  subjectId!: number;
+
   @Output()
   closed = new EventEmitter();
 
@@ -76,6 +79,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   title = '';
   classroomScheduleClash = '';
   teacherScheduleClash = '';
+  levelScheduleClash = '';
 
   constructor(
     private schedulesService: SchedulesService,
@@ -182,6 +186,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       this.form.valueChanges.subscribe((values) => {
         this.validateClassroomSchedules(values);
         this.validateTeacherSchedules(values);
+        this.validateLevelSchedules(values);
       })
     );
 
@@ -264,6 +269,27 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  private validateLevelSchedules(values: any): void {
+    this.levelScheduleClash = '';
+    if (this.form.valid && this.subjectId && this.periodId) {
+      const data = {
+        ...values,
+        dayId: values?.dayId?.id || values?.dayId
+      };
+      this.sub$.add(
+        this.schedulesService.validateLevelSchedules$(data, this.subjectId, this.periodId).subscribe(({ level, schedules }) => {
+          const items = schedules
+            .filter((schedule) => schedule.id !== this.scheduleId)
+            .map((schedule) => `<li>${schedule.start} - ${schedule.end} (${schedule.section?.subject?.name} - ${schedule.section?.name})</li>`)
+            .join('');
+          if (items) {
+            this.levelScheduleClash = `Se solapa con asignaturas cuya demanda también se concentra en el nivel <strong>${level}</strong>; los estudiantes de ese nivel tendrían que elegir entre ellas:<ul>${items}</ul>`;
+          }
+        })
+      );
+    }
+  }
+
   saveWarning(): void {
     if (this.crashWarning) {
       const dialogRef = this.matDialog.open(ConfirmModalComponent, {
@@ -333,7 +359,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       data: {
         message: {
           title: 'Choque de horarios',
-          body: `${this.classroomScheduleClash}<br>${this.teacherScheduleClash}`,
+          body: [this.classroomScheduleClash, this.teacherScheduleClash, this.levelScheduleClash].filter(Boolean).join('<br>'),
         },
       },
       hasBackdrop: true,

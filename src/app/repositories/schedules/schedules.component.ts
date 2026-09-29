@@ -95,6 +95,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
   scheduleId!: number;
   teacherId!: number;
   departmentIdUser!: number;
+  offeredCapacity = 0;
 
   showForm = false;
   loading = false;
@@ -312,6 +313,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
           })
           .subscribe((sections) => {
             this.sections = sections;
+            this.offeredCapacity = sections.reduce((sum, section) => sum + (+section.capacity || 0), 0);
           })
       );
     }

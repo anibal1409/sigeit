@@ -55,7 +55,9 @@ import {
   GetSchedulesService,
   IntervalsService,
   UpdateScheduleService,
+  LevelScheduleClash,
   ValidateClassroomSchedulesService,
+  ValidateLevelSchedulesService,
   ValidateTeacherSchedulesService,
 } from './use-cases';
 
@@ -80,6 +82,7 @@ export class SchedulesService extends ListComponentService<ScheduleItemVM, Sched
     private intervalsService: IntervalsService,
     private validateClassroomSchedulesService: ValidateClassroomSchedulesService,
     private validateTeacherSchedulesService: ValidateTeacherSchedulesService,
+    private validateLevelSchedulesService: ValidateLevelSchedulesService,
     private getPlannedSchedulesService: GetPlannedSchedulesService,
     private http: HttpClient,
   ) {
@@ -177,6 +180,10 @@ export class SchedulesService extends ListComponentService<ScheduleItemVM, Sched
 
   validateTeacherSchedules$(scheduleVm: ScheduleVM, teacherId: number, periodId: number): Observable<Array<ScheduleItemVM>> {
     return this.validateTeacherSchedulesService.exec(scheduleVm, teacherId, periodId);
+  }
+
+  validateLevelSchedules$(scheduleVm: ScheduleVM, subjectId: number, periodId: number): Observable<LevelScheduleClash> {
+    return this.validateLevelSchedulesService.exec(scheduleVm, subjectId, periodId);
   }
 
   getPlannedSchedules$(data: ScheduleBaseQuery): Observable<any> {
