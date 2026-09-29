@@ -2,14 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import {
+  DayConflictsDto,
   FreeSlotDto,
   PeriodAuditDto,
-  ScheduleConflictsDto,
   ScheduleService as ScheduleApiService,
 } from 'dashboard-sdk';
 import {
   finalize,
-  forkJoin,
   map,
   Observable,
   tap,
@@ -189,19 +188,15 @@ export class SchedulesService extends ListComponentService<ScheduleItemVM, Sched
   }
 
   /** Choques (aula, profesor, nivel) del bloque en cada uno de los días indicados. */
-  getConflicts$(schedule: ScheduleVM, dayIds: Array<number>): Observable<Array<ScheduleConflictsDto>> {
-    return forkJoin(
-      dayIds.map((dayId) =>
-        this.scheduleApi.scheduleControllerFindConflicts(
-          schedule.periodId,
-          dayId,
-          schedule.start,
-          schedule.end,
-          schedule.classroomId,
-          schedule.sectionId,
-          schedule.id || undefined,
-        )
-      )
+  getConflicts$(schedule: ScheduleVM, dayIds: Array<number>): Observable<Array<DayConflictsDto>> {
+    return this.scheduleApi.scheduleControllerFindConflicts(
+      schedule.periodId,
+      dayIds,
+      schedule.start,
+      schedule.end,
+      schedule.classroomId,
+      schedule.sectionId,
+      schedule.id || undefined,
     );
   }
 

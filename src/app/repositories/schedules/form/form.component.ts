@@ -18,8 +18,8 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 
 import {
+  DayConflictsDto,
   FreeSlotDto,
-  ScheduleConflictsDto,
   ScheduleLiteDto,
 } from 'dashboard-sdk';
 import {
@@ -292,7 +292,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     return { ...values, id: this.scheduleId || undefined };
   }
 
-  private setConflicts(conflicts: Array<ScheduleConflictsDto>): void {
+  private setConflicts(conflicts: Array<DayConflictsDto>): void {
     const all = (type: 'classroom' | 'teacher' | 'level') => conflicts.flatMap((item) => item[type]);
     const teacher = all('teacher');
     const teacherName = teacher.find((item) => item.teacherName)?.teacherName;
