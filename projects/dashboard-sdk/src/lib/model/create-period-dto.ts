@@ -21,7 +21,14 @@ export interface CreatePeriodDto {
     stage: string;
     interval: number;
     duration: number;
+    /**
+     * Copiar secciones y horarios de otro período. false = período vacío. Sin copyFromPeriodId se usa el último período planificado o, en su defecto, el más reciente.
+     */
     copyPrevious: boolean;
+    /**
+     * Período del cual copiar secciones y horarios (opcional). Solo aplica si copyPrevious es true.
+     */
+    copyFromPeriodId?: number;
     status: boolean;
     /**
      * Marcar como período activo (solo uno puede estarlo)
