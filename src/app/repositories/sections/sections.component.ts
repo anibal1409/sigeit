@@ -102,6 +102,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
   subjectId!: number;
   sectionId!: number;
   departmentIdUser!: number;
+  offeredCapacity = 0;
 
   showForm = false;
 
@@ -145,6 +146,9 @@ export class SectionsComponent implements OnInit, OnDestroy {
           ...this.data,
           body: data || [],
         };
+        this.offeredCapacity = (data || [])
+          .filter((section) => (section.subjectId || section.subject?.id) == this.subjectId)
+          .reduce((sum, section) => sum + (+section.capacity || 0), 0);
 
         this.tableService.setData(this.data);
       })

@@ -6,13 +6,18 @@ import { Router } from '@angular/router';
 import moment from 'moment';
 import {
   finalize,
+  forkJoin,
   Subscription,
 } from 'rxjs';
 
 import {
+  computeCoverage,
   StateService,
+  SubjectDemandStoreService,
+  SubjectDemandSummary,
   UserStateService,
 } from '../../../common';
+import { SubjectVM } from '../../subjects/model';
 import { DepartmentVM } from '../../departments/model';
 import { PeriodVM } from '../../periods/model';
 import { SectionsService } from '../sections.service';
@@ -68,6 +73,7 @@ export class SectionsOverviewComponent {
     private router: Router,
     private stateService: StateService,
     private userStateService: UserStateService,
+    private subjectDemandStore: SubjectDemandStoreService,
   ) {
     this.columns = [
       {
@@ -94,6 +100,18 @@ export class SectionsOverviewComponent {
       {
         field: 'capacity',
         text: 'Capacidad',
+      },
+      {
+        field: 'demandEstimated',
+        text: 'Demanda est.',
+      },
+      {
+        field: 'subjectOffered',
+        text: 'Cupo asig.',
+      },
+      {
+        field: 'coverageText',
+        text: 'Cobertura',
       },
     ];
     this.displayedColumns = this.columns.map((column) => column.field);
@@ -195,20 +213,23 @@ export class SectionsOverviewComponent {
       this.loading = true;
       this.stateService.setLoading(this.loading);
       this.sub$.add(
-        this.sectionsService
-          .getSections$({
+        forkJoin([
+          this.sectionsService.getSections$({
             departmentId: this.departmentId,
             periodId: this.periodId,
             status: true,
-          })
+          }),
+          this.subjectDemandStore.getSummaries$(this.periodId),
+          this.sectionsService.getSubjects$({ departmentId: this.departmentId, status: true }),
+        ])
           .pipe(
             finalize(() => {
               this.loading = false;
               this.stateService.setLoading(this.loading);
             })
           )
-          .subscribe((sections) => {
-            this._alldata = this.mapSectionsData(sections);
+          .subscribe(([sections, summaries, subjects]) => {
+            this._alldata = this.addDemandData(this.mapSectionsData(sections), summaries, subjects);
             this.updateDisplayedColumns();
             console.log('Sections data:', this._alldata);
             this.dataSource.data = this.addGroups(
@@ -228,12 +249,48 @@ export class SectionsOverviewComponent {
   private mapSectionsData(sections: any[]): any[] {
     return sections.map(section => ({
       ...section,
+      subjectId: section.subjectId || section.subject?.id,
       code: section.subject?.code || '',
       name: section.subject?.name || '',
       semester: section.subject?.semester || 0,
       sectionName: section.name || '',
       teacherName: section.teacher ? `${section.teacher.firstName} ${section.teacher.lastName}` : '',
     }));
+  }
+
+  private addDemandData(
+    rows: any[],
+    summaries: Map<number, SubjectDemandSummary>,
+    subjects: Array<SubjectVM>,
+  ): any[] {
+    const withoutSections = subjects
+      .filter((subject) => summaries.get(subject.id || 0)?.total && !rows.some((row) => row.subjectId === subject.id))
+      .map((subject) => ({
+        id: -(subject.id || 0),
+        subjectId: subject.id,
+        code: subject.code,
+        name: subject.name,
+        semester: subject.semester,
+        sectionName: '—',
+        teacherName: 'Sin secciones',
+        capacity: 0,
+      }));
+    const all = [...rows, ...withoutSections];
+    const factor = this.subjectDemandStore.getFactor();
+    return all.map((row) => {
+      const total = summaries.get(row.subjectId)?.total || 0;
+      const offered = all
+        .filter((item) => item.subjectId === row.subjectId)
+        .reduce((sum, item) => sum + (+item.capacity || 0), 0);
+      const { estimated, coverage, status } = computeCoverage(total, offered, factor);
+      return {
+        ...row,
+        demandEstimated: total ? estimated.toLocaleString('es-VE') : '—',
+        subjectOffered: offered.toLocaleString('es-VE'),
+        coverageText: coverage === null ? '—' : `${Math.round(coverage * 100)} %`,
+        coverageStatus: status,
+      };
+    });
   }
 
   groupBy(field: string) {
@@ -436,6 +493,8 @@ export class SectionsOverviewComponent {
         equal = section.code === sectionData.code && section.teacherName === sectionData.teacherName;
       } else if (field === 'capacity') {
         equal = section.code === sectionData.code && section.capacity === sectionData.capacity;
+      } else if (['demandEstimated', 'subjectOffered', 'coverageText'].includes(field)) {
+        equal = section.code === sectionData.code;
       }
     }
 

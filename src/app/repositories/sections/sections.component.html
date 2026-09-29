@@ -74,6 +74,18 @@
     </mat-card>
   </div>
 
+  <div class="mat-container" *ngIf="subjectId && periodId">
+    <mat-card>
+      <mat-card-content>
+        <app-subject-demand-panel
+          [periodId]="periodId"
+          [subjectId]="subjectId"
+          [offered]="offeredCapacity"
+        ></app-subject-demand-panel>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
   <div class="mat-container">
     <mat-card>
       <mat-card-header> </mat-card-header>

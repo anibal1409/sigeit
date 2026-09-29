@@ -15,6 +15,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import {
   SelectExModule,
+  SubjectDemandModule,
   TableModule,
 } from '../../common';
 import {
@@ -55,6 +56,7 @@ import {
     MatTooltipModule,
     MatCheckboxModule,
     SelectExModule,
+    SubjectDemandModule,
   ],
   providers: [
     SectionsService,

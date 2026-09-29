@@ -64,9 +64,12 @@
     >
       <mat-header-cell *matHeaderCellDef>{{ column.text }} </mat-header-cell>
       <mat-cell *matCellDef="let row">
-        <ng-container *ngIf="!equalPrevious(row, column.field, dataSource.data)">
+        <span
+          *ngIf="!equalPrevious(row, column.field, dataSource.data)"
+          [class]="column.field === 'coverageText' ? 'coverage coverage-' + row.coverageStatus : ''"
+        >
           {{ row[column.field] }}
-        </ng-container>
+        </span>
       </mat-cell>
     </ng-container>
 

@@ -69,9 +69,22 @@ mat-column {
   text-align: center;
 }
 
-.mat-column-semester {
+.mat-column-semester,
+.mat-column-demandEstimated,
+.mat-column-subjectOffered,
+.mat-column-coverageText {
   text-align: center;
 }
+
+.coverage {
+  padding: 0.125rem 0.5rem;
+  border-radius: 1rem;
+  font-weight: 600;
+}
+
+.coverage-low { background: #fdecea; color: #c62828; }
+.coverage-ok { background: #e8f5e9; color: #2e7d32; }
+.coverage-high { background: #fff8e1; color: #ef6c00; }
 
 .mat-column-code {
   font-family: monospace;
