@@ -6,9 +6,9 @@
     <button
       id="modal-close-button"
       type="button"
-      mat-fab
+      mat-mini-fab
       color="basic"
-      aria-label="Close"
+      aria-label="Cerrar"
       (click)="closeModal(false)"
     >
       <mat-icon>close</mat-icon>
@@ -20,20 +20,19 @@
   >
     <button
       type="button"
-      mat-raised-button
-      color="warn"
-      (click)="closeModal(true)"
+      mat-button
+      (click)="closeModal(false)"
     >
-      Aceptar
+      Cancelar
     </button>
 
     <button
       type="button"
-      mat-raised-button
-      color="basic"
-      (click)="closeModal(false)"
+      mat-flat-button
+      color="warn"
+      (click)="closeModal(true)"
     >
-      Cancelar
+      Aceptar
     </button></mat-card-actions
   >
 </mat-card>

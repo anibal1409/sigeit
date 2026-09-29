@@ -69,21 +69,21 @@
 <div class="modal-footer" mat-dialog-actions>
   <button
     mat-button
-    type="button"
-    (click)="clickSave()"
-    color="primary"
-    [disabled]="submitDisabled || loading"
-  >
-    Guardar
-  </button>
-  <button
-    mat-button
     mat-dialog-close
     cdkFocusInitial
     type="button"
     (click)="clickClosed()"
   >
     Cancelar
+  </button>
+  <button
+    mat-flat-button
+    type="button"
+    (click)="clickSave()"
+    color="primary"
+    [disabled]="submitDisabled || loading"
+  >
+    Guardar
   </button>
 </div>
 <app-state *ngIf="loading" class="app-loading"> </app-state>

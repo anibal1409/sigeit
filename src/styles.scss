@@ -288,6 +288,25 @@ body {
 .mdc-dialog__container {
   min-width: 678px !important;
 }
+.mat-mdc-dialog-container {
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-right: 1.5rem;
+
+    .mat-mdc-dialog-title {
+      flex: 1;
+    }
+  }
+
+  .mat-mdc-dialog-actions {
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding: 0.5rem 1.5rem 1.25rem;
+  }
+}
 .btn-fixed {
   position: fixed !important;
   bottom: 2rem;
