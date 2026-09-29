@@ -144,8 +144,20 @@
     *ngIf="!id"
     formControlName="copyPrevious" 
   >
-    Crear copia de los horarios del semestre actual
+    Copiar secciones y horarios de otro período
   </mat-checkbox>
+
+  <mat-form-field *ngIf="!id && form.get('copyPrevious')?.value">
+    <mat-label>Período a copiar</mat-label>
+    <mat-select formControlName="copyFromPeriodId">
+      <mat-option [value]="null">
+        Automático (último planificado o más reciente)
+      </mat-option>
+      <mat-option *ngFor="let period of periods$ | async" [value]="period.id">
+        {{ period.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 </form>
 
 <div class="modal-footer" mat-dialog-actions>

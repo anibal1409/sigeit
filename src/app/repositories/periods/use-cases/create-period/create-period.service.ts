@@ -38,6 +38,7 @@ export class CreatePeriodService
         interval: entitySave.interval,
         stage: entitySave.stage as any,
         copyPrevious: entitySave.copyPrevious || false,
+        copyFromPeriodId: (entitySave.copyPrevious && entitySave.copyFromPeriodId) || undefined,
         isVacationCourse: !!entitySave.isVacationCourse,
       })
       .pipe(

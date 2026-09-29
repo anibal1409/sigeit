@@ -13,6 +13,8 @@ export interface PeriodVM {
   status: boolean | string;
   stage: StagePeriod;
   copyPrevious?: boolean;
+  /** Período del cual copiar; null = elección automática del backend */
+  copyFromPeriodId?: number | null;
   /** Indica si el período académico es un curso vacacional */
   isVacationCourse?: boolean;
   /** Indica si este período es el activo actualmente */

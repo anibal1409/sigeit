@@ -15,7 +15,10 @@ import {
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { isEqual } from 'lodash';
-import { Subscription } from 'rxjs';
+import {
+  Observable,
+  Subscription,
+} from 'rxjs';
 
 import {
   PeriodVM,
@@ -65,6 +68,7 @@ export class FormComponent implements OnInit, OnDestroy {
   STAGE_PERIODS_VALUE = STAGE_PERIODS_VALUE;
   intervalsStart = [];
   intervalsEnd = [];
+  periods$!: Observable<PeriodVM[] | null>;
 
   constructor(
     private periodsService: PeriodsService,
@@ -82,6 +86,7 @@ export class FormComponent implements OnInit, OnDestroy {
         this.loading = loading;
       })
     );
+    this.periods$ = this.periodsService.getData$();
     this.createForm();
     this.loadData();
   }
@@ -135,6 +140,7 @@ export class FormComponent implements OnInit, OnDestroy {
       interval: [5, [Validators.required]],
       stage: [{value: StagePeriod.toStart, disabled: !this.data?.id}, [Validators.required]],
       copyPrevious: [true],
+      copyFromPeriodId: [null],
       isVacationCourse: [false],
     });
 
