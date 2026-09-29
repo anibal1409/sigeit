@@ -28,6 +28,7 @@ import {
   DeletePeriodService,
   FindPeriodService,
   GetPeriodsService,
+  SetActivePeriodService,
   ToPlanPeriodService,
   UpdatePeriodService,
 } from './use-cases';
@@ -61,6 +62,7 @@ import {
     FindPeriodService,
     PeriodMemoryService,
     ToPlanPeriodService,
+    SetActivePeriodService,
   ],
 })
 export class PeriodsModule {}

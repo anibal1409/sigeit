@@ -11,5 +11,6 @@ export function Period2PeriodItemVM(period: any): PeriodItemVM {
     stageText: STAGE_PERIODS_VALUE[periodVM.stage]?.name,
     status: period?.status ? 'Activo' : 'Inactivo',
     isVacationCourseText: periodVM.isVacationCourse ? 'Vacacional' : 'Regular',
+    isActiveText: periodVM.isActive ? 'Sí' : 'No',
   };
 }

@@ -15,4 +15,6 @@ export interface PeriodVM {
   copyPrevious?: boolean;
   /** Indica si el período académico es un curso vacacional */
   isVacationCourse?: boolean;
+  /** Indica si este período es el activo actualmente */
+  isActive?: boolean;
 }

@@ -14,5 +14,6 @@ export function Period2PeriodVM(period: any): PeriodVM {
     id: period?.id,
     description: period?.description,
     isVacationCourse: !!period?.isVacationCourse,
+    isActive: !!period?.isActive,
   };
 }

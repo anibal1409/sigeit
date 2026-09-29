@@ -13,6 +13,7 @@ import {
   TableDataVM,
   TableService,
 } from 'src/app/common';
+import { GlobalPeriodService } from 'src/app/common/global-period';
 import { StateService } from 'src/app/common/state';
 
 import { FormComponent } from './form';
@@ -57,9 +58,18 @@ export class PeriodsComponent implements OnInit, OnDestroy {
         header: 'Tipo',
         cell: (element: { [key: string]: string }) => `${element['isVacationCourseText'] || 'Regular'}`,
       },
+      {
+        columnDef: 'isActiveText',
+        header: 'Activo',
+        cell: (element: { [key: string]: string }) => `${element['isActiveText'] || 'No'}`,
+      },
     ],
     body: [],
-    options: [],
+    options: [
+      { name: 'Editar', value: RowActionPeriod.update, icon: 'edit' },
+      { name: 'Activar', value: RowActionPeriod.setActive, icon: 'check_circle' },
+      { name: 'Eliminar', value: RowActionPeriod.delete, icon: 'delete' },
+    ],
   };
 
   sub$ = new Subscription();
@@ -69,6 +79,7 @@ export class PeriodsComponent implements OnInit, OnDestroy {
     private periodsService: PeriodsService,
     private tableService: TableService,
     private stateService: StateService,
+    private globalPeriodService: GlobalPeriodService,
     public matDialog: MatDialog,
   ) {}
 
@@ -103,6 +114,9 @@ export class PeriodsComponent implements OnInit, OnDestroy {
     switch (option.option.value) {
       case RowActionPeriod.update:
         this.showModal(+option.data['id']);
+        break;
+      case RowActionPeriod.setActive:
+        this.showConfirmSetActive(option.data as any);
         break;
       case RowActionPeriod.delete:
         this.showConfirm(option.data as any);
@@ -142,5 +156,37 @@ export class PeriodsComponent implements OnInit, OnDestroy {
       }
     });
   }
-}
 
+  showConfirmSetActive(item: PeriodItemVM): void {
+    if (!item?.id) {
+      return;
+    }
+    if (item.isActive) {
+      return;
+    }
+
+    const dialogRef = this.matDialog.open(ConfirmModalComponent, {
+      data: {
+        message: {
+          title: 'Activar periodo',
+          body: `¿Está seguro que desea marcar como activo el periodo <strong>${item.name}</strong>? El periodo activo actual quedará desactivado.`,
+        },
+      },
+      hasBackdrop: true,
+      disableClose: true,
+    });
+
+    dialogRef.componentInstance.closed.subscribe((res) => {
+      dialogRef.close();
+      if (res) {
+        this.sub$.add(
+          this.periodsService.setActive(item.id as number).subscribe((period) => {
+            if (period) {
+              this.globalPeriodService.updatePeriodFromService(period);
+            }
+          }),
+        );
+      }
+    });
+  }
+}

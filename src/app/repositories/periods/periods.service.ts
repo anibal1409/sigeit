@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 
 import {
+  finalize,
+  Observable,
+} from 'rxjs';
+
+import {
   BaseQuery,
   ListComponentService,
 } from '../../common/memory-repository';
@@ -12,6 +17,7 @@ import {
   DeletePeriodService,
   FindPeriodService,
   GetPeriodsService,
+  SetActivePeriodService,
   UpdatePeriodService,
 } from './use-cases';
 
@@ -25,6 +31,7 @@ export class PeriodsService extends ListComponentService<PeriodItemVM, BaseQuery
     public findEntityService: FindPeriodService,
     public updateEntityService: UpdatePeriodService,
     private intervalsService: IntervalsService,
+    private setActivePeriodService: SetActivePeriodService,
   ) {
     super(
       getEntityService,
@@ -43,5 +50,12 @@ export class PeriodsService extends ListComponentService<PeriodItemVM, BaseQuery
     interval: number = 5,
   ): any {
     return this.intervalsService.exec(startTime, endTime, duration, interval); 
+  }
+
+  setActive(id: number): Observable<PeriodItemVM | null> {
+    this.setLoading(true);
+    return this.setActivePeriodService.exec(id).pipe(
+      finalize(() => this.setLoading(false)),
+    );
   }
 }
