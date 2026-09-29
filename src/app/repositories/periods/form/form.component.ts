@@ -15,10 +15,8 @@ import {
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { isEqual } from 'lodash';
-import {
-  Observable,
-  Subscription,
-} from 'rxjs';
+import { Subscription } from 'rxjs';
+import { ToastService } from 'toast';
 
 import {
   PeriodVM,
@@ -68,11 +66,15 @@ export class FormComponent implements OnInit, OnDestroy {
   STAGE_PERIODS_VALUE = STAGE_PERIODS_VALUE;
   intervalsStart = [];
   intervalsEnd = [];
-  periods$!: Observable<PeriodVM[] | null>;
+  /** Períodos a copiar, del más reciente al más antiguo */
+  periods: PeriodVM[] = [];
+  /** El que el backend usa si no se elige uno: el planificado o el de fin más reciente, sin vacacionales */
+  autoCopySource: PeriodVM | null = null;
 
   constructor(
     private periodsService: PeriodsService,
     private formBuilder: FormBuilder,
+    private toastService: ToastService,
     @Inject(MAT_DIALOG_DATA) public data: PeriodVM,
   ) { }
 
@@ -86,7 +88,16 @@ export class FormComponent implements OnInit, OnDestroy {
         this.loading = loading;
       })
     );
-    this.periods$ = this.periodsService.getData$();
+    this.sub$.add(
+      this.periodsService.getData$().subscribe((periods) => {
+        this.periods = [...(periods || [])].sort((a, b) => b.start.localeCompare(a.start));
+        const regular = this.periods.filter((period) => !period.isVacationCourse);
+        this.autoCopySource =
+          regular.find((period) => period.stage === StagePeriod.Planned && period.status === 'Activo') ||
+          [...regular].sort((a, b) => b.end.localeCompare(a.end))[0] ||
+          null;
+      })
+    );
     this.createForm();
     this.loadData();
   }
@@ -181,6 +192,10 @@ export class FormComponent implements OnInit, OnDestroy {
 
   private create(): void {
     if (!this.submitDisabled) {
+      const { copyPrevious, copyFromPeriodId } = this.form.getRawValue();
+      const source = copyFromPeriodId
+        ? this.periods.find((period) => period.id === copyFromPeriodId)
+        : this.autoCopySource;
       this.sub$.add(
         this.periodsService
           .create({
@@ -188,6 +203,11 @@ export class FormComponent implements OnInit, OnDestroy {
           })
           .subscribe(
             () => {
+              this.toastService.success(
+                copyPrevious && source
+                  ? `Período creado. Se copiaron las secciones y horarios de ${source.name}.`
+                  : 'Período creado vacío.'
+              );
               this.form.reset();
               this.clickClosed();
             }

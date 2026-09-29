@@ -151,10 +151,10 @@
     <mat-label>Período a copiar</mat-label>
     <mat-select formControlName="copyFromPeriodId">
       <mat-option [value]="null">
-        Automático (último planificado o más reciente)
+        Automático{{ autoCopySource ? ': ' + autoCopySource.name : '' }} (último planificado o más reciente, sin vacacionales)
       </mat-option>
-      <mat-option *ngFor="let period of periods$ | async" [value]="period.id">
-        {{ period.name }}
+      <mat-option *ngFor="let period of periods" [value]="period.id">
+        {{ period.name }}{{ period.isVacationCourse ? ' (vacacional)' : '' }}
       </mat-option>
     </mat-select>
   </mat-form-field>
