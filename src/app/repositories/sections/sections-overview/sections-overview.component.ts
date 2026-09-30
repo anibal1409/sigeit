@@ -258,7 +258,7 @@ export class SectionsOverviewComponent {
       name: section.subject?.name || '',
       semester: section.subject?.semester || 0,
       sectionName: section.name || '',
-      teacherName: section.teacher ? `${section.teacher.firstName} ${section.teacher.lastName}` : '',
+      teacherName: section.teacher ? `${section.teacher.firstName} ${section.teacher.lastName}` : 'Sin asignar',
     }));
   }
 

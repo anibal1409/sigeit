@@ -68,11 +68,10 @@ export class SectionsComponent implements OnInit, OnDestroy {
       {
         columnDef: 'teacher.last_name',
         header: 'Profesor',
-        cell: (element: { [key: string]: string }) =>
-          `${(element['teacher'] as any)?.lastName
-            ? (element['teacher'] as any)?.lastName + ','
-            : ''
-          } ${(element['teacher'] as any)?.firstName}`,
+        cell: (element: { [key: string]: string }) => {
+          const teacher = element['teacher'] as any;
+          return teacher?.firstName ? `${teacher.lastName ? teacher.lastName + ',' : ''} ${teacher.firstName}` : 'Sin asignar';
+        },
       },
       {
         columnDef: 'subject',
