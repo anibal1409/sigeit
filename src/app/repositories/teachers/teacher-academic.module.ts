@@ -12,10 +12,10 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 
-import { GradeSearchComponent } from '../grade-search/grade-search.component';
-import { ProfileComponent } from './profile.component';
+import { GradeSearchComponent } from './grade-search/grade-search.component';
+import { ProfileComponent } from './profile/profile.component';
 
-/** Perfil académico y búsqueda por asignatura, reutilizables fuera del módulo de profesores. */
+/** Perfil académico y búsqueda por asignatura, reutilizables en modal fuera del módulo de profesores. */
 @NgModule({
   declarations: [ProfileComponent, GradeSearchComponent],
   imports: [
@@ -24,14 +24,14 @@ import { ProfileComponent } from './profile.component';
     ReactiveFormsModule,
     MatDialogModule,
     MatButtonModule,
-    MatCardModule,
     MatIconModule,
+    MatTabsModule,
+    MatExpansionModule,
+    MatCardModule,
     MatInputModule,
     MatSelectModule,
-    MatTabsModule,
     MatTooltipModule,
-    MatExpansionModule,
   ],
   exports: [ProfileComponent, GradeSearchComponent],
 })
-export class TeacherProfileModule {}
+export class TeacherAcademicModule {}

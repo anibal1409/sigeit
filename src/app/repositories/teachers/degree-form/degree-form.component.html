@@ -61,7 +61,8 @@
       Puede guardar solo el título y agregar sus asignaturas más adelante.
     </p>
 
-    <table class="data-table" formArrayName="grades" *ngIf="grades.length">
+    <div class="table-wrap" *ngIf="grades.length">
+    <table class="data-table" formArrayName="grades">
       <thead>
         <tr>
           <th></th>
@@ -87,7 +88,7 @@
             </td>
             <td><input class="cell period" formControlName="period" aria-label="Período" /></td>
             <td><input class="cell code" formControlName="code" aria-label="Código" /></td>
-            <td><input class="cell" formControlName="subjectName" placeholder="Nombre de la asignatura" aria-label="Asignatura" /></td>
+            <td><input class="cell name" formControlName="subjectName" placeholder="Nombre de la asignatura" aria-label="Asignatura" /></td>
             <td><input class="cell grade" type="number" min="0" formControlName="grade" aria-label="Nota" /></td>
             <td><input class="cell" formControlName="remark" placeholder="Retirada, aprobado..." aria-label="Resultado" /></td>
             <td>
@@ -105,6 +106,7 @@
         </ng-container>
       </tbody>
     </table>
+    </div>
     <button mat-stroked-button type="button" class="add" (click)="addGrade()">
       <mat-icon>add</mat-icon>
       Agregar asignatura

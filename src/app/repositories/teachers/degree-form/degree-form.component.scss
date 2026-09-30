@@ -30,6 +30,9 @@
 
 form {
   min-width: 0;
+}
+
+.table-wrap {
   overflow-x: auto;
 }
 
@@ -110,6 +113,10 @@ tr.has-issues {
 
   &.grade {
     width: 4.5rem;
+  }
+
+  &.name {
+    min-width: 14rem;
   }
 
   &.equivalent {

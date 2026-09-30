@@ -1,61 +1,107 @@
-<div class="mat-container">
-<mat-card>
-<mat-card-content>
-  <div class="page-header">
-    <a mat-icon-button routerLink="/dashboard/teachers" matTooltip="Volver a profesores" aria-label="Volver a profesores">
-      <mat-icon>keyboard_backspace</mat-icon>
-    </a>
-    <p class="help">
-      Profesores que cursaron la asignatura (por su nombre en el récord o por la equivalencia del pensum) con la nota
-      mínima indicada.
-    </p>
+<ng-container *ngIf="dialogData; else page">
+  <div class="modal-header">
+    <span mat-dialog-title>Búsqueda de profesores por asignatura</span>
+    <button mat-mini-fab mat-dialog-close type="button" aria-label="Cerrar" color="basic">
+      <mat-icon>close</mat-icon>
+    </button>
   </div>
+  <div mat-dialog-content>
+    <ng-container *ngTemplateOutlet="body"></ng-container>
+  </div>
+</ng-container>
+
+<ng-template #page>
+  <div class="mat-container">
+    <mat-card>
+      <mat-card-content>
+        <div class="page-header">
+          <a mat-icon-button routerLink="/dashboard/teachers" matTooltip="Volver a profesores" aria-label="Volver a profesores">
+            <mat-icon>keyboard_backspace</mat-icon>
+          </a>
+          <p class="help">
+            Profesores que cursaron las asignaturas elegidas (por su nombre en el récord o por la equivalencia del pensum)
+            con la nota mínima indicada.
+          </p>
+        </div>
+        <ng-container *ngTemplateOutlet="body"></ng-container>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</ng-template>
+
+<ng-template #body>
   <form class="filters" [formGroup]="form" (ngSubmit)="search()">
-    <mat-form-field class="subject">
-      <mat-label>Asignatura</mat-label>
-      <input matInput formControlName="subject" placeholder="Ej.: programación objetos" />
-      <mat-hint>Sin distinguir mayúsculas ni tildes; deben aparecer todas las palabras.</mat-hint>
+    <mat-form-field>
+      <mat-label>Departamento</mat-label>
+      <mat-select formControlName="departmentId">
+        <mat-option *ngFor="let department of departments" [value]="department.id">{{ department.name }}</mat-option>
+      </mat-select>
+      <mat-error>Seleccione un departamento</mat-error>
+    </mat-form-field>
+    <mat-form-field class="subjects">
+      <mat-label>Asignaturas</mat-label>
+      <mat-select formControlName="subjectIds" multiple>
+        <mat-select-trigger>{{ selectedNames }}</mat-select-trigger>
+        <mat-option *ngFor="let subject of subjects" [value]="subject.id">
+          <small class="muted">S{{ subject.semester }} · {{ subject.code }}</small> {{ subject.name }}
+        </mat-option>
+      </mat-select>
+      <mat-hint>Puede elegir una o varias</mat-hint>
+      <mat-error>Elija al menos una asignatura</mat-error>
     </mat-form-field>
     <mat-form-field>
+      <mat-label>Profesor</mat-label>
+      <input matInput formControlName="teacherName" placeholder="Nombre o cédula" />
+      <mat-icon matSuffix>person_search</mat-icon>
+    </mat-form-field>
+    <mat-form-field class="percent">
       <mat-label>Nota mínima (%)</mat-label>
       <input matInput type="number" min="0" max="100" formControlName="minPercent" />
       <mat-hint>70% = 7/10 o 14/20</mat-hint>
+      <mat-error>Entre 0 y 100</mat-error>
     </mat-form-field>
-    <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || loading">
+    <button mat-flat-button color="primary" type="submit" [disabled]="loading">
       <mat-icon>search</mat-icon>
-      Buscar
+      {{ loading ? 'Buscando...' : 'Buscar' }}
     </button>
   </form>
 
-  <p class="empty" *ngIf="results && !results.length">Ningún profesor coincide con la búsqueda.</p>
+  <p class="empty" *ngIf="results && !visibleResults.length">Ningún profesor coincide con la búsqueda.</p>
 
-  <section class="result" *ngFor="let result of results">
+  <section class="result" *ngFor="let result of visibleResults">
     <h3>
       {{ result.teacher.lastName }}, {{ result.teacher.firstName }}
       <small>C.I. {{ result.teacher.idDocument }} · {{ $any(result.teacher.department)?.name }}</small>
-      <a mat-button [routerLink]="['/dashboard/teachers/academic', result.teacher.id]">
-        <mat-icon>school</mat-icon>
-        Registro académico
-      </a>
+      <span class="badge" [class.full]="result.subjects.length === searchedCount">
+        {{ result.subjects.length }} de {{ searchedCount }} {{ searchedCount === 1 ? 'asignatura' : 'asignaturas' }}
+      </span>
+      <button *ngIf="dialogData; else academicLink" mat-button type="button" (click)="openProfile(result.teacher)">
+        <mat-icon>badge</mat-icon>
+        Ver perfil
+      </button>
+      <ng-template #academicLink>
+        <a mat-button [routerLink]="['/dashboard/teachers/academic', result.teacher.id]">
+          <mat-icon>school</mat-icon>
+          Registro académico
+        </a>
+      </ng-template>
     </h3>
     <table class="data-table">
       <thead>
-        <tr><th>Asignatura</th><th>Título</th><th>Período</th><th>Nota</th><th>%</th></tr>
+        <tr><th>Asignatura buscada</th><th>Cursada como</th><th>Título</th><th>Período</th><th>Nota</th><th>%</th></tr>
       </thead>
       <tbody>
-        <tr *ngFor="let match of result.matches">
-          <td>
-            {{ match.subjectName }}
-            <small class="d-block text-muted" *ngIf="match.subject">Equivale a: {{ match.subject.name }}</small>
-          </td>
-          <td>{{ match.degreeTitle }} ({{ optionName(levelOptions, match.degreeLevel) }})</td>
-          <td>{{ match.period }}</td>
-          <td>{{ gradeLabel(match, match.maxGrade) }}</td>
-          <td>{{ match.percent ?? '—' }}</td>
-        </tr>
+        <ng-container *ngFor="let item of result.subjects">
+          <tr *ngFor="let match of item.matches">
+            <td>{{ item.subject.name }}</td>
+            <td>{{ match.subjectName }}</td>
+            <td>{{ match.degreeTitle }} ({{ optionName(levelOptions, match.degreeLevel) }})</td>
+            <td>{{ match.period }}</td>
+            <td>{{ gradeLabel(match, match.maxGrade) }}</td>
+            <td>{{ match.percent ?? '—' }}</td>
+          </tr>
+        </ng-container>
       </tbody>
     </table>
   </section>
-</mat-card-content>
-</mat-card>
-</div>
+</ng-template>

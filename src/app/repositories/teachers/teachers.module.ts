@@ -26,7 +26,6 @@ import { GetDepartmentsService } from '../departments/use-cases';
 import { AcademicComponent } from './academic/academic.component';
 import { DegreeFormComponent } from './degree-form/degree-form.component';
 import { FormComponent } from './form/form.component';
-import { GradeSearchComponent } from './grade-search/grade-search.component';
 import { TeacherMemoryService } from './memory';
 import { TeacherProfileModule } from './profile/profile.module';
 import { TeachersRoutingModule } from './teachers-routing.module';
@@ -45,7 +44,6 @@ import {
     TeachersComponent,
     FormComponent,
     DegreeFormComponent,
-    GradeSearchComponent,
     AcademicComponent,
   ],
   imports: [
@@ -70,7 +68,7 @@ import {
     TeacherProfileModule,
   ],
   providers: [
-    TeachersService, 
+    TeachersService,
     GetTeachersService,
     CreateTeacherService,
     FindTeacherService,

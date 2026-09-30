@@ -23,6 +23,30 @@
   </p>
 
   <mat-tab-group>
+    <mat-tab label="Carga actual{{ periodName ? ' (' + periodName + ')' : '' }}">
+      <p class="empty" *ngIf="!current">Cargando...</p>
+      <ng-container *ngIf="current">
+        <div class="load">
+          <span><strong>{{ currentHours }}</strong> horas semanales</span>
+          <span><strong>{{ current.length }}</strong> {{ current.length === 1 ? 'sección' : 'secciones' }}</span>
+        </div>
+        <p class="empty" *ngIf="!current.length">No tiene secciones asignadas en el período activo.</p>
+        <table class="data-table" *ngIf="current.length">
+          <thead>
+            <tr><th>Código</th><th>Asignatura</th><th>Sección</th><th>Horas</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of current">
+              <td>{{ item.subjectCode }}</td>
+              <td>{{ item.subjectName }}</td>
+              <td>{{ item.sectionName }}</td>
+              <td>{{ item.hours }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </ng-container>
+    </mat-tab>
+
     <mat-tab label="Asignaturas impartidas ({{ history.length }})">
       <p class="empty" *ngIf="!history.length">El profesor no tiene secciones asignadas.</p>
       <table class="data-table" *ngIf="history.length">

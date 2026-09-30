@@ -1,3 +1,10 @@
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 1rem;
+}
+
 .page-header {
   display: flex;
   align-items: center;
@@ -12,16 +19,27 @@
 
 .filters {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-start;
-  gap: 1rem;
+  gap: 0 1rem;
+  margin-top: 1rem;
 
-  .subject {
-    flex: 1;
+  .subjects {
+    flex: 1 1 22rem;
+  }
+
+  .percent {
+    width: 10rem;
   }
 
   button {
     margin-top: 0.5rem;
   }
+}
+
+.muted {
+  color: #757575;
+  margin-right: 0.25rem;
 }
 
 .empty {
@@ -32,12 +50,28 @@
   margin-top: 1.5rem;
 
   h3 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
     margin-bottom: 0.5rem;
 
     small {
       font-weight: 400;
       color: #666;
-      margin-left: 0.5rem;
     }
+  }
+}
+
+.badge {
+  padding: 0.125rem 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.8125rem;
+  background: #fff4e5;
+  color: #b26a00;
+
+  &.full {
+    background: #e8f5e9;
+    color: #2e7d32;
   }
 }
