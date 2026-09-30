@@ -1512,9 +1512,9 @@
     "semantic_hash": ""
   },
   "src/app/admin/admin.component.ts": {
-    "mtime": 1790802485.0815284,
-    "seen": 1790802795.4388158,
-    "ast_hash": "be3914fee7a4c7e3393efad3902761c7",
+    "mtime": 1790802804.3139298,
+    "seen": 1790803080.06892,
+    "ast_hash": "a06d27b7edaff5b8365dcb5e84eeaa9d",
     "semantic_hash": ""
   },
   "src/app/admin/admin.module.ts": {
@@ -4236,8 +4236,8 @@
     "semantic_hash": ""
   },
   "src/app/repositories/sections/sections.module.ts": {
-    "mtime": 1790802705.0311122,
-    "seen": 1790802795.4400043,
+    "mtime": 1790804438.3274927,
+    "seen": 1790804625.0885954,
     "ast_hash": "877c6af5bd12e39cf84cca65f8dc8f07",
     "semantic_hash": ""
   },
@@ -4836,9 +4836,9 @@
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/teachers.module.ts": {
-    "mtime": 1790802789.1889575,
-    "seen": 1790802795.4403155,
-    "ast_hash": "60576b4e332aa8da3a15642cc5c4f56d",
+    "mtime": 1790804490.2842999,
+    "seen": 1790804625.0887372,
+    "ast_hash": "2ad8639654c4f0d2b589e7a0f28c9b02",
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/teachers.service.spec.ts": {
@@ -6234,15 +6234,15 @@
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/degree-form/degree-form.component.ts": {
-    "mtime": 1790802744.5180392,
-    "seen": 1790802795.4402719,
-    "ast_hash": "b03c1667641dc4a0a0eaf696f3923c77",
+    "mtime": 1790802845.8138545,
+    "seen": 1790803080.0701826,
+    "ast_hash": "9f73edf9755ff83b1069588052470d8a",
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/grade-search/grade-search.component.ts": {
-    "mtime": 1790797408.85197,
-    "seen": 1790797496.6005015,
-    "ast_hash": "9c3ed85e58c75ba54b13bd9f26fbe8cf",
+    "mtime": 1790804484.204322,
+    "seen": 1790804625.0887127,
+    "ast_hash": "ee8b2fc025c1bc4b92798b70a7423f30",
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/mappers/teacher-vm-2-teacher-dto.ts": {
@@ -6258,9 +6258,9 @@
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/profile/profile.component.ts": {
-    "mtime": 1790802668.9001794,
-    "seen": 1790802795.440305,
-    "ast_hash": "14a0f1fbc78a93ad39b69f131c1362de",
+    "mtime": 1790804439.2154894,
+    "seen": 1790804625.088729,
+    "ast_hash": "303a8827a0877b5bb4026c31f6dba8bc",
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/teacher-academic.service.ts": {
@@ -6270,21 +6270,21 @@
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/degree-form/degree-form.component.html": {
-    "mtime": 1790802749.2730305,
-    "seen": 1790802795.4406366,
-    "ast_hash": "23bb4ae5154f2e928d5d08f76ac2e831",
+    "mtime": 1790804439.2574892,
+    "seen": 1790804625.0889335,
+    "ast_hash": "5407d5ce50b4c4ccfcf53eced3e7834d",
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/grade-search/grade-search.component.html": {
-    "mtime": 1790802781.202972,
-    "seen": 1790802795.44064,
-    "ast_hash": "bd7b7c4ed947cc2b486fe531949eab7c",
+    "mtime": 1790804479.4313395,
+    "seen": 1790804625.0889351,
+    "ast_hash": "7ed43c1ba193fd5a2c6ffdf2606d4ab7",
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/profile/profile.component.html": {
-    "mtime": 1790802672.4051728,
-    "seen": 1790802795.4406412,
-    "ast_hash": "e3dd04b15cebea7550ab9ef2340df80b",
+    "mtime": 1790804439.2254894,
+    "seen": 1790804625.088936,
+    "ast_hash": "bc0ae7ab4c100e85c7e81d0524f5252e",
     "semantic_hash": ""
   },
   "src/app/common/upload/index.ts": {
@@ -6312,9 +6312,9 @@
     "semantic_hash": ""
   },
   "src/app/repositories/sections/sections-manage/sections-manage.component.ts": {
-    "mtime": 1790802687.5591445,
-    "seen": 1790802795.4399867,
-    "ast_hash": "f88a330045d5d4602e92c416a234a6fb",
+    "mtime": 1790804495.2932816,
+    "seen": 1790804625.088586,
+    "ast_hash": "bed4c4eea0675ed18a91927ed5990fb0",
     "semantic_hash": ""
   },
   "src/app/repositories/sections/sections-manage/teacher-picker/teacher-picker.component.ts": {
@@ -6336,9 +6336,9 @@
     "semantic_hash": ""
   },
   "src/app/repositories/sections/sections-manage/sections-manage.component.html": {
-    "mtime": 1790802703.5441148,
-    "seen": 1790802795.4406173,
-    "ast_hash": "0b95873279ec3dbb36b2bdea9073b864",
+    "mtime": 1790804493.6722875,
+    "seen": 1790804625.0889213,
+    "ast_hash": "50838f21b7d0836c777721728f7f2ad8",
     "semantic_hash": ""
   },
   "src/app/common/subject-demand/subject-demand-dialog/subject-demand-dialog.component.ts": {
@@ -6360,9 +6360,9 @@
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/profile/profile.module.ts": {
-    "mtime": 1790802672.7261722,
-    "seen": 1790802795.4403064,
-    "ast_hash": "ada1fb526efbd5645151f6faae6f480c",
+    "mtime": 1790804489.0603042,
+    "seen": 1790804625.08873,
+    "ast_hash": "5446cabc6cbd3f18eab1ae52fe99eb7b",
     "semantic_hash": ""
   },
   "src/app/common/subject-demand/subject-demand-dialog/subject-demand-dialog.component.html": {
@@ -6381,6 +6381,12 @@
     "mtime": 1790802774.1516342,
     "seen": 1790802795.4406347,
     "ast_hash": "af8135a5e21a563aa1ddbe2b952a9d61",
+    "semantic_hash": ""
+  },
+  "src/app/repositories/teachers/teacher-academic.module.ts": {
+    "mtime": 1790804317.5523696,
+    "seen": 1790804625.0887313,
+    "ast_hash": "ed4f93634a85db00cd7ba5855ccffe4b",
     "semantic_hash": ""
   }
 }
