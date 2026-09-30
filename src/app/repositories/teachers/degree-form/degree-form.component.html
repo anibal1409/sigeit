@@ -1,91 +1,120 @@
-<div class="modal-header">
-  <span mat-dialog-title>{{ data.degree ? 'Modificar' : 'Registrar' }} título</span>
-  <button mat-mini-fab type="button" aria-label="Cerrar" color="basic" [disabled]="loading" (click)="close()">
-    <mat-icon>close</mat-icon>
-  </button>
-</div>
+<div class="layout" [class.with-document]="file">
+  <aside class="document" *ngIf="file">
+    <iframe *ngIf="fileKind === 'pdf'" [src]="fileUrl" title="Récord importado"></iframe>
+    <img *ngIf="fileKind === 'image'" [src]="fileUrl" alt="Récord importado" />
+    <p *ngIf="fileKind === 'other'" class="empty">
+      El navegador no puede mostrar este formato ({{ file.name }}); revise el documento aparte.
+    </p>
+  </aside>
 
-<form mat-dialog-content [formGroup]="form">
-  <p class="alert alert-warning d-flex align-items-center gap-2" *ngIf="data.warning">
-    <mat-icon>warning</mat-icon>
-    <span>{{ data.warning }}</span>
-  </p>
-  <p class="help" *ngIf="data.preview">
-    Revise las notas extraídas del récord antes de guardar, sobre todo si provienen de una imagen o de un documento
-    escaneado. Puede corregir, agregar o quitar asignaturas. La columna «Equivale a» viene sugerida; ajústela para que
-    la búsqueda encuentre la asignatura aunque tenga otro nombre en esa institución.
-  </p>
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <h3 class="title">{{ degree ? 'Modificar' : 'Registrar' }} título</h3>
 
-  <div class="fields">
-    <mat-form-field>
-      <mat-label>Nivel</mat-label>
-      <mat-select formControlName="level">
-        <mat-option *ngFor="let option of levelOptions" [value]="option.value">{{ option.name }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field class="wide">
-      <mat-label>Título o programa</mat-label>
-      <input matInput formControlName="title" required />
-      <mat-error>Campo requerido</mat-error>
-    </mat-form-field>
-    <mat-form-field class="wide">
-      <mat-label>Institución</mat-label>
-      <input matInput formControlName="institution" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Fecha de grado</mat-label>
-      <input matInput type="date" formControlName="graduationDate" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Nota máxima de la escala</mat-label>
-      <input matInput type="number" min="1" formControlName="maxGrade" required />
-      <mat-error>Indique la escala (10, 20, 100...)</mat-error>
-    </mat-form-field>
-  </div>
+    <p class="alert alert-warning d-flex align-items-center gap-2" *ngIf="warning">
+      <mat-icon>warning</mat-icon>
+      <span>{{ warning }}</span>
+    </p>
+    <p class="help" *ngIf="preview">
+      Compare lo detectado con el documento y corrija lo necesario antes de guardar. Las filas marcadas tienen datos que
+      probablemente se leyeron mal. La columna «Equivale a» viene sugerida; ajústela para que la búsqueda encuentre la
+      asignatura aunque tenga otro nombre en esa institución.
+    </p>
 
-  <h3>Asignaturas ({{ grades.length }})</h3>
-  <table class="data-table" formArrayName="grades">
-    <thead>
-      <tr>
-        <th>Período</th>
-        <th>Código</th>
-        <th>Asignatura</th>
-        <th>Nota</th>
-        <th>Resultado</th>
-        <th>Equivale a (pensum)</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let row of grades.controls; let i = index" [formGroupName]="i">
-        <td><input class="cell period" formControlName="period" /></td>
-        <td><input class="cell code" formControlName="code" /></td>
-        <td><input class="cell" formControlName="subjectName" placeholder="Nombre de la asignatura" /></td>
-        <td><input class="cell grade" type="number" min="0" formControlName="grade" /></td>
-        <td><input class="cell" formControlName="remark" placeholder="Retirada, aprobado..." /></td>
-        <td>
-          <select class="cell equivalent" formControlName="subjectId" aria-label="Asignatura equivalente del pensum">
-            <option [ngValue]="null">Sin equivalencia</option>
-            <option *ngFor="let subject of subjects" [ngValue]="subject.id">{{ subject.name }} ({{ subject.code }})</option>
-          </select>
-        </td>
-        <td>
-          <button mat-icon-button type="button" aria-label="Quitar asignatura" (click)="removeGrade(i)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <button mat-stroked-button type="button" class="add" (click)="addGrade()">
-    <mat-icon>add</mat-icon>
-    Agregar asignatura
-  </button>
-</form>
+    <div class="fields">
+      <mat-form-field>
+        <mat-label>Nivel</mat-label>
+        <mat-select formControlName="level">
+          <mat-option *ngFor="let option of levelOptions" [value]="option.value">{{ option.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="wide">
+        <mat-label>Título o programa</mat-label>
+        <input matInput formControlName="title" required />
+        <mat-error>Campo requerido</mat-error>
+      </mat-form-field>
+      <mat-form-field class="wide">
+        <mat-label>Institución</mat-label>
+        <input matInput formControlName="institution" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Fecha de grado</mat-label>
+        <input matInput type="date" formControlName="graduationDate" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Nota máxima de la escala</mat-label>
+        <input matInput type="number" min="1" formControlName="maxGrade" required />
+        <mat-error>Indique la escala (10, 20, 100...)</mat-error>
+      </mat-form-field>
+    </div>
 
-<div mat-dialog-actions>
-  <button mat-button type="button" [disabled]="loading" (click)="close()">Cancelar</button>
-  <button mat-flat-button color="primary" type="button" [disabled]="loading" (click)="save()">
-    {{ loading ? 'Guardando...' : 'Guardar' }}
-  </button>
+    <div class="grades-header">
+      <h4>Asignaturas ({{ grades.length }})</h4>
+      <span *ngIf="issueRows" class="issues-count">
+        <mat-icon>error_outline</mat-icon>
+        {{ issueRows }} {{ issueRows === 1 ? 'fila con observaciones' : 'filas con observaciones' }}
+      </span>
+      <mat-checkbox *ngIf="issueRows" [(ngModel)]="onlyIssues" [ngModelOptions]="{ standalone: true }">
+        Solo filas con observaciones
+      </mat-checkbox>
+    </div>
+    <p class="empty" *ngIf="!grades.length">
+      Puede guardar solo el título y agregar sus asignaturas más adelante.
+    </p>
+
+    <table class="data-table" formArrayName="grades" *ngIf="grades.length">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Período</th>
+          <th>Código</th>
+          <th>Asignatura</th>
+          <th>Nota</th>
+          <th>Resultado</th>
+          <th>Equivale a (pensum)</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let row of grades.controls; let i = index">
+          <tr *ngIf="!onlyIssues || hasErrors(i)" [formGroupName]="i" [class.has-issues]="hasErrors(i)">
+            <td class="status">
+              <mat-icon
+                *ngIf="issues[i]?.length"
+                [class.error]="hasErrors(i)"
+                [matTooltip]="issueText(i)"
+                [attr.aria-label]="issueText(i)"
+              >{{ hasErrors(i) ? 'error' : 'info' }}</mat-icon>
+            </td>
+            <td><input class="cell period" formControlName="period" aria-label="Período" /></td>
+            <td><input class="cell code" formControlName="code" aria-label="Código" /></td>
+            <td><input class="cell" formControlName="subjectName" placeholder="Nombre de la asignatura" aria-label="Asignatura" /></td>
+            <td><input class="cell grade" type="number" min="0" formControlName="grade" aria-label="Nota" /></td>
+            <td><input class="cell" formControlName="remark" placeholder="Retirada, aprobado..." aria-label="Resultado" /></td>
+            <td>
+              <select class="cell equivalent" formControlName="subjectId" aria-label="Asignatura equivalente del pensum">
+                <option [ngValue]="null">Sin equivalencia</option>
+                <option *ngFor="let subject of subjects" [ngValue]="subject.id">{{ subject.name }} ({{ subject.code }})</option>
+              </select>
+            </td>
+            <td>
+              <button mat-icon-button type="button" aria-label="Quitar asignatura" (click)="removeGrade(i)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+    <button mat-stroked-button type="button" class="add" (click)="addGrade()">
+      <mat-icon>add</mat-icon>
+      Agregar asignatura
+    </button>
+
+    <div class="actions">
+      <button mat-button type="button" [disabled]="loading" (click)="close()">Cancelar</button>
+      <button mat-flat-button color="primary" type="submit" [disabled]="loading">
+        {{ loading ? 'Guardando...' : 'Guardar' }}
+      </button>
+    </div>
+  </form>
 </div>

@@ -15,7 +15,9 @@ import {
 import { map, Observable } from 'rxjs';
 
 /** Información académica del profesor: historial, títulos, notas y búsqueda por notas. */
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class TeacherAcademicService {
   constructor(
     private teacherService: TeacherService,

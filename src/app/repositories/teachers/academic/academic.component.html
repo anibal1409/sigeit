@@ -1,0 +1,151 @@
+<div class="mat-container">
+  <mat-card>
+    <mat-card-content>
+      <div class="switcher">
+        <a mat-icon-button routerLink="/dashboard/teachers" matTooltip="Volver a profesores" aria-label="Volver a profesores">
+          <mat-icon>keyboard_backspace</mat-icon>
+        </a>
+        <button
+          mat-icon-button
+          type="button"
+          matTooltip="Profesor anterior"
+          aria-label="Profesor anterior"
+          [disabled]="!!editing || index <= 0"
+          (click)="step(-1)"
+        >
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <mat-form-field class="teacher-field" subscriptSizing="dynamic">
+          <mat-label>Profesor</mat-label>
+          <input
+            matInput
+            [formControl]="searchCtrl"
+            [matAutocomplete]="teachersAuto"
+            [readonly]="!!editing"
+            placeholder="Nombre o cédula"
+            (focus)="searchCtrl.setValue('')"
+          />
+          <mat-icon matSuffix>person_search</mat-icon>
+          <mat-autocomplete
+            #teachersAuto="matAutocomplete"
+            [displayWith]="displayTeacher"
+            (optionSelected)="go($event.option.value)"
+            (closed)="teacher && !searchCtrl.value && searchCtrl.setValue(teacher, { emitEvent: false })"
+          >
+            <mat-option *ngFor="let item of filteredTeachers" [value]="item">
+              {{ item.lastName }}, {{ item.firstName }} <small class="muted">C.I. {{ item.idDocument }}</small>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button
+          mat-icon-button
+          type="button"
+          matTooltip="Profesor siguiente"
+          aria-label="Profesor siguiente"
+          [disabled]="!!editing || index < 0 || index >= teachers.length - 1"
+          (click)="step(1)"
+        >
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+        <span class="position" *ngIf="index >= 0">{{ index + 1 }} de {{ teachers.length }}</span>
+      </div>
+
+      <ng-container *ngIf="teacher">
+        <dl class="summary">
+          <div><dt>Cédula</dt><dd>{{ teacher.idDocument }}</dd></div>
+          <div><dt>Departamento</dt><dd>{{ $any(teacher.department)?.name || '—' }}</dd></div>
+          <div><dt>Categoría</dt><dd>{{ optionName(categoryOptions, teacher.category) || '—' }}</dd></div>
+          <div><dt>Dedicación</dt><dd>{{ optionName(dedicationOptions, teacher.dedication) || '—' }}</dd></div>
+        </dl>
+
+        <app-degree-form
+          *ngIf="editing; else list"
+          [teacher]="teacher"
+          [degree]="editing.degree"
+          [preview]="editing.preview"
+          [file]="editing.file"
+          (closed)="closeForm($event)"
+        ></app-degree-form>
+
+        <ng-template #list>
+          <div class="actions">
+            <button mat-flat-button color="primary" type="button" [disabled]="reading" (click)="editing = {}">
+              <mat-icon>add</mat-icon>
+              Registrar título
+            </button>
+            <input
+              #fileInput
+              type="file"
+              accept=".pdf,.jpg,.jpeg,.png,.webp,.heic"
+              hidden
+              (change)="importTranscript(fileInput)"
+            />
+            <button mat-stroked-button type="button" [disabled]="reading" (click)="fileInput.click()">
+              <mat-icon>upload_file</mat-icon>
+              {{ reading ? 'Leyendo récord...' : 'Importar récord (PDF o imagen)' }}
+            </button>
+          </div>
+          <p class="error" *ngIf="error">{{ error }}</p>
+
+          <h3>Títulos ({{ degrees.length }})</h3>
+          <p class="empty" *ngIf="!degrees.length">No hay títulos registrados.</p>
+          <mat-accordion>
+            <mat-expansion-panel *ngFor="let degree of degrees">
+              <mat-expansion-panel-header>
+                <mat-panel-title>{{ degree.title }}</mat-panel-title>
+                <mat-panel-description>
+                  {{ optionName(levelOptions, degree.level) }}
+                  <span *ngIf="degree.institution">&nbsp;· {{ degree.institution }}</span>
+                  &nbsp;· {{ degree.grades.length ? degree.grades.length + ' asignaturas' : 'sin asignaturas' }}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <div class="actions">
+                <button mat-button type="button" (click)="editing = { degree }">
+                  <mat-icon>{{ degree.grades.length ? 'edit' : 'playlist_add' }}</mat-icon>
+                  {{ degree.grades.length ? 'Editar' : 'Agregar asignaturas' }}
+                </button>
+                <button mat-button color="warn" type="button" (click)="deleteDegree(degree)">
+                  <mat-icon>delete</mat-icon>
+                  Eliminar
+                </button>
+              </div>
+              <table class="data-table" *ngIf="degree.grades.length">
+                <thead>
+                  <tr><th>Período</th><th>Código</th><th>Asignatura</th><th>Nota</th></tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let grade of degree.grades">
+                    <td>{{ grade.period }}</td>
+                    <td>{{ grade.code }}</td>
+                    <td>
+                      {{ grade.subjectName }}
+                      <small class="d-block text-muted" *ngIf="grade.subject">Equivale a: {{ grade.subject.name }}</small>
+                    </td>
+                    <td>{{ gradeLabel(grade, degree.maxGrade) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </mat-expansion-panel>
+          </mat-accordion>
+
+          <h3>Asignaturas impartidas ({{ history.length }})</h3>
+          <p class="empty" *ngIf="!history.length">El profesor no tiene secciones asignadas.</p>
+          <table class="data-table" *ngIf="history.length">
+            <thead>
+              <tr><th>Período</th><th>Código</th><th>Asignatura</th><th>Sección</th></tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of history">
+                <td>{{ item.periodName }}</td>
+                <td>{{ item.subjectCode }}</td>
+                <td>{{ item.subjectName }}</td>
+                <td>{{ item.sectionName }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </ng-template>
+      </ng-container>
+    </mat-card-content>
+  </mat-card>
+</div>

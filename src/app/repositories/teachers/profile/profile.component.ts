@@ -6,27 +6,16 @@ import {
 } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
-  MatDialog,
+  MatDialogRef,
 } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 import {
   ResponseSubjectHistoryDto,
   ResponseTeacherDegreeDto,
-  TranscriptPreviewDto,
 } from 'dashboard-sdk';
-import {
-  finalize,
-  Subscription,
-} from 'rxjs';
-import {
-  ConfirmModalComponent,
-  uploadSizeError,
-} from 'src/app/common';
+import { Subscription } from 'rxjs';
 
-import {
-  DegreeFormComponent,
-  DegreeFormData,
-} from '../degree-form/degree-form.component';
 import {
   CATEGORY_OPTIONS,
   DEDICATION_OPTIONS,
@@ -35,11 +24,15 @@ import {
   gradeLabel,
   HIRING_EVALUATION_OPTIONS,
   optionName,
-  TeacherItemVM,
+  TeacherVM,
 } from '../model';
 import { TeacherAcademicService } from '../teacher-academic.service';
 
-/** Perfil académico del profesor: datos del escalafón, historial de asignaturas y títulos. */
+export interface ProfileData {
+  teacher: Partial<TeacherVM>;
+}
+
+/** Perfil académico del profesor (solo lectura): escalafón, historial de asignaturas y títulos. */
 @Component({
   selector: 'app-teacher-profile',
   templateUrl: './profile.component.html',
@@ -56,92 +49,29 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   history: Array<ResponseSubjectHistoryDto> = [];
   degrees: Array<ResponseTeacherDegreeDto> = [];
-  loading = false;
-  error = '';
   sub$ = new Subscription();
 
   constructor(
     private academicService: TeacherAcademicService,
-    private matDialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: { teacher: TeacherItemVM },
+    private router: Router,
+    private dialogRef: MatDialogRef<ProfileComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: ProfileData,
   ) {}
 
-  /** Carga el historial de asignaturas y los títulos del profesor. */
   ngOnInit(): void {
     const id = this.data.teacher.id || 0;
     this.sub$.add(
       this.academicService.getSubjectsHistory$(id).subscribe((history) => (this.history = history)),
     );
-    this.loadDegrees();
+    this.sub$.add(this.academicService.getDegrees$(id).subscribe((degrees) => (this.degrees = degrees)));
   }
 
   ngOnDestroy(): void {
     this.sub$.unsubscribe();
   }
 
-  /** Recarga los títulos del profesor con sus notas. */
-  loadDegrees(): void {
-    this.sub$.add(
-      this.academicService
-        .getDegrees$(this.data.teacher.id || 0)
-        .subscribe((degrees) => (this.degrees = degrees)),
-    );
-  }
-
-  /** Abre el formulario de título; al guardar recarga la lista. */
-  openDegreeForm(data: Omit<DegreeFormData, 'teacherId'> = {}): void {
-    const dialogRef = this.matDialog.open(DegreeFormComponent, {
-      data: { teacherId: this.data.teacher.id, ...data },
-      width: '64rem',
-      maxWidth: '95vw',
-      disableClose: true,
-    });
-    dialogRef.afterClosed().subscribe((saved) => saved && this.loadDegrees());
-  }
-
-  /** Lee el PDF seleccionado y abre el formulario con las notas extraídas. */
-  importTranscript(input: HTMLInputElement): void {
-    const file = input.files?.[0];
-    input.value = '';
-    this.error = uploadSizeError(file);
-    if (!file || this.error) {
-      return;
-    }
-    this.loading = true;
-    this.academicService
-      .parseTranscript$(file)
-      .pipe(finalize(() => (this.loading = false)))
-      .subscribe((preview) =>
-        this.openDegreeForm({ preview, warning: this.idDocumentWarning(preview) }),
-      );
-  }
-
-  /** Pide confirmación y elimina el título con sus notas. */
-  deleteDegree(degree: ResponseTeacherDegreeDto): void {
-    const dialogRef = this.matDialog.open(ConfirmModalComponent, {
-      data: {
-        message: {
-          title: 'Eliminar título',
-          body: `¿Está seguro que desea eliminar el título <strong>${degree.title}</strong> y sus notas?`,
-        },
-      },
-      hasBackdrop: true,
-      disableClose: true,
-    });
-    dialogRef.componentInstance.closed.subscribe((confirmed: boolean) => {
-      dialogRef.close();
-      if (confirmed) {
-        this.academicService.deleteDegree$(degree.id).subscribe(() => this.loadDegrees());
-      }
-    });
-  }
-
-  /** Advierte si la cédula del récord no coincide con la del profesor. */
-  private idDocumentWarning(preview: TranscriptPreviewDto): string | undefined {
-    const teacherId = this.data.teacher.idDocument.replace(/\D/g, '');
-    if (!preview.idDocument || preview.idDocument === teacherId) {
-      return undefined;
-    }
-    return `El récord pertenece a ${preview.studentName || 'otra persona'} (C.I. ${preview.idDocument}), no a este profesor.`;
+  manage(): void {
+    this.dialogRef.close();
+    this.router.navigate(['/dashboard/teachers/academic', this.data.teacher.id]);
   }
 }

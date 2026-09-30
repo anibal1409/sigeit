@@ -1,11 +1,15 @@
-<div class="modal-header">
-  <span mat-dialog-title>Buscar profesores por asignatura cursada</span>
-  <button mat-mini-fab mat-dialog-close type="button" aria-label="Cerrar" color="basic">
-    <mat-icon>close</mat-icon>
-  </button>
-</div>
-
-<div mat-dialog-content>
+<div class="mat-container">
+<mat-card>
+<mat-card-content>
+  <div class="page-header">
+    <a mat-icon-button routerLink="/dashboard/teachers" matTooltip="Volver a profesores" aria-label="Volver a profesores">
+      <mat-icon>keyboard_backspace</mat-icon>
+    </a>
+    <p class="help">
+      Profesores que cursaron la asignatura (por su nombre en el récord o por la equivalencia del pensum) con la nota
+      mínima indicada.
+    </p>
+  </div>
   <form class="filters" [formGroup]="form" (ngSubmit)="search()">
     <mat-form-field class="subject">
       <mat-label>Asignatura</mat-label>
@@ -29,6 +33,10 @@
     <h3>
       {{ result.teacher.lastName }}, {{ result.teacher.firstName }}
       <small>C.I. {{ result.teacher.idDocument }} · {{ $any(result.teacher.department)?.name }}</small>
+      <a mat-button [routerLink]="['/dashboard/teachers/academic', result.teacher.id]">
+        <mat-icon>school</mat-icon>
+        Registro académico
+      </a>
     </h3>
     <table class="data-table">
       <thead>
@@ -48,4 +56,6 @@
       </tbody>
     </table>
   </section>
+</mat-card-content>
+</mat-card>
 </div>

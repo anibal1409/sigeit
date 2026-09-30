@@ -41,24 +41,6 @@
     </mat-tab>
 
     <mat-tab label="Títulos y notas ({{ degrees.length }})">
-      <div class="actions">
-        <button mat-stroked-button type="button" [disabled]="loading" (click)="openDegreeForm()">
-          <mat-icon>add</mat-icon>
-          Registrar título
-        </button>
-        <input
-          #fileInput
-          type="file"
-          accept=".pdf,.jpg,.jpeg,.png,.webp,.heic"
-          hidden
-          (change)="importTranscript(fileInput)"
-        />
-        <button mat-stroked-button type="button" [disabled]="loading" (click)="fileInput.click()">
-          <mat-icon>upload_file</mat-icon>
-          {{ loading ? 'Leyendo récord...' : 'Importar récord (PDF o imagen)' }}
-        </button>
-      </div>
-      <p class="error" *ngIf="error">{{ error }}</p>
       <p class="empty" *ngIf="!degrees.length">No hay títulos registrados.</p>
 
       <mat-accordion>
@@ -72,17 +54,8 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <div class="actions">
-            <button mat-button type="button" (click)="openDegreeForm({ degree })">
-              <mat-icon>edit</mat-icon>
-              Editar
-            </button>
-            <button mat-button color="warn" type="button" (click)="deleteDegree(degree)">
-              <mat-icon>delete</mat-icon>
-              Eliminar
-            </button>
-          </div>
-          <table class="data-table">
+          <p class="empty" *ngIf="!degree.grades.length">Título registrado sin asignaturas.</p>
+          <table class="data-table" *ngIf="degree.grades.length">
             <thead>
               <tr><th>Período</th><th>Código</th><th>Asignatura</th><th>Nota</th></tr>
             </thead>
@@ -102,4 +75,11 @@
       </mat-accordion>
     </mat-tab>
   </mat-tab-group>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-flat-button color="primary" type="button" (click)="manage()">
+    <mat-icon>edit_note</mat-icon>
+    Gestionar registro académico
+  </button>
 </div>

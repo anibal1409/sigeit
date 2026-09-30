@@ -1,3 +1,15 @@
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .help {
+    margin: 0;
+    color: #666;
+    font-size: 0.875rem;
+  }
+}
+
 .filters {
   display: flex;
   align-items: flex-start;

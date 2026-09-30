@@ -5,6 +5,7 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 import * as XLSX from 'xlsx';
@@ -19,7 +20,6 @@ import { StateService } from 'src/app/common/state';
 
 import { DepartmentItemVM } from '../departments';
 import { FormComponent } from './form';
-import { GradeSearchComponent } from './grade-search/grade-search.component';
 import {
   CATEGORY_OPTIONS,
   EMPLOYMENT_STATUS_OPTIONS,
@@ -89,6 +89,7 @@ export class TeachersComponent implements OnInit, OnDestroy {
     options: [
       { name: 'Editar', value: RowActionTeacher.update, icon: 'edit' },
       { name: 'Perfil académico', value: RowActionTeacher.profile, icon: 'school' },
+      { name: 'Registro académico', value: RowActionTeacher.academic, icon: 'edit_note' },
       { name: 'Eliminar', value: RowActionTeacher.delete, icon: 'delete' },
     ],
   };
@@ -112,6 +113,7 @@ export class TeachersComponent implements OnInit, OnDestroy {
     private stateService: StateService,
     private matDialog: MatDialog,
     private userStateService: UserStateService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -315,6 +317,9 @@ export class TeachersComponent implements OnInit, OnDestroy {
       case RowActionTeacher.profile:
         this.showProfile(option.data as any);
         break;
+      case RowActionTeacher.academic:
+        this.router.navigate(['/dashboard/teachers/academic', option.data['id']]);
+        break;
       case RowActionTeacher.delete:
         this.showConfirm(option.data as any);
         break;
@@ -325,14 +330,6 @@ export class TeachersComponent implements OnInit, OnDestroy {
   showProfile(teacher: TeacherItemVM): void {
     this.matDialog.open(ProfileComponent, {
       data: { teacher },
-      width: '64rem',
-      maxWidth: '95vw',
-    });
-  }
-
-  /** Abre el buscador de profesores por asignatura cursada. */
-  showGradeSearch(): void {
-    this.matDialog.open(GradeSearchComponent, {
       width: '64rem',
       maxWidth: '95vw',
     });

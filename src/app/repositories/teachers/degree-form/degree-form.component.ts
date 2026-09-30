@@ -1,7 +1,10 @@
 import {
   Component,
-  Inject,
+  EventEmitter,
+  Input,
+  OnDestroy,
   OnInit,
+  Output,
 } from '@angular/core';
 import {
   FormArray,
@@ -10,41 +13,57 @@ import {
   Validators,
 } from '@angular/forms';
 import {
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-} from '@angular/material/dialog';
+  DomSanitizer,
+  SafeResourceUrl,
+} from '@angular/platform-browser';
 
 import {
   CreateTeacherDegreeDto,
   DegreeLevel,
   ResponseSubjectDto,
   ResponseTeacherDegreeDto,
+  ResponseTeacherDto,
   TeacherGradeDto,
   TranscriptPreviewDto,
 } from 'dashboard-sdk';
-import { finalize } from 'rxjs';
+import {
+  finalize,
+  startWith,
+  Subscription,
+} from 'rxjs';
 
 import { DEGREE_LEVEL_OPTIONS } from '../model';
 import { TeacherAcademicService } from '../teacher-academic.service';
 
-/** Datos del diálogo: título a editar, o vista previa de un récord importado. */
-export interface DegreeFormData {
-  teacherId: number;
-  degree?: ResponseTeacherDegreeDto;
-  preview?: TranscriptPreviewDto;
-  warning?: string;
+export interface GradeIssue {
+  text: string;
+  /** error: probablemente mal leído o incompleto; info: solo aviso */
+  level: 'error' | 'info';
 }
 
-/** Registro o edición de un título con la tabla editable de sus notas. */
+/** Registro o edición de un título con la tabla editable de sus notas (opcionales). */
 @Component({
   selector: 'app-degree-form',
   templateUrl: './degree-form.component.html',
   styleUrls: ['./degree-form.component.scss'],
 })
-export class DegreeFormComponent implements OnInit {
+export class DegreeFormComponent implements OnInit, OnDestroy {
+  @Input() teacher!: ResponseTeacherDto;
+  @Input() degree?: ResponseTeacherDegreeDto;
+  /** Notas detectadas en un récord importado */
+  @Input() preview?: TranscriptPreviewDto;
+  /** Documento importado, para revisarlo al lado de la tabla */
+  @Input() file?: File;
+  @Output() closed = new EventEmitter<boolean>();
+
   readonly levelOptions = DEGREE_LEVEL_OPTIONS;
   loading = false;
   subjects: ResponseSubjectDto[] = [];
+  warning = '';
+  fileUrl?: SafeResourceUrl;
+  fileKind: 'pdf' | 'image' | 'other' = 'other';
+  issues: Array<Array<GradeIssue>> = [];
+  onlyIssues = false;
 
   form = this.formBuilder.group({
     level: [DegreeLevel.Undergraduate, Validators.required],
@@ -55,32 +74,47 @@ export class DegreeFormComponent implements OnInit {
     grades: new FormArray<FormGroup>([]),
   });
 
+  private objectUrl?: string;
+  private sub$ = new Subscription();
+
   constructor(
     private academicService: TeacherAcademicService,
     private formBuilder: FormBuilder,
-    private dialogRef: MatDialogRef<DegreeFormComponent, boolean>,
-    @Inject(MAT_DIALOG_DATA) public data: DegreeFormData,
+    private sanitizer: DomSanitizer,
   ) {}
 
-  /** Filas editables de la tabla de notas. */
   get grades(): FormArray<FormGroup> {
     return this.form.controls.grades;
   }
 
-  /** Carga el pensum y el título a editar o la vista previa importada; si no hay ninguno, deja una fila vacía. */
-  ngOnInit(): void {
-    this.academicService.getSubjects$().subscribe((subjects) => (this.subjects = subjects));
-    const source = this.data.degree ?? this.data.preview;
-    if (!source) {
-      this.addGrade();
-      return;
-    }
-    const { grades, ...fields } = source;
-    this.form.patchValue(fields);
-    grades.forEach((grade) => this.addGrade(grade));
+  get issueRows(): number {
+    return this.issues.filter((row) => row.some((issue) => issue.level === 'error')).length;
   }
 
-  /** Agrega una fila de nota, vacía o con los datos indicados. */
+  ngOnInit(): void {
+    this.sub$.add(this.academicService.getSubjects$().subscribe((subjects) => (this.subjects = subjects)));
+    const source = this.degree ?? this.preview;
+    if (source) {
+      const { grades, ...fields } = source;
+      this.form.patchValue(fields);
+      grades.forEach((grade) => this.addGrade(grade));
+    }
+    this.warning = this.idDocumentWarning();
+    if (this.file) {
+      this.objectUrl = URL.createObjectURL(this.file);
+      this.fileKind = this.file.type === 'application/pdf'
+        ? 'pdf'
+        : /^image\/(png|jpe?g|webp|gif)$/.test(this.file.type) ? 'image' : 'other';
+      this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.objectUrl);
+    }
+    this.sub$.add(this.form.valueChanges.pipe(startWith(null)).subscribe(() => (this.issues = this.findIssues())));
+  }
+
+  ngOnDestroy(): void {
+    this.sub$.unsubscribe();
+    if (this.objectUrl) URL.revokeObjectURL(this.objectUrl);
+  }
+
   addGrade(grade: Partial<TeacherGradeDto> = {}): void {
     this.grades.push(
       this.formBuilder.group({
@@ -94,13 +128,20 @@ export class DegreeFormComponent implements OnInit {
     );
   }
 
-  /** Quita una fila de nota. */
   removeGrade(index: number): void {
     this.grades.removeAt(index);
     this.form.markAsDirty();
   }
 
-  /** Crea el título (con sus notas) o lo actualiza reemplazando todas las notas. */
+  hasErrors(index: number): boolean {
+    return !!this.issues[index]?.some((issue) => issue.level === 'error');
+  }
+
+  issueText(index: number): string {
+    return (this.issues[index] || []).map((issue) => issue.text).join(' · ');
+  }
+
+  /** Crea el título (con o sin notas) o lo actualiza reemplazando todas las notas. */
   save(): void {
     if (this.form.invalid || this.loading) {
       this.form.markAllAsTouched();
@@ -114,19 +155,60 @@ export class DegreeFormComponent implements OnInit {
         ...grade,
         subject: subjectId ? { id: subjectId } : undefined,
       })),
-      teacher: { id: this.data.teacherId },
+      teacher: { id: this.teacher.id },
     } as CreateTeacherDegreeDto;
-    const request$ = this.data.degree
-      ? this.academicService.updateDegree$(this.data.degree.id, dto)
+    const request$ = this.degree
+      ? this.academicService.updateDegree$(this.degree.id, dto)
       : this.academicService.createDegree$(dto);
     this.loading = true;
-    request$
-      .pipe(finalize(() => (this.loading = false)))
-      .subscribe(() => this.dialogRef.close(true));
+    request$.pipe(finalize(() => (this.loading = false))).subscribe(() => this.closed.emit(true));
   }
 
-  /** Cierra sin guardar. */
   close(): void {
-    this.dialogRef.close(false);
+    this.closed.emit(false);
   }
+
+  private findIssues(): Array<Array<GradeIssue>> {
+    const maxGrade = Number(this.form.controls.maxGrade.value) || 0;
+    const rows = this.grades.getRawValue() as Array<{
+      code: string;
+      subjectName: string;
+      period: string;
+      grade: number | string | null;
+      subjectId: number | null;
+    }>;
+    const keys = rows.map((row) => `${normalize(row.code || row.subjectName)}|${normalize(row.period)}`);
+    return rows.map((row, index) => {
+      const issues: Array<GradeIssue> = [];
+      if (!String(row.subjectName || '').trim()) {
+        issues.push({ text: 'Falta el nombre de la asignatura', level: 'error' });
+      }
+      const grade = row.grade === null || row.grade === '' ? null : Number(row.grade);
+      if (grade !== null && (grade < 0 || (maxGrade && grade > maxGrade))) {
+        issues.push({ text: `Nota fuera de la escala (0 a ${maxGrade})`, level: 'error' });
+      }
+      if (!String(row.period || '').trim()) {
+        issues.push({ text: 'Sin período', level: 'error' });
+      }
+      if (keys.indexOf(keys[index]) !== index || keys.lastIndexOf(keys[index]) !== index) {
+        issues.push({ text: 'Asignatura repetida en el mismo período', level: 'error' });
+      }
+      if (!row.subjectId) {
+        issues.push({ text: 'Sin equivalencia en el pensum', level: 'info' });
+      }
+      return issues;
+    });
+  }
+
+  private idDocumentWarning(): string {
+    const teacherId = (this.teacher?.idDocument || '').replace(/\D/g, '');
+    if (!this.preview?.idDocument || this.preview.idDocument === teacherId) {
+      return '';
+    }
+    return `El récord pertenece a ${this.preview.studentName || 'otra persona'} (C.I. ${this.preview.idDocument}), no a este profesor.`;
+  }
+}
+
+function normalize(text: unknown): string {
+  return String(text ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
 }
