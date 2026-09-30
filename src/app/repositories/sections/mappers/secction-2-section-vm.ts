@@ -6,11 +6,11 @@ export function Section2SectionVM(section: any): SectionVM {
     capacity: section?.capacity,
     periodId: section?.periodId,
     subjectId: section?.subjectId,
-    teacherId: section?.teacherId,
+    teacherId: section?.teacherId ?? null,
     name: section?.name,
     status: section?.status,
     all: section?.all,
     id: section?.id,
-    teacher: Teacher2TeacherVM(section?.teacher),
+    teacher: section?.teacher ? Teacher2TeacherVM(section.teacher) : undefined,
   };
 }

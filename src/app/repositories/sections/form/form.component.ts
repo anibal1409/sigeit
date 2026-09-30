@@ -176,7 +176,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     this.form = this.fb.group({
       subjectId: [this.subjectId, [Validators.required]],
       periodId: [this.periodId, [Validators.required]],
-      teacherId: [null, [Validators.required]],
+      teacherId: [null],
       name: ['01', [Validators.required, Validators.min(0)]],
       status: [true, [Validators.required]],
       capacity: [0, [Validators.required, Validators.min(1)]],
@@ -201,7 +201,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   save(): void {
     const section = this.form.value;
     section.subjectId = section?.subjectId?.id || section?.subjectId;
-    section.teacherId = section?.teacherId?.id || section?.teacherId;
+    section.teacherId = section?.teacherId?.id || section?.teacherId || null;
     section.all = this.allTeachersCtrl.value;
     let obs;
     section.name = +section.name < 10 ? `0${+section.name}` : section.name;

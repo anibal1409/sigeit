@@ -53,7 +53,7 @@
                 {{ sectionGroup.section?.teacher?.lastName + ', ' + sectionGroup.section?.teacher?.firstName }}
               </ng-container>
               <ng-template #noLastName>
-                {{ sectionGroup.section?.teacher?.firstName }}
+                {{ sectionGroup.section?.teacher?.firstName || 'Por asignar' }}
               </ng-template>
             </div>
           </div>

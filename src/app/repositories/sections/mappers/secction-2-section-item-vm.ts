@@ -13,7 +13,7 @@ export function Section2SectionItemVM(section: any): SectionItemVM {
     subject: Subject2SubjectItemVM(section?.subject),
     nameTeacher: section?.teacher
       ? `${sectionVM.name} - ${teacherVM?.lastName?.split(' ')[0]}, ${teacherVM?.firstName?.split(' ')[0]}`
-      : `${sectionVM.name} - Sin asignar`,
+      : `${sectionVM.name} - Por asignar`,
     collapse: [],
     schedules: (section?.schedules || []).map(Schedule2ScheduleItemVM),
   };

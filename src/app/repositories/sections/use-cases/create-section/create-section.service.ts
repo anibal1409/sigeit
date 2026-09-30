@@ -32,7 +32,7 @@ export class CreateSectionService
         capacity: entitySave.capacity,
         subject: { id: entitySave.subjectId },
         period: { id: entitySave.periodId },
-        teacher: { id: entitySave.teacherId },
+        teacher: entitySave.teacherId ? { id: entitySave.teacherId } : null,
         all: entitySave.all,
       })
       .pipe(

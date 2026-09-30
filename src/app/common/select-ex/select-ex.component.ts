@@ -95,6 +95,10 @@ export class SelectExComponent implements OnInit, OnChanges, ControlValueAccesso
   }
   private _required = false;
 
+  /** Sin esto el campo vacío siempre se valida como requerido. */
+  @Input()
+  optional = false;
+
   @Input()
   get disabled(): boolean { return this._disabled; }
   set disabled(value: boolean) {
@@ -175,7 +179,7 @@ export class SelectExComponent implements OnInit, OnChanges, ControlValueAccesso
   }
 
   validate({ value }: FormControl): any {
-    const error = !value ? {
+    const error = !value && !this.optional ? {
       required: true
     } : null;
     this. errorState = !!error;

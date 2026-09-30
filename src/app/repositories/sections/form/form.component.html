@@ -49,14 +49,10 @@
                 label="Profesor"
                 [items]="teachers"
                 formControlName="teacherId"
-                placeholder="Seleccione un profesor"
+                placeholder="Por asignar"
                 optionTextField="fullName"
-              >
-                
-              <mat-error *ngIf="form.controls['teacherId'].hasError('required')"
-              >Campo requerido</mat-error
-              >
-              </app-select-ex>
+                [optional]="true"
+              ></app-select-ex>
             </mat-form-field>
           </div>
           <div class="col-md-3">

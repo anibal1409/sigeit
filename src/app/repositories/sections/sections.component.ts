@@ -70,7 +70,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
         header: 'Profesor',
         cell: (element: { [key: string]: string }) => {
           const teacher = element['teacher'] as any;
-          return teacher?.firstName ? `${teacher.lastName ? teacher.lastName + ',' : ''} ${teacher.firstName}` : 'Sin asignar';
+          return teacher?.firstName ? `${teacher.lastName ? teacher.lastName + ',' : ''} ${teacher.firstName}` : 'Por asignar';
         },
       },
       {

@@ -32,7 +32,7 @@ export class GetPlannedSchedulesService {
           teacherName:
             schedule?.section?.teacher?.lastName ?
               (`${schedule?.section?.teacher?.lastName}, ${schedule?.section?.teacher?.firstName}`) :
-              schedule?.section?.teacher?.firstName,
+              schedule?.section?.teacher?.firstName || 'Por asignar',
           scheduleId: schedule.id,
           capacity: schedule?.section?.capacity,
         })))

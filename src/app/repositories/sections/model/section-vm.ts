@@ -4,7 +4,7 @@ export interface SectionVM {
   id?: number;
   subjectId: number;
   periodId: number;
-  teacherId: number;
+  teacherId: number | null;
   name: string;
   status: boolean | string;
   all?: boolean;
