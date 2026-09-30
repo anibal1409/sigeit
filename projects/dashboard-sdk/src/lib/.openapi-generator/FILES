@@ -45,6 +45,7 @@ model/create-period-dto.ts
 model/create-schedule-dto.ts
 model/create-schedules-bulk-dto.ts
 model/create-school-dto.ts
+model/create-section-dto-teacher.ts
 model/create-section-dto.ts
 model/create-subject-dto.ts
 model/create-teacher-degree-dto.ts
@@ -83,6 +84,7 @@ model/response-period-dto.ts
 model/response-schedule-dto.ts
 model/response-school-dto.ts
 model/response-section-dto.ts
+model/response-section-teacher-dto.ts
 model/response-subject-demand-dto.ts
 model/response-subject-dto.ts
 model/response-subject-history-dto.ts
@@ -94,8 +96,10 @@ model/schedule-controller-download-planned-schedules200-response.ts
 model/schedule-lite-dto.ts
 model/section-coverage-dto.ts
 model/section-open-distribution-item-dto.ts
+model/section-teacher-grade-dto.ts
 model/start-time-slot-item-dto.ts
 model/subject-demand-increase-item-dto.ts
+model/subject-ref-dto.ts
 model/subject-stat-item-dto.ts
 model/teacher-category.ts
 model/teacher-dedication.ts

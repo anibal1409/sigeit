@@ -27,6 +27,8 @@ import { ReportResponseDto } from '../model/report-response-dto';
 // @ts-ignore
 import { ResponseSectionDto } from '../model/response-section-dto';
 // @ts-ignore
+import { ResponseSectionTeacherDto } from '../model/response-section-teacher-dto';
+// @ts-ignore
 import { UpdateSectionDto } from '../model/update-section-dto';
 
 // @ts-ignore
@@ -391,6 +393,77 @@ export class SectionService {
 
         let localVarPath = `/section/period/${this.configuration.encodeParam({name: "periodId", value: periodId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}/sections`;
         return this.httpClient.request<Array<ResponseSectionDto>>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Profesores para asignar a secciones: carga del período y, con subjectId, historial y notas en la asignatura
+     * @param periodId 
+     * @param departmentId Departamento de los profesores; por defecto, el de la asignatura
+     * @param subjectId Asignatura a asignar: agrega el historial y las notas de cada profesor en ella
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public sectionControllerFindTeachers(periodId: number, departmentId?: number, subjectId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<ResponseSectionTeacherDto>>;
+    public sectionControllerFindTeachers(periodId: number, departmentId?: number, subjectId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<ResponseSectionTeacherDto>>>;
+    public sectionControllerFindTeachers(periodId: number, departmentId?: number, subjectId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<ResponseSectionTeacherDto>>>;
+    public sectionControllerFindTeachers(periodId: number, departmentId?: number, subjectId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (periodId === null || periodId === undefined) {
+            throw new Error('Required parameter periodId was null or undefined when calling sectionControllerFindTeachers.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (departmentId !== undefined && departmentId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>departmentId, 'departmentId');
+        }
+        if (subjectId !== undefined && subjectId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>subjectId, 'subjectId');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/section/period/${this.configuration.encodeParam({name: "periodId", value: periodId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}/teachers`;
+        return this.httpClient.request<Array<ResponseSectionTeacherDto>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,

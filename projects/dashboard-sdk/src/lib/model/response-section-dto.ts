@@ -20,8 +20,8 @@ export interface ResponseSectionDto {
     subject: object;
     periodId: number;
     period: object;
-    teacherId: number;
-    teacher: object;
+    teacherId: number | null;
+    teacher: object | null;
     status: boolean;
     all: boolean;
 }

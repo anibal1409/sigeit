@@ -438,7 +438,7 @@ export class TeacherDegreeService {
 
     /**
      * Buscar profesores con nota en una asignatura (o similar)
-     * @param subject Texto de la asignatura; ignora mayúsculas y tildes, y exige todas las palabras
+     * @param subject Texto de la asignatura; ignora mayúsculas y tildes, exige todas las palabras y también busca en el nombre de la asignatura equivalente del pensum
      * @param minPercent Nota mínima en porcentaje de la escala (0–100); excluye asignaturas sin nota numérica
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.

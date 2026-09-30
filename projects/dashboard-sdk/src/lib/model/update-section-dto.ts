@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { IdCreateEntity } from './id-create-entity';
+import { CreateSectionDtoTeacher } from './create-section-dto-teacher';
 
 
 export interface UpdateSectionDto { 
@@ -17,7 +18,7 @@ export interface UpdateSectionDto {
     name?: string;
     subject?: IdCreateEntity;
     period?: IdCreateEntity;
-    teacher?: IdCreateEntity;
+    teacher?: CreateSectionDtoTeacher | null;
     status?: boolean;
     all?: boolean;
 }

@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { SubjectRefDto } from './subject-ref-dto';
 
 
 export interface TeacherGradeDto { 
@@ -23,5 +24,6 @@ export interface TeacherGradeDto {
      * Resultado no numérico (RETIRADA, APROBADO, EN EJECUCIÓN)
      */
     remark?: string;
+    subject?: SubjectRefDto;
 }
 

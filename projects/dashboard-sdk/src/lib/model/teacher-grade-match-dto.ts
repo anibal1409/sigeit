@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { SubjectRefDto } from './subject-ref-dto';
 import { DegreeLevel } from './degree-level';
 
 
@@ -25,6 +26,7 @@ export interface TeacherGradeMatchDto {
     percent?: number;
     degreeTitle: string;
     degreeLevel: DegreeLevel;
+    subject?: SubjectRefDto;
 }
 export namespace TeacherGradeMatchDto {
 }

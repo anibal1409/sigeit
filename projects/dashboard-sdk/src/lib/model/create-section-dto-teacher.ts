@@ -9,22 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SubjectRefDto } from './subject-ref-dto';
 
 
-export interface ResponseTeacherGradeDto { 
-    code?: string;
-    subjectName: string;
-    period?: string;
-    /**
-     * Nota numérica en la escala del título (maxGrade)
-     */
-    grade?: number;
-    /**
-     * Resultado no numérico (RETIRADA, APROBADO, EN EJECUCIÓN)
-     */
-    remark?: string;
-    subject?: SubjectRefDto;
+/**
+ * Nulo mientras la sección no tenga profesor asignado
+ */
+export interface CreateSectionDtoTeacher { 
     id: number;
 }
 
