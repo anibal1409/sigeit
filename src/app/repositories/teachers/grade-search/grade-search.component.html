@@ -36,7 +36,10 @@
       </thead>
       <tbody>
         <tr *ngFor="let match of result.matches">
-          <td>{{ match.subjectName }}</td>
+          <td>
+            {{ match.subjectName }}
+            <small class="d-block text-muted" *ngIf="match.subject">Equivale a: {{ match.subject.name }}</small>
+          </td>
           <td>{{ match.degreeTitle }} ({{ optionName(levelOptions, match.degreeLevel) }})</td>
           <td>{{ match.period }}</td>
           <td>{{ gradeLabel(match, match.maxGrade) }}</td>

@@ -17,6 +17,7 @@ import {
 import {
   CreateTeacherDegreeDto,
   DegreeLevel,
+  ResponseSubjectDto,
   ResponseTeacherDegreeDto,
   TeacherGradeDto,
   TranscriptPreviewDto,
@@ -43,6 +44,7 @@ export interface DegreeFormData {
 export class DegreeFormComponent implements OnInit {
   readonly levelOptions = DEGREE_LEVEL_OPTIONS;
   loading = false;
+  subjects: ResponseSubjectDto[] = [];
 
   form = this.formBuilder.group({
     level: [DegreeLevel.Undergraduate, Validators.required],
@@ -65,8 +67,9 @@ export class DegreeFormComponent implements OnInit {
     return this.form.controls.grades;
   }
 
-  /** Carga el título a editar o la vista previa importada; si no hay ninguno, deja una fila vacía. */
+  /** Carga el pensum y el título a editar o la vista previa importada; si no hay ninguno, deja una fila vacía. */
   ngOnInit(): void {
+    this.academicService.getSubjects$().subscribe((subjects) => (this.subjects = subjects));
     const source = this.data.degree ?? this.data.preview;
     if (!source) {
       this.addGrade();
@@ -86,6 +89,7 @@ export class DegreeFormComponent implements OnInit {
         period: [grade.period ?? ''],
         grade: [grade.grade ?? null, Validators.min(0)],
         remark: [grade.remark ?? ''],
+        subjectId: [grade.subject?.id ?? null],
       }),
     );
   }
@@ -106,6 +110,10 @@ export class DegreeFormComponent implements OnInit {
     const dto = {
       ...value,
       graduationDate: value.graduationDate || undefined,
+      grades: value.grades.map(({ subjectId, ...grade }) => ({
+        ...grade,
+        subject: subjectId ? { id: subjectId } : undefined,
+      })),
       teacher: { id: this.data.teacherId },
     } as CreateTeacherDegreeDto;
     const request$ = this.data.degree

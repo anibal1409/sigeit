@@ -90,7 +90,10 @@
               <tr *ngFor="let grade of degree.grades">
                 <td>{{ grade.period }}</td>
                 <td>{{ grade.code }}</td>
-                <td>{{ grade.subjectName }}</td>
+                <td>
+                  {{ grade.subjectName }}
+                  <small class="d-block text-muted" *ngIf="grade.subject">Equivale a: {{ grade.subject.name }}</small>
+                </td>
                 <td>{{ gradeLabel(grade, degree.maxGrade) }}</td>
               </tr>
             </tbody>

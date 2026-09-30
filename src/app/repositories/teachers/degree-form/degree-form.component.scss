@@ -32,6 +32,10 @@
   &.grade {
     width: 4.5rem;
   }
+
+  &.equivalent {
+    min-width: 14rem;
+  }
 }
 
 .add {

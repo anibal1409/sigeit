@@ -12,7 +12,8 @@
   </p>
   <p class="help" *ngIf="data.preview">
     Revise las notas extraídas del récord antes de guardar, sobre todo si provienen de una imagen o de un documento
-    escaneado. Puede corregir, agregar o quitar asignaturas.
+    escaneado. Puede corregir, agregar o quitar asignaturas. La columna «Equivale a» viene sugerida; ajústela para que
+    la búsqueda encuentre la asignatura aunque tenga otro nombre en esa institución.
   </p>
 
   <div class="fields">
@@ -51,6 +52,7 @@
         <th>Asignatura</th>
         <th>Nota</th>
         <th>Resultado</th>
+        <th>Equivale a (pensum)</th>
         <th></th>
       </tr>
     </thead>
@@ -61,6 +63,12 @@
         <td><input class="cell" formControlName="subjectName" placeholder="Nombre de la asignatura" /></td>
         <td><input class="cell grade" type="number" min="0" formControlName="grade" /></td>
         <td><input class="cell" formControlName="remark" placeholder="Retirada, aprobado..." /></td>
+        <td>
+          <select class="cell equivalent" formControlName="subjectId" aria-label="Asignatura equivalente del pensum">
+            <option [ngValue]="null">Sin equivalencia</option>
+            <option *ngFor="let subject of subjects" [ngValue]="subject.id">{{ subject.name }} ({{ subject.code }})</option>
+          </select>
+        </td>
         <td>
           <button mat-icon-button type="button" aria-label="Quitar asignatura" (click)="removeGrade(i)">
             <mat-icon>delete</mat-icon>

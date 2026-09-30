@@ -2,15 +2,17 @@ import { Injectable } from '@angular/core';
 
 import {
   CreateTeacherDegreeDto,
+  ResponseSubjectDto,
   ResponseSubjectHistoryDto,
   ResponseTeacherDegreeDto,
   ResponseTeacherGradeSearchDto,
+  SubjectService,
   TeacherDegreeService,
   TeacherService,
   TranscriptPreviewDto,
   UpdateTeacherDegreeDto,
 } from 'dashboard-sdk';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 /** Información académica del profesor: historial, títulos, notas y búsqueda por notas. */
 @Injectable()
@@ -18,7 +20,15 @@ export class TeacherAcademicService {
   constructor(
     private teacherService: TeacherService,
     private teacherDegreeService: TeacherDegreeService,
+    private subjectService: SubjectService,
   ) {}
+
+  /** Asignaturas del pensum ordenadas por nombre, para indicar equivalencias. */
+  getSubjects$(): Observable<Array<ResponseSubjectDto>> {
+    return this.subjectService
+      .subjectControllerFindAll()
+      .pipe(map((subjects) => [...subjects].sort((a, b) => a.name.localeCompare(b.name))));
+  }
 
   /** Secciones impartidas por el profesor, del período más reciente al más antiguo. */
   getSubjectsHistory$(teacherId: number): Observable<Array<ResponseSubjectHistoryDto>> {
