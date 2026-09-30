@@ -11,9 +11,8 @@ import { ImportSubjectDemandResultDto } from 'dashboard-sdk';
 import { finalize } from 'rxjs';
 
 import { SubjectDemandStoreService } from '../../../common/subject-demand';
+import { uploadSizeError } from '../../../common/upload';
 import { SubjectDemandsService } from '../subject-demands.service';
-
-const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 @Component({
   selector: 'app-import-demand',
@@ -37,7 +36,7 @@ export class ImportDemandComponent {
     const file = input.files?.[0] ?? null;
     input.value = '';
     this.result = null;
-    this.fileError = file && file.size > MAX_FILE_SIZE ? 'El archivo supera el máximo de 5 MB.' : '';
+    this.fileError = uploadSizeError(file);
     this.file = this.fileError ? null : file;
   }
 
