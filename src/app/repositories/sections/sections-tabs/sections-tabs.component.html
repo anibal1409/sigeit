@@ -1,0 +1,17 @@
+<nav mat-tab-nav-bar [tabPanel]="panel" class="tabs">
+  <a
+    *ngFor="let tab of tabs"
+    mat-tab-link
+    [routerLink]="tab.path"
+    routerLinkActive
+    #link="routerLinkActive"
+    [routerLinkActiveOptions]="{ exact: tab.exact }"
+    [active]="link.isActive"
+  >
+    <mat-icon>{{ tab.icon }}</mat-icon>
+    {{ tab.label }}
+  </a>
+</nav>
+<mat-tab-nav-panel #panel>
+  <router-outlet></router-outlet>
+</mat-tab-nav-panel>

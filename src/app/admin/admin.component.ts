@@ -75,6 +75,14 @@ export class AdminComponent implements OnInit, OnDestroy {
       title: 'Profesores',
     },
     {
+      path: '/dashboard/teachers/academic',
+      title: 'Registro académico',
+    },
+    {
+      path: '/dashboard/teachers/search',
+      title: 'Búsqueda de profesores por asignatura',
+    },
+    {
       path: '/dashboard/sections',
       title: 'Secciones',
     },
@@ -228,7 +236,12 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   private updateTitle(url: string): void {
-    const item = this.pages.find((page) => page.path === url);
+    const path = url.split('?')[0];
+    const item =
+      this.pages.find((page) => page.path === path) ??
+      this.pages
+        .filter((page) => path.startsWith(`${page.path}/`))
+        .sort((a, b) => b.path.length - a.path.length)[0];
     if (item) {
       this.title = item.title;
     } else {

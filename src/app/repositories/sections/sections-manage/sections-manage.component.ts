@@ -5,7 +5,6 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 
 import {
   ResponseSectionDto,
@@ -27,9 +26,12 @@ import { ToastService } from 'toast';
 import {
   computeCoverage,
   ConfirmModalComponent,
+  SECTIONS_LOAD_PANEL_KEY,
   SEMESTERS,
   StateService,
   SubjectCoverage,
+  SubjectDemandDialogComponent,
+  SubjectDemandDialogData,
   SubjectDemandStoreService,
   SubjectDemandSummary,
   UserStateService,
@@ -37,6 +39,10 @@ import {
 import { DepartmentVM } from '../../departments';
 import { SubjectVM } from '../../subjects/model';
 import { DEDICATION_OPTIONS } from '../../teachers/model';
+import {
+  ProfileComponent,
+  ProfileData,
+} from '../../teachers/profile/profile.component';
 import { SectionsService } from '../sections.service';
 
 export interface SectionRow {
@@ -87,7 +93,8 @@ export class SectionsManageComponent implements OnInit, OnDestroy {
 
   groups: Array<SubjectGroup> = [];
   visibleGroups: Array<SubjectGroup> = [];
-  focusedSubjectId: number | null = null;
+  suggestions: Array<SubjectVM> = [];
+  showLoad = localStorage.getItem(SECTIONS_LOAD_PANEL_KEY) !== 'hidden';
   demandPeriodName = '';
   totals = { sections: 0, unassigned: 0, uncovered: 0 };
 
@@ -108,7 +115,6 @@ export class SectionsManageComponent implements OnInit, OnDestroy {
     private stateService: StateService,
     private userStateService: UserStateService,
     private matDialog: MatDialog,
-    private router: Router,
     private toastService: ToastService,
   ) {}
 
@@ -146,7 +152,7 @@ export class SectionsManageComponent implements OnInit, OnDestroy {
       ).subscribe(() => this.applyFilters()),
     );
     this.sub$.add(
-      this.demandStore.getFactor$().subscribe(() => {
+      this.demandStore.getConfigChanges$().subscribe(() => {
         this.groups.forEach((group) => this.recompute(group));
         this.updateTotals();
       }),
@@ -160,7 +166,6 @@ export class SectionsManageComponent implements OnInit, OnDestroy {
   selectDepartment(departmentId: number): void {
     if (!this.periodId) return;
     this.departmentId = departmentId;
-    this.focusedSubjectId = null;
     this.candidates.clear();
     this.setLoading(true);
     this.sub$.add(
@@ -200,7 +205,7 @@ export class SectionsManageComponent implements OnInit, OnDestroy {
       defer(() =>
         this.sectionService.sectionControllerCreate({
           name: this.nextName(group),
-          capacity: this.demandStore.getSectionCapacity(group.subject.id || 0),
+          capacity: this.demandStore.getConfig(this.periodId, group.subject.id || 0).sectionCapacity,
           status: true,
           subject: { id: group.subject.id || 0 },
           period: { id: this.periodId },
@@ -282,15 +287,35 @@ export class SectionsManageComponent implements OnInit, OnDestroy {
     });
   }
 
-  focus(group: SubjectGroup): void {
-    this.focusedSubjectId = group.subject.id || null;
-    group.expanded = true;
-    this.applyFilters();
+  openDemand(group: SubjectGroup): void {
+    this.matDialog.open<SubjectDemandDialogComponent, SubjectDemandDialogData>(SubjectDemandDialogComponent, {
+      data: {
+        periodId: this.periodId,
+        subjectId: group.subject.id || 0,
+        subjectName: group.subject.name,
+        offered: group.offered,
+      },
+      width: '56rem',
+      maxWidth: '95vw',
+    });
   }
 
-  unfocus(): void {
-    this.focusedSubjectId = null;
-    this.applyFilters();
+  openProfile(row: SectionRow): void {
+    const [lastName, firstName] = row.teacherName.split(', ');
+    const teacher =
+      this.load.find((item) => item.teacher.id === row.teacherId)?.teacher ??
+      [...this.candidates.values()].flat().find((item) => item?.teacher.id === row.teacherId)?.teacher ??
+      { id: row.teacherId || 0, firstName, lastName };
+    this.matDialog.open<ProfileComponent, ProfileData>(ProfileComponent, {
+      data: { teacher },
+      width: '56rem',
+      maxWidth: '95vw',
+    });
+  }
+
+  toggleLoad(): void {
+    this.showLoad = !this.showLoad;
+    localStorage.setItem(SECTIONS_LOAD_PANEL_KEY, this.showLoad ? 'visible' : 'hidden');
   }
 
   get allExpanded(): boolean {
@@ -308,10 +333,6 @@ export class SectionsManageComponent implements OnInit, OnDestroy {
 
   sectionHours(group: SubjectGroup, row: SectionRow): number {
     return row.status ? group.subject.hours || 0 : 0;
-  }
-
-  navigateBack(): void {
-    this.router.navigate(['/dashboard/sections']);
   }
 
   trackGroup = (_: number, group: SubjectGroup) => group.subject.id;
@@ -396,28 +417,23 @@ export class SectionsManageComponent implements OnInit, OnDestroy {
     group.unassigned = active.filter((row) => !row.teacherId).length;
     group.demand = this.summaries.get(id);
     group.coverage = group.demand
-      ? computeCoverage(
-          group.demand.total,
-          group.offered,
-          this.demandStore.getFactor(),
-          this.demandStore.getSectionCapacity(id),
-        )
+      ? computeCoverage(group.demand, group.offered, this.demandStore.getConfig(this.periodId, id))
       : null;
   }
 
   private applyFilters(): void {
     const semester = this.semesterCtrl.value ?? -1;
     const words = normalize(this.searchCtrl.value || '').split(' ').filter(Boolean);
-    this.visibleGroups = this.groups.filter((group) => {
-      if (this.focusedSubjectId) return group.subject.id === this.focusedSubjectId;
-      const text = normalize(`${group.subject.code} ${group.subject.name}`);
-      return (
+    const matches = (group: SubjectGroup) =>
+      words.every((word) => normalize(`${group.subject.code} ${group.subject.name}`).includes(word));
+    this.suggestions = words.length ? this.groups.filter(matches).slice(0, 8).map((group) => group.subject) : [];
+    this.visibleGroups = this.groups.filter(
+      (group) =>
         (semester < 0 || group.subject.semester === semester) &&
-        words.every((word) => text.includes(word)) &&
+        matches(group) &&
         (!this.uncoveredCtrl.value || group.coverage?.status === 'low') &&
-        (!this.unassignedCtrl.value || group.unassigned > 0)
-      );
-    });
+        (!this.unassignedCtrl.value || group.unassigned > 0),
+    );
     this.updateTotals();
   }
 

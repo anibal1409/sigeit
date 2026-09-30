@@ -19,8 +19,13 @@
 
   <mat-form-field class="field-search">
     <mat-label>Buscar asignatura</mat-label>
-    <input matInput [formControl]="searchCtrl" placeholder="Código o nombre" />
+    <input matInput [formControl]="searchCtrl" placeholder="Código o nombre" [matAutocomplete]="subjectsAuto" />
     <mat-icon matSuffix>search</mat-icon>
+    <mat-autocomplete #subjectsAuto="matAutocomplete">
+      <mat-option *ngFor="let subject of suggestions" [value]="subject.name">
+        <small class="option-code">{{ subject.code }}</small> {{ subject.name }}
+      </mat-option>
+    </mat-autocomplete>
   </mat-form-field>
 
   <mat-checkbox [formControl]="uncoveredCtrl">Demanda sin cubrir</mat-checkbox>
@@ -32,12 +37,20 @@
     <mat-icon>{{ allExpanded ? 'unfold_less' : 'unfold_more' }}</mat-icon>
     {{ allExpanded ? 'Contraer' : 'Expandir' }}
   </button>
-  <button mat-icon-button type="button" matTooltip="Volver" aria-label="Volver" (click)="navigateBack()">
-    <mat-icon>keyboard_backspace</mat-icon>
+  <button
+    mat-stroked-button
+    type="button"
+    [class.active]="showLoad"
+    [attr.aria-pressed]="showLoad"
+    matTooltip="Mostrar u ocultar la carga docente del período"
+    (click)="toggleLoad()"
+  >
+    <mat-icon>view_sidebar</mat-icon>
+    Carga docente
   </button>
 </div>
 
-<div class="layout" *ngIf="departmentId; else noDepartment">
+<div class="layout" [class.full]="!showLoad" *ngIf="departmentId; else noDepartment">
   <main>
     <div class="summary">
       <span>Período <strong>{{ periodName }}</strong></span>
@@ -45,21 +58,6 @@
       <span [class.warn]="totals.unassigned"><strong>{{ totals.unassigned }}</strong> sin profesor</span>
       <span [class.warn]="totals.uncovered"><strong>{{ totals.uncovered }}</strong> asignaturas con demanda sin cubrir</span>
       <span *ngIf="demandPeriodName" class="source">Demanda del período {{ demandPeriodName }}</span>
-    </div>
-
-    <div *ngIf="focusedSubjectId && visibleGroups[0] as group" class="focus">
-      <div class="focus-bar">
-        <span>Mostrando solo <strong>{{ group.subject.name }}</strong></span>
-        <button mat-stroked-button type="button" (click)="unfocus()">
-          <mat-icon>list</mat-icon>
-          Ver todas las asignaturas
-        </button>
-      </div>
-      <app-subject-demand-panel
-        [periodId]="periodId"
-        [subjectId]="focusedSubjectId"
-        [offered]="group.offered"
-      ></app-subject-demand-panel>
     </div>
 
     <section
@@ -76,7 +74,7 @@
         </div>
 
         <div class="demand" *ngIf="group.coverage as coverage; else noDemand">
-          <span matTooltip="Demanda estimada = demanda potencial × factor">
+          <span matTooltip="Demanda a atender según la configuración de la asignatura (% por nivel × factor)">
             Demanda <strong>{{ coverage.estimated.toLocaleString('es-VE') }}</strong>
           </span>
           <span>Cupo <strong>{{ group.offered.toLocaleString('es-VE') }}</strong></span>
@@ -100,12 +98,11 @@
 
         <div class="actions" (click)="$event.stopPropagation()">
           <button
-            *ngIf="!focusedSubjectId"
             mat-icon-button
             type="button"
-            matTooltip="Ver solo esta asignatura y su demanda por nivel"
-            aria-label="Ver solo esta asignatura"
-            (click)="focus(group)"
+            matTooltip="Demanda por nivel y parte a atender"
+            aria-label="Configurar demanda a atender"
+            (click)="openDemand(group)"
           >
             <mat-icon>bar_chart</mat-icon>
           </button>
@@ -179,6 +176,16 @@
           <span class="row-actions">
             <mat-icon *ngIf="row.saving" class="spin">sync</mat-icon>
             <button
+              *ngIf="!row.saving && row.teacherId"
+              mat-icon-button
+              type="button"
+              matTooltip="Perfil académico del profesor"
+              aria-label="Perfil académico del profesor"
+              (click)="openProfile(row)"
+            >
+              <mat-icon>badge</mat-icon>
+            </button>
+            <button
               *ngIf="!row.saving"
               mat-icon-button
               type="button"
@@ -201,7 +208,7 @@
     </p>
   </main>
 
-  <aside class="load">
+  <aside class="load" *ngIf="showLoad">
     <h3>Carga docente</h3>
     <p class="hint">Horas semanales del período: suma de las horas de la asignatura de cada sección activa, en todos los departamentos.</p>
     <ul>

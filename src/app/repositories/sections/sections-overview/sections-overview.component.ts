@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
-
 import moment from 'moment';
 import {
   finalize,
@@ -70,7 +68,6 @@ export class SectionsOverviewComponent {
 
   constructor(
     private sectionsService: SectionsService,
-    private router: Router,
     private stateService: StateService,
     private userStateService: UserStateService,
     private subjectDemandStore: SubjectDemandStoreService,
@@ -280,16 +277,16 @@ export class SectionsOverviewComponent {
         capacity: 0,
       }));
     const all = [...rows, ...withoutSections];
-    const factor = this.subjectDemandStore.getFactor();
     return all.map((row) => {
-      const total = summaries.get(row.subjectId)?.total || 0;
+      const summary = summaries.get(row.subjectId);
       const offered = all
         .filter((item) => item.subjectId === row.subjectId)
         .reduce((sum, item) => sum + (+item.capacity || 0), 0);
-      const { estimated, coverage, status } = computeCoverage(total, offered, factor);
+      const config = this.subjectDemandStore.getConfig(this.periodId, row.subjectId);
+      const { estimated, coverage, status } = computeCoverage(summary, offered, config);
       return {
         ...row,
-        demandEstimated: total ? estimated.toLocaleString('es-VE') : '—',
+        demandEstimated: summary?.total ? estimated.toLocaleString('es-VE') : '—',
         subjectOffered: offered.toLocaleString('es-VE'),
         coverageText: coverage === null ? '—' : `${Math.round(coverage * 100)} %`,
         coverageStatus: status,
@@ -301,10 +298,6 @@ export class SectionsOverviewComponent {
     this.checkGroupByColumn(field, true);
     this.dataSource.data = this.addGroups(this._alldata, this.groupByColumns);
     this.dataSource.filter = performance.now().toString();
-  }
-
-  navigateBack(): void {
-    this.router.navigate(['/dashboard/sections']);
   }
 
   checkGroupByColumn(field: any, add: any) {

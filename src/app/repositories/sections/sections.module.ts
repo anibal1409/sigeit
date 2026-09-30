@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import {
@@ -23,6 +24,7 @@ import {
   ToPlanPeriodService,
 } from '../periods';
 import { GetTeachersService } from '../teachers';
+import { TeacherProfileModule } from '../teachers/profile/profile.module';
 import { FormComponent } from './form/form.component';
 import { SectionMemoryService } from './memory';
 import { SectionsRoutingModule } from './sections-routing.module';
@@ -30,6 +32,7 @@ import { SectionsComponent } from './sections.component';
 import { SectionsManageComponent } from './sections-manage';
 import { TeacherPickerComponent } from './sections-manage/teacher-picker/teacher-picker.component';
 import { SectionsOverviewComponent } from './sections-overview';
+import { SectionsTabsComponent } from './sections-tabs/sections-tabs.component';
 import { SectionsService } from './sections.service';
 import {
   CreateSectionService,
@@ -46,6 +49,7 @@ import {
     SectionsOverviewComponent,
     SectionsManageComponent,
     TeacherPickerComponent,
+    SectionsTabsComponent,
   ],
   imports: [
     CommonModule,
@@ -63,8 +67,10 @@ import {
     MatSelectModule,
     MatTooltipModule,
     MatCheckboxModule,
+    MatTabsModule,
     SelectExModule,
     SubjectDemandModule,
+    TeacherProfileModule,
   ],
   providers: [
     SectionsService,
