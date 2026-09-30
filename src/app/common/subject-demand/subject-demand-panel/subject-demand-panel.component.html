@@ -3,13 +3,13 @@
     <div class="compact" *ngIf="compact; else full">
       <mat-icon class="status" [ngClass]="coverage.status">groups</mat-icon>
       <span>Demanda potencial <strong>{{ summary.total.toLocaleString('es-VE') }}</strong></span>
-      <span>Estimada <strong>{{ coverage.estimated.toLocaleString('es-VE') }}</strong></span>
+      <span>A atender <strong>{{ coverage.estimated.toLocaleString('es-VE') }}</strong></span>
       <span>Cupo <strong>{{ coverage.offered.toLocaleString('es-VE') }}</strong></span>
       <span class="badge" [ngClass]="coverage.status">
         Cobertura {{ coverage.coverage === null ? '—' : (coverage.coverage | percent: '1.0-0') }}
       </span>
       <span>Nivel pico <strong>{{ summary.peakLevel }}</strong></span>
-      <span>Sugeridas <strong>{{ coverage.suggestedSections }}</strong> secciones de {{ sectionCapacity }}</span>
+      <span>Sugeridas <strong>{{ coverage.suggestedSections }}</strong> secciones de {{ config.sectionCapacity }}</span>
       <span *ngIf="sourcePeriodName" class="source">Demanda de {{ sourcePeriodName }}</span>
     </div>
 
@@ -29,25 +29,36 @@
                 min="1"
                 max="500"
                 step="1"
-                [value]="sectionCapacity"
-                (change)="changeSectionCapacity(capacityInput.value); capacityInput.value = '' + sectionCapacity"
+                [value]="config.sectionCapacity"
+                (change)="changeSectionCapacity(capacityInput)"
+                (keydown.enter)="capacityInput.blur()"
                 aria-label="Estudiantes por sección"
               />
             </label>
             <label class="setting">
               Factor de conversión
               <input
+                #factorInput
                 type="number"
-                min="0.05"
+                min="0.01"
                 max="1"
                 step="0.05"
-                [value]="factor"
-                (change)="changeFactor($any($event.target).value)"
+                [value]="config.factor.toFixed(2)"
+                (change)="changeFactor(factorInput)"
+                (keydown.enter)="factorInput.blur()"
                 aria-label="Factor de conversión"
               />
             </label>
+            <button *ngIf="config.saved && !config.inherited" mat-button type="button" (click)="reset()">
+              <mat-icon>restart_alt</mat-icon>
+              Restablecer
+            </button>
           </div>
         </div>
+        <p *ngIf="config.inherited" class="inherited">
+          <mat-icon>history</mat-icon>
+          Configuración tomada de otro período; al modificarla se guarda para este período.
+        </p>
 
         <div class="kpis">
           <div class="kpi">
@@ -55,7 +66,7 @@
             <span class="value">{{ summary.total.toLocaleString('es-VE') }}</span>
           </div>
           <div class="kpi">
-            <span class="label">Demanda estimada</span>
+            <span class="label">Demanda a atender</span>
             <span class="value">{{ coverage.estimated.toLocaleString('es-VE') }}</span>
           </div>
           <div class="kpi">
@@ -74,12 +85,36 @@
           </div>
         </div>
 
-        <div class="chart">
-          <canvas baseChart type="bar" [data]="chartData" [options]="chartOptions"></canvas>
+        <div class="levels">
+          <div class="level" *ngFor="let bar of bars" [class.peak]="bar.peak">
+            <span class="count" title="Estudiantes a atender / demanda del nivel">
+              <strong>{{ bar.attended.toLocaleString('es-VE') }}</strong>/{{ bar.quantity.toLocaleString('es-VE') }}
+            </span>
+            <div class="track">
+              <div class="bar" [style.height.%]="(bar.quantity / maxQuantity) * 100">
+                <div class="attended" [style.height.%]="bar.quantity ? (bar.attended / bar.quantity) * 100 : 0"></div>
+              </div>
+            </div>
+            <span class="label">Nivel {{ bar.level }}</span>
+            <label class="percent">
+              <input
+                #percentInput
+                type="number"
+                min="0"
+                max="100"
+                step="5"
+                [value]="bar.percent"
+                (change)="changeLevelPercent(bar.level, percentInput)"
+                (keydown.enter)="percentInput.blur()"
+                [attr.aria-label]="'Porcentaje del nivel ' + bar.level"
+              />
+              %
+            </label>
+          </div>
         </div>
         <p class="note">
-          Nivel pico: <strong>{{ summary.peakLevel }}</strong>. Demanda estimada = demanda potencial × factor; secciones
-          sugeridas = demanda estimada ÷ {{ sectionCapacity }} estudiantes por sección.
+          Nivel pico: <strong>{{ summary.peakLevel }}</strong>. Demanda a atender = suma por nivel de (estudiantes × % del
+          nivel) × factor; secciones sugeridas = demanda a atender ÷ {{ config.sectionCapacity }} estudiantes por sección.
         </p>
       </div>
     </ng-template>

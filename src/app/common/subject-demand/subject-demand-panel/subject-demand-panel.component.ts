@@ -7,27 +7,32 @@ import {
 } from '@angular/core';
 
 import {
-  ChartConfiguration,
-  ChartData,
-} from 'chart.js';
-import {
   BehaviorSubject,
-  combineLatest,
+  merge,
   of,
   Subscription,
   switchMap,
+  tap,
 } from 'rxjs';
 
 import {
+  attendedByLevel,
   computeCoverage,
+  DemandConfig,
+  levelPercent,
   SubjectCoverage,
+  SubjectDemandConfig,
   SubjectDemandStoreService,
   SubjectDemandSummary,
-  TYPICAL_SECTION_CAPACITY,
 } from '../subject-demand-store.service';
 
-const BAR_COLOR = '#90caf9';
-const PEAK_COLOR = '#1976d2';
+interface LevelBar {
+  level: number;
+  quantity: number;
+  attended: number;
+  percent: number;
+  peak: boolean;
+}
 
 @Component({
   selector: 'app-subject-demand-panel',
@@ -45,23 +50,9 @@ export class SubjectDemandPanelComponent implements OnInit, OnChanges, OnDestroy
   /** Nombre del período de origen cuando la demanda no es del período actual */
   sourcePeriodName = '';
   coverage: SubjectCoverage | null = null;
-  factor = 0;
-  sectionCapacity = TYPICAL_SECTION_CAPACITY;
+  config!: SubjectDemandConfig;
+  bars: Array<LevelBar> = [];
   loaded = false;
-
-  chartData: ChartData<'bar'> = { labels: [], datasets: [] };
-  chartOptions: ChartConfiguration<'bar'>['options'] = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: { callbacks: { label: (item) => `${(item.parsed.y ?? 0).toLocaleString('es-VE')} estudiantes` } },
-    },
-    scales: {
-      x: { title: { display: true, text: 'Nivel del estudiante' }, grid: { display: false } },
-      y: { beginAtZero: true, ticks: { precision: 0 } },
-    },
-  };
 
   private inputs$ = new BehaviorSubject<{ periodId?: number; subjectId?: number }>({});
   private sub$ = new Subscription();
@@ -70,20 +61,19 @@ export class SubjectDemandPanelComponent implements OnInit, OnChanges, OnDestroy
 
   ngOnInit(): void {
     this.sub$.add(
-      combineLatest([
-        this.inputs$.pipe(
+      this.inputs$
+        .pipe(
           switchMap(({ periodId, subjectId }) =>
             periodId && subjectId ? this.store.getSource$(periodId) : of(null),
           ),
-        ),
-        this.store.getFactor$(),
-      ]).subscribe(([source, factor]) => {
-        this.summary = (this.subjectId && source?.summaries.get(this.subjectId)) || null;
-        this.sourcePeriodName = source?.period && source.period.id !== this.periodId ? source.period.name : '';
-        this.factor = factor;
-        this.loaded = true;
-        this.update();
-      }),
+          tap((source) => {
+            this.summary = (this.subjectId && source?.summaries.get(this.subjectId)) || null;
+            this.sourcePeriodName = source?.period && source.period.id !== this.periodId ? source.period.name : '';
+            this.loaded = true;
+          }),
+          switchMap(() => merge(of(undefined), this.store.getConfigChanges$())),
+        )
+        .subscribe(() => this.update()),
     );
   }
 
@@ -92,7 +82,7 @@ export class SubjectDemandPanelComponent implements OnInit, OnChanges, OnDestroy
     if (periodId !== this.periodId || subjectId !== this.subjectId) {
       this.loaded = false;
       this.inputs$.next({ periodId: this.periodId, subjectId: this.subjectId });
-    } else {
+    } else if (this.loaded) {
       this.update();
     }
   }
@@ -101,34 +91,57 @@ export class SubjectDemandPanelComponent implements OnInit, OnChanges, OnDestroy
     this.sub$.unsubscribe();
   }
 
-  changeFactor(value: string): void {
-    this.store.setFactor(Number(value.replace(',', '.')));
+  changeSectionCapacity(input: HTMLInputElement): void {
+    this.saveOrRevert({ sectionCapacity: Number(input.value) }, input, String(this.config.sectionCapacity));
   }
 
-  changeSectionCapacity(value: string): void {
-    if (this.subjectId) {
-      this.store.setSectionCapacity(this.subjectId, Number(value));
-      this.update();
+  changeFactor(input: HTMLInputElement): void {
+    this.saveOrRevert({ factor: Number(input.value.replace(',', '.')) }, input, this.config.factor.toFixed(2));
+  }
+
+  changeLevelPercent(level: number, input: HTMLInputElement): void {
+    const percent = input.value.trim() === '' ? 100 : Number(input.value.replace(',', '.'));
+    this.saveOrRevert(
+      { levelPercents: { ...this.config.levelPercents, [level]: percent } },
+      input,
+      String(levelPercent(this.config, level)),
+    );
+  }
+
+  reset(): void {
+    if (this.periodId && this.subjectId) {
+      this.store.resetConfig(this.periodId, this.subjectId);
+    }
+  }
+
+  private saveOrRevert(changes: Partial<DemandConfig>, input: HTMLInputElement, previous: string): void {
+    const { sectionCapacity, factor, levelPercents } = { ...this.config, ...changes };
+    const saved =
+      !!this.periodId &&
+      !!this.subjectId &&
+      this.store.saveConfig(this.periodId, this.subjectId, { sectionCapacity, factor, levelPercents });
+    if (!saved) {
+      input.value = previous;
     }
   }
 
   private update(): void {
-    this.sectionCapacity = this.subjectId ? this.store.getSectionCapacity(this.subjectId) : TYPICAL_SECTION_CAPACITY;
-    this.coverage = this.summary
-      ? computeCoverage(this.summary.total, this.offered || 0, this.factor, this.sectionCapacity)
-      : null;
+    if (!this.periodId || !this.subjectId) return;
+    this.config = this.store.getConfig(this.periodId, this.subjectId);
+    this.coverage = this.summary ? computeCoverage(this.summary, this.offered || 0, this.config) : null;
     if (this.summary && !this.compact) {
-      const peak = this.summary.peakLevel;
-      this.chartData = {
-        labels: this.summary.byLevel.map((_, index) => `${index + 1}`),
-        datasets: [
-          {
-            data: this.summary.byLevel,
-            backgroundColor: this.summary.byLevel.map((_, index) => (index + 1 === peak ? PEAK_COLOR : BAR_COLOR)),
-            borderRadius: 4,
-          },
-        ],
-      };
+      const attended = attendedByLevel(this.summary, this.config);
+      this.bars = this.summary.byLevel.map((quantity, index) => ({
+        level: index + 1,
+        quantity,
+        attended: Math.round(attended[index]),
+        percent: levelPercent(this.config, index + 1),
+        peak: index + 1 === this.summary?.peakLevel,
+      }));
     }
+  }
+
+  get maxQuantity(): number {
+    return Math.max(1, ...this.bars.map((bar) => bar.quantity));
   }
 }

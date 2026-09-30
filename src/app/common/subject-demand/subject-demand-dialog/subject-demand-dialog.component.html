@@ -1,0 +1,13 @@
+<div class="modal-header">
+  <span mat-dialog-title>{{ data.subjectName }}</span>
+  <button mat-mini-fab mat-dialog-close type="button" aria-label="Cerrar" color="basic">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<div mat-dialog-content>
+  <app-subject-demand-panel
+    [periodId]="data.periodId"
+    [subjectId]="data.subjectId"
+    [offered]="data.offered"
+  ></app-subject-demand-panel>
+</div>

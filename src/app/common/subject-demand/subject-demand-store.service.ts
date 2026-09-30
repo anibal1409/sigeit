@@ -6,7 +6,6 @@ import {
   SubjectDemandService,
 } from 'dashboard-sdk';
 import {
-  BehaviorSubject,
   catchError,
   concatMap,
   first,
@@ -15,15 +14,67 @@ import {
   Observable,
   of,
   shareReplay,
+  Subject,
   switchMap,
 } from 'rxjs';
 
-export const DEMAND_FACTOR_KEY = 'sigeit-demand-factor';
-export const DEFAULT_DEMAND_FACTOR = 0.3;
-export const TYPICAL_SECTION_CAPACITY = 40;
-export const SECTION_CAPACITY_KEY = 'sigeit-section-capacities';
-/** Preferencias de demanda que deben sobrevivir al cierre de sesión */
-export const DEMAND_PREFERENCE_KEYS = [DEMAND_FACTOR_KEY, SECTION_CAPACITY_KEY];
+export const DEFAULT_DEMAND_FACTOR = 1;
+export const DEFAULT_SECTION_CAPACITY = 45;
+export const DEMAND_CONFIG_KEY = 'sigeit-demand-configs';
+export const SECTIONS_LOAD_PANEL_KEY = 'sigeit-sections-load-panel';
+/** Preferencias que deben sobrevivir al cierre de sesión */
+export const DEMAND_PREFERENCE_KEYS = [DEMAND_CONFIG_KEY, SECTIONS_LOAD_PANEL_KEY];
+
+/** Qué parte de la demanda de una asignatura se quiere atender. */
+export interface DemandConfig {
+  sectionCapacity: number;
+  factor: number;
+  /** Porcentaje a considerar por nivel; los niveles ausentes cuentan al 100 %. */
+  levelPercents: Record<number, number>;
+}
+
+export interface SubjectDemandConfig extends DemandConfig {
+  /** true si la configuración se guardó en otro período y se reutiliza */
+  inherited: boolean;
+  /** false si no hay nada guardado y se usan los valores por defecto */
+  saved: boolean;
+}
+
+interface StoredDemandConfig extends DemandConfig {
+  periodId: number;
+  subjectId: number;
+  savedAt: number;
+}
+
+export const DEFAULT_DEMAND_CONFIG: DemandConfig = {
+  sectionCapacity: DEFAULT_SECTION_CAPACITY,
+  factor: DEFAULT_DEMAND_FACTOR,
+  levelPercents: {},
+};
+
+export function isValidDemandConfig(config: DemandConfig): boolean {
+  return (
+    Number.isInteger(config.sectionCapacity) &&
+    config.sectionCapacity > 0 &&
+    config.sectionCapacity <= 500 &&
+    config.factor > 0 &&
+    config.factor <= 1 &&
+    Object.values(config.levelPercents).every((percent) => percent >= 0 && percent <= 100)
+  );
+}
+
+export function levelPercent(config: DemandConfig, level: number): number {
+  return config.levelPercents[level] ?? 100;
+}
+
+/** Estudiantes a atender por nivel: demanda del nivel × % del nivel × factor. */
+export function attendedByLevel(summary: SubjectDemandSummary, config: DemandConfig): Array<number> {
+  return summary.byLevel.map((quantity, index) => (quantity * levelPercent(config, index + 1) * config.factor) / 100);
+}
+
+export function estimateDemand(summary: SubjectDemandSummary | undefined, config: DemandConfig): number {
+  return summary ? Math.round(attendedByLevel(summary, config).reduce((sum, value) => sum + value, 0)) : 0;
+}
 
 export interface SubjectDemandSummary {
   subjectId: number;
@@ -73,12 +124,11 @@ export function summarizeDemand(rows: Array<ResponseSubjectDemandDto>): Map<numb
 }
 
 export function computeCoverage(
-  total: number,
+  summary: SubjectDemandSummary | undefined,
   offered: number,
-  factor: number,
-  sectionCapacity = TYPICAL_SECTION_CAPACITY,
+  config: DemandConfig,
 ): SubjectCoverage {
-  const estimated = Math.round(total * factor);
+  const estimated = estimateDemand(summary, config);
   const coverage = estimated > 0 ? offered / estimated : null;
   let status: CoverageStatus = 'none';
   if (coverage !== null) {
@@ -89,7 +139,7 @@ export function computeCoverage(
     offered,
     coverage,
     status,
-    suggestedSections: Math.ceil(estimated / sectionCapacity),
+    suggestedSections: Math.ceil(estimated / config.sectionCapacity),
   };
 }
 
@@ -98,7 +148,7 @@ export function computeCoverage(
 })
 export class SubjectDemandStoreService {
   private cache = new Map<number, Observable<DemandSource>>();
-  private factor$ = new BehaviorSubject<number>(this.readFactor());
+  private configChanges$ = new Subject<void>();
 
   constructor(
     private subjectDemandService: SubjectDemandService,
@@ -149,45 +199,53 @@ export class SubjectDemandStoreService {
     this.cache.clear();
   }
 
-  getFactor$(): Observable<number> {
-    return this.factor$.asObservable();
+  /** Emite cada vez que cambia la configuración de alguna asignatura. */
+  getConfigChanges$(): Observable<void> {
+    return this.configChanges$.asObservable();
   }
 
-  getFactor(): number {
-    return this.factor$.value;
-  }
-
-  setFactor(factor: number): void {
-    if (!(factor > 0 && factor <= 1)) {
-      return;
+  /**
+   * Configuración de la asignatura en el período; si no tiene, la guardada más
+   * recientemente en otro período, y si tampoco, los valores por defecto.
+   * ponytail: se guarda en localStorage hasta que exista el endpoint de configuración.
+   */
+  getConfig(periodId: number, subjectId: number): SubjectDemandConfig {
+    const stored = this.readConfigs().filter((item) => item.subjectId === subjectId);
+    const own = stored.find((item) => item.periodId === periodId);
+    const found = own ?? stored.sort((a, b) => b.savedAt - a.savedAt)[0];
+    if (!found) {
+      return { ...DEFAULT_DEMAND_CONFIG, levelPercents: {}, inherited: false, saved: false };
     }
-    localStorage.setItem(DEMAND_FACTOR_KEY, String(factor));
-    this.factor$.next(factor);
+    const { sectionCapacity, factor, levelPercents } = found;
+    return { sectionCapacity, factor, levelPercents: { ...levelPercents }, inherited: !own, saved: true };
   }
 
-  getSectionCapacity(subjectId: number): number {
-    return this.readSectionCapacities()[subjectId] || TYPICAL_SECTION_CAPACITY;
-  }
-
-  setSectionCapacity(subjectId: number, capacity: number): void {
-    if (!(Number.isInteger(capacity) && capacity > 0 && capacity <= 500)) {
-      return;
+  saveConfig(periodId: number, subjectId: number, config: DemandConfig): boolean {
+    if (!isValidDemandConfig(config)) {
+      return false;
     }
-    const capacities = this.readSectionCapacities();
-    capacities[subjectId] = capacity;
-    localStorage.setItem(SECTION_CAPACITY_KEY, JSON.stringify(capacities));
+    const others = this.readConfigs().filter((item) => item.periodId !== periodId || item.subjectId !== subjectId);
+    const { sectionCapacity, factor, levelPercents } = config;
+    this.writeConfigs([...others, { periodId, subjectId, sectionCapacity, factor, levelPercents, savedAt: Date.now() }]);
+    return true;
   }
 
-  private readSectionCapacities(): Record<number, number> {
+  /** Borra la configuración del período: vuelve a la heredada o a la de por defecto. */
+  resetConfig(periodId: number, subjectId: number): void {
+    this.writeConfigs(this.readConfigs().filter((item) => item.periodId !== periodId || item.subjectId !== subjectId));
+  }
+
+  private readConfigs(): Array<StoredDemandConfig> {
     try {
-      return JSON.parse(localStorage.getItem(SECTION_CAPACITY_KEY) || '{}');
+      const configs = JSON.parse(localStorage.getItem(DEMAND_CONFIG_KEY) || '[]');
+      return Array.isArray(configs) ? configs : [];
     } catch {
-      return {};
+      return [];
     }
   }
 
-  private readFactor(): number {
-    const factor = Number(localStorage.getItem(DEMAND_FACTOR_KEY));
-    return factor > 0 && factor <= 1 ? factor : DEFAULT_DEMAND_FACTOR;
+  private writeConfigs(configs: Array<StoredDemandConfig>): void {
+    localStorage.setItem(DEMAND_CONFIG_KEY, JSON.stringify(configs));
+    this.configChanges$.next();
   }
 }
