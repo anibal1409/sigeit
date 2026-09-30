@@ -22,6 +22,9 @@ export interface UpdateTeacherDegreeDto {
      * Nota máxima de la escala
      */
     maxGrade?: number;
+    /**
+     * Notas del título; se puede registrar solo el título y agregarlas después
+     */
     grades?: Array<TeacherGradeDto>;
 }
 export namespace UpdateTeacherDegreeDto {
