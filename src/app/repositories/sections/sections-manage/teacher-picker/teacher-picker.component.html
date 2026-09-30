@@ -1,7 +1,7 @@
 <input
   class="picker-input"
   type="text"
-  placeholder="Sin asignar"
+  placeholder="Por asignar"
   aria-label="Profesor"
   [value]="text"
   [disabled]="disabled"
@@ -39,10 +39,10 @@
         <span *ngIf="item.timesTaught" class="chip taught">
           Dictada {{ item.timesTaught }} {{ item.timesTaught === 1 ? 'vez' : 'veces' }} · última {{ item.lastPeriodName }}
         </span>
-        <span *ngIf="item.grade as grade" class="chip grade">
+        <span *ngIf="item.grade as grade" class="chip grade" [matTooltip]="gradeTooltip(grade)">
           Nota {{ grade.grade ?? grade.remark }}<ng-container *ngIf="grade.grade !== undefined && grade.grade !== null">/{{ grade.maxGrade }}</ng-container>
         </span>
-        <span *ngIf="!item.grade && item.similarGrade as grade" class="chip similar">
+        <span *ngIf="!item.grade && item.similarGrade as grade" class="chip similar" [matTooltip]="gradeTooltip(grade)">
           Similar: {{ grade.subjectName }} {{ grade.grade ?? grade.remark }}<ng-container *ngIf="grade.grade !== undefined && grade.grade !== null">/{{ grade.maxGrade }}</ng-container>
         </span>
         <span *ngIf="!item.timesTaught && !item.grade && !item.similarGrade" class="chip none">

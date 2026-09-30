@@ -7,7 +7,10 @@ import {
 } from '@angular/core';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
-import { ResponseSectionTeacherDto } from 'dashboard-sdk';
+import {
+  ResponseSectionTeacherDto,
+  TeacherGradeMatchDto,
+} from 'dashboard-sdk';
 
 const UNASSIGNED = 0;
 
@@ -83,6 +86,11 @@ export class TeacherPickerComponent implements OnChanges {
   projectedHours(item: ResponseSectionTeacherDto): number {
     const hours = this.currentHours(item);
     return item.teacher.id === this.teacherId ? hours : hours + this.sectionHours;
+  }
+
+  gradeTooltip(grade: TeacherGradeMatchDto): string {
+    const equivalent = grade.subject?.name && grade.subject.name !== grade.subjectName ? ` · Equivale a: ${grade.subject.name}` : '';
+    return `${grade.subjectName}${equivalent} · ${grade.degreeTitle}${grade.period ? ` (${grade.period})` : ''}`;
   }
 }
 
