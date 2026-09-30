@@ -1,0 +1,55 @@
+<input
+  class="picker-input"
+  type="text"
+  placeholder="Sin asignar"
+  aria-label="Profesor"
+  [value]="text"
+  [disabled]="disabled"
+  [matAutocomplete]="auto"
+  (input)="filter($any($event.target).value)"
+  (focus)="$any($event.target).select(); opened.emit()"
+  (click)="opened.emit()"
+  (blur)="reset()"
+/>
+
+<mat-autocomplete
+  #auto="matAutocomplete"
+  class="teacher-picker-panel"
+  [displayWith]="display"
+  (optionSelected)="select($event)"
+>
+  <mat-option *ngIf="!candidates" disabled>Cargando profesores…</mat-option>
+  <mat-option *ngIf="candidates && teacherId" [value]="unassigned">
+    <span class="unassigned">Quitar profesor (sin asignar)</span>
+  </mat-option>
+  <mat-option
+    *ngFor="let item of filtered"
+    [value]="item.teacher.id"
+    [class.selected]="item.teacher.id === teacherId"
+  >
+    <div class="option">
+      <div class="line">
+        <span class="name">{{ name(item) }}</span>
+        <span class="hours" [matTooltip]="'Horas asignadas en el período'">
+          {{ currentHours(item) }} h
+          <ng-container *ngIf="projectedHours(item) !== currentHours(item)">→ {{ projectedHours(item) }} h</ng-container>
+        </span>
+      </div>
+      <div class="meta">
+        <span *ngIf="item.timesTaught" class="chip taught">
+          Dictada {{ item.timesTaught }} {{ item.timesTaught === 1 ? 'vez' : 'veces' }} · última {{ item.lastPeriodName }}
+        </span>
+        <span *ngIf="item.grade as grade" class="chip grade">
+          Nota {{ grade.grade ?? grade.remark }}<ng-container *ngIf="grade.grade !== undefined && grade.grade !== null">/{{ grade.maxGrade }}</ng-container>
+        </span>
+        <span *ngIf="!item.grade && item.similarGrade as grade" class="chip similar">
+          Similar: {{ grade.subjectName }} {{ grade.grade ?? grade.remark }}<ng-container *ngIf="grade.grade !== undefined && grade.grade !== null">/{{ grade.maxGrade }}</ng-container>
+        </span>
+        <span *ngIf="!item.timesTaught && !item.grade && !item.similarGrade" class="chip none">
+          Sin historial ni notas en la asignatura
+        </span>
+      </div>
+    </div>
+  </mat-option>
+  <mat-option *ngIf="candidates && !filtered.length" disabled>Ningún profesor coincide</mat-option>
+</mat-autocomplete>

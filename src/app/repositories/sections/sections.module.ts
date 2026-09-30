@@ -27,6 +27,8 @@ import { FormComponent } from './form/form.component';
 import { SectionMemoryService } from './memory';
 import { SectionsRoutingModule } from './sections-routing.module';
 import { SectionsComponent } from './sections.component';
+import { SectionsManageComponent } from './sections-manage';
+import { TeacherPickerComponent } from './sections-manage/teacher-picker/teacher-picker.component';
 import { SectionsOverviewComponent } from './sections-overview';
 import { SectionsService } from './sections.service';
 import {
@@ -38,7 +40,13 @@ import {
 } from './use-cases';
 
 @NgModule({
-  declarations: [SectionsComponent, FormComponent, SectionsOverviewComponent],
+  declarations: [
+    SectionsComponent,
+    FormComponent,
+    SectionsOverviewComponent,
+    SectionsManageComponent,
+    TeacherPickerComponent,
+  ],
   imports: [
     CommonModule,
     SectionsRoutingModule,

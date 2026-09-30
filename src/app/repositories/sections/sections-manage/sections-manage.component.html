@@ -1,0 +1,224 @@
+<div class="toolbar">
+  <mat-form-field *ngIf="!departmentIdUser" class="field-department">
+    <mat-label>Departamento</mat-label>
+    <app-select-ex
+      label="Departamento"
+      [items]="departments"
+      [formControl]="departmentCtrl"
+      placeholder="Seleccione un departamento"
+    ></app-select-ex>
+  </mat-form-field>
+
+  <mat-form-field class="field-semester">
+    <mat-label>Semestre</mat-label>
+    <mat-select [formControl]="semesterCtrl">
+      <mat-option *ngFor="let semester of semesters" [value]="semester.id">{{ semester.name }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="field-search">
+    <mat-label>Buscar asignatura</mat-label>
+    <input matInput [formControl]="searchCtrl" placeholder="Código o nombre" />
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <mat-checkbox [formControl]="uncoveredCtrl">Demanda sin cubrir</mat-checkbox>
+  <mat-checkbox [formControl]="unassignedCtrl">Con secciones sin profesor</mat-checkbox>
+
+  <span class="spacer"></span>
+
+  <button mat-stroked-button type="button" (click)="toggleAll()" [disabled]="!visibleGroups.length">
+    <mat-icon>{{ allExpanded ? 'unfold_less' : 'unfold_more' }}</mat-icon>
+    {{ allExpanded ? 'Contraer' : 'Expandir' }}
+  </button>
+  <button mat-icon-button type="button" matTooltip="Volver" aria-label="Volver" (click)="navigateBack()">
+    <mat-icon>keyboard_backspace</mat-icon>
+  </button>
+</div>
+
+<div class="layout" *ngIf="departmentId; else noDepartment">
+  <main>
+    <div class="summary">
+      <span>Período <strong>{{ periodName }}</strong></span>
+      <span><strong>{{ totals.sections }}</strong> secciones</span>
+      <span [class.warn]="totals.unassigned"><strong>{{ totals.unassigned }}</strong> sin profesor</span>
+      <span [class.warn]="totals.uncovered"><strong>{{ totals.uncovered }}</strong> asignaturas con demanda sin cubrir</span>
+      <span *ngIf="demandPeriodName" class="source">Demanda del período {{ demandPeriodName }}</span>
+    </div>
+
+    <div *ngIf="focusedSubjectId && visibleGroups[0] as group" class="focus">
+      <div class="focus-bar">
+        <span>Mostrando solo <strong>{{ group.subject.name }}</strong></span>
+        <button mat-stroked-button type="button" (click)="unfocus()">
+          <mat-icon>list</mat-icon>
+          Ver todas las asignaturas
+        </button>
+      </div>
+      <app-subject-demand-panel
+        [periodId]="periodId"
+        [subjectId]="focusedSubjectId"
+        [offered]="group.offered"
+      ></app-subject-demand-panel>
+    </div>
+
+    <section
+      *ngFor="let group of visibleGroups; trackBy: trackGroup"
+      class="subject"
+      [ngClass]="'coverage-' + (group.coverage?.status || 'none')"
+    >
+      <header class="subject-header" (click)="group.expanded = !group.expanded">
+        <mat-icon class="chevron">{{ group.expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+        <div class="subject-title">
+          <span class="code">{{ group.subject.code }}</span>
+          <span class="name">{{ group.subject.name }}</span>
+          <span class="meta">Semestre {{ group.subject.semester }} · {{ group.subject.hours }} h</span>
+        </div>
+
+        <div class="demand" *ngIf="group.coverage as coverage; else noDemand">
+          <span matTooltip="Demanda estimada = demanda potencial × factor">
+            Demanda <strong>{{ coverage.estimated.toLocaleString('es-VE') }}</strong>
+          </span>
+          <span>Cupo <strong>{{ group.offered.toLocaleString('es-VE') }}</strong></span>
+          <span class="badge" [ngClass]="coverage.status">
+            {{ coverage.coverage === null ? '—' : (coverage.coverage | percent: '1.0-0') }}
+          </span>
+          <span matTooltip="Secciones activas / secciones sugeridas por la demanda">
+            Secciones <strong>{{ group.active }}</strong>/{{ coverage.suggestedSections }}
+          </span>
+        </div>
+        <ng-template #noDemand>
+          <div class="demand muted">
+            <span>Sin demanda cargada</span>
+            <span>Cupo <strong>{{ group.offered.toLocaleString('es-VE') }}</strong></span>
+          </div>
+        </ng-template>
+
+        <span *ngIf="group.unassigned" class="badge low" matTooltip="Secciones activas sin profesor">
+          {{ group.unassigned }} sin profesor
+        </span>
+
+        <div class="actions" (click)="$event.stopPropagation()">
+          <button
+            *ngIf="!focusedSubjectId"
+            mat-icon-button
+            type="button"
+            matTooltip="Ver solo esta asignatura y su demanda por nivel"
+            aria-label="Ver solo esta asignatura"
+            (click)="focus(group)"
+          >
+            <mat-icon>bar_chart</mat-icon>
+          </button>
+          <button
+            *ngIf="missingSections(group) > 1"
+            mat-stroked-button
+            type="button"
+            [disabled]="loading"
+            matTooltip="Crea las secciones que faltan para cubrir la demanda, sin profesor"
+            (click)="addSections(group, missingSections(group))"
+          >
+            Crear {{ missingSections(group) }} sugeridas
+          </button>
+          <button mat-flat-button color="primary" type="button" [disabled]="loading" (click)="addSections(group)">
+            <mat-icon>add</mat-icon>
+            Sección
+          </button>
+        </div>
+      </header>
+
+      <div class="sections" *ngIf="group.expanded">
+        <div class="row head" *ngIf="group.sections.length">
+          <span>Sección</span>
+          <span>Capacidad</span>
+          <span>Profesor</span>
+          <span>Activa</span>
+          <span></span>
+        </div>
+        <div
+          *ngFor="let row of group.sections; trackBy: trackRow"
+          class="row"
+          [class.inactive]="!row.status"
+          [class.unassigned]="!row.teacherId"
+        >
+          <input
+            #nameInput
+            class="cell-input"
+            aria-label="Nombre de la sección"
+            [value]="row.name"
+            [disabled]="row.saving"
+            (change)="changeName(group, row, nameInput)"
+            (keydown.enter)="nameInput.blur()"
+          />
+          <input
+            #capacityInput
+            class="cell-input"
+            type="number"
+            min="1"
+            aria-label="Capacidad"
+            [value]="row.capacity"
+            [disabled]="row.saving"
+            (change)="changeCapacity(group, row, capacityInput)"
+            (keydown.enter)="capacityInput.blur()"
+          />
+          <app-teacher-picker
+            [candidates]="candidates.get(group.subject.id || 0)"
+            [hours]="hours"
+            [sectionHours]="sectionHours(group, row)"
+            [teacherId]="row.teacherId"
+            [teacherName]="row.teacherName"
+            [disabled]="row.saving"
+            (opened)="ensureCandidates(group.subject.id || 0)"
+            (picked)="changeTeacher(group, row, $event)"
+          ></app-teacher-picker>
+          <mat-checkbox
+            [checked]="row.status"
+            [disabled]="row.saving"
+            aria-label="Sección activa"
+            (change)="changeStatus(group, row, $event.checked)"
+          ></mat-checkbox>
+          <span class="row-actions">
+            <mat-icon *ngIf="row.saving" class="spin">sync</mat-icon>
+            <button
+              *ngIf="!row.saving"
+              mat-icon-button
+              type="button"
+              matTooltip="Eliminar sección"
+              aria-label="Eliminar sección"
+              (click)="remove(group, row)"
+            >
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </span>
+        </div>
+        <p *ngIf="!group.sections.length" class="empty-sections">
+          Sin secciones en este período.
+        </p>
+      </div>
+    </section>
+
+    <p *ngIf="!loading && !visibleGroups.length" class="empty">
+      Ninguna asignatura coincide con los filtros.
+    </p>
+  </main>
+
+  <aside class="load">
+    <h3>Carga docente</h3>
+    <p class="hint">Horas semanales del período: suma de las horas de la asignatura de cada sección activa, en todos los departamentos.</p>
+    <ul>
+      <li *ngFor="let item of load" [class.idle]="!item.hours">
+        <div class="line">
+          <span class="name">{{ item.teacher.lastName }}, {{ item.teacher.firstName }}</span>
+          <strong>{{ item.hours }} h</strong>
+        </div>
+        <div class="bar"><span [style.width.%]="maxHours ? (item.hours / maxHours) * 100 : 0"></span></div>
+        <div class="line small">
+          <span>{{ dedicationName(item) }}</span>
+          <span>{{ item.sections }} {{ item.sections === 1 ? 'sección' : 'secciones' }}</span>
+        </div>
+      </li>
+    </ul>
+  </aside>
+</div>
+
+<ng-template #noDepartment>
+  <p class="empty">Seleccione un departamento para gestionar sus secciones.</p>
+</ng-template>

@@ -1,0 +1,80 @@
+:host {
+  display: block;
+}
+
+.picker-input {
+  width: 100%;
+  padding: 0.375rem 0.5rem;
+  border: 1px solid #cfd8dc;
+  border-radius: 0.375rem;
+  font: inherit;
+  background: #fff;
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary-color);
+  }
+
+  &::placeholder {
+    color: #c62828;
+    font-style: italic;
+  }
+}
+
+::ng-deep .teacher-picker-panel {
+  min-width: 30rem;
+
+  .mat-mdc-option {
+    min-height: 3.25rem;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .mat-mdc-option.selected {
+    background: var(--primary-lighter-color);
+  }
+
+  .option {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.25rem 0;
+    line-height: 1.2;
+  }
+
+  .line {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .name {
+    font-weight: 600;
+  }
+
+  .hours {
+    white-space: nowrap;
+    font-size: 0.8125rem;
+    color: #455a64;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .chip {
+    padding: 0.0625rem 0.5rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+  }
+
+  .taught { background: #e3f2fd; color: #1565c0; }
+  .grade { background: #e8f5e9; color: #2e7d32; }
+  .similar { background: #fff8e1; color: #ef6c00; }
+  .none { background: #f5f5f5; color: #757575; }
+
+  .unassigned {
+    color: #c62828;
+  }
+}
