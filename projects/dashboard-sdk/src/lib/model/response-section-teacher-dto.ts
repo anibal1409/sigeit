@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SectionTeacherGradeDto } from './section-teacher-grade-dto';
+import { TeacherGradeMatchDto } from './teacher-grade-match-dto';
 import { ResponseTeacherDto } from './response-teacher-dto';
 
 
@@ -31,7 +31,7 @@ export interface ResponseSectionTeacherDto {
      * Último período en que dictó la asignatura
      */
     lastPeriodName?: string;
-    grade?: SectionTeacherGradeDto;
-    similarGrade?: SectionTeacherGradeDto;
+    grade?: TeacherGradeMatchDto;
+    similarGrade?: TeacherGradeMatchDto;
 }
 

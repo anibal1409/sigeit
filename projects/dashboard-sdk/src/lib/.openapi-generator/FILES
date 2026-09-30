@@ -96,7 +96,6 @@ model/schedule-controller-download-planned-schedules200-response.ts
 model/schedule-lite-dto.ts
 model/section-coverage-dto.ts
 model/section-open-distribution-item-dto.ts
-model/section-teacher-grade-dto.ts
 model/start-time-slot-item-dto.ts
 model/subject-demand-increase-item-dto.ts
 model/subject-ref-dto.ts

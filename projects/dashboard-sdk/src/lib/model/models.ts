@@ -67,7 +67,6 @@ export * from './schedule-controller-download-planned-schedules200-response';
 export * from './schedule-lite-dto';
 export * from './section-coverage-dto';
 export * from './section-open-distribution-item-dto';
-export * from './section-teacher-grade-dto';
 export * from './start-time-slot-item-dto';
 export * from './subject-demand-increase-item-dto';
 export * from './subject-ref-dto';
