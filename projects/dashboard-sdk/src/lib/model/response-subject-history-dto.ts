@@ -11,7 +11,13 @@
  */
 
 
-export interface SubjectDemandControllerImportRequest { 
-    file: Blob;
+export interface ResponseSubjectHistoryDto { 
+    sectionId: number;
+    sectionName: string;
+    periodId: number;
+    periodName: string;
+    subjectId: number;
+    subjectCode: string;
+    subjectName: string;
 }
 

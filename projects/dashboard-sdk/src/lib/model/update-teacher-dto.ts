@@ -9,7 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TeacherCategory } from './teacher-category';
 import { IdCreateEntity } from './id-create-entity';
+import { HiringEvaluationStatus } from './hiring-evaluation-status';
+import { TeacherDedication } from './teacher-dedication';
+import { EmploymentStatus } from './employment-status';
 
 
 export interface UpdateTeacherDto { 
@@ -19,5 +23,14 @@ export interface UpdateTeacherDto {
     email?: string;
     department?: IdCreateEntity;
     status?: boolean;
+    category?: TeacherCategory;
+    employmentStatus?: EmploymentStatus;
+    dedication?: TeacherDedication;
+    hiringEvaluationStatus?: HiringEvaluationStatus;
+    hiringEvaluationDate?: string | null;
+    hiringEvaluationNotes?: string | null;
 }
+export namespace UpdateTeacherDto {
+}
+
 

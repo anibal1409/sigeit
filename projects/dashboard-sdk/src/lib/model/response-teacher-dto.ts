@@ -9,6 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TeacherCategory } from './teacher-category';
+import { HiringEvaluationStatus } from './hiring-evaluation-status';
+import { TeacherDedication } from './teacher-dedication';
+import { EmploymentStatus } from './employment-status';
 
 
 export interface ResponseTeacherDto { 
@@ -20,5 +24,18 @@ export interface ResponseTeacherDto {
     departmentId: number;
     department: object;
     status: boolean;
+    category?: TeacherCategory;
+    /**
+     * Nivel del escalafón (I–V) derivado de la categoría
+     */
+    categoryLevel?: string;
+    employmentStatus?: EmploymentStatus;
+    dedication?: TeacherDedication;
+    hiringEvaluationStatus?: HiringEvaluationStatus;
+    hiringEvaluationDate?: string;
+    hiringEvaluationNotes?: string;
 }
+export namespace ResponseTeacherDto {
+}
+
 
