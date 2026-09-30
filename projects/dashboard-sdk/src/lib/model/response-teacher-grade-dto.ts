@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { GradeStatus } from './grade-status';
 import { SubjectRefDto } from './subject-ref-dto';
 
 
@@ -25,6 +26,22 @@ export interface ResponseTeacherGradeDto {
      */
     remark?: string;
     subject?: SubjectRefDto;
+    /**
+     * Créditos o unidades de crédito (UC) de la asignatura
+     */
+    credits?: number;
+    /**
+     * Aprobada en examen de reparación (tipo de examen \"R\")
+     */
+    makeup?: boolean;
     id: number;
+    status?: GradeStatus;
+    /**
+     * Vez que cursa la asignatura (1 = primera; 2 o más = repitencia)
+     */
+    attempt: number;
 }
+export namespace ResponseTeacherGradeDto {
+}
+
 

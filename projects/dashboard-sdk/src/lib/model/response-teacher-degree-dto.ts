@@ -10,17 +10,52 @@
  * Do not edit the class manually.
  */
 import { ResponseTeacherGradeDto } from './response-teacher-grade-dto';
+import { TeacherDegreeSummaryDto } from './teacher-degree-summary-dto';
+import { TeacherDegreePeriodDto } from './teacher-degree-period-dto';
 import { DegreeLevel } from './degree-level';
 
 
 export interface ResponseTeacherDegreeDto { 
-    id: number;
     level: DegreeLevel;
     title: string;
     institution?: string;
     graduationDate?: string;
+    /**
+     * Nota máxima de la escala
+     */
     maxGrade: number;
+    /**
+     * Nota mínima aprobatoria; si no se indica, se asume la mitad de la escala
+     */
+    minPassingGrade?: number;
+    /**
+     * Promedio general de la carrera según el documento
+     */
+    average?: number;
+    /**
+     * Créditos (UC) aprobados en total
+     */
+    approvedCredits?: number;
+    /**
+     * Puesto en su promoción de egresados
+     */
+    classRank?: number;
+    /**
+     * Cantidad de egresados de la promoción
+     */
+    classSize?: number;
+    /**
+     * Promedio de la promoción
+     */
+    classAverage?: number;
+    /**
+     * El documento solo incluye notas aprobatorias (no muestra retiros ni reprobadas)
+     */
+    onlyPassingGrades?: boolean;
+    periods?: Array<TeacherDegreePeriodDto>;
+    id: number;
     grades: Array<ResponseTeacherGradeDto>;
+    summary: TeacherDegreeSummaryDto;
 }
 export namespace ResponseTeacherDegreeDto {
 }

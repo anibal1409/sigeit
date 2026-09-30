@@ -9,29 +9,24 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SubjectRefDto } from './subject-ref-dto';
 
 
-export interface TeacherGradeDto { 
-    code?: string;
-    subjectName: string;
-    period?: string;
+export interface TeacherDegreePeriodDto { 
     /**
-     * Nota numérica en la escala del título (maxGrade)
+     * Código del período
      */
-    grade?: number;
+    code: string;
     /**
-     * Resultado no numérico (RETIRADA, APROBADO, EN EJECUCIÓN)
+     * Fechas o descripción del período
      */
-    remark?: string;
-    subject?: SubjectRefDto;
+    label?: string;
     /**
-     * Créditos o unidades de crédito (UC) de la asignatura
+     * Promedio del período
      */
-    credits?: number;
+    average?: number;
     /**
-     * Aprobada en examen de reparación (tipo de examen \"R\")
+     * Créditos aprobados en el período
      */
-    makeup?: boolean;
+    approvedCredits?: number;
 }
 

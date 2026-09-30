@@ -9,10 +9,42 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TeacherDegreePeriodDto } from './teacher-degree-period-dto';
 import { TeacherGradeDto } from './teacher-grade-dto';
 
 
 export interface TranscriptPreviewDto { 
+    institution?: string;
+    graduationDate?: string;
+    /**
+     * Nota mínima aprobatoria; si no se indica, se asume la mitad de la escala
+     */
+    minPassingGrade?: number;
+    /**
+     * Promedio general de la carrera según el documento
+     */
+    average?: number;
+    /**
+     * Créditos (UC) aprobados en total
+     */
+    approvedCredits?: number;
+    /**
+     * Puesto en su promoción de egresados
+     */
+    classRank?: number;
+    /**
+     * Cantidad de egresados de la promoción
+     */
+    classSize?: number;
+    /**
+     * Promedio de la promoción
+     */
+    classAverage?: number;
+    /**
+     * El documento solo incluye notas aprobatorias (no muestra retiros ni reprobadas)
+     */
+    onlyPassingGrades?: boolean;
+    periods?: Array<TeacherDegreePeriodDto>;
     /**
      * Cédula del estudiante, solo dígitos
      */
@@ -22,7 +54,6 @@ export interface TranscriptPreviewDto {
      * Carrera o programa
      */
     title?: string;
-    institution?: string;
     /**
      * Nota máxima de la escala: la del documento, o 10/20 según las notas si no la indica
      */

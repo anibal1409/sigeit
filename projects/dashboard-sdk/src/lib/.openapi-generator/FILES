@@ -60,6 +60,7 @@ model/entity-audit-history-dto.ts
 model/free-classroom-dto.ts
 model/free-slot-dto.ts
 model/generate-report-dto.ts
+model/grade-status.ts
 model/hiring-evaluation-status.ts
 model/id-create-entity.ts
 model/import-subject-demand-result-dto.ts
@@ -103,6 +104,8 @@ model/subject-stat-item-dto.ts
 model/teacher-category.ts
 model/teacher-dedication.ts
 model/teacher-degree-controller-parse-transcript-request.ts
+model/teacher-degree-period-dto.ts
+model/teacher-degree-summary-dto.ts
 model/teacher-grade-dto.ts
 model/teacher-grade-match-dto.ts
 model/teacher-workload-item-dto.ts
