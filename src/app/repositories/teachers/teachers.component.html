@@ -27,6 +27,15 @@
             </mat-form-field>
 
             <button
+              mat-stroked-button
+              (click)="showGradeSearch()"
+              [disabled]="loading"
+            >
+              <mat-icon>manage_search</mat-icon>
+              Buscar por asignatura
+            </button>
+
+            <button
               mat-raised-button
               color="accent"
               (click)="generateList()"

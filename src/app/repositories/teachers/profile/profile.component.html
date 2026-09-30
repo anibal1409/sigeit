@@ -1,0 +1,102 @@
+<div class="modal-header">
+  <span mat-dialog-title>{{ data.teacher.lastName }}, {{ data.teacher.firstName }}</span>
+  <button mat-mini-fab mat-dialog-close type="button" aria-label="Cerrar" color="basic">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div mat-dialog-content>
+  <dl class="summary">
+    <div><dt>Categoría</dt><dd>{{ optionName(categoryOptions, data.teacher.category) || '—' }}</dd></div>
+    <div><dt>Condición</dt><dd>{{ optionName(employmentStatusOptions, data.teacher.employmentStatus) || '—' }}</dd></div>
+    <div><dt>Dedicación</dt><dd>{{ optionName(dedicationOptions, data.teacher.dedication) || '—' }}</dd></div>
+    <div *ngIf="data.teacher.hiringEvaluationStatus">
+      <dt>Evaluación para contratar</dt>
+      <dd>
+        {{ optionName(hiringEvaluationOptions, data.teacher.hiringEvaluationStatus) }}
+        <span *ngIf="data.teacher.hiringEvaluationDate">({{ data.teacher.hiringEvaluationDate | date: 'dd/MM/yyyy' : 'UTC' }})</span>
+      </dd>
+    </div>
+  </dl>
+  <p class="notes" *ngIf="data.teacher.hiringEvaluationStatus && data.teacher.hiringEvaluationNotes">
+    {{ data.teacher.hiringEvaluationNotes }}
+  </p>
+
+  <mat-tab-group>
+    <mat-tab label="Asignaturas impartidas ({{ history.length }})">
+      <p class="empty" *ngIf="!history.length">El profesor no tiene secciones asignadas.</p>
+      <table class="data-table" *ngIf="history.length">
+        <thead>
+          <tr><th>Período</th><th>Código</th><th>Asignatura</th><th>Sección</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of history">
+            <td>{{ item.periodName }}</td>
+            <td>{{ item.subjectCode }}</td>
+            <td>{{ item.subjectName }}</td>
+            <td>{{ item.sectionName }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-tab>
+
+    <mat-tab label="Títulos y notas ({{ degrees.length }})">
+      <div class="actions">
+        <button mat-stroked-button type="button" [disabled]="loading" (click)="openDegreeForm()">
+          <mat-icon>add</mat-icon>
+          Registrar título
+        </button>
+        <input
+          #fileInput
+          type="file"
+          accept=".pdf,.jpg,.jpeg,.png,.webp,.heic"
+          hidden
+          (change)="importTranscript(fileInput)"
+        />
+        <button mat-stroked-button type="button" [disabled]="loading" (click)="fileInput.click()">
+          <mat-icon>upload_file</mat-icon>
+          {{ loading ? 'Leyendo récord...' : 'Importar récord (PDF o imagen)' }}
+        </button>
+      </div>
+      <p class="error" *ngIf="error">{{ error }}</p>
+      <p class="empty" *ngIf="!degrees.length">No hay títulos registrados.</p>
+
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let degree of degrees">
+          <mat-expansion-panel-header>
+            <mat-panel-title>{{ degree.title }}</mat-panel-title>
+            <mat-panel-description>
+              {{ optionName(levelOptions, degree.level) }}
+              <span *ngIf="degree.institution">· {{ degree.institution }}</span>
+              · {{ degree.grades.length }} asignaturas
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <div class="actions">
+            <button mat-button type="button" (click)="openDegreeForm({ degree })">
+              <mat-icon>edit</mat-icon>
+              Editar
+            </button>
+            <button mat-button color="warn" type="button" (click)="deleteDegree(degree)">
+              <mat-icon>delete</mat-icon>
+              Eliminar
+            </button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr><th>Período</th><th>Código</th><th>Asignatura</th><th>Nota</th></tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let grade of degree.grades">
+                <td>{{ grade.period }}</td>
+                <td>{{ grade.code }}</td>
+                <td>{{ grade.subjectName }}</td>
+                <td>{{ gradeLabel(grade, degree.maxGrade) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-tab>
+  </mat-tab-group>
+</div>

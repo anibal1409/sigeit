@@ -8,7 +8,10 @@ import {
 } from 'rxjs';
 
 import { UseCase } from '../../../../common/memory-repository';
-import { Teacher2TeacherItemVM } from '../../mappers';
+import {
+  Teacher2TeacherItemVM,
+  TeacherVM2TeacherDto,
+} from '../../mappers';
 import { TeacherMemoryService } from '../../memory';
 import {
   TeacherItemVM,
@@ -26,14 +29,7 @@ export class UpdateTeacherService
 
   exec(entitySave: TeacherVM): Observable<TeacherItemVM | null> {
     return this.entityServices
-      .teacherControllerUpdate(entitySave.id || 0, {
-        status: !!entitySave.status,
-        department: { id: entitySave.departmentId },
-        firstName: entitySave.firstName,
-        lastName: entitySave.lastName,
-        idDocument: entitySave.idDocument,
-        email: entitySave.email,
-      })
+      .teacherControllerUpdate(entitySave.id || 0, TeacherVM2TeacherDto(entitySave))
       .pipe(
         map(Teacher2TeacherItemVM),
         tap((entity) => {

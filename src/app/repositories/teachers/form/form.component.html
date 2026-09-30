@@ -100,6 +100,58 @@
       >
     </mat-select>
   </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Categoría</mat-label>
+    <mat-select formControlName="category">
+      <mat-option [value]="null">Sin categoría</mat-option>
+      <mat-option *ngFor="let option of categoryOptions" [value]="option.value">
+        {{ option.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Condición</mat-label>
+    <mat-select formControlName="employmentStatus">
+      <mat-option [value]="null">Sin especificar</mat-option>
+      <mat-option *ngFor="let option of employmentStatusOptions" [value]="option.value">
+        {{ option.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Dedicación</mat-label>
+    <mat-select formControlName="dedication">
+      <mat-option [value]="null">Sin especificar</mat-option>
+      <mat-option *ngFor="let option of dedicationOptions" [value]="option.value">
+        {{ option.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Evaluación para contratar</mat-label>
+    <mat-select formControlName="hiringEvaluationStatus">
+      <mat-option [value]="null">No aplica</mat-option>
+      <mat-option *ngFor="let option of hiringEvaluationOptions" [value]="option.value">
+        {{ option.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <ng-container *ngIf="form.controls['hiringEvaluationStatus'].value">
+    <mat-form-field>
+      <mat-label>Fecha de evaluación</mat-label>
+      <input matInput type="date" formControlName="hiringEvaluationDate" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Observaciones de la evaluación</mat-label>
+      <textarea matInput rows="3" formControlName="hiringEvaluationNotes"></textarea>
+    </mat-form-field>
+  </ng-container>
 </form>
 
 <div class="modal-footer" mat-dialog-actions>

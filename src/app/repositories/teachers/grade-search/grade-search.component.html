@@ -1,0 +1,48 @@
+<div class="modal-header">
+  <span mat-dialog-title>Buscar profesores por asignatura cursada</span>
+  <button mat-mini-fab mat-dialog-close type="button" aria-label="Cerrar" color="basic">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div mat-dialog-content>
+  <form class="filters" [formGroup]="form" (ngSubmit)="search()">
+    <mat-form-field class="subject">
+      <mat-label>Asignatura</mat-label>
+      <input matInput formControlName="subject" placeholder="Ej.: programación objetos" />
+      <mat-hint>Sin distinguir mayúsculas ni tildes; deben aparecer todas las palabras.</mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Nota mínima (%)</mat-label>
+      <input matInput type="number" min="0" max="100" formControlName="minPercent" />
+      <mat-hint>70% = 7/10 o 14/20</mat-hint>
+    </mat-form-field>
+    <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || loading">
+      <mat-icon>search</mat-icon>
+      Buscar
+    </button>
+  </form>
+
+  <p class="empty" *ngIf="results && !results.length">Ningún profesor coincide con la búsqueda.</p>
+
+  <section class="result" *ngFor="let result of results">
+    <h3>
+      {{ result.teacher.lastName }}, {{ result.teacher.firstName }}
+      <small>C.I. {{ result.teacher.idDocument }} · {{ $any(result.teacher.department)?.name }}</small>
+    </h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>Asignatura</th><th>Título</th><th>Período</th><th>Nota</th><th>%</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let match of result.matches">
+          <td>{{ match.subjectName }}</td>
+          <td>{{ match.degreeTitle }} ({{ optionName(levelOptions, match.degreeLevel) }})</td>
+          <td>{{ match.period }}</td>
+          <td>{{ gradeLabel(match, match.maxGrade) }}</td>
+          <td>{{ match.percent ?? '—' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</div>

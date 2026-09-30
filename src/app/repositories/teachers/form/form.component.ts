@@ -19,7 +19,13 @@ import { Subscription } from 'rxjs';
 
 import { UserStateService } from '../../../common';
 import { DepartmentItemVM } from '../../departments';
-import { TeacherVM } from '../model';
+import {
+  CATEGORY_OPTIONS,
+  DEDICATION_OPTIONS,
+  EMPLOYMENT_STATUS_OPTIONS,
+  HIRING_EVALUATION_OPTIONS,
+  TeacherVM,
+} from '../model';
 import { TeachersService } from '../teachers.service';
 
 @Component({
@@ -55,6 +61,11 @@ export class FormComponent implements OnInit, OnDestroy {
   ];
 
   departments: Array<DepartmentItemVM> = [];
+
+  readonly categoryOptions = CATEGORY_OPTIONS;
+  readonly employmentStatusOptions = EMPLOYMENT_STATUS_OPTIONS;
+  readonly dedicationOptions = DEDICATION_OPTIONS;
+  readonly hiringEvaluationOptions = HIRING_EVALUATION_OPTIONS;
 
   constructor(
     private teachersService: TeachersService,
@@ -124,6 +135,12 @@ export class FormComponent implements OnInit, OnDestroy {
       status: [true, [Validators.required]],
       email: [null, [Validators.email]],
       departmentId: [null, [Validators.required]],
+      category: [null],
+      employmentStatus: [null],
+      dedication: [null],
+      hiringEvaluationStatus: [null],
+      hiringEvaluationDate: [null],
+      hiringEvaluationNotes: [null],
     });
 
     this.sub$.add(

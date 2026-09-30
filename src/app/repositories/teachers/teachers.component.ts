@@ -19,11 +19,17 @@ import { StateService } from 'src/app/common/state';
 
 import { DepartmentItemVM } from '../departments';
 import { FormComponent } from './form';
+import { GradeSearchComponent } from './grade-search/grade-search.component';
 import {
+  CATEGORY_OPTIONS,
+  EMPLOYMENT_STATUS_OPTIONS,
+  HIRING_EVALUATION_OPTIONS,
+  optionName,
   RowActionTeacher,
   TeacherItemVM,
   TeacherVM,
 } from './model';
+import { ProfileComponent } from './profile/profile.component';
 import { TeachersService } from './teachers.service';
 
 @Component({
@@ -59,13 +65,32 @@ export class TeachersComponent implements OnInit, OnDestroy {
           `${(element['department'] as any).name}`,
       },
       {
+        columnDef: 'category',
+        header: 'Categoría',
+        cell: (element: any) => optionName(CATEGORY_OPTIONS, element.category),
+      },
+      {
+        columnDef: 'employmentStatus',
+        header: 'Condición',
+        cell: (element: any) => optionName(EMPLOYMENT_STATUS_OPTIONS, element.employmentStatus),
+      },
+      {
+        columnDef: 'hiringEvaluationStatus',
+        header: 'Evaluación',
+        cell: (element: any) => optionName(HIRING_EVALUATION_OPTIONS, element.hiringEvaluationStatus),
+      },
+      {
         columnDef: 'status',
         header: 'Estado',
         cell: (element: { [key: string]: string }) => `${element['status']}`,
       },
     ],
     body: [],
-    options: [],
+    options: [
+      { name: 'Editar', value: RowActionTeacher.update, icon: 'edit' },
+      { name: 'Perfil académico', value: RowActionTeacher.profile, icon: 'school' },
+      { name: 'Eliminar', value: RowActionTeacher.delete, icon: 'delete' },
+    ],
   };
 
   sub$ = new Subscription();
@@ -287,10 +312,30 @@ export class TeachersComponent implements OnInit, OnDestroy {
       case RowActionTeacher.update:
         this.showModal(+option.data['id']);
         break;
+      case RowActionTeacher.profile:
+        this.showProfile(option.data as any);
+        break;
       case RowActionTeacher.delete:
         this.showConfirm(option.data as any);
         break;
     }
+  }
+
+  /** Abre el perfil académico (historial, títulos y notas) del profesor. */
+  showProfile(teacher: TeacherItemVM): void {
+    this.matDialog.open(ProfileComponent, {
+      data: { teacher },
+      width: '64rem',
+      maxWidth: '95vw',
+    });
+  }
+
+  /** Abre el buscador de profesores por asignatura cursada. */
+  showGradeSearch(): void {
+    this.matDialog.open(GradeSearchComponent, {
+      width: '64rem',
+      maxWidth: '95vw',
+    });
   }
 
   showModal(id?: number): void {

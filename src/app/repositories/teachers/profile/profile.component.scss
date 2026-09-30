@@ -1,0 +1,36 @@
+.summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 2rem;
+  margin: 0 0 1rem;
+
+  dt {
+    font-size: 0.75rem;
+    color: #666;
+  }
+
+  dd {
+    margin: 0;
+    font-weight: 500;
+  }
+}
+
+.notes {
+  font-size: 0.875rem;
+  white-space: pre-line;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0 0.5rem;
+}
+
+.empty {
+  color: #666;
+  margin-top: 1rem;
+}
+
+.error {
+  color: #d32f2f;
+}

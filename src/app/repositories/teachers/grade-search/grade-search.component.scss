@@ -1,0 +1,31 @@
+.filters {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+
+  .subject {
+    flex: 1;
+  }
+
+  button {
+    margin-top: 0.5rem;
+  }
+}
+
+.empty {
+  color: #666;
+}
+
+.result {
+  margin-top: 1.5rem;
+
+  h3 {
+    margin-bottom: 0.5rem;
+
+    small {
+      font-weight: 400;
+      color: #666;
+      margin-left: 0.5rem;
+    }
+  }
+}
