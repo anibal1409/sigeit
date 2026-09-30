@@ -174,650 +174,638 @@
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/api.module.ts": {
-    "mtime": 1790714905.3525631,
-    "seen": 1790715871.983827,
+    "mtime": 1790797457.9819756,
+    "seen": 1790797496.5997164,
     "ast_hash": "3793289893bda05fa9661c6e268a1ecf",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/api/api.ts": {
-    "mtime": 1790714905.3524878,
-    "seen": 1790715871.9838288,
-    "ast_hash": "26e31bd48fe579f0c6730a30d3c5e712",
+    "mtime": 1790797457.9819164,
+    "seen": 1790797496.5997186,
+    "ast_hash": "7943ce0039de8ea749f77a0e9f020ad1",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/api/audit.service.ts": {
-    "mtime": 1790714905.3515425,
-    "seen": 1790715871.9838297,
+    "mtime": 1790797457.9811258,
+    "seen": 1790797496.5997195,
     "ast_hash": "15cd01a510df36b053e824ae4d5e6891",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/api/auth.service.ts": {
-    "mtime": 1790714905.3515844,
-    "seen": 1790715871.983831,
+    "mtime": 1790797457.9811783,
+    "seen": 1790797496.5997207,
     "ast_hash": "0d6b12d75dfe635ec5bbcc3eaac396e7",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/api/career.service.ts": {
-    "mtime": 1790714905.3516345,
-    "seen": 1790715871.9838324,
+    "mtime": 1790797457.9812245,
+    "seen": 1790797496.5997217,
     "ast_hash": "85b5d84e85ebec968a947a8dd77282df",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/api/classroom.service.ts": {
-    "mtime": 1790714905.3516948,
-    "seen": 1790715871.9838333,
+    "mtime": 1790797457.9812634,
+    "seen": 1790797496.5997229,
     "ast_hash": "a58752270b394adfb5590537ef8285b1",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/api/day.service.ts": {
-    "mtime": 1790714905.3517609,
-    "seen": 1790715871.983835,
+    "mtime": 1790797457.9813042,
+    "seen": 1790797496.5997238,
     "ast_hash": "b08d73a9442b85f05d32c6feaa8120e1",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/api/default.service.ts": {
-    "mtime": 1790714905.3518267,
-    "seen": 1790715871.9838362,
+    "mtime": 1790797457.981343,
+    "seen": 1790797496.5997245,
     "ast_hash": "0cd8022e559d3b1bceacb7700ddb5643",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/api/department.service.ts": {
-    "mtime": 1790714905.3518846,
-    "seen": 1790715871.9838374,
+    "mtime": 1790797457.9813774,
+    "seen": 1790797496.5997255,
     "ast_hash": "0163743329f478d67b38a1671fc9c9ca",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/api/document.service.ts": {
-    "mtime": 1790714905.3519626,
-    "seen": 1790715871.9838388,
+    "mtime": 1790797457.9814174,
+    "seen": 1790797496.5997267,
     "ast_hash": "8247e69c5208e771ecc1da7db42c5c38",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/api/inscription.service.ts": {
-    "mtime": 1790714905.3520062,
-    "seen": 1790715871.9838398,
+    "mtime": 1790797457.981457,
+    "seen": 1790797496.5997274,
     "ast_hash": "e2a4973a908bfd96d5a624b789025a6e",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/api/period.service.ts": {
-    "mtime": 1790714905.352053,
-    "seen": 1790715871.983841,
+    "mtime": 1790797457.9814992,
+    "seen": 1790797496.5997283,
     "ast_hash": "2f9fd77dd32df88c48ddeb11ad548cb5",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/api/schedule.service.ts": {
-    "mtime": 1790714905.352114,
-    "seen": 1790715871.9838426,
-    "ast_hash": "de87ff54384072d60c541368ee8cdde0",
+    "mtime": 1790797457.9815443,
+    "seen": 1790797496.5997288,
+    "ast_hash": "d569b07c05f2a7775f16c361e2b44a83",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/api/school.service.ts": {
-    "mtime": 1790714905.3521714,
-    "seen": 1790715871.9838436,
+    "mtime": 1790797457.981596,
+    "seen": 1790797496.59973,
     "ast_hash": "d3b784667da0d13aa13c84a04443e956",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/api/section.service.ts": {
-    "mtime": 1790714905.352213,
-    "seen": 1790715871.9838598,
+    "mtime": 1790797457.9816322,
+    "seen": 1790797496.5997307,
     "ast_hash": "5ffe7a33df72646e5968600281f10d05",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/api/statistics.service.ts": {
-    "mtime": 1790714905.3522587,
-    "seen": 1790715871.983861,
+    "mtime": 1790797457.9816742,
+    "seen": 1790797496.5997314,
     "ast_hash": "9cf09e5cbab8f02bb4947ddaaad52b9e",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/api/subject-demand.service.ts": {
-    "mtime": 1790714905.352345,
-    "seen": 1790715871.9838622,
+    "mtime": 1790797457.9817553,
+    "seen": 1790797496.5997324,
     "ast_hash": "b97f3000e43c351270950327cecd7984",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/api/subject.service.ts": {
-    "mtime": 1790714905.3523033,
-    "seen": 1790715871.9838636,
+    "mtime": 1790797457.9817169,
+    "seen": 1790797496.5997336,
     "ast_hash": "f985e1d20f2114bd10a403aaccc7a464",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/api/teacher.service.ts": {
-    "mtime": 1790714905.352396,
-    "seen": 1790715871.9838645,
-    "ast_hash": "63bc2d2391f80dace172f84f357755ff",
+    "mtime": 1790797457.9817915,
+    "seen": 1790797496.5997367,
+    "ast_hash": "b2c5948798371489bdc52c4af2b5d5c9",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/api/user.service.ts": {
-    "mtime": 1790714905.3524454,
-    "seen": 1790715871.9838657,
+    "mtime": 1790797457.981877,
+    "seen": 1790797496.5997376,
     "ast_hash": "a0c0c88e82e217aa7bfec3eb490fe602",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/configuration.ts": {
-    "mtime": 1790714905.3525925,
-    "seen": 1790715871.9838672,
+    "mtime": 1790797457.982003,
+    "seen": 1790797496.5997384,
     "ast_hash": "42d4292e27e88bf6b74472eb9a83b5f4",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/encoder.ts": {
-    "mtime": 1790714905.3526576,
-    "seen": 1790715871.9838681,
+    "mtime": 1790797457.9820788,
+    "seen": 1790797496.5997393,
     "ast_hash": "7a0411b98949f0bdd40f62f2666303d8",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/git_push.sh": {
-    "mtime": 1790714905.3527577,
-    "seen": 1790715871.983869,
+    "mtime": 1790797457.9821644,
+    "seen": 1790797496.5997405,
     "ast_hash": "939095600592dc05a3fc9ee742f3fb89",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/index.ts": {
-    "mtime": 1790714905.3525329,
-    "seen": 1790715871.98387,
+    "mtime": 1790797457.9819489,
+    "seen": 1790797496.5997415,
     "ast_hash": "b7b70d7ba08a59c1d1c4b2cf8c4649a7",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/audit-logs-page-dto.ts": {
-    "mtime": 1790714905.348408,
-    "seen": 1790715871.9838712,
+    "mtime": 1790797457.97744,
+    "seen": 1790797496.5997424,
     "ast_hash": "14f12d58e15f53a2cf72bec49f9f0870",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/audit-summary-dto.ts": {
-    "mtime": 1790714905.3484547,
-    "seen": 1790715871.9838722,
+    "mtime": 1790797457.9774868,
+    "seen": 1790797496.5997431,
     "ast_hash": "46262235d646671147cd3652e364218d",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/career-section-stat-item-dto.ts": {
-    "mtime": 1790714905.3485053,
-    "seen": 1790715871.9838736,
+    "mtime": 1790797457.9775267,
+    "seen": 1790797496.599744,
     "ast_hash": "6c31c10ee6220e08564998542eb635c8",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/change-password-dto.ts": {
-    "mtime": 1790714905.348549,
-    "seen": 1790715871.983875,
+    "mtime": 1790797457.9775636,
+    "seen": 1790797496.5997448,
     "ast_hash": "c60ced31e6b9b8c6cfd707c833d6ad89",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/change-password-response-dto.ts": {
-    "mtime": 1790714905.3485904,
-    "seen": 1790715871.9838765,
+    "mtime": 1790797457.9776032,
+    "seen": 1790797496.5997455,
     "ast_hash": "df305b50a369a152fe0ba403afa95b04",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/classroom-usage-item-dto.ts": {
-    "mtime": 1790714905.3486278,
-    "seen": 1790715871.9838777,
+    "mtime": 1790797457.9776425,
+    "seen": 1790797496.5997462,
     "ast_hash": "d39d470aac02ef4589b01602d8e020de",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/close-inscription-dto.ts": {
-    "mtime": 1790714905.3486662,
-    "seen": 1790715871.9838786,
+    "mtime": 1790797457.9776793,
+    "seen": 1790797496.5997472,
     "ast_hash": "01e9c45c31fe35b210439686da46faac",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/conflict-pair-dto.ts": {
-    "mtime": 1790714905.3487055,
-    "seen": 1790715871.98388,
+    "mtime": 1790797457.9777164,
+    "seen": 1790797496.599748,
     "ast_hash": "b775a358ef9452b9183710691977187f",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/coverage-status.ts": {
-    "mtime": 1790714905.3487442,
-    "seen": 1790715871.9838815,
+    "mtime": 1790797457.9777546,
+    "seen": 1790797496.5997493,
     "ast_hash": "72ff0cf3d90a08eb44e1a5f4454f7eda",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/create-career-dto.ts": {
-    "mtime": 1790714905.3487864,
-    "seen": 1790715871.9838824,
+    "mtime": 1790797457.9777913,
+    "seen": 1790797496.59975,
     "ast_hash": "c7d771382c58c8310088e2570044fa73",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/create-classroom-dto.ts": {
-    "mtime": 1790714905.3488293,
-    "seen": 1790715871.9838839,
+    "mtime": 1790797457.9778306,
+    "seen": 1790797496.5997508,
     "ast_hash": "6bbcc801d8d471504eb485d0d831354c",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/create-day-dto.ts": {
-    "mtime": 1790714905.3488777,
-    "seen": 1790715871.983885,
+    "mtime": 1790797457.977868,
+    "seen": 1790797496.5997517,
     "ast_hash": "560b83d93126311fb1367e840269e61a",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/create-department-dto.ts": {
-    "mtime": 1790714905.3489106,
-    "seen": 1790715871.9838862,
+    "mtime": 1790797457.9779024,
+    "seen": 1790797496.5997524,
     "ast_hash": "5a66b2f586d31f9d598fa51670c15ac7",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/create-document-dto.ts": {
-    "mtime": 1790714905.3489428,
-    "seen": 1790715871.9838877,
+    "mtime": 1790797457.9779527,
+    "seen": 1790797496.5997534,
     "ast_hash": "106a4bf89a66d1e122eda952093277e4",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/create-inscription-dto.ts": {
-    "mtime": 1790714905.3489752,
-    "seen": 1790715871.983889,
+    "mtime": 1790797457.977999,
+    "seen": 1790797496.5997546,
     "ast_hash": "4eba7d0e602c171cb5fc445de38f0517",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/create-period-dto.ts": {
-    "mtime": 1790714905.349006,
-    "seen": 1790715871.9838905,
+    "mtime": 1790797457.9780433,
+    "seen": 1790797496.5997555,
     "ast_hash": "87b64252bd7fdb6d7e9e6441170b91b8",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/create-schedule-dto.ts": {
-    "mtime": 1790714905.349037,
-    "seen": 1790715871.983892,
+    "mtime": 1790797457.9780948,
+    "seen": 1790797496.5997565,
     "ast_hash": "92c1148194c1c62548281c3886bfbe04",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/create-schedules-bulk-dto.ts": {
-    "mtime": 1790714905.3490705,
-    "seen": 1790715871.983893,
+    "mtime": 1790797457.978135,
+    "seen": 1790797496.5997577,
     "ast_hash": "170eb78aeccce44a570c3c9dce9634f0",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/create-school-dto.ts": {
-    "mtime": 1790714905.349111,
-    "seen": 1790715871.9838943,
+    "mtime": 1790797457.9781764,
+    "seen": 1790797496.5997589,
     "ast_hash": "c11e76ba86aa891d19d7eccda6c97db3",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/create-section-dto.ts": {
-    "mtime": 1790714905.3491414,
-    "seen": 1790715871.9838955,
+    "mtime": 1790797457.9782276,
+    "seen": 1790797496.59976,
     "ast_hash": "a745e7628da6129e5d205014eed683db",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/create-subject-dto.ts": {
-    "mtime": 1790714905.3491719,
-    "seen": 1790715871.983897,
+    "mtime": 1790797457.978269,
+    "seen": 1790797496.5997612,
     "ast_hash": "b1edfc96a93f3cd774a625a2e1ce48d9",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/create-teacher-dto.ts": {
-    "mtime": 1790714905.3492005,
-    "seen": 1790715871.9838984,
-    "ast_hash": "4c7782e2591765d36c10c3270be1185a",
+    "mtime": 1790797457.978348,
+    "seen": 1790797496.599763,
+    "ast_hash": "53412baeeb1c6dbfda99f62cf7732051",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/create-user-dto.ts": {
-    "mtime": 1790714905.349231,
-    "seen": 1790715871.9838994,
+    "mtime": 1790797457.9783883,
+    "seen": 1790797496.599764,
     "ast_hash": "70acc91141b57c44dc75a59c7be3d544",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/curriculum-semester-stat-item-dto.ts": {
-    "mtime": 1790714905.349267,
-    "seen": 1790715871.983901,
+    "mtime": 1790797457.9784348,
+    "seen": 1790797496.5997653,
     "ast_hash": "8efa80ff3a8b7df81d345993f06f909d",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/department-stat-item-dto.ts": {
-    "mtime": 1790714905.3492966,
-    "seen": 1790715871.983902,
+    "mtime": 1790797457.978545,
+    "seen": 1790797496.5997694,
     "ast_hash": "0ea1b35da32cb6828bb7bde5c029b60d",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/entity-audit-history-dto.ts": {
-    "mtime": 1790714905.3493268,
-    "seen": 1790715871.983903,
+    "mtime": 1790797457.9786065,
+    "seen": 1790797496.5997722,
     "ast_hash": "6de7c938023da04fdbefd8c54de9f6ff",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/free-classroom-dto.ts": {
-    "mtime": 1790714905.3493586,
-    "seen": 1790715871.9839044,
+    "mtime": 1790797457.9786396,
+    "seen": 1790797496.5997734,
     "ast_hash": "1f8fe2b6a406dc274affa6966dc71fdd",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/free-slot-dto.ts": {
-    "mtime": 1790714905.349392,
-    "seen": 1790715871.9839056,
+    "mtime": 1790797457.9786716,
+    "seen": 1790797496.5997748,
     "ast_hash": "916377a2102ecd848e2fac70f8fa5cb8",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/generate-report-dto.ts": {
-    "mtime": 1790714905.349424,
-    "seen": 1790715871.9839065,
+    "mtime": 1790797457.978714,
+    "seen": 1790797496.5997758,
     "ast_hash": "623cbc98272fe0bbdf09aed6f7032415",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/id-create-entity.ts": {
-    "mtime": 1790714905.3494546,
-    "seen": 1790715871.983908,
+    "mtime": 1790797457.978776,
+    "seen": 1790797496.5997777,
     "ast_hash": "f2383dd0c988bb786780e89f0eb45c64",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/import-subject-demand-result-dto.ts": {
-    "mtime": 1790714905.349486,
-    "seen": 1790715871.983909,
+    "mtime": 1790797457.9788089,
+    "seen": 1790797496.599779,
     "ast_hash": "b59b3e6a3473f4b77a9beda1d046d79c",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/login-dto.ts": {
-    "mtime": 1790714905.3495202,
-    "seen": 1790715871.98391,
+    "mtime": 1790797457.978842,
+    "seen": 1790797496.5997798,
     "ast_hash": "016f3739d3bce7ee3078526b83831bd2",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/login-user-response-dto.ts": {
-    "mtime": 1790714905.3495557,
-    "seen": 1790715871.9839115,
+    "mtime": 1790797457.978875,
+    "seen": 1790797496.599781,
     "ast_hash": "e396d62c2049ecc0873bc9b6a6881ea4",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/models.ts": {
-    "mtime": 1790714905.351426,
-    "seen": 1790715871.983914,
-    "ast_hash": "a290b9efa0312c1f80451d3023b7fdd6",
+    "mtime": 1790797457.9810114,
+    "seen": 1790797496.5997822,
+    "ast_hash": "37c688d755ed70c074de73a66eae16fe",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/period-audit-dto.ts": {
-    "mtime": 1790714905.3495905,
-    "seen": 1790715871.9839153,
+    "mtime": 1790797457.9789076,
+    "seen": 1790797496.599783,
     "ast_hash": "921cd07c0a99797bc78adc8881b84f62",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/period-comparison-delta-dto.ts": {
-    "mtime": 1790714905.349624,
-    "seen": 1790715871.9839165,
+    "mtime": 1790797457.9789398,
+    "seen": 1790797496.5997841,
     "ast_hash": "f8145280b60590fa8306eec02819e879",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/period-comparison-response-dto.ts": {
-    "mtime": 1790714905.3496618,
-    "seen": 1790715871.9839172,
+    "mtime": 1790797457.9789782,
+    "seen": 1790797496.5997853,
     "ast_hash": "b0fd1d57894cbd7c727e8ed4a5ab4280",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/period-metric-response-dto.ts": {
-    "mtime": 1790714905.3496947,
-    "seen": 1790715871.9839184,
+    "mtime": 1790797457.9790125,
+    "seen": 1790797496.5997863,
     "ast_hash": "23898338b981271445707d33160874a5",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/recovery-password-dto.ts": {
-    "mtime": 1790714905.3497288,
-    "seen": 1790715871.9839196,
+    "mtime": 1790797457.9790597,
+    "seen": 1790797496.599787,
     "ast_hash": "55d048511c836b3e53f6f551a13643c2",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/recovery-password-response-dto.ts": {
-    "mtime": 1790714905.3497615,
-    "seen": 1790715871.9839208,
+    "mtime": 1790797457.9790952,
+    "seen": 1790797496.599788,
     "ast_hash": "09272344fbb5284665f74f1821339a92",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/report-response-dto.ts": {
-    "mtime": 1790714905.3497965,
-    "seen": 1790715871.9839225,
+    "mtime": 1790797457.97913,
+    "seen": 1790797496.5997896,
     "ast_hash": "62508ff54ceabcc07e48cd2da4a192e8",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/response-audit-log-dto.ts": {
-    "mtime": 1790714905.34983,
-    "seen": 1790715871.9839237,
+    "mtime": 1790797457.9791613,
+    "seen": 1790797496.5997906,
     "ast_hash": "4b52263634ddf2dfb9a06105aa8e23bb",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/response-career-dto.ts": {
-    "mtime": 1790714905.349865,
-    "seen": 1790715871.983925,
+    "mtime": 1790797457.979197,
+    "seen": 1790797496.5997913,
     "ast_hash": "3f17bc59412f263b9a5014fb92455d74",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/response-classroom-dto.ts": {
-    "mtime": 1790714905.3498988,
-    "seen": 1790715871.983926,
+    "mtime": 1790797457.9792345,
+    "seen": 1790797496.5997925,
     "ast_hash": "1197a7ae95515f8e7ed23add79db11d1",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/response-day-dto.ts": {
-    "mtime": 1790714905.3499296,
-    "seen": 1790715871.983927,
+    "mtime": 1790797457.9792686,
+    "seen": 1790797496.5997934,
     "ast_hash": "22d47ea3b27a9c6cef1ae8e74c902389",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/response-department-dto.ts": {
-    "mtime": 1790714905.3499625,
-    "seen": 1790715871.9839282,
+    "mtime": 1790797457.979302,
+    "seen": 1790797496.5997946,
     "ast_hash": "cf855f19a22a537ec3f792a31b027baf",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/response-document-dto.ts": {
-    "mtime": 1790714905.3499968,
-    "seen": 1790715871.9839292,
+    "mtime": 1790797457.9793355,
+    "seen": 1790797496.5997953,
     "ast_hash": "69b61b72143fa129704df0954584b679",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/response-inscription-dto.ts": {
-    "mtime": 1790714905.3500314,
-    "seen": 1790715871.9839308,
+    "mtime": 1790797457.979375,
+    "seen": 1790797496.5997968,
     "ast_hash": "d1a96cdbb884b57547d1aa9c25b11ab3",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/response-period-dto.ts": {
-    "mtime": 1790714905.3500698,
-    "seen": 1790715871.9839323,
+    "mtime": 1790797457.9794288,
+    "seen": 1790797496.5997975,
     "ast_hash": "e984ae094eb950e2391867f8da9868ef",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/response-schedule-dto.ts": {
-    "mtime": 1790714905.3501124,
-    "seen": 1790715871.9839334,
+    "mtime": 1790797457.9794638,
+    "seen": 1790797496.5997984,
     "ast_hash": "50ad17e029abb25ca0cfa0d7bc627748",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/response-school-dto.ts": {
-    "mtime": 1790714905.350148,
-    "seen": 1790715871.9839344,
+    "mtime": 1790797457.9795246,
+    "seen": 1790797496.5997996,
     "ast_hash": "efdf13ec91650ebdc6506ac0ad117ef5",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/response-section-dto.ts": {
-    "mtime": 1790714905.3501794,
-    "seen": 1790715871.983935,
+    "mtime": 1790797457.979574,
+    "seen": 1790797496.5998006,
     "ast_hash": "d4c77e38cbe1e9d157b8fc46117a7595",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/response-subject-demand-dto.ts": {
-    "mtime": 1790714905.3502135,
-    "seen": 1790715871.9839365,
+    "mtime": 1790797457.979621,
+    "seen": 1790797496.5998018,
     "ast_hash": "1ec6254168ef91943b8a9445b99a017f",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/response-subject-dto.ts": {
-    "mtime": 1790714905.3502455,
-    "seen": 1790715871.9839373,
+    "mtime": 1790797457.9796536,
+    "seen": 1790797496.5998027,
     "ast_hash": "5910666232a24194512d9332eec58bd9",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/response-teacher-dto.ts": {
-    "mtime": 1790714905.3502846,
-    "seen": 1790715871.9839382,
-    "ast_hash": "94ccd2afe2b8871cff7c8232ef7725cc",
-    "semantic_hash": ""
-  },
-  "projects/dashboard-sdk/src/lib/model/schedule-conflicts-dto.ts": {
-    "mtime": 1790714905.3503401,
-    "seen": 1790715871.9839394,
-    "ast_hash": "ccd55ea4498a8f492b497d6ccc672616",
+    "mtime": 1790797457.979754,
+    "seen": 1790797496.5998073,
+    "ast_hash": "bc3229c80c70b5c3d1f8c6f40d1d6d67",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/schedule-controller-download-planned-schedules200-response.ts": {
-    "mtime": 1790714905.3503826,
-    "seen": 1790715871.9839406,
+    "mtime": 1790797457.9798615,
+    "seen": 1790797496.5998113,
     "ast_hash": "4b8804865bb90defd2f97050826f7ba1",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/schedule-lite-dto.ts": {
-    "mtime": 1790714905.3504248,
-    "seen": 1790715871.9839418,
+    "mtime": 1790797457.9798937,
+    "seen": 1790797496.5998123,
     "ast_hash": "7558e60674a44da57e039b7e69531a06",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/section-coverage-dto.ts": {
-    "mtime": 1790714905.350466,
-    "seen": 1790715871.9839432,
+    "mtime": 1790797457.9799244,
+    "seen": 1790797496.5998135,
     "ast_hash": "70c27cd3aa36afb9daacf5831505cf0c",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/section-open-distribution-item-dto.ts": {
-    "mtime": 1790714905.3505054,
-    "seen": 1790715871.983944,
+    "mtime": 1790797457.9799552,
+    "seen": 1790797496.5998144,
     "ast_hash": "df1690a8fdb8a9f45b21669bd7dda8cd",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/start-time-slot-item-dto.ts": {
-    "mtime": 1790714905.3505456,
-    "seen": 1790715871.983945,
+    "mtime": 1790797457.9799862,
+    "seen": 1790797496.5998154,
     "ast_hash": "a813887693c6030428f9a88debc03185",
     "semantic_hash": ""
   },
-  "projects/dashboard-sdk/src/lib/model/subject-demand-controller-import-request.ts": {
-    "mtime": 1790714905.3505838,
-    "seen": 1790715871.983946,
-    "ast_hash": "8b7b8a02c80137278a78539e25fd8eff",
-    "semantic_hash": ""
-  },
   "projects/dashboard-sdk/src/lib/model/subject-demand-increase-item-dto.ts": {
-    "mtime": 1790714905.3506212,
-    "seen": 1790715871.9839473,
+    "mtime": 1790797457.9800432,
+    "seen": 1790797496.5998166,
     "ast_hash": "6b5053ba90688950e033041ccbdca3dd",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/subject-stat-item-dto.ts": {
-    "mtime": 1790714905.3506627,
-    "seen": 1790715871.9839482,
+    "mtime": 1790797457.9800966,
+    "seen": 1790797496.5998173,
     "ast_hash": "c16d557c11d2d11865cef837086766c9",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/teacher-workload-item-dto.ts": {
-    "mtime": 1790714905.3507025,
-    "seen": 1790715871.9839494,
+    "mtime": 1790797457.9803176,
+    "seen": 1790797496.5998247,
     "ast_hash": "af2e7bd7d5ef50c49d63ce4000d8deec",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/teachers-by-day-item-dto.ts": {
-    "mtime": 1790714905.35074,
-    "seen": 1790715871.9839504,
+    "mtime": 1790797457.9803522,
+    "seen": 1790797496.5998254,
     "ast_hash": "e4745effa751ddca0558e520dd9bae53",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/teachers-by-day-response-dto.ts": {
-    "mtime": 1790714905.35078,
-    "seen": 1790715871.9839516,
+    "mtime": 1790797457.980388,
+    "seen": 1790797496.5998263,
     "ast_hash": "83de3e9278d2349b83828096f8b19a30",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/timeline-item-dto.ts": {
-    "mtime": 1790714905.35082,
-    "seen": 1790715871.9839525,
+    "mtime": 1790797457.9804237,
+    "seen": 1790797496.5998275,
     "ast_hash": "99d8ff0c9c1d6b87e2e733fff4493c0e",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/update-career-dto.ts": {
-    "mtime": 1790714905.350861,
-    "seen": 1790715871.9839537,
+    "mtime": 1790797457.9804926,
+    "seen": 1790797496.59983,
     "ast_hash": "3fa45cbf88c1454396c7eb07ed0e4628",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/update-classroom-dto.ts": {
-    "mtime": 1790714905.3508992,
-    "seen": 1790715871.9839547,
+    "mtime": 1790797457.9805248,
+    "seen": 1790797496.599831,
     "ast_hash": "e36d6e59ce5cf8d8143882af24c827b9",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/update-day-dto.ts": {
-    "mtime": 1790714905.3509371,
-    "seen": 1790715871.9839563,
+    "mtime": 1790797457.980556,
+    "seen": 1790797496.599832,
     "ast_hash": "c761c841a1890eea8acc954d45d06630",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/update-department-dto.ts": {
-    "mtime": 1790714905.3509789,
-    "seen": 1790715871.9839573,
+    "mtime": 1790797457.9805915,
+    "seen": 1790797496.599833,
     "ast_hash": "056b284a50206093d4024ff57879f2ac",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/update-document-dto.ts": {
-    "mtime": 1790714905.3510194,
-    "seen": 1790715871.9839585,
+    "mtime": 1790797457.980625,
+    "seen": 1790797496.5998342,
     "ast_hash": "3395b8f605b2933bad937b99a08ed6b5",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/update-inscription-dto.ts": {
-    "mtime": 1790714905.351062,
-    "seen": 1790715871.9839594,
+    "mtime": 1790797457.980661,
+    "seen": 1790797496.5998352,
     "ast_hash": "432ab23354318cdb5b034c72c6e5c900",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/update-period-dto.ts": {
-    "mtime": 1790714905.3511128,
-    "seen": 1790715871.9839606,
+    "mtime": 1790797457.9806974,
+    "seen": 1790797496.5998363,
     "ast_hash": "042581a4cdab42b6de35fa7a8be469a2",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/update-schedule-dto.ts": {
-    "mtime": 1790714905.3511546,
-    "seen": 1790715871.9839616,
+    "mtime": 1790797457.9807298,
+    "seen": 1790797496.5998375,
     "ast_hash": "b90c5582b1ccc3cd3d02483644467d2c",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/update-school-dto.ts": {
-    "mtime": 1790714905.3511925,
-    "seen": 1790715871.9839628,
+    "mtime": 1790797457.980762,
+    "seen": 1790797496.5998385,
     "ast_hash": "56470862cd5e566a1041dbffcca93287",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/update-section-dto.ts": {
-    "mtime": 1790714905.3512304,
-    "seen": 1790715871.983964,
+    "mtime": 1790797457.980798,
+    "seen": 1790797496.5998394,
     "ast_hash": "c1fbb1c3e79dc274e4230974b6cec1eb",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/update-subject-dto.ts": {
-    "mtime": 1790714905.351268,
-    "seen": 1790715871.983965,
+    "mtime": 1790797457.9808388,
+    "seen": 1790797496.5998404,
     "ast_hash": "9e32c73084fe8ae8f2acb1096b85ce92",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/update-teacher-dto.ts": {
-    "mtime": 1790714905.351306,
-    "seen": 1790715871.9839659,
-    "ast_hash": "49d0434298c97ca49b66a4b789370012",
+    "mtime": 1790797457.9809086,
+    "seen": 1790797496.5998425,
+    "ast_hash": "5fd92d725bee56fb205c7ad88b59c822",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/update-user-dto.ts": {
-    "mtime": 1790714905.3513453,
-    "seen": 1790715871.9839673,
+    "mtime": 1790797457.9809415,
+    "seen": 1790797496.5998435,
     "ast_hash": "d76e390d50b5375689db156931d2b41b",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/user-responde-dto.ts": {
-    "mtime": 1790714905.3513827,
-    "seen": 1790715871.9839685,
+    "mtime": 1790797457.980974,
+    "seen": 1790797496.5998445,
     "ast_hash": "32b2ef1a8e2edeaaf94e3d4cb9a3a519",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/param.ts": {
-    "mtime": 1790714905.3526912,
-    "seen": 1790715871.9839697,
+    "mtime": 1790797457.982108,
+    "seen": 1790797496.5998456,
     "ast_hash": "fedbe84363dc29c601a0b858d08b10b9",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/variables.ts": {
-    "mtime": 1790714905.352629,
-    "seen": 1790715871.983971,
+    "mtime": 1790797457.9820435,
+    "seen": 1790797496.5998466,
     "ast_hash": "5bcf57b76fcf7c7763f158a9938037ef",
     "semantic_hash": ""
   },
@@ -1842,9 +1830,9 @@
     "semantic_hash": ""
   },
   "src/app/common/index.ts": {
-    "mtime": 1790712458.0732481,
-    "seen": 1790715871.984177,
-    "ast_hash": "684090d802c7fa52157869dbc83e88eb",
+    "mtime": 1790797390.4468434,
+    "seen": 1790797496.6000025,
+    "ast_hash": "5ee9ff84f3cb28892481485a6c32fdd5",
     "semantic_hash": ""
   },
   "src/app/common/memory-repository/base-query.ts": {
@@ -2100,8 +2088,8 @@
     "semantic_hash": ""
   },
   "src/app/common/timer/timer.validator.ts": {
-    "mtime": 1790714961.9538765,
-    "seen": 1790715871.9842281,
+    "mtime": 1790794142.2894292,
+    "seen": 1790795413.4325116,
     "ast_hash": "7ffc675fb092ef2e7f7310b0d1794e0d",
     "semantic_hash": ""
   },
@@ -3150,9 +3138,9 @@
     "semantic_hash": ""
   },
   "src/app/repositories/periods/form/form.component.ts": {
-    "mtime": 1790714573.303906,
-    "seen": 1790715871.984421,
-    "ast_hash": "df787af867b5300f9a9cffe24e8bbe29",
+    "mtime": 1790794142.350429,
+    "seen": 1790795413.4327865,
+    "ast_hash": "a335abd37e3acccb6f34a0fb5aced762",
     "semantic_hash": ""
   },
   "src/app/repositories/periods/form/index.ts": {
@@ -3222,8 +3210,8 @@
     "semantic_hash": ""
   },
   "src/app/repositories/periods/model/period-vm.ts": {
-    "mtime": 1790713961.313483,
-    "seen": 1790715871.9844348,
+    "mtime": 1790794142.350429,
+    "seen": 1790795413.4328058,
     "ast_hash": "aef7ffdec2213e875ede594f158b7636",
     "semantic_hash": ""
   },
@@ -3300,8 +3288,8 @@
     "semantic_hash": ""
   },
   "src/app/repositories/periods/use-cases/create-period/create-period.service.ts": {
-    "mtime": 1790713961.9634824,
-    "seen": 1790715871.9844503,
+    "mtime": 1790794142.2894292,
+    "seen": 1790795413.4328265,
     "ast_hash": "fbba9752ad7b22b62187f0f89dbdbf7c",
     "semantic_hash": ""
   },
@@ -3510,9 +3498,9 @@
     "semantic_hash": ""
   },
   "src/app/repositories/schedules/form/form.component.ts": {
-    "mtime": 1790715795.0691552,
-    "seen": 1790715871.9844882,
-    "ast_hash": "2c562983113f63dbd39c3addd2826a2c",
+    "mtime": 1790794142.350429,
+    "seen": 1790795413.4328804,
+    "ast_hash": "e1143f4833e5b858b9947a6d37bc2ffc",
     "semantic_hash": ""
   },
   "src/app/repositories/schedules/form/index.ts": {
@@ -3612,8 +3600,8 @@
     "semantic_hash": ""
   },
   "src/app/repositories/schedules/model/schelude-vm.ts": {
-    "mtime": 1790714961.9598763,
-    "seen": 1790715871.984507,
+    "mtime": 1790794142.350429,
+    "seen": 1790795413.4329076,
     "ast_hash": "a77a2221ef4f98f7e124f30c31465537",
     "semantic_hash": ""
   },
@@ -3660,8 +3648,8 @@
     "semantic_hash": ""
   },
   "src/app/repositories/schedules/planning-audit/planning-audit.component.ts": {
-    "mtime": 1790715037.363056,
-    "seen": 1790715871.9845157,
+    "mtime": 1790794142.3494291,
+    "seen": 1790795413.4329207,
     "ast_hash": "cd69105f9e68edc8b62b569ecf9d3649",
     "semantic_hash": ""
   },
@@ -3732,9 +3720,9 @@
     "semantic_hash": ""
   },
   "src/app/repositories/schedules/schedules.service.ts": {
-    "mtime": 1790715706.570179,
-    "seen": 1790715871.9845283,
-    "ast_hash": "1ea2e57f435bb317349b3353f812ec7c",
+    "mtime": 1790716114.3150232,
+    "seen": 1790795413.4329395,
+    "ast_hash": "ef954a09d7b6f45d6f3a5ed5782d029c",
     "semantic_hash": ""
   },
   "src/app/repositories/schedules/shared/schedule-display.service.ts": {
@@ -4476,9 +4464,9 @@
     "semantic_hash": ""
   },
   "src/app/repositories/subject-demands/import-demand/import-demand.component.ts": {
-    "mtime": 1790713538.8155963,
-    "seen": 1790715871.9846685,
-    "ast_hash": "64271bcf76c4ffd9e99413873a4018e7",
+    "mtime": 1790797391.134848,
+    "seen": 1790797496.600424,
+    "ast_hash": "b3c4bcc0c2b84d0d92eae58a8b5d6324",
     "semantic_hash": ""
   },
   "src/app/repositories/subject-demands/subject-demands-routing.module.ts": {
@@ -4740,9 +4728,9 @@
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/form/form.component.ts": {
-    "mtime": 1758411501.5511436,
-    "seen": 1790715871.9847994,
-    "ast_hash": "3f83d5e7a9634524011a8ee72cbebbf3",
+    "mtime": 1790795237.254536,
+    "seen": 1790795413.4332778,
+    "ast_hash": "c1f6fec21f8cb25d93dd3c93ec3c9da5",
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/form/index.ts": {
@@ -4758,9 +4746,9 @@
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/mappers/index.ts": {
-    "mtime": 1758411501.5511436,
-    "seen": 1790715871.9848025,
-    "ast_hash": "136653f6fed816bcf950c3b40061baf4",
+    "mtime": 1790795225.7304242,
+    "seen": 1790795413.4332852,
+    "ast_hash": "ace532c08bf1021d8f4b366dd10be6d8",
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/mappers/teacher-2-teacher-item-vm.ts": {
@@ -4770,9 +4758,9 @@
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/mappers/teacher-2-teacher-vm.ts": {
-    "mtime": 1758411501.5511436,
-    "seen": 1790715871.9848046,
-    "ast_hash": "8a636a1c2f8951cf102a04be9c764f4f",
+    "mtime": 1790795224.1394088,
+    "seen": 1790795413.433288,
+    "ast_hash": "17c8b0e4bc848c15573f3753fd3392b0",
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/memory/index.ts": {
@@ -4800,15 +4788,15 @@
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/model/index.ts": {
-    "mtime": 1758411501.551608,
-    "seen": 1790715871.9848092,
-    "ast_hash": "67936201977ab9699a2b31f263fcda98",
+    "mtime": 1790795220.1393704,
+    "seen": 1790795413.4332972,
+    "ast_hash": "3964e238bcb1e5af5bc0d638ff0ab797",
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/model/row-action.ts": {
-    "mtime": 1758411329.6931531,
-    "seen": 1790715871.9848104,
-    "ast_hash": "f7b45ed690ec3a37140ccf29ef5deafb",
+    "mtime": 1790795220.4533734,
+    "seen": 1790795413.4332988,
+    "ast_hash": "d830c057ac97219764f14d48d607f352",
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/model/teacher-base-query.ts": {
@@ -4824,9 +4812,9 @@
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/model/teacher-vm.ts": {
-    "mtime": 1758411501.551608,
-    "seen": 1790715871.9848135,
-    "ast_hash": "62c537268107f6a20a83bbf66c6cfa48",
+    "mtime": 1790795219.9393687,
+    "seen": 1790795413.4333045,
+    "ast_hash": "76b5d1bc5c5f1ed7910fb44fa906affe",
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/teachers-routing.module.ts": {
@@ -4842,15 +4830,15 @@
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/teachers.component.ts": {
-    "mtime": 1773783072.43241,
-    "seen": 1790715871.9848166,
-    "ast_hash": "2fc2c20de534a179684779297d20bce1",
+    "mtime": 1790797411.2089863,
+    "seen": 1790797496.6005213,
+    "ast_hash": "ad21bfec0c1d7c19c4e9ac289035e82b",
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/teachers.module.ts": {
-    "mtime": 1758411501.551608,
-    "seen": 1790715871.9848177,
-    "ast_hash": "5baf787ede3c1a38d441cc92aa51afa4",
+    "mtime": 1790795306.8662348,
+    "seen": 1790795413.4333146,
+    "ast_hash": "cb6cf4d18b9b0f3b3f1feaba038e98af",
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/teachers.service.spec.ts": {
@@ -4872,9 +4860,9 @@
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/use-cases/create-teacher/create-teacher.service.ts": {
-    "mtime": 1775515473.5951993,
-    "seen": 1790715871.9848218,
-    "ast_hash": "a6177d5c4e35e32d3780a5d79ed3fd02",
+    "mtime": 1790795232.7034917,
+    "seen": 1790795413.4333205,
+    "ast_hash": "980d2224e0552a29a6daf6e0c11d7394",
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/use-cases/create-teacher/index.ts": {
@@ -4950,9 +4938,9 @@
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/use-cases/update-teacher/update-teacher.service.ts": {
-    "mtime": 1775515473.59626,
-    "seen": 1790715871.9848337,
-    "ast_hash": "4d9f4cfe48c35a7908dcaec90e638d48",
+    "mtime": 1790795232.1584864,
+    "seen": 1790795413.433339,
+    "ast_hash": "32b0b9b753a79b8bceccc4bcdb37e07a",
     "semantic_hash": ""
   },
   "src/app/repositories/users/form/form.component.spec.ts": {
@@ -5736,8 +5724,8 @@
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/README.md": {
-    "mtime": 1790714905.3527882,
-    "seen": 1790715871.9849658,
+    "mtime": 1790797457.9821942,
+    "seen": 1790797496.6006584,
     "ast_hash": "a0cf6493170804e44253b16c9e7a8d35",
     "semantic_hash": ""
   },
@@ -5910,9 +5898,9 @@
     "semantic_hash": ""
   },
   "src/app/repositories/periods/form/form.component.html": {
-    "mtime": 1790714546.305798,
-    "seen": 1790715871.9849958,
-    "ast_hash": "c4a6e3a33339766e5e0218ac1083740c",
+    "mtime": 1790794142.350429,
+    "seen": 1790795413.4335344,
+    "ast_hash": "8d4a015b071b8b9b019888002572bed9",
     "semantic_hash": ""
   },
   "src/app/repositories/periods/periods.component.html": {
@@ -5946,8 +5934,8 @@
     "semantic_hash": ""
   },
   "src/app/repositories/schedules/form/form.component.html": {
-    "mtime": 1790715011.2849417,
-    "seen": 1790715871.9850018,
+    "mtime": 1790794142.2894292,
+    "seen": 1790795413.4335423,
     "ast_hash": "fba4202393e94186cbbe628786a19dc2",
     "semantic_hash": ""
   },
@@ -5964,8 +5952,8 @@
     "semantic_hash": ""
   },
   "src/app/repositories/schedules/planning-audit/planning-audit.component.html": {
-    "mtime": 1790715041.7064824,
-    "seen": 1790715871.985005,
+    "mtime": 1790794142.350429,
+    "seen": 1790795413.433546,
     "ast_hash": "56744f35976bac8cbad075da63ecb95a",
     "semantic_hash": ""
   },
@@ -6054,15 +6042,15 @@
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/form/form.component.html": {
-    "mtime": 1790711928.3376927,
-    "seen": 1790715871.9850194,
-    "ast_hash": "310c4b2624e12ec3f8560f8d2165e06a",
+    "mtime": 1790795239.955562,
+    "seen": 1790795413.4335654,
+    "ast_hash": "f8d63b42e61087dbc83e0232c385544c",
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/teachers.component.html": {
-    "mtime": 1773783072.4304602,
-    "seen": 1790715871.9850204,
-    "ast_hash": "8494c6659b5cf920215f581397d127e0",
+    "mtime": 1790795303.8282034,
+    "seen": 1790795413.4335685,
+    "ast_hash": "2a7307c370259a08897aab9deceb0d0a",
     "semantic_hash": ""
   },
   "src/app/repositories/users/form/form.component.html": {
@@ -6141,6 +6129,168 @@
     "mtime": 1758411501.5562212,
     "seen": 1790715871.9850338,
     "ast_hash": "75f3b71fafef91e67588cc26f3fb97f0",
+    "semantic_hash": ""
+  },
+  "projects/dashboard-sdk/src/lib/api/teacher-degree.service.ts": {
+    "mtime": 1790797457.9818332,
+    "seen": 1790797496.5997353,
+    "ast_hash": "d9bd10b799945554331009092cfea31b",
+    "semantic_hash": ""
+  },
+  "projects/dashboard-sdk/src/lib/model/create-teacher-degree-dto.ts": {
+    "mtime": 1790797457.9783082,
+    "seen": 1790797496.5997622,
+    "ast_hash": "a8acac161639c0234681ed126bd38319",
+    "semantic_hash": ""
+  },
+  "projects/dashboard-sdk/src/lib/model/day-conflicts-dto.ts": {
+    "mtime": 1790797457.9784787,
+    "seen": 1790797496.5997665,
+    "ast_hash": "032f01866ebdf80fb96e2f60dd250725",
+    "semantic_hash": ""
+  },
+  "projects/dashboard-sdk/src/lib/model/degree-level.ts": {
+    "mtime": 1790797457.9785135,
+    "seen": 1790797496.5997682,
+    "ast_hash": "3a0a63d69eab79847a1e069b0f6835e7",
+    "semantic_hash": ""
+  },
+  "projects/dashboard-sdk/src/lib/model/employment-status.ts": {
+    "mtime": 1790797457.9785764,
+    "seen": 1790797496.5997708,
+    "ast_hash": "99dbe41fbc1795bf2cca1f64f71e73c6",
+    "semantic_hash": ""
+  },
+  "projects/dashboard-sdk/src/lib/model/hiring-evaluation-status.ts": {
+    "mtime": 1790797457.9787467,
+    "seen": 1790797496.5997767,
+    "ast_hash": "9622d7f5b188e85e20b510ee5d4b0371",
+    "semantic_hash": ""
+  },
+  "projects/dashboard-sdk/src/lib/model/response-subject-history-dto.ts": {
+    "mtime": 1790797457.9796884,
+    "seen": 1790797496.5998046,
+    "ast_hash": "bb1b6b0621a6ba08f3455d8c8e8e7bb8",
+    "semantic_hash": ""
+  },
+  "projects/dashboard-sdk/src/lib/model/response-teacher-degree-dto.ts": {
+    "mtime": 1790797457.9797196,
+    "seen": 1790797496.5998063,
+    "ast_hash": "afb2fb948e79af93511fb0855c87ea20",
+    "semantic_hash": ""
+  },
+  "projects/dashboard-sdk/src/lib/model/response-teacher-grade-dto.ts": {
+    "mtime": 1790797457.9797897,
+    "seen": 1790797496.5998087,
+    "ast_hash": "40959b60c2a4ee594a899408b3b2d390",
+    "semantic_hash": ""
+  },
+  "projects/dashboard-sdk/src/lib/model/response-teacher-grade-search-dto.ts": {
+    "mtime": 1790797457.9798253,
+    "seen": 1790797496.5998101,
+    "ast_hash": "b103e3bba464fd51255db31889c885c3",
+    "semantic_hash": ""
+  },
+  "projects/dashboard-sdk/src/lib/model/teacher-category.ts": {
+    "mtime": 1790797457.9801345,
+    "seen": 1790797496.5998182,
+    "ast_hash": "7848b5372700676ddf36d4fccd201a3f",
+    "semantic_hash": ""
+  },
+  "projects/dashboard-sdk/src/lib/model/teacher-dedication.ts": {
+    "mtime": 1790797457.9801664,
+    "seen": 1790797496.5998201,
+    "ast_hash": "e195e05e8f50f9996bf92abf3504efae",
+    "semantic_hash": ""
+  },
+  "projects/dashboard-sdk/src/lib/model/teacher-degree-controller-parse-transcript-request.ts": {
+    "mtime": 1790797457.980199,
+    "seen": 1790797496.599821,
+    "ast_hash": "f330b04b2cd86d57b56300332037ab42",
+    "semantic_hash": ""
+  },
+  "projects/dashboard-sdk/src/lib/model/teacher-grade-dto.ts": {
+    "mtime": 1790797457.9802446,
+    "seen": 1790797496.5998223,
+    "ast_hash": "a6ece109795e9de6fc5fcf330270b8ae",
+    "semantic_hash": ""
+  },
+  "projects/dashboard-sdk/src/lib/model/teacher-grade-match-dto.ts": {
+    "mtime": 1790797457.9802818,
+    "seen": 1790797496.5998237,
+    "ast_hash": "616b356072ede13fe8848afd694fc647",
+    "semantic_hash": ""
+  },
+  "projects/dashboard-sdk/src/lib/model/transcript-preview-dto.ts": {
+    "mtime": 1790797457.9804564,
+    "seen": 1790797496.5998287,
+    "ast_hash": "9d84711d8c16f7461e0b659b599e04eb",
+    "semantic_hash": ""
+  },
+  "projects/dashboard-sdk/src/lib/model/update-teacher-degree-dto.ts": {
+    "mtime": 1790797457.9808753,
+    "seen": 1790797496.5998416,
+    "ast_hash": "9ec5c4b52a6dee87a1b3d50531bcfef1",
+    "semantic_hash": ""
+  },
+  "src/app/repositories/teachers/degree-form/degree-form.component.ts": {
+    "mtime": 1790797408.4679675,
+    "seen": 1790797496.6004977,
+    "ast_hash": "c29fc00c729cda3fc81006a864ecdc35",
+    "semantic_hash": ""
+  },
+  "src/app/repositories/teachers/grade-search/grade-search.component.ts": {
+    "mtime": 1790797408.85197,
+    "seen": 1790797496.6005015,
+    "ast_hash": "9c3ed85e58c75ba54b13bd9f26fbe8cf",
+    "semantic_hash": ""
+  },
+  "src/app/repositories/teachers/mappers/teacher-vm-2-teacher-dto.ts": {
+    "mtime": 1790795231.4384794,
+    "seen": 1790795413.4332895,
+    "ast_hash": "abe2b55b5a4013dbcd829331cb5bd78a",
+    "semantic_hash": ""
+  },
+  "src/app/repositories/teachers/model/teacher-options.ts": {
+    "mtime": 1790797397.6808932,
+    "seen": 1790797496.6005156,
+    "ast_hash": "f513c0a203a81bddf228d1c62cd23689",
+    "semantic_hash": ""
+  },
+  "src/app/repositories/teachers/profile/profile.component.ts": {
+    "mtime": 1790797409.0709715,
+    "seen": 1790797496.6005173,
+    "ast_hash": "b3a444bcedbad7bf276efadf475b2a4b",
+    "semantic_hash": ""
+  },
+  "src/app/repositories/teachers/teacher-academic.service.ts": {
+    "mtime": 1790797419.696045,
+    "seen": 1790797496.6005185,
+    "ast_hash": "e8ff60ba4a69b508aa1239de569d2126",
+    "semantic_hash": ""
+  },
+  "src/app/repositories/teachers/degree-form/degree-form.component.html": {
+    "mtime": 1790797395.1428757,
+    "seen": 1790797496.6007092,
+    "ast_hash": "4908e1e884ffe5d5642cb35813eb9873",
+    "semantic_hash": ""
+  },
+  "src/app/repositories/teachers/grade-search/grade-search.component.html": {
+    "mtime": 1790797399.0479026,
+    "seen": 1790797496.6007109,
+    "ast_hash": "ac9c3dc3dc8471b2a25682f277518fc7",
+    "semantic_hash": ""
+  },
+  "src/app/repositories/teachers/profile/profile.component.html": {
+    "mtime": 1790797398.7299004,
+    "seen": 1790797496.6007116,
+    "ast_hash": "f5d5d817c19fa965325234b60f53af91",
+    "semantic_hash": ""
+  },
+  "src/app/common/upload/index.ts": {
+    "mtime": 1790797390.4473941,
+    "seen": 1790797496.6000538,
+    "ast_hash": "73393015b71aad483219035a08172fa0",
     "semantic_hash": ""
   }
 }
