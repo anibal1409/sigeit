@@ -70,9 +70,9 @@
         <div>
           <p><strong>Descripción de las opciones:</strong></p>
           <ul>
-            <li><strong>Solo Mañana:</strong> Muestra únicamente las asignaturas que inician antes de las 12:00 PM</li>
-            <li><strong>Solo Tarde:</strong> Muestra únicamente las asignaturas que inician a las 12:00 PM o después</li>
-            <li><strong>Ambos turnos:</strong> Clasificación completa con secciones separadas para mañana y tarde, más resumen general</li>
+            <li><strong>Solo Mañana:</strong> Secciones con todo su horario entre las 07:00 y las 11:55</li>
+            <li><strong>Solo Tarde:</strong> Secciones con todo su horario desde las 12:00</li>
+            <li><strong>Ambos turnos:</strong> Mañana, tarde y mixtas (secciones con bloques en ambos turnos), más resumen general</li>
           </ul>
         </div>
       </div>
@@ -107,9 +107,9 @@
     <div *ngIf="selectedReportType === 'shift'" class="info-section">
       <mat-icon>info</mat-icon>
       <p>
-        <strong>Nota:</strong> La clasificación por turno se basa en la hora de inicio de cada sección.
-        Las secciones que inician antes de las 12:00 PM se consideran de mañana,
-        y las que inician a las 12:00 PM o después se consideran de tarde.
+        <strong>Nota:</strong> La clasificación por turno considera todos los bloques de cada sección.
+        Es de mañana si todos están entre las 07:00 y las 11:55, de tarde si todos inician desde las 12:00,
+        y mixta en otro caso.
       </p>
     </div>
   </form>

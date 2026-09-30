@@ -23,6 +23,7 @@ export class GetPlannedSchedulesService {
           code: schedule?.section?.subject?.code,
           name: schedule?.section?.subject?.name,
           semester:schedule?.section?.subject?.semester,
+          sectionId: schedule?.section?.id,
           sectionName: schedule?.section?.name,
           dayName: schedule.day?.abbreviation,
           classroomName: schedule.classroom?.name,

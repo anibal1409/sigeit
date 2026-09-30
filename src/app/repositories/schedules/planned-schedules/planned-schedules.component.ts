@@ -4,9 +4,17 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
+import {
+  ResponseScheduleDto,
+  ResponseSectionDto,
+  ScheduleService,
+  SectionService,
+} from 'dashboard-sdk';
 import moment from 'moment';
 import {
   finalize,
+  forkJoin,
+  map,
   Subscription,
 } from 'rxjs';
 import * as XLSX from 'xlsx';
@@ -20,6 +28,19 @@ import { DepartmentVM } from '../../departments/model';
 import { PeriodVM } from '../../periods/model';
 import { SchedulesService } from '../schedules.service';
 import { ReportConfigModalComponent, ReportConfig } from './report-config-modal';
+import {
+  sectionShift,
+  Shift,
+  SHIFT_LABELS,
+} from './shift';
+
+/** Conteo de secciones del período por turno para un departamento. */
+export interface ShiftRow extends Record<Shift, number> {
+  departmentId: number;
+  name: string;
+  total: number;
+  empty: number;
+}
 
 export class Group {
   level = 0;
@@ -64,6 +85,10 @@ export class PlannedSchedulesComponent {
   ];
   groupsByField = 'semester';
 
+  shiftLabels = SHIFT_LABELS;
+  shiftRows?: Array<ShiftRow>;
+  shiftTotal?: ShiftRow;
+
   private sub$ = new Subscription();
   loading = false;
 
@@ -74,6 +99,8 @@ export class PlannedSchedulesComponent {
     private userStateService: UserStateService,
     private globalPeriodService: GlobalPeriodService,
     private dialog: MatDialog,
+    private sectionService: SectionService,
+    private scheduleService: ScheduleService,
   ) {
     this.columns = [
       {
@@ -140,6 +167,7 @@ export class PlannedSchedulesComponent {
           if (this.departmentIdUser) {
             this.loadSchedules();
           }
+          this.loadShiftSummary();
         }
       })
     );
@@ -186,8 +214,65 @@ export class PlannedSchedulesComponent {
               this.loadSchedules();
             }
           }
+          this.loadShiftSummary();
         })
     );
+  }
+
+  /** Secciones activas del período por departamento: total, mañana, tarde, mixtas y sin horario. */
+  loadShiftSummary(): void {
+    const departments = this.departmentIdUser
+      ? this.departments.filter((department) => department.id === this.departmentIdUser)
+      : this.departments;
+    if (!this.periodId || !departments.length) {
+      return;
+    }
+    this.shiftRows = undefined;
+    this.sub$.add(
+      forkJoin(
+        departments.map((department) =>
+          forkJoin([
+            this.sectionService.sectionControllerFindAll(this.periodId, department.id, undefined, undefined, undefined, undefined, true),
+            this.scheduleService.scheduleControllerFindAll(
+              this.periodId, undefined, undefined, this.periodId, undefined, undefined, undefined, undefined, department.id, true
+            ),
+          ]).pipe(map(([sections, schedules]) => this.countShifts(department, sections, schedules)))
+        )
+      ).subscribe((rows) => {
+        this.shiftRows = rows;
+        this.shiftTotal = rows.reduce(
+          (total, row) => ({
+            ...total,
+            total: total.total + row.total,
+            morning: total.morning + row.morning,
+            afternoon: total.afternoon + row.afternoon,
+            mixed: total.mixed + row.mixed,
+            empty: total.empty + row.empty,
+          }),
+          { departmentId: 0, name: 'Total', total: 0, morning: 0, afternoon: 0, mixed: 0, empty: 0 }
+        );
+      })
+    );
+  }
+
+  private countShifts(
+    department: DepartmentVM,
+    sections: Array<ResponseSectionDto>,
+    schedules: Array<ResponseScheduleDto>
+  ): ShiftRow {
+    const row: ShiftRow = { departmentId: department.id || 0, name: department.name, total: 0, morning: 0, afternoon: 0, mixed: 0, empty: 0 };
+    sections.forEach((section) => {
+      const shift = sectionShift(schedules.filter((schedule) => (schedule.section as { id?: number })?.id === section.id));
+      row.total++;
+      row[shift || 'empty']++;
+    });
+    return row;
+  }
+
+  selectDepartment(row: ShiftRow): void {
+    if (!this.departmentIdUser && row.departmentId) {
+      this.departmentCtrl.setValue(row.departmentId);
+    }
   }
 
   private loadSchedules(): void {
@@ -435,25 +520,19 @@ export class PlannedSchedulesComponent {
       // El agrupamiento se manejará en la generación del Excel
     }
 
-    // Filtro por turno
-    if (config.reportType === 'shift') {
-      filtered = filtered.filter(item => {
-        const startTime = moment(item.start, 'HH:mm');
-        const noon = moment('12:00', 'HH:mm');
-
-        switch (config.shiftType) {
-          case 'morning':
-            return startTime.isBefore(noon);
-          case 'afternoon':
-            return startTime.isSameOrAfter(noon);
-          case 'both':
-          default:
-            return true; // Para 'both' no se aplica filtro aquí, se maneja en generateReportData
-        }
-      });
+    // Filtro por turno: la sección completa debe estar en el turno elegido
+    if (config.reportType === 'shift' && config.shiftType !== 'both') {
+      const shifts = this.sectionShifts();
+      filtered = filtered.filter(item => shifts.get(item.sectionId) === config.shiftType);
     }
 
     return filtered;
+  }
+
+  private sectionShifts(): Map<number, Shift | null> {
+    const blocks = new Map<number, Array<{ start: string; end: string }>>();
+    this._alldata.forEach((item) => blocks.set(item.sectionId, [...(blocks.get(item.sectionId) || []), item]));
+    return new Map([...blocks].map(([sectionId, items]) => [sectionId, sectionShift(items)]));
   }
 
   private createExcelFile(data: any[], config: ReportConfig): void {
@@ -541,41 +620,20 @@ export class PlannedSchedulesComponent {
         reportData[semesterKey].push(this.mapScheduleToRow(schedule, config));
       });
     } else if (config.reportType === 'shift') {
+      const shifts = this.sectionShifts();
+      const groups: Array<Shift> = config.shiftType === 'both' ? ['morning', 'afternoon', 'mixed'] : [config.shiftType];
+      const counts: Record<Shift, number> = { morning: 0, afternoon: 0, mixed: 0 };
+      groups.forEach((shift) => {
+        const rows = data.filter((schedule) => shifts.get(schedule.sectionId) === shift);
+        counts[shift] = new Set(rows.map((schedule) => schedule.sectionId)).size;
+        if (rows.length) {
+          const title = `${SHIFT_LABELS[shift].toUpperCase()} - ${counts[shift]} secciones`;
+          reportData[title] = rows.map((schedule) => this.mapScheduleToRow(schedule, config));
+        }
+      });
       if (config.shiftType === 'both') {
-        // Para 'both', mostrar clasificación completa con todos los datos
-        const allData = [...data];
-        const morningData: any[] = [];
-        const afternoonData: any[] = [];
-
-        allData.forEach(schedule => {
-          const startTime = moment(schedule.start, 'HH:mm');
-          const noon = moment('12:00', 'HH:mm');
-          const isMorning = startTime.isBefore(noon);
-
-          if (isMorning) {
-            morningData.push(this.mapScheduleToRow(schedule, config));
-          } else {
-            afternoonData.push(this.mapScheduleToRow(schedule, config));
-          }
-        });
-
-        // Agregar sección de mañana
-        if (morningData.length > 0) {
-          reportData[`TURNO MAÑANA (${morningData.length} asignaturas)`] = morningData;
-        }
-
-        // Agregar sección de tarde
-        if (afternoonData.length > 0) {
-          reportData[`TURNO TARDE (${afternoonData.length} asignaturas)`] = afternoonData;
-        }
-
-        // Agregar resumen general
-        reportData[`RESUMEN GENERAL (${allData.length} asignaturas total)`] = this.createSummaryRow(morningData.length, afternoonData.length, allData.length);
-      } else {
-        // Para 'morning' o 'afternoon', mostrar solo los datos filtrados
-        const shiftLabel = config.shiftType === 'morning' ? 'MAÑANA' : 'TARDE';
-        const shiftData = data.map(schedule => this.mapScheduleToRow(schedule, config));
-        reportData[`TURNO ${shiftLabel} (${shiftData.length} asignaturas)`] = shiftData;
+        const total = counts.morning + counts.afternoon + counts.mixed;
+        reportData[`RESUMEN GENERAL (${total} secciones)`] = this.createSummaryRow(counts, total);
       }
     }
 
@@ -703,12 +761,12 @@ export class PlannedSchedulesComponent {
     return Array.from(teacherMap.values()).sort((a, b) => a.name.localeCompare(b.name));
   }
 
-  private createSummaryRow(morningCount: number, afternoonCount: number, totalCount: number): any[] {
+  private createSummaryRow(counts: Record<Shift, number>, totalCount: number): any[] {
     const summaryRow: any[] = [];
 
     // Crear una fila de resumen con información de conteos
     summaryRow.push(''); // Código vacío
-    summaryRow.push('RESUMEN DE ASIGNATURAS POR TURNO');
+    summaryRow.push('RESUMEN DE SECCIONES POR TURNO');
     summaryRow.push(''); // Sección vacía
     summaryRow.push(''); // Día vacío
     summaryRow.push(''); // Aula vacía
@@ -721,7 +779,7 @@ export class PlannedSchedulesComponent {
     // Agregar fila con detalles de conteo
     const detailRow: any[] = [];
     detailRow.push(''); // Código vacío
-    detailRow.push(`Mañana: ${morningCount} | Tarde: ${afternoonCount} | Total: ${totalCount}`);
+    detailRow.push(`Mañana: ${counts.morning} | Tarde: ${counts.afternoon} | Mixtas: ${counts.mixed} | Total: ${totalCount}`);
     detailRow.push(''); // Sección vacía
     detailRow.push(''); // Día vacío
     detailRow.push(''); // Aula vacía

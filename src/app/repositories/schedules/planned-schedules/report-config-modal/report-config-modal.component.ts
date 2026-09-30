@@ -46,8 +46,8 @@ export class ReportConfigModalComponent implements OnInit {
   ];
 
   shiftTypes = [
-    { value: 'morning', label: 'Solo Mañana (antes de 12:00 PM)' },
-    { value: 'afternoon', label: 'Solo Tarde (12:00 PM en adelante)' },
+    { value: 'morning', label: 'Solo Mañana (07:00 - 11:55)' },
+    { value: 'afternoon', label: 'Solo Tarde (12:00 en adelante)' },
     { value: 'both', label: 'Ambos turnos (clasificación completa)' }
   ];
 

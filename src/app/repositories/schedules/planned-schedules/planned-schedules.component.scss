@@ -51,6 +51,33 @@ table {
 mat-column {
   min-width: 5rem;
 }
+.shifts {
+  h3 {
+    margin: 0 0 0.5rem;
+  }
+  table {
+    table-layout: auto;
+    margin-bottom: 0.5rem;
+  }
+  th:not(:first-child), td:not(:first-child) {
+    text-align: right;
+  }
+  .clickable {
+    cursor: pointer;
+  }
+  .selected td {
+    background: rgba(0, 0, 0, 0.06);
+    font-weight: 600;
+  }
+  .total td {
+    font-weight: 700;
+  }
+  .hint {
+    margin: 0;
+    font-size: 0.85rem;
+    opacity: 0.7;
+  }
+}
 .empty-table {
   padding: 1.5rem;
   text-align: center;

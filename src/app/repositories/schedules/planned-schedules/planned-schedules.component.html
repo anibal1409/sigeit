@@ -57,6 +57,48 @@
     </button>
     </div>
 </div>
+<div class="mat-container shifts">
+  <mat-card>
+    <mat-card-content>
+      <h3>Secciones por turno {{ period ? period.name : '' }}</h3>
+      <p *ngIf="!shiftRows" class="hint">Cargando...</p>
+      <table *ngIf="shiftRows" class="table table-sm">
+        <thead>
+          <tr>
+            <th>Departamento</th>
+            <th>Secciones</th>
+            <th>{{ shiftLabels.morning }}</th>
+            <th>{{ shiftLabels.afternoon }}</th>
+            <th>{{ shiftLabels.mixed }}</th>
+            <th>Sin horario</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let row of shiftRows"
+            [class.selected]="row.departmentId === departmentId"
+            [class.clickable]="!departmentIdUser"
+            (click)="selectDepartment(row)"
+          >
+            <ng-container *ngTemplateOutlet="cells; context: { $implicit: row }"></ng-container>
+          </tr>
+          <tr *ngIf="shiftTotal && shiftRows.length > 1" class="total">
+            <ng-container *ngTemplateOutlet="cells; context: { $implicit: shiftTotal }"></ng-container>
+          </tr>
+        </tbody>
+      </table>
+      <p class="hint">Mañana: todos los bloques de la sección entre 07:00 y 11:55. Tarde: todos desde las 12:00.</p>
+    </mat-card-content>
+  </mat-card>
+</div>
+<ng-template #cells let-row>
+  <td>{{ row.name }}</td>
+  <td>{{ row.total }}</td>
+  <td>{{ row.morning }}</td>
+  <td>{{ row.afternoon }}</td>
+  <td>{{ row.mixed }}</td>
+  <td>{{ row.empty }}</td>
+</ng-template>
 <div class="mat-container">
   <mat-table [dataSource]="dataSource">
     <ng-container
