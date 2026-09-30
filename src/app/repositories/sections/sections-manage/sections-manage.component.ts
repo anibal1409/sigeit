@@ -40,6 +40,10 @@ import { DepartmentVM } from '../../departments';
 import { SubjectVM } from '../../subjects/model';
 import { DEDICATION_OPTIONS } from '../../teachers/model';
 import {
+  GradeSearchComponent,
+  GradeSearchDialogData,
+} from '../../teachers/grade-search/grade-search.component';
+import {
   ProfileComponent,
   ProfileData,
 } from '../../teachers/profile/profile.component';
@@ -309,6 +313,14 @@ export class SectionsManageComponent implements OnInit, OnDestroy {
     this.matDialog.open<ProfileComponent, ProfileData>(ProfileComponent, {
       data: { teacher },
       width: '56rem',
+      maxWidth: '95vw',
+    });
+  }
+
+  openGradeSearch(): void {
+    this.matDialog.open<GradeSearchComponent, GradeSearchDialogData>(GradeSearchComponent, {
+      data: { departmentId: this.departmentId || undefined },
+      width: '72rem',
       maxWidth: '95vw',
     });
   }

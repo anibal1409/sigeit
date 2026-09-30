@@ -40,6 +40,15 @@
   <button
     mat-stroked-button
     type="button"
+    matTooltip="Profesores que cursaron una o varias asignaturas con una nota mínima"
+    (click)="openGradeSearch()"
+  >
+    <mat-icon>manage_search</mat-icon>
+    Buscar profesores
+  </button>
+  <button
+    mat-stroked-button
+    type="button"
     [class.active]="showLoad"
     [attr.aria-pressed]="showLoad"
     matTooltip="Mostrar u ocultar la carga docente del período"
