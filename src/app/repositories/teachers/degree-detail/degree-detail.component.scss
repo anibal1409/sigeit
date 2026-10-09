@@ -1,0 +1,87 @@
+.summary-card {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 0.5rem;
+  background: #fafafa;
+}
+
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 2rem;
+  margin: 0 0 0.5rem;
+
+  dt {
+    font-size: 0.75rem;
+    color: #666;
+  }
+
+  dd {
+    margin: 0;
+  }
+}
+
+.counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.875rem;
+}
+
+.note {
+  margin: 0.5rem 0 0;
+  font-size: 0.8125rem;
+  color: #666;
+}
+
+h4 {
+  margin: 0.75rem 0 0.5rem;
+}
+
+.empty {
+  color: #666;
+}
+
+.tags {
+  white-space: nowrap;
+}
+
+.tag {
+  display: inline-block;
+  margin-right: 0.25rem;
+  padding: 0.0625rem 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  color: #fff;
+  background: #757575;
+
+  &.status-APPROVED {
+    background: #2e7d32;
+  }
+
+  &.status-FAILED {
+    background: #c62828;
+  }
+
+  &.status-WITHDRAWN {
+    background: #9e9e9e;
+  }
+
+  &.status-IN_PROGRESS {
+    background: #1565c0;
+  }
+
+  &.attempt {
+    color: #e65100;
+    background: #fff3e0;
+  }
+
+  &.makeup {
+    color: #6a1b9a;
+    background: #f3e5f5;
+  }
+}

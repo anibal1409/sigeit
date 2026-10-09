@@ -29,7 +29,6 @@ import {
   DEDICATION_OPTIONS,
   DEGREE_LEVEL_OPTIONS,
   EMPLOYMENT_STATUS_OPTIONS,
-  gradeLabel,
   HIRING_EVALUATION_OPTIONS,
   optionName,
   TeacherVM,
@@ -55,7 +54,6 @@ interface CurrentSection {
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   readonly optionName = optionName;
-  readonly gradeLabel = gradeLabel;
   readonly categoryOptions = CATEGORY_OPTIONS;
   readonly employmentStatusOptions = EMPLOYMENT_STATUS_OPTIONS;
   readonly dedicationOptions = DEDICATION_OPTIONS;

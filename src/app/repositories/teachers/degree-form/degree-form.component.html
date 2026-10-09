@@ -45,7 +45,83 @@
         <input matInput type="number" min="1" formControlName="maxGrade" required />
         <mat-error>Indique la escala (10, 20, 100...)</mat-error>
       </mat-form-field>
+      <mat-form-field>
+        <mat-label>Nota mínima aprobatoria</mat-label>
+        <input matInput type="number" min="0" formControlName="minPassingGrade" />
+        <mat-hint *ngIf="form.controls.minPassingGrade.value === null">Vacío: mitad de la escala ({{ maxGrade / 2 }})</mat-hint>
+        <mat-error>Entre 0 y {{ maxGrade }}</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Promedio general</mat-label>
+        <input matInput type="number" min="0" step="0.01" formControlName="average" />
+        <mat-error>Entre 0 y {{ maxGrade }}</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Créditos (UC) aprobados</mat-label>
+        <input matInput type="number" min="0" formControlName="approvedCredits" />
+        <mat-error>No puede ser negativo</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Puesto en la promoción</mat-label>
+        <input matInput type="number" min="1" formControlName="classRank" />
+        <mat-hint *ngIf="rankError" class="error-hint">Mayor que la cantidad de egresados</mat-hint>
+        <mat-error>Debe ser 1 o más</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Egresados de la promoción</mat-label>
+        <input matInput type="number" min="1" formControlName="classSize" />
+        <mat-error>Debe ser 1 o más</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Promedio de la promoción</mat-label>
+        <input matInput type="number" min="0" step="0.01" formControlName="classAverage" />
+        <mat-error>Entre 0 y {{ maxGrade }}</mat-error>
+      </mat-form-field>
+      <mat-checkbox formControlName="onlyPassingGrades" class="wide only-passing">
+        El documento solo incluye notas aprobatorias (no muestra retiros ni reprobadas)
+      </mat-checkbox>
     </div>
+
+    <div class="grades-header">
+      <h4>Períodos ({{ periods.length }})</h4>
+    </div>
+    <p class="empty" *ngIf="!periods.length">
+      Opcional: resumen por período (promedio y créditos) cuando el documento lo trae.
+    </p>
+    <div class="table-wrap" *ngIf="periods.length">
+    <table class="data-table" formArrayName="periods">
+      <thead>
+        <tr><th>Código</th><th>Fechas</th><th>Promedio</th><th>Créditos aprobados</th><th></th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of periods.controls; let i = index" [formGroupName]="i">
+          <td><input class="cell code" formControlName="code" placeholder="2013-1" aria-label="Código del período" required /></td>
+          <td><input class="cell label" formControlName="label" placeholder="Fechas o descripción" aria-label="Fechas del período" /></td>
+          <td>
+            <input
+              class="cell grade"
+              type="number"
+              min="0"
+              step="0.01"
+              formControlName="average"
+              aria-label="Promedio del período"
+              [title]="row.controls['average'].invalid ? 'Entre 0 y ' + maxGrade : ''"
+            />
+          </td>
+          <td><input class="cell grade" type="number" min="0" formControlName="approvedCredits" aria-label="Créditos aprobados" /></td>
+          <td>
+            <button mat-icon-button type="button" aria-label="Quitar período" (click)="removePeriod(i)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <button mat-stroked-button type="button" class="add" (click)="addPeriod()">
+      <mat-icon>add</mat-icon>
+      Agregar período
+    </button>
 
     <div class="grades-header">
       <h4>Asignaturas ({{ grades.length }})</h4>
@@ -69,7 +145,9 @@
           <th>Período</th>
           <th>Código</th>
           <th>Asignatura</th>
+          <th>UC</th>
           <th>Nota</th>
+          <th>Reparación</th>
           <th>Resultado</th>
           <th>Equivale a (pensum)</th>
           <th></th>
@@ -89,7 +167,11 @@
             <td><input class="cell period" formControlName="period" aria-label="Período" /></td>
             <td><input class="cell code" formControlName="code" aria-label="Código" /></td>
             <td><input class="cell name" formControlName="subjectName" placeholder="Nombre de la asignatura" aria-label="Asignatura" /></td>
+            <td><input class="cell credits" type="number" min="0" formControlName="credits" aria-label="Créditos" /></td>
             <td><input class="cell grade" type="number" min="0" formControlName="grade" aria-label="Nota" /></td>
+            <td class="center">
+              <input type="checkbox" formControlName="makeup" aria-label="Aprobada en reparación" title="Reparación" />
+            </td>
             <td><input class="cell" formControlName="remark" placeholder="Retirada, aprobado..." aria-label="Resultado" /></td>
             <td>
               <select class="cell equivalent" formControlName="subjectId" aria-label="Asignatura equivalente del pensum">

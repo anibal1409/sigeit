@@ -1,0 +1,82 @@
+<div class="summary-card" *ngIf="degree.summary">
+  <dl class="facts">
+    <div *ngIf="hasValue(degree.average)">
+      <dt>Promedio oficial</dt>
+      <dd><strong>{{ degree.average }}</strong> / {{ degree.maxGrade }}</dd>
+    </div>
+    <div *ngIf="hasValue(degree.summary.gradeAverage)">
+      <dt>Promedio simple (referencia)</dt>
+      <dd>{{ degree.summary.gradeAverage | number: '1.0-2' }}</dd>
+    </div>
+    <div>
+      <dt>Nota mínima aprobatoria</dt>
+      <dd>{{ hasValue(degree.minPassingGrade) ? degree.minPassingGrade : degree.maxGrade / 2 }}</dd>
+    </div>
+    <div *ngIf="hasValue(degree.approvedCredits)">
+      <dt>Créditos aprobados</dt>
+      <dd>{{ degree.approvedCredits }}</dd>
+    </div>
+    <div *ngIf="degree.classRank && degree.classSize">
+      <dt>Promoción</dt>
+      <dd>Puesto {{ degree.classRank }} de {{ degree.classSize }}</dd>
+    </div>
+    <div *ngIf="hasValue(degree.classAverage)">
+      <dt>Promedio de la promoción</dt>
+      <dd>{{ degree.classAverage }}</dd>
+    </div>
+    <div *ngIf="degree.graduationDate">
+      <dt>Fecha de grado</dt>
+      <dd>{{ degree.graduationDate | date: 'dd/MM/yyyy' : 'UTC' }}</dd>
+    </div>
+  </dl>
+  <ul class="counts">
+    <li *ngFor="let item of counts"><strong>{{ item.value }}</strong> {{ item.label }}</li>
+  </ul>
+  <p class="note" *ngIf="degree.onlyPassingGrades">
+    El documento solo incluye notas aprobatorias: no muestra retiros ni reprobadas.
+  </p>
+</div>
+
+<ng-container *ngIf="degree.periods?.length">
+  <h4>Períodos</h4>
+  <table class="data-table">
+    <thead>
+      <tr><th>Código</th><th>Fechas</th><th>Promedio</th><th>Créditos aprobados</th></tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let period of degree.periods">
+        <td>{{ period.code }}</td>
+        <td>{{ period.label }}</td>
+        <td>{{ period.average }}</td>
+        <td>{{ period.approvedCredits }}</td>
+      </tr>
+    </tbody>
+  </table>
+</ng-container>
+
+<p class="empty" *ngIf="!degree.grades.length">Título registrado sin asignaturas.</p>
+<ng-container *ngIf="degree.grades.length">
+  <h4>Asignaturas</h4>
+  <table class="data-table">
+    <thead>
+      <tr><th>Período</th><th>Código</th><th>Asignatura</th><th>UC</th><th>Nota</th><th>Estado</th></tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let grade of degree.grades">
+        <td>{{ grade.period }}</td>
+        <td>{{ grade.code }}</td>
+        <td>
+          {{ grade.subjectName }}
+          <small class="d-block text-muted" *ngIf="grade.subject">Equivale a: {{ grade.subject.name }}</small>
+        </td>
+        <td>{{ grade.credits }}</td>
+        <td>{{ gradeLabel(grade, degree.maxGrade) }}</td>
+        <td class="tags">
+          <span *ngIf="grade.status" class="tag" [ngClass]="'status-' + grade.status">{{ statusLabels[grade.status] }}</span>
+          <span *ngIf="grade.attempt > 1" class="tag attempt" matTooltip="Vez que cursa la asignatura">{{ grade.attempt }}.ª vez</span>
+          <span *ngIf="grade.makeup" class="tag makeup" matTooltip="Aprobada en examen de reparación">R</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-container>

@@ -34,7 +34,6 @@ import {
   CATEGORY_OPTIONS,
   DEDICATION_OPTIONS,
   DEGREE_LEVEL_OPTIONS,
-  gradeLabel,
   optionName,
 } from '../model';
 import { TeacherAcademicService } from '../teacher-academic.service';
@@ -53,7 +52,6 @@ interface Editing {
 })
 export class AcademicComponent implements OnInit, OnDestroy {
   readonly optionName = optionName;
-  readonly gradeLabel = gradeLabel;
   readonly categoryOptions = CATEGORY_OPTIONS;
   readonly dedicationOptions = DEDICATION_OPTIONS;
   readonly levelOptions = DEGREE_LEVEL_OPTIONS;

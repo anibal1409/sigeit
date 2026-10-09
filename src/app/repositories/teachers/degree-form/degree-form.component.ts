@@ -23,6 +23,7 @@ import {
   ResponseSubjectDto,
   ResponseTeacherDegreeDto,
   ResponseTeacherDto,
+  TeacherDegreePeriodDto,
   TeacherGradeDto,
   TranscriptPreviewDto,
 } from 'dashboard-sdk';
@@ -71,6 +72,14 @@ export class DegreeFormComponent implements OnInit, OnDestroy {
     institution: [''],
     graduationDate: [''],
     maxGrade: [20, [Validators.required, Validators.min(1)]],
+    minPassingGrade: [null as number | null],
+    average: [null as number | null],
+    approvedCredits: [null as number | null, Validators.min(0)],
+    classRank: [null as number | null, Validators.min(1)],
+    classSize: [null as number | null, Validators.min(1)],
+    classAverage: [null as number | null],
+    onlyPassingGrades: [false],
+    periods: new FormArray<FormGroup>([]),
     grades: new FormArray<FormGroup>([]),
   });
 
@@ -87,6 +96,19 @@ export class DegreeFormComponent implements OnInit, OnDestroy {
     return this.form.controls.grades;
   }
 
+  get periods(): FormArray<FormGroup> {
+    return this.form.controls.periods;
+  }
+
+  get maxGrade(): number {
+    return Number(this.form.controls.maxGrade.value) || 0;
+  }
+
+  get rankError(): boolean {
+    const { classRank, classSize } = this.form.getRawValue();
+    return !!classRank && !!classSize && classRank > classSize;
+  }
+
   get issueRows(): number {
     return this.issues.filter((row) => row.some((issue) => issue.level === 'error')).length;
   }
@@ -95,10 +117,14 @@ export class DegreeFormComponent implements OnInit, OnDestroy {
     this.sub$.add(this.academicService.getSubjects$().subscribe((subjects) => (this.subjects = subjects)));
     const source = this.degree ?? this.preview;
     if (source) {
-      const { grades, ...fields } = source;
-      this.form.patchValue(fields);
+      const { grades, periods, ...fields } = source;
+      this.form.patchValue({ ...fields, graduationDate: fields.graduationDate?.slice(0, 10) ?? '' });
       grades.forEach((grade) => this.addGrade(grade));
+      periods?.forEach((period) => this.addPeriod(period));
     }
+    this.sub$.add(
+      this.form.controls.maxGrade.valueChanges.pipe(startWith(null)).subscribe(() => this.updateScaleValidators())
+    );
     this.warning = this.idDocumentWarning();
     if (this.file) {
       this.objectUrl = URL.createObjectURL(this.file);
@@ -123,6 +149,8 @@ export class DegreeFormComponent implements OnInit, OnDestroy {
         period: [grade.period ?? ''],
         grade: [grade.grade ?? null, Validators.min(0)],
         remark: [grade.remark ?? ''],
+        credits: [grade.credits ?? null, Validators.min(0)],
+        makeup: [grade.makeup ?? false],
         subjectId: [grade.subject?.id ?? null],
       }),
     );
@@ -131,6 +159,36 @@ export class DegreeFormComponent implements OnInit, OnDestroy {
   removeGrade(index: number): void {
     this.grades.removeAt(index);
     this.form.markAsDirty();
+  }
+
+  addPeriod(period: Partial<TeacherDegreePeriodDto> = {}): void {
+    this.periods.push(
+      this.formBuilder.group({
+        code: [period.code ?? '', Validators.required],
+        label: [period.label ?? ''],
+        average: [period.average ?? null, this.scaleValidators()],
+        approvedCredits: [period.approvedCredits ?? null, Validators.min(0)],
+      }),
+    );
+  }
+
+  removePeriod(index: number): void {
+    this.periods.removeAt(index);
+    this.form.markAsDirty();
+  }
+
+  private scaleValidators() {
+    return [Validators.min(0), Validators.max(this.maxGrade || Infinity)];
+  }
+
+  /** Promedios y nota mínima no pueden superar la escala del título (el backend responde 400). */
+  private updateScaleValidators(): void {
+    const { minPassingGrade, average, classAverage } = this.form.controls;
+    const controls = [minPassingGrade, average, classAverage, ...this.periods.controls.map((period) => period.controls['average'])];
+    controls.forEach((control) => {
+      control.setValidators(this.scaleValidators());
+      control.updateValueAndValidity({ emitEvent: false });
+    });
   }
 
   hasErrors(index: number): boolean {
@@ -143,7 +201,7 @@ export class DegreeFormComponent implements OnInit, OnDestroy {
 
   /** Crea el título (con o sin notas) o lo actualiza reemplazando todas las notas. */
   save(): void {
-    if (this.form.invalid || this.loading) {
+    if (this.form.invalid || this.rankError || this.loading) {
       this.form.markAllAsTouched();
       return;
     }

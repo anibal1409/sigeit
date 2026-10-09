@@ -48,6 +48,19 @@ form {
   .wide {
     grid-column: span 2;
   }
+
+  .only-passing {
+    align-self: center;
+    margin-bottom: 1rem;
+  }
+
+  .error-hint {
+    color: #c62828;
+  }
+}
+
+.center {
+  text-align: center;
 }
 
 .help {
@@ -113,6 +126,14 @@ tr.has-issues {
 
   &.grade {
     width: 4.5rem;
+  }
+
+  &.credits {
+    width: 3.5rem;
+  }
+
+  &.label {
+    min-width: 12rem;
   }
 
   &.name {

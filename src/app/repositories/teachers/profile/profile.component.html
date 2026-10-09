@@ -78,23 +78,7 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <p class="empty" *ngIf="!degree.grades.length">Título registrado sin asignaturas.</p>
-          <table class="data-table" *ngIf="degree.grades.length">
-            <thead>
-              <tr><th>Período</th><th>Código</th><th>Asignatura</th><th>Nota</th></tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let grade of degree.grades">
-                <td>{{ grade.period }}</td>
-                <td>{{ grade.code }}</td>
-                <td>
-                  {{ grade.subjectName }}
-                  <small class="d-block text-muted" *ngIf="grade.subject">Equivale a: {{ grade.subject.name }}</small>
-                </td>
-                <td>{{ gradeLabel(grade, degree.maxGrade) }}</td>
-              </tr>
-            </tbody>
-          </table>
+          <app-degree-detail [degree]="degree"></app-degree-detail>
         </mat-expansion-panel>
       </mat-accordion>
     </mat-tab>

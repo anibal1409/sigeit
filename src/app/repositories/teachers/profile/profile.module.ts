@@ -12,12 +12,13 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 
+import { DegreeDetailComponent } from '../degree-detail/degree-detail.component';
 import { GradeSearchComponent } from '../grade-search/grade-search.component';
 import { ProfileComponent } from './profile.component';
 
 /** Perfil académico y búsqueda por asignatura, reutilizables fuera del módulo de profesores. */
 @NgModule({
-  declarations: [ProfileComponent, GradeSearchComponent],
+  declarations: [ProfileComponent, GradeSearchComponent, DegreeDetailComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -32,6 +33,6 @@ import { ProfileComponent } from './profile.component';
     MatTooltipModule,
     MatExpansionModule,
   ],
-  exports: [ProfileComponent, GradeSearchComponent],
+  exports: [ProfileComponent, GradeSearchComponent, DegreeDetailComponent],
 })
 export class TeacherProfileModule {}
