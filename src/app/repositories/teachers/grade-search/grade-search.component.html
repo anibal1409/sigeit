@@ -19,8 +19,8 @@
             <mat-icon>keyboard_backspace</mat-icon>
           </a>
           <p class="help">
-            Profesores que cursaron las asignaturas elegidas (por su nombre en el récord o por la equivalencia del pensum)
-            con la nota mínima indicada.
+            Profesores que cursaron las asignaturas elegidas, o cualquiera del departamento si no elige ninguna (por su
+            nombre en el récord o por la equivalencia del pensum), con la nota mínima indicada.
           </p>
         </div>
         <ng-container *ngTemplateOutlet="body"></ng-container>
@@ -40,14 +40,31 @@
     </mat-form-field>
     <mat-form-field class="subjects">
       <mat-label>Asignaturas</mat-label>
-      <mat-select formControlName="subjectIds" multiple>
+      <mat-select
+        formControlName="subjectIds"
+        multiple
+        placeholder="Todas las del departamento"
+        (openedChange)="onSubjectsOpened($event, subjectSearch)"
+      >
         <mat-select-trigger>{{ selectedNames }}</mat-select-trigger>
-        <mat-option *ngFor="let subject of subjects" [value]="subject.id">
+        <div class="select-search">
+          <input
+            #subjectSearch
+            [formControl]="subjectFilter"
+            placeholder="Escriba para filtrar (nombre, código o S3)"
+            aria-label="Filtrar asignaturas"
+            (keydown)="onFilterKeydown($event)"
+          />
+        </div>
+        <mat-option
+          *ngFor="let subject of subjects"
+          [value]="subject.id"
+          [class.filtered-out]="!matchesFilter(subject)"
+        >
           <small class="muted">S{{ subject.semester }} · {{ subject.code }}</small> {{ subject.name }}
         </mat-option>
       </mat-select>
-      <mat-hint>Puede elegir una o varias</mat-hint>
-      <mat-error>Elija al menos una asignatura</mat-error>
+      <mat-hint>Una o varias; vacío busca en todas las del departamento</mat-hint>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Profesor</mat-label>
@@ -72,9 +89,14 @@
     <h3>
       {{ result.teacher.lastName }}, {{ result.teacher.firstName }}
       <small>C.I. {{ result.teacher.idDocument }} · {{ $any(result.teacher.department)?.name }}</small>
-      <span class="badge" [class.full]="result.subjects.length === searchedCount">
-        {{ result.subjects.length }} de {{ searchedCount }} {{ searchedCount === 1 ? 'asignatura' : 'asignaturas' }}
+      <span *ngIf="searchedAll; else ofSelected" class="badge full">
+        {{ result.subjects.length }} {{ result.subjects.length === 1 ? 'asignatura' : 'asignaturas' }} del departamento
       </span>
+      <ng-template #ofSelected>
+        <span class="badge" [class.full]="result.subjects.length === searchedCount">
+          {{ result.subjects.length }} de {{ searchedCount }} {{ searchedCount === 1 ? 'asignatura' : 'asignaturas' }}
+        </span>
+      </ng-template>
       <button *ngIf="dialogData; else academicLink" mat-button type="button" (click)="openProfile(result.teacher)">
         <mat-icon>badge</mat-icon>
         Ver perfil

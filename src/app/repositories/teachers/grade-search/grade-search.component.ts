@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import {
   FormBuilder,
+  FormControl,
   Validators,
 } from '@angular/forms';
 import {
@@ -24,11 +25,13 @@ import {
 } from 'dashboard-sdk';
 import {
   finalize,
-  forkJoin,
+  from,
   map,
+  mergeMap,
   of,
   Subscription,
   switchMap,
+  toArray,
 } from 'rxjs';
 import { UserStateService } from 'src/app/common';
 
@@ -75,7 +78,7 @@ export class GradeSearchComponent implements OnInit, OnDestroy {
 
   form = this.formBuilder.group({
     departmentId: [null as number | null, Validators.required],
-    subjectIds: [[] as Array<number>, Validators.required],
+    subjectIds: [[] as Array<number>],
     teacherName: [''],
     minPercent: [DEFAULT_MIN_PERCENT as number | null, [Validators.min(0), Validators.max(100)]],
   });
@@ -84,7 +87,10 @@ export class GradeSearchComponent implements OnInit, OnDestroy {
   results: Array<TeacherResult> | null = null;
   /** Cantidad de asignaturas de la última búsqueda */
   searchedCount = 0;
+  /** La última búsqueda recorrió todas las asignaturas del departamento */
+  searchedAll = false;
   loading = false;
+  subjectFilter = new FormControl('', { nonNullable: true });
 
   private sub$ = new Subscription();
 
@@ -132,6 +138,26 @@ export class GradeSearchComponent implements OnInit, OnDestroy {
       .join(', ');
   }
 
+  matchesFilter(subject: ResponseSubjectDto): boolean {
+    const words = normalize(this.subjectFilter.value).split(' ').filter(Boolean);
+    const text = normalize(`${subject.code} ${subject.name} s${subject.semester}`);
+    return words.every((word) => text.includes(word));
+  }
+
+  onSubjectsOpened(opened: boolean, input: HTMLInputElement): void {
+    if (opened) {
+      this.subjectFilter.setValue('');
+      input.focus();
+    }
+  }
+
+  /** El filtro escribe en su propio campo: evita que el select use las teclas (espacio selecciona). */
+  onFilterKeydown(event: KeyboardEvent): void {
+    if (event.key !== 'Escape' && event.key !== 'Tab') {
+      event.stopPropagation();
+    }
+  }
+
   /** Resultados filtrados por el nombre del profesor, sin volver a consultar. */
   get visibleResults(): Array<TeacherResult> {
     const words = normalize(this.form.controls.teacherName.value || '').split(' ').filter(Boolean);
@@ -155,30 +181,36 @@ export class GradeSearchComponent implements OnInit, OnDestroy {
       return;
     }
     const { subjectIds, minPercent } = this.form.getRawValue();
-    const selected = this.subjects.filter((subject) => subjectIds?.includes(subject.id));
+    this.searchedAll = !subjectIds?.length;
+    const selected = this.searchedAll ? this.subjects : this.subjects.filter((subject) => subjectIds?.includes(subject.id));
     this.loading = true;
     this.searchedCount = selected.length;
-    forkJoin(
-      selected.map((subject) =>
-        this.academicService.searchByGrade$(subject.name, minPercent ?? undefined).pipe(
-          map((rows) =>
-            rows.map((row) => ({
-              teacher: row.teacher,
-              // La API busca por palabras: descarta coincidencias equivalentes a otra asignatura.
-              matches: row.matches.filter((match) => !match.subject || match.subject.id === subject.id),
-              subject,
-            })),
-          ),
+    from(selected)
+      .pipe(
+        mergeMap(
+          (subject) =>
+            this.academicService.searchByGrade$(subject.name, minPercent ?? undefined).pipe(
+              map((rows) =>
+                rows.map((row) => ({
+                  teacher: row.teacher,
+                  // La API busca por palabras: descarta coincidencias equivalentes a otra asignatura.
+                  matches: row.matches.filter((match) => !match.subject || match.subject.id === subject.id),
+                  subject,
+                })),
+              ),
+            ),
+          6,
         ),
-      ),
-    )
-      .pipe(finalize(() => (this.loading = false)))
-      .subscribe((groups) => (this.results = groupByTeacher(groups.flat())));
+        toArray(),
+        finalize(() => (this.loading = false)),
+      )
+      .subscribe((groups) => (this.results = groupByTeacher(groups.flat(), selected)));
   }
 }
 
 function groupByTeacher(
   rows: Array<{ teacher: ResponseTeacherDto; subject: ResponseSubjectDto; matches: Array<TeacherGradeMatchDto> }>,
+  subjectOrder: Array<ResponseSubjectDto>,
 ): Array<TeacherResult> {
   const byTeacher = new Map<number, TeacherResult>();
   for (const row of rows.filter((item) => item.matches.length)) {
@@ -187,6 +219,10 @@ function groupByTeacher(
     result.bestPercent = Math.max(result.bestPercent, ...row.matches.map((match) => match.percent ?? 0));
     byTeacher.set(row.teacher.id, result);
   }
+  // mergeMap entrega las respuestas en desorden: se restablece el orden de las asignaturas (semestre, nombre).
+  byTeacher.forEach((result) =>
+    result.subjects.sort((a, b) => subjectOrder.indexOf(a.subject) - subjectOrder.indexOf(b.subject)),
+  );
   return [...byTeacher.values()].sort(
     (a, b) => b.subjects.length - a.subjects.length || b.bestPercent - a.bestPercent,
   );
