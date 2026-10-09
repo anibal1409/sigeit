@@ -7,9 +7,9 @@
   [disabled]="disabled"
   [matAutocomplete]="auto"
   (input)="filter($any($event.target).value)"
-  (focus)="$any($event.target).select(); opened.emit()"
+  (focus)="selectAll($any($event.target)); opened.emit()"
+  (mouseup)="keepSelection($event)"
   (click)="opened.emit()"
-  (blur)="reset()"
 />
 
 <mat-autocomplete
@@ -17,6 +17,7 @@
   class="teacher-picker-panel"
   [displayWith]="display"
   (optionSelected)="select($event)"
+  (closed)="reset()"
 >
   <mat-option *ngIf="!candidates" disabled>Cargando profesores…</mat-option>
   <mat-option *ngIf="candidates && teacherId" [value]="unassigned">
@@ -51,5 +52,5 @@
       </div>
     </div>
   </mat-option>
-  <mat-option *ngIf="candidates && !filtered.length" disabled>Ningún profesor coincide</mat-option>
+  <mat-option *ngIf="candidates && !filtered.length" disabled>Ningún profesor sugerido coincide</mat-option>
 </mat-autocomplete>

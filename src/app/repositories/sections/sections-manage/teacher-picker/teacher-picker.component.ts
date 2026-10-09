@@ -4,6 +4,7 @@ import {
   Input,
   OnChanges,
   Output,
+  SimpleChanges,
 } from '@angular/core';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
@@ -13,6 +14,7 @@ import {
 } from 'dashboard-sdk';
 
 const UNASSIGNED = 0;
+const MIN_GRADE_RATIO = 0.7;
 
 /** Selector de profesor de una sección con historial, notas y carga de cada candidato. */
 @Component({
@@ -39,15 +41,21 @@ export class TeacherPickerComponent implements OnChanges {
   readonly unassigned = UNASSIGNED;
   text = '';
   filtered: Array<ResponseSectionTeacherDto> = [];
+  /** Profesor elegido mientras se guarda; undefined si no hay cambio pendiente. */
+  private pendingId?: number | null;
+  private justFocused = false;
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['teacherId'] || (changes['disabled'] && !this.disabled)) {
+      this.pendingId = undefined;
+    }
     this.reset();
   }
 
   filter(text: string): void {
     this.text = text;
     const words = normalize(text).split(' ').filter(Boolean);
-    this.filtered = (this.candidates || []).filter((item) => {
+    this.filtered = this.suggestions().filter((item) => {
       const name = normalize(fullName(item));
       return words.every((word) => name.includes(word));
     });
@@ -56,16 +64,39 @@ export class TeacherPickerComponent implements OnChanges {
   select(event: MatAutocompleteSelectedEvent): void {
     const id = event.option.value === UNASSIGNED ? null : +event.option.value;
     if (id !== this.teacherId) {
+      this.pendingId = id;
       this.picked.emit(id);
     }
     this.reset();
   }
 
-  /** Muestra de nuevo el profesor asignado y todos los candidatos. */
+  /** Selecciona el texto para reemplazarlo al escribir. */
+  selectAll(input: HTMLInputElement): void {
+    input.select();
+    this.justFocused = true;
+  }
+
+  /** El mouseup del clic que enfoca el campo anularía la selección. */
+  keepSelection(event: MouseEvent): void {
+    if (this.justFocused) {
+      event.preventDefault();
+      this.justFocused = false;
+    }
+  }
+
+  /** Muestra el profesor asignado (o el que se está guardando) y todos los candidatos. */
   reset(): void {
-    const current = this.candidates?.find((item) => item.teacher.id === this.teacherId);
-    this.text = current ? fullName(current) : this.teacherName;
-    this.filtered = this.candidates || [];
+    const id = this.pendingId !== undefined ? this.pendingId : this.teacherId;
+    const current = this.candidates?.find((item) => item.teacher.id === id);
+    this.text = current ? fullName(current) : id === this.teacherId ? this.teacherName : '';
+    this.filtered = this.suggestions();
+  }
+
+  /** Quienes ya dictaron la asignatura o la aprobaron con al menos el 70 % de la escala, más el asignado. */
+  private suggestions(): Array<ResponseSectionTeacherDto> {
+    return (this.candidates || []).filter((item) => item.teacher.id === this.teacherId
+      || !!item.timesTaught
+      || (item.grade?.grade ?? 0) / (item.grade?.maxGrade || Infinity) >= MIN_GRADE_RATIO);
   }
 
   /** Texto que el autocompletado escribe en el campo al elegir una opción. */
