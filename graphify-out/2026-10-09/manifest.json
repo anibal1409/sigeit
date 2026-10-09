@@ -3618,9 +3618,9 @@
     "semantic_hash": ""
   },
   "src/app/repositories/schedules/planned-schedules/planned-schedules.component.ts": {
-    "mtime": 1790805380.4326463,
-    "seen": 1790805464.9365244,
-    "ast_hash": "2fbbf38de18cf95f8052dc878a96119e",
+    "mtime": 1790833012.442338,
+    "seen": 1790833046.7677636,
+    "ast_hash": "26505f7c2407044349e6d027148c62f0",
     "semantic_hash": ""
   },
   "src/app/repositories/schedules/planned-schedules/report-config-modal/index.ts": {
@@ -3636,9 +3636,9 @@
     "semantic_hash": ""
   },
   "src/app/repositories/schedules/planned-schedules/report-config-modal/report-config-modal.component.ts": {
-    "mtime": 1790805279.7199109,
-    "seen": 1790805464.9365304,
-    "ast_hash": "93f122be56c540780acbd8f8f9be1f84",
+    "mtime": 1790833020.5642922,
+    "seen": 1790833046.7677708,
+    "ast_hash": "dcc77816129c40ca10132c9ede327efa",
     "semantic_hash": ""
   },
   "src/app/repositories/schedules/planning-audit/index.ts": {
@@ -5322,9 +5322,9 @@
     "semantic_hash": ""
   },
   "src/app/student-schedules/student-schedules.component.ts": {
-    "mtime": 1758949766.185967,
-    "seen": 1790715871.984899,
-    "ast_hash": "bf638ac660d6cbc079cf011ef59347e2",
+    "mtime": 1790833551.2622986,
+    "seen": 1790833685.4504857,
+    "ast_hash": "98ec0eb9d6291dd3989e1cc79db8df4b",
     "semantic_hash": ""
   },
   "src/app/student-schedules/student-schedules.module.ts": {
@@ -5940,15 +5940,15 @@
     "semantic_hash": ""
   },
   "src/app/repositories/schedules/planned-schedules/planned-schedules.component.html": {
-    "mtime": 1790805288.6558871,
-    "seen": 1790805464.9372296,
-    "ast_hash": "ae93d6ffa4dd5aa210afcb6ef62c2b63",
+    "mtime": 1790833012.444338,
+    "seen": 1790833046.768438,
+    "ast_hash": "57455f2cf0ee0d33d3035ee7585e08dd",
     "semantic_hash": ""
   },
   "src/app/repositories/schedules/planned-schedules/report-config-modal/report-config-modal.component.html": {
-    "mtime": 1790805279.7199109,
-    "seen": 1790805464.9372308,
-    "ast_hash": "b2ccac46fe07318a7be464f7d9b89da5",
+    "mtime": 1790833019.8172965,
+    "seen": 1790833046.768439,
+    "ast_hash": "ba295f494b078ea341b39d908a8b833e",
     "semantic_hash": ""
   },
   "src/app/repositories/schedules/planning-audit/planning-audit.component.html": {
@@ -6096,9 +6096,9 @@
     "semantic_hash": ""
   },
   "src/app/student-schedules/student-schedules.component.html": {
-    "mtime": 1758948257.2926857,
-    "seen": 1790715871.9850292,
-    "ast_hash": "adc598caed18b4cce39c466445f50f29",
+    "mtime": 1790833644.118775,
+    "seen": 1790833685.4506228,
+    "ast_hash": "521316bb23e92035f8aa669ce85ceaa8",
     "semantic_hash": ""
   },
   "src/index.html": {
@@ -6240,9 +6240,9 @@
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/grade-search/grade-search.component.ts": {
-    "mtime": 1790804484.204322,
-    "seen": 1790804625.0887127,
-    "ast_hash": "ee8b2fc025c1bc4b92798b70a7423f30",
+    "mtime": 1790808763.288898,
+    "seen": 1790808785.3506174,
+    "ast_hash": "48558bd2b453c3fa3c248f1863a23e69",
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/mappers/teacher-vm-2-teacher-dto.ts": {
@@ -6276,9 +6276,9 @@
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/grade-search/grade-search.component.html": {
-    "mtime": 1790804479.4313395,
-    "seen": 1790804625.0889351,
-    "ast_hash": "7ed43c1ba193fd5a2c6ffdf2606d4ab7",
+    "mtime": 1790808697.2181573,
+    "seen": 1790808785.3508403,
+    "ast_hash": "e2e602f8e9518629dced4e7216abae92",
     "semantic_hash": ""
   },
   "src/app/repositories/teachers/profile/profile.component.html": {
@@ -6318,15 +6318,15 @@
     "semantic_hash": ""
   },
   "src/app/repositories/sections/sections-manage/teacher-picker/teacher-picker.component.ts": {
-    "mtime": 1790800462.2348623,
-    "seen": 1790801076.5884888,
-    "ast_hash": "dd149fa51dac9508105d1ee61360480d",
+    "mtime": 1790833287.759785,
+    "seen": 1790833369.5126166,
+    "ast_hash": "e636cde3d379ee6b05fcb712b76d2281",
     "semantic_hash": ""
   },
   "src/app/repositories/sections/sections-manage/teacher-picker/teacher-picker.component.html": {
-    "mtime": 1790800458.958886,
-    "seen": 1790801076.5889032,
-    "ast_hash": "f2356c2e6ebd8786caee187ac9d55d09",
+    "mtime": 1790833286.9667895,
+    "seen": 1790833369.5129447,
+    "ast_hash": "fe17d4cbcb2cb45df2eccd78f5fea607",
     "semantic_hash": ""
   },
   "src/app/repositories/sections/sections-manage/index.ts": {
@@ -6390,9 +6390,9 @@
     "semantic_hash": ""
   },
   "src/app/repositories/schedules/planned-schedules/shift.ts": {
-    "mtime": 1790805257.036971,
-    "seen": 1790805464.9365323,
-    "ast_hash": "2330cdf8dce5cb45e3c0e76e624cd7bb",
+    "mtime": 1790833001.6633987,
+    "seen": 1790833046.767773,
+    "ast_hash": "db49e3a9bfa404d1ec01c0c5ab89cab1",
     "semantic_hash": ""
   },
   "projects/dashboard-sdk/src/lib/model/grade-status.ts": {
@@ -6423,6 +6423,12 @@
     "mtime": 1790807033.1204946,
     "seen": 1790807171.236503,
     "ast_hash": "e1cb92cabb52a81c1f745c6d37d38a72",
+    "semantic_hash": ""
+  },
+  "src/app/student-schedules/semester-check.ts": {
+    "mtime": 1790833541.618656,
+    "seen": 1790833685.4504814,
+    "ast_hash": "90c062c3eab0a248711af9f725664ddf",
     "semantic_hash": ""
   }
 }
