@@ -14,6 +14,51 @@
     width: 10rem;
   }
 
+  .semester-check {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0 0.5rem 0.5rem;
+
+    > button {
+      align-self: flex-start;
+    }
+
+    .result {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid;
+
+      &.ok {
+        background: #e8f5e9;
+        border-color: #a5d6a7;
+        color: #1b5e20;
+      }
+
+      &.fail {
+        background: #fdecea;
+        border-color: #f5c6cb;
+        color: #8a1c1c;
+      }
+
+      .text {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        flex: 1;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+      }
+    }
+  }
+
   // Sección de información optimizada
   .info-section {
     background: white;

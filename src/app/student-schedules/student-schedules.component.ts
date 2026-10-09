@@ -15,7 +15,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { Router, NavigationEnd } from '@angular/router';
 
-import { Subscription, filter } from 'rxjs';
+import { Subscription, filter, finalize, forkJoin } from 'rxjs';
 
 import {
   ConfirmModalComponent,
@@ -40,7 +40,17 @@ import {
   SavedSchedule,
   StageInscription,
 } from './model';
+import { checkSemester, SemesterCheck } from './semester-check';
 import { StudentSchedulesService } from './student-schedules.service';
+
+interface SemesterCheckView extends SemesterCheck {
+  subjects: number;
+  /** Asignaturas sin secciones con horario en el período. */
+  missing: Array<string>;
+  /** Asignaturas que quedan fuera de la mayor combinación. */
+  left: Array<string>;
+  index: number;
+}
 
 @Component({
   selector: 'app-student-schedules',
@@ -97,6 +107,9 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
   // Propiedades para detección de conflictos
   scheduleConflicts: Map<string, any[]> = new Map();
   hasConflicts = false;
+
+  checkingSemester = false;
+  semesterCheck: SemesterCheckView | null = null;
 
   private sub$ = new Subscription();
 
@@ -497,6 +510,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
         }).subscribe(
           (subjects) => {
             this.subjects = subjects;
+            this.semesterCheck = null;
             this.cdr.markForCheck();
           }
         )
@@ -616,6 +630,47 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
         dialogRef.close();
       });
     }
+  }
+
+  /** Prueba las combinaciones de secciones de todas las asignaturas del semestre buscando una sin choques. */
+  validateSemester(): void {
+    const subjects = this.subjects;
+    this.checkingSemester = true;
+    this.semesterCheck = null;
+    this.sub$.add(
+      forkJoin(subjects.map((subject) => this.studentSchedulesService.getSectionWithSchedules$({
+        subjectId: subject.id,
+        periodId: this.period.id,
+        status: true,
+      })))
+        .pipe(finalize(() => {
+          this.checkingSemester = false;
+          this.cdr.markForCheck();
+        }))
+        .subscribe((groups) => {
+          const check = checkSemester((groups as Array<Array<SectionItemVM>>).filter((group) => group.length));
+          const covered = new Set((check.valid ? check.solutions[0] : check.best).map((section) => section.subject?.id));
+          this.semesterCheck = {
+            ...check,
+            subjects: subjects.length,
+            missing: subjects.filter((_, index) => !groups[index].length).map((subject) => subject.name),
+            left: subjects.filter((subject, index) => groups[index].length && !covered.has(subject.id)).map((subject) => subject.name),
+            index: 0,
+          };
+        })
+    );
+  }
+
+  /** Carga en el horario una combinación encontrada (o la mayor posible si no hay completa). */
+  showCombination(index: number): void {
+    const check = this.semesterCheck;
+    if (!check) {
+      return;
+    }
+    check.index = index;
+    this.subjectsSelected.clear();
+    this.sectionsSelected = [];
+    (check.valid ? check.solutions[index] : check.best).forEach((section) => this.addSection(section));
   }
 
   addSection(section: SectionItemVM): void {

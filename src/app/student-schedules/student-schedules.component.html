@@ -59,6 +59,57 @@
           </div>
         </div>
       </form>
+
+      <div *ngIf="!isInscription" class="semester-check">
+        <button
+          mat-stroked-button
+          color="primary"
+          (click)="validateSemester()"
+          [disabled]="checkingSemester || semesterId <= 0 || !subjects.length"
+          matTooltip="Prueba las combinaciones de secciones de todas las asignaturas del semestre"
+        >
+          <mat-icon>fact_check</mat-icon>
+          {{ checkingSemester ? 'Validando…' : 'Validar semestre' }}
+        </button>
+
+        <ng-container *ngIf="semesterCheck as check">
+          <div class="result" [class.ok]="check.valid && !check.missing.length" [class.fail]="!check.valid || check.missing.length">
+            <mat-icon>{{ check.valid && !check.missing.length ? 'check_circle' : 'error' }}</mat-icon>
+            <div class="text">
+              <ng-container *ngIf="check.valid; else noCombination">
+                <strong *ngIf="!check.missing.length">Sí existe horario para las {{ check.subjects }} asignaturas del semestre.</strong>
+                <strong *ngIf="check.missing.length">Las asignaturas con secciones combinan, pero no todas tienen secciones.</strong>
+                <span>
+                  {{ check.capped ? 'Más de ' : '' }}{{ check.valid }} de {{ check.total }} combinaciones posibles no tienen choques.
+                </span>
+              </ng-container>
+              <ng-template #noCombination>
+                <strong>No existe un horario sin choques con todas las asignaturas del semestre.</strong>
+                <span>
+                  Se probaron {{ check.total }} combinaciones. Como máximo se pueden inscribir {{ check.best.length }}
+                  sin choques; quedan fuera: {{ check.left.join(', ') }}.
+                </span>
+              </ng-template>
+              <span *ngIf="check.missing.length">Sin secciones en el período: {{ check.missing.join(', ') }}.</span>
+            </div>
+            <div class="actions">
+              <ng-container *ngIf="check.valid; else showBest">
+                <button mat-button color="primary" (click)="showCombination(check.index)">Ver en el horario</button>
+                <button
+                  *ngIf="check.solutions.length > 1"
+                  mat-button
+                  (click)="showCombination((check.index + 1) % check.solutions.length)"
+                >
+                  Otra ({{ check.index + 1 }}/{{ check.solutions.length }})
+                </button>
+              </ng-container>
+              <ng-template #showBest>
+                <button *ngIf="check.best.length" mat-button color="primary" (click)="showCombination(0)">Ver la mejor combinación</button>
+              </ng-template>
+            </div>
+          </div>
+        </ng-container>
+      </div>
     </mat-card-content>
   </mat-card>
 </div>
