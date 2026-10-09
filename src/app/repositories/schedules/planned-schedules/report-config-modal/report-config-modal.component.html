@@ -70,9 +70,9 @@
         <div>
           <p><strong>Descripción de las opciones:</strong></p>
           <ul>
-            <li><strong>Solo Mañana:</strong> Secciones con todo su horario entre las 07:00 y las 11:55</li>
-            <li><strong>Solo Tarde:</strong> Secciones con todo su horario desde las 12:00</li>
-            <li><strong>Ambos turnos:</strong> Mañana, tarde y mixtas (secciones con bloques en ambos turnos), más resumen general</li>
+            <li><strong>Solo Mañana:</strong> Secciones cuyo primer bloque inicia antes de las 12:00</li>
+            <li><strong>Solo Tarde:</strong> Secciones cuyo primer bloque inicia desde las 12:00</li>
+            <li><strong>Ambos turnos:</strong> Secciones de mañana y de tarde por separado, más resumen general</li>
           </ul>
         </div>
       </div>
@@ -107,9 +107,8 @@
     <div *ngIf="selectedReportType === 'shift'" class="info-section">
       <mat-icon>info</mat-icon>
       <p>
-        <strong>Nota:</strong> La clasificación por turno considera todos los bloques de cada sección.
-        Es de mañana si todos están entre las 07:00 y las 11:55, de tarde si todos inician desde las 12:00,
-        y mixta en otro caso.
+        <strong>Nota:</strong> El turno de cada sección lo define la hora de inicio de su primer bloque:
+        antes de las 12:00 es mañana; desde las 12:00, tarde.
       </p>
     </div>
   </form>

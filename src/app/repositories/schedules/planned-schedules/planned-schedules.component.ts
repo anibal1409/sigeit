@@ -219,7 +219,7 @@ export class PlannedSchedulesComponent {
     );
   }
 
-  /** Secciones activas del período por departamento: total, mañana, tarde, mixtas y sin horario. */
+  /** Secciones activas del período por departamento: total, mañana, tarde y sin horario. */
   loadShiftSummary(): void {
     const departments = this.departmentIdUser
       ? this.departments.filter((department) => department.id === this.departmentIdUser)
@@ -246,10 +246,9 @@ export class PlannedSchedulesComponent {
             total: total.total + row.total,
             morning: total.morning + row.morning,
             afternoon: total.afternoon + row.afternoon,
-            mixed: total.mixed + row.mixed,
             empty: total.empty + row.empty,
           }),
-          { departmentId: 0, name: 'Total', total: 0, morning: 0, afternoon: 0, mixed: 0, empty: 0 }
+          { departmentId: 0, name: 'Total', total: 0, morning: 0, afternoon: 0, empty: 0 }
         );
       })
     );
@@ -260,7 +259,7 @@ export class PlannedSchedulesComponent {
     sections: Array<ResponseSectionDto>,
     schedules: Array<ResponseScheduleDto>
   ): ShiftRow {
-    const row: ShiftRow = { departmentId: department.id || 0, name: department.name, total: 0, morning: 0, afternoon: 0, mixed: 0, empty: 0 };
+    const row: ShiftRow = { departmentId: department.id || 0, name: department.name, total: 0, morning: 0, afternoon: 0, empty: 0 };
     sections.forEach((section) => {
       const shift = sectionShift(schedules.filter((schedule) => (schedule.section as { id?: number })?.id === section.id));
       row.total++;
@@ -621,8 +620,8 @@ export class PlannedSchedulesComponent {
       });
     } else if (config.reportType === 'shift') {
       const shifts = this.sectionShifts();
-      const groups: Array<Shift> = config.shiftType === 'both' ? ['morning', 'afternoon', 'mixed'] : [config.shiftType];
-      const counts: Record<Shift, number> = { morning: 0, afternoon: 0, mixed: 0 };
+      const groups: Array<Shift> = config.shiftType === 'both' ? ['morning', 'afternoon'] : [config.shiftType];
+      const counts: Record<Shift, number> = { morning: 0, afternoon: 0 };
       groups.forEach((shift) => {
         const rows = data.filter((schedule) => shifts.get(schedule.sectionId) === shift);
         counts[shift] = new Set(rows.map((schedule) => schedule.sectionId)).size;
@@ -632,7 +631,7 @@ export class PlannedSchedulesComponent {
         }
       });
       if (config.shiftType === 'both') {
-        const total = counts.morning + counts.afternoon + counts.mixed;
+        const total = counts.morning + counts.afternoon;
         reportData[`RESUMEN GENERAL (${total} secciones)`] = this.createSummaryRow(counts, total);
       }
     }
@@ -779,7 +778,7 @@ export class PlannedSchedulesComponent {
     // Agregar fila con detalles de conteo
     const detailRow: any[] = [];
     detailRow.push(''); // Código vacío
-    detailRow.push(`Mañana: ${counts.morning} | Tarde: ${counts.afternoon} | Mixtas: ${counts.mixed} | Total: ${totalCount}`);
+    detailRow.push(`Mañana: ${counts.morning} | Tarde: ${counts.afternoon} | Total: ${totalCount}`);
     detailRow.push(''); // Sección vacía
     detailRow.push(''); // Día vacío
     detailRow.push(''); // Aula vacía

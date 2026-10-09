@@ -69,7 +69,6 @@
             <th>Secciones</th>
             <th>{{ shiftLabels.morning }}</th>
             <th>{{ shiftLabels.afternoon }}</th>
-            <th>{{ shiftLabels.mixed }}</th>
             <th>Sin horario</th>
           </tr>
         </thead>
@@ -87,17 +86,16 @@
           </tr>
         </tbody>
       </table>
-      <p class="hint">Mañana: todos los bloques de la sección entre 07:00 y 11:55. Tarde: todos desde las 12:00.</p>
+      <p class="hint">El turno de cada sección lo define la hora de inicio de su primer bloque: antes de las 12:00 es mañana; desde las 12:00, tarde.</p>
     </mat-card-content>
   </mat-card>
 </div>
 <ng-template #cells let-row>
   <td>{{ row.name }}</td>
-  <td>{{ row.total }}</td>
-  <td>{{ row.morning }}</td>
-  <td>{{ row.afternoon }}</td>
-  <td>{{ row.mixed }}</td>
-  <td>{{ row.empty }}</td>
+  <td>{{ row.total }} <small class="percent">(100%)</small></td>
+  <td *ngFor="let key of ['morning', 'afternoon', 'empty']">
+    {{ row[key] }} <small class="percent">({{ (row.total ? row[key] / row.total : 0) | percent: '1.0-1' }})</small>
+  </td>
 </ng-template>
 <div class="mat-container">
   <mat-table [dataSource]="dataSource">
