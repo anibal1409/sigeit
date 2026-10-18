@@ -1,1 +1,1 @@
-export interface SemesterVM { id: number, name: string };
+export interface SemesterVM { id: number, name: string }

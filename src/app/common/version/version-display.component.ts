@@ -68,7 +68,7 @@ import { VersionInfoComponent } from './version-info.component';
   `]
 })
 export class VersionDisplayComponent implements OnInit {
-  formattedVersion: string = '';
+  formattedVersion = '';
 
   constructor(
     private versionService: VersionService,

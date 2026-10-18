@@ -50,7 +50,6 @@
             ]
           },
           "configurations": {
-
             "production": {
               "fileReplacements": [
                 {
@@ -160,6 +159,15 @@
               "src/styles.scss"
             ],
             "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         }
       }

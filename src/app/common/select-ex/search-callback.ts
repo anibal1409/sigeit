@@ -22,7 +22,7 @@ export function searchCallback(search: string, item: string): boolean {
   } else {
     return false;
   }
-};
+}
 
 export function NormalizeWords(text: string): string {
   return text

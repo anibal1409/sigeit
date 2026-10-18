@@ -44,10 +44,10 @@ export class PeriodsService extends ListComponentService<PeriodItemVM, BaseQuery
   }
 
   generateIntervals(
-    startTime: string = '07:00',
-    endTime: string = '23:59',
-    duration: number = 45,
-    interval: number = 5,
+    startTime = '07:00',
+    endTime = '23:59',
+    duration = 45,
+    interval = 5,
   ): any {
     return this.intervalsService.exec(startTime, endTime, duration, interval); 
   }

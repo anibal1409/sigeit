@@ -18,7 +18,7 @@ export class IntervalsService {
   ): Intervals {
     const start = [],
       end = [];
-    let currentTime = moment(startTime, 'HH:mm');
+    const currentTime = moment(startTime, 'HH:mm');
     const endTimeMoment = moment(endTime, 'HH:mm');
 
     while (currentTime.isBefore(endTimeMoment)) {
@@ -38,7 +38,7 @@ export class IntervalsService {
   ): IntervalsSelect {
     const start = [],
       end = [];
-    let currentTime = moment(startTime, 'HH:mm');
+    const currentTime = moment(startTime, 'HH:mm');
     const endTimeMoment = moment(endTime, 'HH:mm');
 
     while (currentTime.isBefore(endTimeMoment)) {

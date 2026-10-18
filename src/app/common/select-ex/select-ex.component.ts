@@ -57,7 +57,7 @@ import { searchCallback } from './search-callback';
 export class SelectExComponent implements OnInit, OnChanges, ControlValueAccessor, MatFormFieldControl<number>, Validator, OnDestroy {
   @ViewChild('inputAutoComplete') inputAutoComplete: any;
   @Input()
-  label: string = '';
+  label = '';
 
   
   private _placeholder!: string;
@@ -72,10 +72,10 @@ export class SelectExComponent implements OnInit, OnChanges, ControlValueAccesso
   items: Array<any> = [];
 
   @Input()
-  optionValueField: string = 'id';
+  optionValueField = 'id';
 
   @Input()
-  optionTextField: string = 'name';
+  optionTextField = 'name';
 
   @Input()
   displayFn(key: any): string {
@@ -83,7 +83,7 @@ export class SelectExComponent implements OnInit, OnChanges, ControlValueAccesso
       return '';
     }
     
-    let item = this.items.find(i => i[this.optionValueField] === key);
+    const item = this.items.find(i => i[this.optionValueField] === key);
   
     return item ? item[this.optionTextField] : '';
   }
@@ -114,7 +114,7 @@ export class SelectExComponent implements OnInit, OnChanges, ControlValueAccesso
   set value(val: number) {
     this._val = val;
   }
-  _val: number = 0;
+  _val = 0;
 
 
   myControl = new FormControl();
