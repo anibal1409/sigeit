@@ -3,8 +3,11 @@ import {
   Inject,
 } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
+  ValidationErrors,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import {
@@ -20,6 +23,8 @@ export interface BulkAcademicChargeModalData {
   askOfficeNumber: boolean;
   suggestedNextOfficeCode: number;
   officePrefix: string;
+  /** Año del último oficio emitido: la fecha no puede ser anterior (la API responde 400). */
+  officeYear: number;
 }
 
 export type BulkDownloadMode = 'separate' | 'zip';
@@ -30,6 +35,18 @@ export interface BulkAcademicChargeModalResult {
   letterDate: string;
   selectedTeacherIds: number[];
   downloadMode: BulkDownloadMode;
+}
+
+/**
+ * El año del oficio debe estar entre el del último oficio emitido y el actual: la API
+ * rechaza con 400 cualquier otro, porque el correlativo se reinicia cada año.
+ */
+function letterYearValidator(lastYear: number): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const year = +String(control.value || '').slice(0, 4);
+    const currentYear = new Date().getFullYear();
+    return year && (year > currentYear || (lastYear && year < lastYear)) ? { letterYear: true } : null;
+  };
 }
 
 @Component({
@@ -51,9 +68,10 @@ export class BulkAcademicChargeModalComponent {
     const controls: Record<string, unknown> = {
       officeCode: [
         data.suggestedNextOfficeCode,
-        data.askOfficeNumber ? [Validators.required, Validators.min(1)] : [],
+        // La API exige que el inicio supere al último número emitido.
+        data.askOfficeNumber ? [Validators.required, Validators.min(data.suggestedNextOfficeCode)] : [],
       ],
-      letterDate: [this.todayIso(), Validators.required],
+      letterDate: [this.todayIso(), [Validators.required, letterYearValidator(data.officeYear)]],
       downloadMode: ['separate' as BulkDownloadMode],
     };
     data.teachers.forEach((t) => {

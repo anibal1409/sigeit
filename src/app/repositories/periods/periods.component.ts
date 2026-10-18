@@ -142,7 +142,7 @@ export class PeriodsComponent implements OnInit, OnDestroy {
       data: {
         message: {
           title: 'Eliminar periodo',
-          body: `¿Está seguro que desea eliminar el periodo <strong>${item.name}</strong>?`,
+          body: `¿Está seguro que desea eliminar el periodo **${item.name}**?`,
         },
       },
       hasBackdrop: true,
@@ -169,7 +169,7 @@ export class PeriodsComponent implements OnInit, OnDestroy {
       data: {
         message: {
           title: 'Activar periodo',
-          body: `¿Está seguro que desea marcar como activo el periodo <strong>${item.name}</strong>? El periodo activo actual quedará desactivado.`,
+          body: `¿Está seguro que desea marcar como activo el periodo **${item.name}**? El periodo activo actual quedará desactivado.`,
         },
       },
       hasBackdrop: true,

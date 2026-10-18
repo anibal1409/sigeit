@@ -450,7 +450,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
       data: {
         message: {
           title: 'Eliminar hoarario',
-          body: `¿Está seguro que desea eliminar el horario desde las <strong>${schedule.start}</strong> hasta las <strong>${schedule.end}</strong>?`,
+          body: `¿Está seguro que desea eliminar el horario desde las **${schedule.start}** hasta las **${schedule.end}**?`,
         },
       },
       hasBackdrop: true,

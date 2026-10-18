@@ -1,6 +1,11 @@
 import { UserRole } from '../../repositories/users/model';
 import { optionMenu } from '../models';
 
+/**
+ * Opciones del panel y roles que pueden usarlas. Es la matriz de permisos de la UI: la
+ * usan el menú y el guard de rutas (`roleGuard`), y debe coincidir con la de la API
+ * (ver `docs/CHANGELOG.md`). `value` es el primer segmento de la ruta bajo `/dashboard`.
+ */
 export const MENU: Array<optionMenu> = [
   {
     name: 'Asignaturas',
@@ -78,7 +83,7 @@ export const MENU: Array<optionMenu> = [
     name: 'Formatos',
     value: 'formats',
     icon: 'insert_drive_file',
-    permissions: [UserRole.Administrator],
+    permissions: [UserRole.Administrator, UserRole.HeadDepartment],
   },
   {
     name: 'Horarios',
@@ -92,4 +97,20 @@ export const MENU: Array<optionMenu> = [
     icon: 'class',
     permissions: [UserRole.Director, UserRole.HeadDepartment, UserRole.Planner, UserRole.Teacher],
   },
-]
+];
+
+/** Opciones del menú que puede ver el rol, ordenadas por nombre. */
+export function menuForRole(role: string): Array<optionMenu> {
+  return MENU
+    .filter((item) => item.permissions.includes(role as UserRole))
+    .sort((a, b) => a.name.localeCompare(b.name, 'es'));
+}
+
+/**
+ * Indica si el rol puede entrar a una sección del panel (primer segmento bajo
+ * `/dashboard`). Las secciones que no están en el menú (inicio, perfil) son libres.
+ */
+export function canAccessSection(role: string, section: string): boolean {
+  const item = MENU.find((option) => option.value === section);
+  return !item || item.permissions.includes(role as UserRole);
+}

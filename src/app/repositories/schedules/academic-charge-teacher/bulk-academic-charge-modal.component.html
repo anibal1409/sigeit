@@ -15,11 +15,13 @@
       <mat-label>Código de oficio (inicial)</mat-label>
       <input matInput type="number" formControlName="officeCode" min="1" />
       <mat-hint>Primer código: {{ officeCodeExample }}. Siguiente disponible: {{ data.suggestedNextOfficeCode }}</mat-hint>
+      <mat-error>Debe ser {{ data.suggestedNextOfficeCode }} o mayor (los anteriores ya se emitieron)</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="field-date">
       <mat-label>Fecha del oficio</mat-label>
       <input matInput type="date" formControlName="letterDate" />
+      <mat-error>El año debe estar entre {{ data.officeYear || 'el actual' }} y el año actual</mat-error>
     </mat-form-field>
   </div>
 

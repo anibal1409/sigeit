@@ -6,11 +6,13 @@ import {
 
 import { WelcomeComponent } from '../repositories/welcome/welcome.component';
 import { AdminComponent } from './admin.component';
+import { roleGuard } from './role.guard';
 
 const routes: Routes = [
   {
     path: '',
     component: AdminComponent,
+    canActivateChild: [roleGuard],
     children: [
       { path: '', component: WelcomeComponent },
       {

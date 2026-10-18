@@ -350,7 +350,7 @@ export class SectionsComponent implements OnInit, OnDestroy {
       data: {
         message: {
           title: 'Eliminar Sección',
-          body: `¿Está seguro que desea eliminar la sección <strong>${section.name}</strong>?`,
+          body: `¿Está seguro que desea eliminar la sección **${section.name}**?`,
         },
       },
       hasBackdrop: true,

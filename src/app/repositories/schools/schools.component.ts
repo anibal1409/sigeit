@@ -114,7 +114,7 @@ export class SchoolsComponent implements OnInit, OnDestroy {
       data: {
         message: {
           title: 'Eliminar escuela',
-          body: `¿Está seguro que desea eliminar la escuela <strong>${item.name}</strong>?`,
+          body: `¿Está seguro que desea eliminar la escuela **${item.name}**?`,
         },
       },
       hasBackdrop: true,

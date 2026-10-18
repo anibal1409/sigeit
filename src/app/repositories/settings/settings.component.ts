@@ -17,6 +17,7 @@ import {
   finalize,
   Subscription,
 } from 'rxjs';
+import { isHandledHttpError } from 'src/app/common/http-interceptor';
 import { StateService } from 'src/app/common/state';
 import { ToastService } from 'toast';
 
@@ -114,11 +115,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
             });
             this.toastService.success(`Correlativo de ${setting.departmentName} guardado`);
           },
-          error: (error) => this.toastService.error(
-            error?.status === 403
-              ? 'No tiene permiso para modificar este departamento'
-              : 'No se pudo guardar el correlativo',
-          ),
+          error: (error) => !isHandledHttpError(error) && this.toastService.error('No se pudo guardar el correlativo'),
         }),
     );
   }

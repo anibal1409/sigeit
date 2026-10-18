@@ -313,7 +313,7 @@ export class SectionsManageComponent implements OnInit, OnDestroy {
       data: {
         message: {
           title: 'Eliminar Sección',
-          body: `¿Eliminar la sección <strong>${row.name}</strong> de ${group.subject.name}? También se eliminan sus horarios e inscripciones.`,
+          body: `¿Eliminar la sección **${row.name}** de ${group.subject.name}? También se eliminan sus horarios e inscripciones.`,
         },
       },
       hasBackdrop: true,

@@ -98,7 +98,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
       data: {
         message: {
           title: 'Usuario creado con éxito',
-          body: `Fueron enviado al correo electrónico <strong>email</strong>, su usuario y contraseña.`,
+          body: `Fueron enviado al correo electrónico **email**, su usuario y contraseña.`,
         },
         hiddenActions: true,
       },

@@ -114,7 +114,7 @@ export class UsersComponent implements OnInit, OnDestroy {
       data: {
         message: {
           title: 'Eliminar usuario',
-          body: `¿Está seguro que desea eliminar el usuario <strong>${item.name}</strong>?`,
+          body: `¿Está seguro que desea eliminar el usuario **${item.name}**?`,
         },
       },
       hasBackdrop: true,

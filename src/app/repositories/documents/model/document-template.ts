@@ -63,20 +63,3 @@ export const DEFAULT_TEMPLATES: Record<TypeDocument, { body: string; signature: 
 export function fillTemplate(text: string, values: Record<string, string>): string {
   return text.replace(/\{(\w+)\}/g, (match, key) => (key in values ? values[key] : match));
 }
-
-export interface TemplateSegment {
-  text: string;
-  bold: boolean;
-}
-
-/** Divide una línea en tramos normales y en negrita (**texto**). */
-export function parseTemplateLine(line: string): Array<TemplateSegment> {
-  return line
-    .split(/(\*\*[^*]+\*\*)/)
-    .filter(Boolean)
-    .map((part) =>
-      part.startsWith('**') && part.endsWith('**')
-        ? { text: part.slice(2, -2), bold: true }
-        : { text: part, bold: false },
-    );
-}

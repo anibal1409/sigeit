@@ -50,15 +50,15 @@ const MAX_BLOCK_HOURS = 6;
 /** Sugerencias de bloques libres que se muestran a la vez. */
 const MAX_SUGGESTIONS = 15;
 
-/** Lista HTML de horarios en choque, precedida de un título; vacío si no hay. */
-function clashHtml(title: string, items: Array<ScheduleLiteDto>): string {
+/** Texto de los horarios en choque: un título y una viñeta por horario; vacío si no hay. */
+function clashText(title: string, items: Array<ScheduleLiteDto>): string {
   if (!items.length) {
     return '';
   }
-  const rows = items
-    .map((item) => `<li>${item.dayName} ${item.start} - ${item.end} (${item.subjectName} - ${item.sectionName}, ${item.classroomName})</li>`)
-    .join('');
-  return `${title}<ul>${rows}</ul>`;
+  const rows = items.map(
+    (item) => `• ${item.dayName} ${item.start} - ${item.end} (${item.subjectName} - ${item.sectionName}, ${item.classroomName})`,
+  );
+  return [title, ...rows].join('\n');
 }
 
 @Component({
@@ -296,15 +296,15 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     const all = (type: 'classroom' | 'teacher' | 'level') => conflicts.flatMap((item) => item[type]);
     const teacher = all('teacher');
     const teacherName = teacher.find((item) => item.teacherName)?.teacherName;
-    this.classroomScheduleClash = clashHtml('El aula ya está ocupada en:', all('classroom'));
-    this.teacherScheduleClash = clashHtml(
+    this.classroomScheduleClash = clashText('El aula ya está ocupada en:', all('classroom'));
+    this.teacherScheduleClash = clashText(
       teacherName
-        ? `El profesor <strong>${teacherName}</strong> o la sección ya tienen clase en:`
+        ? `El profesor **${teacherName}** o la sección ya tienen clase en:`
         : 'La sección ya tiene clase en:',
       teacher
     );
-    this.levelScheduleClash = clashHtml(
-      `Se solapa con asignaturas cuya demanda también se concentra en el nivel <strong>${conflicts[0]?.peakLevel}</strong>; los estudiantes de ese nivel tendrían que elegir entre ellas:`,
+    this.levelScheduleClash = clashText(
+      `Se solapa con asignaturas cuya demanda también se concentra en el nivel **${conflicts[0]?.peakLevel}**; los estudiantes de ese nivel tendrían que elegir entre ellas:`,
       all('level')
     );
     this.blocking = conflicts.some((item) => item.blocking);
@@ -314,7 +314,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   private clashBody(): string {
     return [this.classroomScheduleClash, this.teacherScheduleClash, this.levelScheduleClash]
       .filter(Boolean)
-      .join('<br>');
+      .join('\n\n');
   }
 
   saveWarning(): void {
@@ -328,10 +328,10 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   /** Pide confirmación mostrando los choques; ejecuta `onConfirm` si el usuario acepta. */
   private confirmClash(onConfirm: () => void): void {
     const question = this.blocking
-      ? '<h5>El aula, el profesor o la sección ya están ocupados en ese horario.<br>¿Desea guardar de todas formas?</h5>'
-      : '<h5>¿Desea continuar?</h5>';
+      ? '**El aula, el profesor o la sección ya están ocupados en ese horario.**\n**¿Desea guardar de todas formas?**'
+      : '**¿Desea continuar?**';
     const dialogRef = this.matDialog.open(ConfirmModalComponent, {
-      data: { message: { title: 'Choque de horarios', body: this.clashBody() + question } },
+      data: { message: { title: 'Choque de horarios', body: `${this.clashBody()}\n\n${question}` } },
       hasBackdrop: true,
     });
     dialogRef.componentInstance.closed.subscribe((res: boolean) => {
@@ -380,7 +380,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       data: {
         message: {
           title: 'No se pudo guardar el horario',
-          body: Array.isArray(message) ? message.join('<br>') : message || 'Error inesperado',
+          body: Array.isArray(message) ? message.join('\n') : message || 'Error inesperado',
         },
         hiddenActions: true,
       },

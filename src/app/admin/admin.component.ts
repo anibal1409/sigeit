@@ -20,7 +20,7 @@ import { PeriodItemVM } from '../repositories/periods/model';
 import { ActivePeriodService } from '../repositories/periods/use-cases';
 import { VersionInfoComponent, VersionService } from '../common/version';
 import { AdminService } from './admin.service';
-import { MENU } from './data';
+import { menuForRole } from './data';
 import { optionMenu } from './models';
 
 @Component({
@@ -111,8 +111,8 @@ export class AdminComponent implements OnInit, OnDestroy {
   sub$ = new Subscription();
   user!: UserStateVM;
   activePeriod: PeriodItemVM | null = null;
-  periodDisplayText: string = '';
-  currentVersion: string = '';
+  periodDisplayText = '';
+  currentVersion = '';
 
   optionProfile: optionMenu = {
     icon: '',
@@ -148,31 +148,13 @@ export class AdminComponent implements OnInit, OnDestroy {
       })
     );
     this.user = this.userStateService.getUser() as any;
-    this.sub$.add(
-      this.userStateService.getUser$().subscribe((user) => {
-        if (user) {
-          this.user = user;
-        }
-      })
-    );
     
     // Inicializar el período académico
     this.initializePeriod();
     
     const role = this.userStateService.getRole();
     if (role) {
-      this.optionList = MENU.filter((item) => (item.permissions.includes(role as any)))
-      .sort((a, b) => {
-        let sort = 0;
-        if (a.name > b.name) {
-          sort = 1;
-        } else if (a.name < b.name) {
-          sort = -1;
-        }
-        
-        return sort;
-      }
-      );
+      this.optionList = menuForRole(role);
       this.optionList.push({
         name: 'Salir',
         icon: 'logout',

@@ -162,7 +162,7 @@ export class SubjectsComponent implements OnInit, OnDestroy {
       data: {
         message: {
           title: 'Eliminar asignatura',
-          body: `¿Está seguro que desea eliminar el asignatura <strong>${item.name}</strong>?`,
+          body: `¿Está seguro que desea eliminar el asignatura **${item.name}**?`,
         },
       },
       hasBackdrop: true,

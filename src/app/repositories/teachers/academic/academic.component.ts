@@ -153,7 +153,7 @@ export class AcademicComponent implements OnInit, OnDestroy {
       data: {
         message: {
           title: 'Eliminar título',
-          body: `¿Está seguro que desea eliminar el título <strong>${degree.title}</strong> y sus notas?`,
+          body: `¿Está seguro que desea eliminar el título **${degree.title}** y sus notas?`,
         },
       },
       hasBackdrop: true,

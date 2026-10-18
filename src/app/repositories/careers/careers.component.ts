@@ -115,7 +115,7 @@ export class CareersComponent implements OnInit, OnDestroy {
       data: {
         message: {
           title: 'Eliminar carrera',
-          body: `¿Está seguro que desea eliminar la carrera <strong>${item.name}</strong>?`,
+          body: `¿Está seguro que desea eliminar la carrera **${item.name}**?`,
         },
       },
       hasBackdrop: true,

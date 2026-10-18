@@ -376,7 +376,7 @@ export class TeachersComponent implements OnInit, OnDestroy {
       data: {
         message: {
           title: 'Eliminar profesor',
-          body: `¿Está seguro que desea eliminar el profesor <strong>${item.firstName} ${item.lastName}</strong>?`,
+          body: `¿Está seguro que desea eliminar el profesor **${item.firstName} ${item.lastName}**?`,
         },
       },
       hasBackdrop: true,

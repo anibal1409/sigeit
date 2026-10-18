@@ -8,6 +8,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import {
   ActivatedRoute,
@@ -46,13 +47,16 @@ import {
 } from 'rxjs';
 import { ToastService } from 'toast';
 
+import {
+  isHandledHttpError,
+} from '../../../common/http-interceptor';
 import { StateService } from '../../../common/state';
+import { parseBoldText } from '../../../common/text';
 import { UserStateService } from '../../../common/user-state';
 import { DepartmentItemVM } from '../../departments';
 import {
   DEFAULT_TEMPLATES,
   fillTemplate,
-  parseTemplateLine,
   TypeDocument,
 } from '../../documents/model';
 import { PeriodVM } from '../../periods';
@@ -67,6 +71,22 @@ import {
   BulkAcademicChargeModalComponent,
   BulkAcademicChargeModalResult,
 } from './bulk-academic-charge-modal.component';
+
+/**
+ * Traduce los errores 400 de la reserva de números de oficio. La API responde en inglés
+ * cuando el número inicial no supera al último emitido o el año está fuera de rango.
+ */
+function officeNumberErrorMessage(error: HttpErrorResponse): string {
+  const message: string = error?.error?.message || '';
+  const lastIssued = /last issued number \((\d+)\)/.exec(message)?.[1];
+  if (lastIssued) {
+    return `El número inicial debe ser mayor que el último emitido (${lastIssued}).`;
+  }
+  if (/year/i.test(message)) {
+    return 'El año del oficio debe estar entre el último año emitido y el año actual.';
+  }
+  return 'No se pudo reservar el número de oficio';
+}
 
 interface LetterContext {
   template: { body: string; signature: string };
@@ -84,7 +104,7 @@ interface LetterContext {
 })
 export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
   teacherId!: number;
-  allTeachers: boolean = false;
+  allTeachers = false;
   departmentId!: number;
   form!: FormGroup;
   periodActive?: PeriodVM;
@@ -345,6 +365,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
             askOfficeNumber: officeSetting.askOfficeNumberOnBulk,
             suggestedNextOfficeCode: officeSetting.officeLastNumber + 1,
             officePrefix: officeSetting.officePrefix,
+            officeYear: officeSetting.officeYear,
           },
         })
         .afterClosed()
@@ -375,12 +396,10 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
         this.settingApi.settingControllerReserveOfficeNumbers(this.departmentId, { count, year, start }),
       );
       return reserved.codes;
-    } catch (error: any) {
-      this.toastService.error(
-        error?.status === 403
-          ? 'No tiene permiso para generar oficios de este departamento'
-          : error?.error?.message || 'No se pudo reservar el número de oficio',
-      );
+    } catch (error) {
+      if (!isHandledHttpError(error as HttpErrorResponse)) {
+        this.toastService.error(officeNumberErrorMessage(error as HttpErrorResponse));
+      }
       return null;
     }
   }
@@ -921,7 +940,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
       return new Paragraph({});
     }
     return new Paragraph({
-      children: parseTemplateLine(line).map((segment) => new TextRun({ text: segment.text, bold: segment.bold, size })),
+      children: parseBoldText(line).map((segment) => new TextRun({ text: segment.text, bold: segment.bold, size })),
       alignment,
     });
   }
@@ -974,7 +993,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
     });
   }
 
-  calculeText(academicCharge: Array<ScheduleItemVM>, index: number, str: string = ''): boolean {
+  calculeText(academicCharge: Array<ScheduleItemVM>, index: number, str = ''): boolean {
     let repeat = false;
     if (index !== 0) {
       repeat = (academicCharge[index - 1].section?.subject?.code === str ||

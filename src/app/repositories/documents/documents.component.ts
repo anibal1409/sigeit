@@ -155,7 +155,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
       data: {
         message: {
           title: 'Eliminar formato',
-          body: `¿Está seguro que desea eliminar el formato <strong>${item.name}</strong>?`,
+          body: `¿Está seguro que desea eliminar el formato **${item.name}**?`,
         },
       },
       hasBackdrop: true,

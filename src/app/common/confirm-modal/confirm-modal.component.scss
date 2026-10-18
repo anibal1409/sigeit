@@ -29,3 +29,9 @@ mat-card-content {
 .initialAlign {
   text-align: initial;
 }
+
+/* Cada línea del mensaje es un párrafo; las vacías conservan el espacio. */
+.body-line {
+  min-height: 1.25rem;
+  margin: 0;
+}

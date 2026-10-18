@@ -21,22 +21,25 @@ import {
 import { Subscription } from 'rxjs';
 import { ToastService } from 'toast';
 
-import { UserStateService } from '../../../common';
+import {
+  isHandledHttpError,
+  parseBoldText,
+  TextSegment,
+  UserStateService,
+} from '../../../common';
 import { DocumentsFileService } from '../documents.service';
 import {
   DEFAULT_TEMPLATES,
   DOCUMENT_VARIABLES,
   DocumentVM,
   fillTemplate,
-  parseTemplateLine,
   REQUIRED_BODY_VARIABLES,
-  TemplateSegment,
   TYPE_DOCUMENT_LABELS,
   TypeDocument,
 } from '../model';
 
 interface PreviewLine {
-  segments: Array<TemplateSegment>;
+  segments: Array<TextSegment>;
   table: boolean;
   /** Línea de copias (C.c.): a la izquierda y en letra pequeña */
   cc: boolean;
@@ -168,7 +171,7 @@ export class FormComponent implements OnInit, OnDestroy {
           this.toastService.success('Formato guardado');
           this.cancel();
         },
-        error: (error) => this.toastService.error(errorMessage(error)),
+        error: (error) => !isHandledHttpError(error) && this.toastService.error(errorMessage(error)),
       }),
     );
   }
@@ -178,15 +181,13 @@ export class FormComponent implements OnInit, OnDestroy {
     return text.split('\n').map((line) => ({
       table: line.trim() === '{tabla}',
       cc: line.trim().startsWith('C.c.'),
-      segments: parseTemplateLine(fillTemplate(line, values)),
+      segments: parseBoldText(fillTemplate(line, values)),
     }));
   }
 }
 
-function errorMessage(error: any): string {
-  if (error?.status === 403) {
-    return 'No tiene permiso para gestionar formatos de este departamento';
-  }
+/** Mensaje en español para los errores de guardado que no trata el interceptor. */
+function errorMessage(error: { error?: { message?: string } }): string {
   if (error?.error?.message === 'Document already exists.') {
     return 'Ya existe un formato con ese nombre en el departamento';
   }

@@ -125,7 +125,7 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
       data: {
         message: {
           title: 'Eliminar departamento',
-          body: `¿Está seguro que desea eliminar el departmento <strong>${item.name}</strong>?`,
+          body: `¿Está seguro que desea eliminar el departmento **${item.name}**?`,
         },
       },
       hasBackdrop: true,
