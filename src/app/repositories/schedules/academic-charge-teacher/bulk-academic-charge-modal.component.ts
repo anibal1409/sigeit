@@ -16,13 +16,17 @@ import { TeacherItemVM } from '../../teachers';
 
 export interface BulkAcademicChargeModalData {
   teachers: TeacherItemVM[];
+  /** Si el departamento pide el número inicial en la generación masiva */
+  askOfficeNumber: boolean;
   suggestedNextOfficeCode: number;
+  officePrefix: string;
 }
 
 export type BulkDownloadMode = 'separate' | 'zip';
 
 export interface BulkAcademicChargeModalResult {
-  officeCodeStart: number;
+  /** Solo si se pide el número; si no, el backend asigna los siguientes. */
+  officeCodeStart: number | null;
   letterDate: string;
   selectedTeacherIds: number[];
   downloadMode: BulkDownloadMode;
@@ -47,7 +51,7 @@ export class BulkAcademicChargeModalComponent {
     const controls: Record<string, unknown> = {
       officeCode: [
         data.suggestedNextOfficeCode,
-        [Validators.required, Validators.min(1)],
+        data.askOfficeNumber ? [Validators.required, Validators.min(1)] : [],
       ],
       letterDate: [this.todayIso(), Validators.required],
       downloadMode: ['separate' as BulkDownloadMode],
@@ -87,11 +91,18 @@ export class BulkAcademicChargeModalComponent {
       return;
     }
     this.dialogRef.close({
-      officeCodeStart: +(v['officeCode'] as number),
+      officeCodeStart: this.data.askOfficeNumber ? +(v['officeCode'] as number) : null,
       letterDate: String(v['letterDate']),
       selectedTeacherIds,
       downloadMode: v['downloadMode'] as BulkDownloadMode,
     });
+  }
+
+  /** Código de ejemplo con el prefijo y el año del oficio, p. ej. DIS-005/2026. */
+  get officeCodeExample(): string {
+    const number = String(this.form.get('officeCode')?.value || 1).padStart(3, '0');
+    const year = String(this.form.get('letterDate')?.value || '').slice(0, 4);
+    return `${this.data.officePrefix}-${number}/${year}`;
   }
 
   private todayIso(): string {

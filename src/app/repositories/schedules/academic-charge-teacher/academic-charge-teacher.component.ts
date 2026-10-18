@@ -37,13 +37,24 @@ import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
 import moment from 'moment';
 import {
+  DocumentService,
+  SettingService,
+} from 'dashboard-sdk';
+import {
   firstValueFrom,
   Subscription,
 } from 'rxjs';
+import { ToastService } from 'toast';
 
 import { StateService } from '../../../common/state';
 import { UserStateService } from '../../../common/user-state';
 import { DepartmentItemVM } from '../../departments';
+import {
+  DEFAULT_TEMPLATES,
+  fillTemplate,
+  parseTemplateLine,
+  TypeDocument,
+} from '../../documents/model';
 import { PeriodVM } from '../../periods';
 import { TeacherItemVM } from '../../teachers';
 import {
@@ -56,6 +67,15 @@ import {
   BulkAcademicChargeModalComponent,
   BulkAcademicChargeModalResult,
 } from './bulk-academic-charge-modal.component';
+
+interface LetterContext {
+  template: { body: string; signature: string };
+  logoBuffer: ArrayBuffer;
+  schoolName: string;
+  departmentName: string;
+  letterMoment: moment.Moment;
+  periodName: string;
+}
 
 @Component({
   selector: 'app-academic-charge-teacher',
@@ -93,6 +113,9 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
+    private documentApi: DocumentService,
+    private settingApi: SettingService,
+    private toastService: ToastService,
   ) { }
 
   ngOnDestroy(): void {
@@ -298,26 +321,30 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
   }
 
   openBulkChargeModal(): void {
-    if (!this.periodActive?.id) {
+    if (!this.periodActive?.id || !this.departmentId) {
       return;
     }
-    void firstValueFrom(
-      this.schedulesService.getTeachers$({
-        schoolId: this.userStateService.getSchoolId(),
-        status: true,
-      }),
-    ).then((allActiveTeachers) => {
+    void Promise.all([
+      firstValueFrom(
+        this.schedulesService.getTeachers$({
+          schoolId: this.userStateService.getSchoolId(),
+          status: true,
+        }),
+      ),
+      firstValueFrom(this.settingApi.settingControllerFindDepartment(this.departmentId)),
+    ]).then(([allActiveTeachers, officeSetting]) => {
       if (!allActiveTeachers.length) {
         return;
       }
-      const suggestedNext = +(sessionStorage.getItem('codeDepartment') || 248) + 1;
       this.dialog
         .open(BulkAcademicChargeModalComponent, {
           width: '40rem',
           maxWidth: '95vw',
           data: {
             teachers: allActiveTeachers.slice(),
-            suggestedNextOfficeCode: suggestedNext,
+            askOfficeNumber: officeSetting.askOfficeNumberOnBulk,
+            suggestedNextOfficeCode: officeSetting.officeLastNumber + 1,
+            officePrefix: officeSetting.officePrefix,
           },
         })
         .afterClosed()
@@ -326,12 +353,50 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
             void this.runBulkAcademicCharges(result, allActiveTeachers);
           }
         });
-    });
+    }).catch(() => this.toastService.error('No se pudo leer la configuración de oficios del departamento'));
   }
 
-  private formatDisCode(codeDepartment: number, year: string): string {
-    const n = Math.max(0, Math.floor(Number(codeDepartment)));
-    return `DIS-${String(n).padStart(3, '0')}/${year}`;
+  /** Formato activo del departamento; sin formato (404) se usa el texto por defecto. */
+  private async loadTemplate(): Promise<{ body: string; signature: string }> {
+    try {
+      const format = await firstValueFrom(
+        this.documentApi.documentControllerFindActive(this.departmentId, TypeDocument.AcademicCharge),
+      );
+      return { body: format.body, signature: format.signature };
+    } catch {
+      return DEFAULT_TEMPLATES[TypeDocument.AcademicCharge];
+    }
+  }
+
+  /** Reserva los números de oficio en el backend: nunca se repiten entre usuarios. */
+  private async reserveCodes(count: number, year: number, start?: number): Promise<Array<string> | null> {
+    try {
+      const reserved = await firstValueFrom(
+        this.settingApi.settingControllerReserveOfficeNumbers(this.departmentId, { count, year, start }),
+      );
+      return reserved.codes;
+    } catch (error: any) {
+      this.toastService.error(
+        error?.status === 403
+          ? 'No tiene permiso para generar oficios de este departamento'
+          : error?.error?.message || 'No se pudo reservar el número de oficio',
+      );
+      return null;
+    }
+  }
+
+  /** Datos comunes de la carta: formato, logo y nombres de escuela y departamento. */
+  private async loadLetterContext(letterMoment: moment.Moment, periodName: string): Promise<LetterContext> {
+    const department = this.departments.find((item) => item.id === this.departmentId);
+    const img = await this.schedulesService.getFile('assets/circle-logo-udo.png');
+    return {
+      template: await this.loadTemplate(),
+      logoBuffer: (await img?.arrayBuffer()) as ArrayBuffer,
+      schoolName: department?.school?.name || '',
+      departmentName: department?.name || '',
+      letterMoment,
+      periodName,
+    };
   }
 
   private async runBulkAcademicCharges(
@@ -347,15 +412,20 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
     if (!letterMoment.isValid()) {
       return;
     }
-    const year = letterMoment.format('YYYY');
     const nameSemester = period.name;
-    const img = await this.schedulesService.getFile('assets/circle-logo-udo.png');
-    const logoBuffer = (await img?.arrayBuffer()) as ArrayBuffer;
-    let officeNum = result.officeCodeStart;
+    const codes = await this.reserveCodes(
+      result.selectedTeacherIds.length,
+      letterMoment.year(),
+      result.officeCodeStart ?? undefined,
+    );
+    if (!codes) {
+      return;
+    }
+    const context = await this.loadLetterContext(letterMoment, nameSemester);
     const downloadMode = result.downloadMode ?? 'separate';
     const zipEntries: { name: string; blob: Blob }[] = [];
 
-    for (const teacherId of result.selectedTeacherIds) {
+    for (const [index, teacherId] of result.selectedTeacherIds.entries()) {
       const schedules = await firstValueFrom(
         this.schedulesService.getSchedules$({
           teacherId,
@@ -367,15 +437,8 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
       const nameTeacher = teacherList
         .find((t) => t.id === teacherId)
         ?.fullName?.toUpperCase() || '';
-      const code = this.formatDisCode(officeNum, year);
-      const doc = this.buildAcademicChargeDocument(
-        logoBuffer,
-        schedules,
-        nameTeacher,
-        code,
-        letterMoment,
-        nameSemester,
-      );
+      const code = codes[index];
+      const doc = this.buildAcademicChargeDocument(context, schedules, nameTeacher, code);
       const blob = await Packer.toBlob(doc);
       const fileName = this.buildAcademicChargeFileName(code, nameTeacher, nameSemester);
       if (downloadMode === 'zip') {
@@ -383,7 +446,6 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
       } else {
         saveAs(blob, fileName);
       }
-      officeNum += 1;
     }
 
     if (downloadMode === 'zip' && zipEntries.length) {
@@ -402,8 +464,6 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
       });
       saveAs(zipBlob, `${zipInnerFolder}.zip`);
     }
-
-    sessionStorage.setItem('codeDepartment', String(officeNum - 1));
   }
 
   private buildAcademicChargeFileName(
@@ -430,40 +490,37 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
 
   async createCharge(): Promise<void> {
     const period = this.periodActive;
-    if (!this.teacherId || !period?.id) {
+    if (!this.teacherId || !period?.id || !this.departmentId) {
       return;
     }
     moment.locale('es');
-    let codeDepartment = +(sessionStorage.getItem('codeDepartment') || 248);
-    codeDepartment += 1;
-    const nameTeacher = this.teachers.find((teacher) => teacher.id === this.teacherId)?.fullName?.toUpperCase();
-    const nameSemester = period.name;
     const letterMoment = moment();
-    const code = this.formatDisCode(codeDepartment, letterMoment.format('YYYY'));
-    const img = await this.schedulesService.getFile('assets/circle-logo-udo.png');
-    const logoBuffer = (await img?.arrayBuffer()) as ArrayBuffer;
-    const doc = this.buildAcademicChargeDocument(
-      logoBuffer,
-      this.academicCharge,
-      nameTeacher || '',
-      code,
-      letterMoment,
-      nameSemester,
-    );
+    const codes = await this.reserveCodes(1, letterMoment.year());
+    if (!codes) {
+      return;
+    }
+    const nameTeacher = this.teachers.find((teacher) => teacher.id === this.teacherId)?.fullName?.toUpperCase() || '';
+    const context = await this.loadLetterContext(letterMoment, period.name);
+    const doc = this.buildAcademicChargeDocument(context, this.academicCharge, nameTeacher, codes[0]);
     const blob = await Packer.toBlob(doc);
-    saveAs(blob, this.buildAcademicChargeFileName(code, nameTeacher || '', nameSemester));
-    sessionStorage.setItem('codeDepartment', codeDepartment.toString());
+    saveAs(blob, this.buildAcademicChargeFileName(codes[0], nameTeacher, period.name));
   }
 
   private buildAcademicChargeDocument(
-    logoBuffer: ArrayBuffer,
+    context: LetterContext,
     academicCharge: Array<ScheduleItemVM>,
     nameTeacher: string,
     code: string,
-    letterMoment: moment.Moment,
-    nameSemester: string,
   ): Document {
+    const { logoBuffer, letterMoment } = context;
     const totalHours = academicCharge.reduce((acc, curr) => acc + (curr?.hours || 0), 0);
+    const values = {
+      profesor: nameTeacher,
+      periodo: context.periodName,
+      horas: String(totalHours),
+      departamento: context.departmentName,
+    };
+    const tableBlocks = this.buildChargeTable(academicCharge, totalHours);
     return new Document({
       sections: [
         {
@@ -749,7 +806,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
             new Paragraph({
               children: [
                 new TextRun({
-                  text: 'ESCUELA DE INGENIERÍA Y CIENCIAS APLICADAS',
+                  text: context.schoolName.toUpperCase(),
                   bold: true,
                   size: '12pt',
                 }),
@@ -759,7 +816,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
             new Paragraph({
               children: [
                 new TextRun({
-                  text: 'DEPARTAMENTO DE INGENIERÍA DE SISTEMAS',
+                  text: `DEPARTAMENTO DE ${context.departmentName.toUpperCase()}`,
                   bold: true,
                   size: '12pt',
                 }),
@@ -789,163 +846,83 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
               ],
               alignment: AlignmentType.RIGHT,
             }),
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: 'Ciudadano(a)',
-                  size: '12pt',
-                }),
-              ],
-            }),
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: 'PROF. ' + nameTeacher,
-                  size: '12pt',
-                  bold: true,
-                }),
-              ],
-            }),
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: 'Presente',
-                  size: '12pt',
-                }),
-              ],
-            }),
-            new Paragraph({}),
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: 'Estimado Profesor:',
-                  size: '12pt',
-                }),
-              ],
-            }),
-            new Paragraph({}),
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: `Es grato dirigirme a usted, en la oportunidad de saludarle y hacerle entrega de su Carga Académica para el Periodo Académico ${nameSemester}; que se detalla a continuación:`,
-                  size: '12pt',
-                }),
-              ],
-              alignment: AlignmentType.JUSTIFIED,
-            }),
-            new Paragraph({}),
-            new Table({
-              width: {
-                size: 100,
-                type: WidthType.PERCENTAGE,
-              },
-              rows: [
-                new TableRow({
-                  children: [
-                    this.createCellHeadTable('Código', 20),
-                    this.createCellHeadTable('Asignatura', 30),
-                    this.createCellHeadTable('Sección', 10),
-                    this.createCellHeadTable('Día', 10),
-                    this.createCellHeadTable('Aula', 10),
-                    this.createCellHeadTable('Desde', 10),
-                    this.createCellHeadTable('Hasta', 10),
-                  ],
-                }),
-                ...academicCharge.map(
-                  (charge, index) => (new TableRow({
-                    children: [
-                      this.createCellTable(this.calculeText(academicCharge, index, charge.section?.subject?.code) ? '' : charge.section?.subject?.code || '', 20),
-                      this.createCellTable(this.calculeText(academicCharge, index, charge.section?.subject?.name) ? '' : charge.section?.subject?.name || '', 30, AlignmentType.LEFT as any),
-                      this.createCellTable(this.calculeText(academicCharge, index, charge.section?.name) ? '' : charge.section?.name || '', 10),
-                      this.createCellTable(charge.day?.abbreviation || '', 10),
-                      this.createCellTable(charge.classroom?.name || '', 10),
-                      this.createCellTable(charge.start || '', 10),
-                      this.createCellTable(charge.end || '', 10),
-                    ]
-                  }))
-                ),
-              ]
-            }),
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: `Total de Horas académicas: ${totalHours}`,
-                  size: '12pt',
-                  bold: true,
-                }),
-              ],
-            }),
-            new Paragraph({}),
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: `En tal sentido, le auguro un semestre de éxitos profesionales y de buenos rendimientos para los estudiantes que cursan la(s) asignatura(s) que usted dictará en la Carrera de Ingeniería de Sistemas y en pro de enaltecer a nuestra Casa más Alta.`,
-                  size: '12pt',
-                }),
-              ],
-              alignment: AlignmentType.JUSTIFIED,
-            }),
-            new Paragraph({}),
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: `Sin otro particular, reiterándole mi aprecio y consideración.`,
-                  size: '12pt',
-                }),
-              ],
-            }),
-            new Paragraph({}),
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: `Le saluda`,
-                  size: '12pt',
-                }),
-              ],
-            }),
-            new Paragraph({}),
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: `Atentamente,`,
-                  size: '12pt',
-                }),
-              ],
-              alignment: AlignmentType.CENTER,
-            }),
-            new Paragraph({}),
-            new Paragraph({}),
-            new Paragraph({}),
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: `Prof. MSc. Roger Díaz`,
-                  size: '12pt',
-                  bold: true,
-                }),
-              ],
-              alignment: AlignmentType.CENTER,
-            }),
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: `Jefe de Departamento`,
-                  size: '12pt',
-                }),
-              ],
-              alignment: AlignmentType.CENTER,
-            }),
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: `C.c. Expediente, Archivo / EICA`,
-                  size: '8pt',
-                }),
-              ],
+            ...context.template.body.split('\n').flatMap((line) =>
+              line.trim() === '{tabla}'
+                ? tableBlocks
+                : [this.templateParagraph(fillTemplate(line, values), AlignmentType.JUSTIFIED)],
+            ),
+            ...context.template.signature.split('\n').map((line) => {
+              const text = fillTemplate(line, values);
+              // Las copias (C.c.) van a la izquierda y en letra pequeña, como en la carta original.
+              return text.trim().startsWith('C.c.')
+                ? this.templateParagraph(text, AlignmentType.LEFT, '8pt')
+                : this.templateParagraph(text, AlignmentType.CENTER);
             }),
           ],
         },
       ],
+    });
+  }
+
+  /** Tabla de horarios y total de horas: se ubica donde el formato tiene {tabla}. */
+  private buildChargeTable(academicCharge: Array<ScheduleItemVM>, totalHours: number): Array<Table | Paragraph> {
+    return [
+      new Table({
+        width: {
+          size: 100,
+          type: WidthType.PERCENTAGE,
+        },
+        rows: [
+          new TableRow({
+            children: [
+              this.createCellHeadTable('Código', 20),
+              this.createCellHeadTable('Asignatura', 30),
+              this.createCellHeadTable('Sección', 10),
+              this.createCellHeadTable('Día', 10),
+              this.createCellHeadTable('Aula', 10),
+              this.createCellHeadTable('Desde', 10),
+              this.createCellHeadTable('Hasta', 10),
+            ],
+          }),
+          ...academicCharge.map(
+            (charge, index) => (new TableRow({
+              children: [
+                this.createCellTable(this.calculeText(academicCharge, index, charge.section?.subject?.code) ? '' : charge.section?.subject?.code || '', 20),
+                this.createCellTable(this.calculeText(academicCharge, index, charge.section?.subject?.name) ? '' : charge.section?.subject?.name || '', 30, AlignmentType.LEFT as any),
+                this.createCellTable(this.calculeText(academicCharge, index, charge.section?.name) ? '' : charge.section?.name || '', 10),
+                this.createCellTable(charge.day?.abbreviation || '', 10),
+                this.createCellTable(charge.classroom?.name || '', 10),
+                this.createCellTable(charge.start || '', 10),
+                this.createCellTable(charge.end || '', 10),
+              ]
+            }))
+          ),
+        ]
+      }),
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: `Total de Horas académicas: ${totalHours}`,
+            size: '12pt',
+            bold: true,
+          }),
+        ],
+      }),
+    ];
+  }
+
+  /** Párrafo de una línea del formato; línea vacía = espacio, **texto** = negrita. */
+  private templateParagraph(
+    line: string,
+    alignment: (typeof AlignmentType)[keyof typeof AlignmentType],
+    size: `${number}pt` = '12pt',
+  ): Paragraph {
+    if (!line.trim()) {
+      return new Paragraph({});
+    }
+    return new Paragraph({
+      children: parseTemplateLine(line).map((segment) => new TextRun({ text: segment.text, bold: segment.bold, size })),
+      alignment,
     });
   }
 

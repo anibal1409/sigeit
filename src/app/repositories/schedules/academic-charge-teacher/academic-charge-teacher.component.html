@@ -48,7 +48,7 @@
         type="button"
         class="bulk-charge-btn"
         (click)="openBulkChargeModal()"
-        [disabled]="loading || !periodActive?.id"
+        [disabled]="loading || !periodActive?.id || !departmentId"
       >
         <mat-icon>library_add</mat-icon>
         Carga masiva
