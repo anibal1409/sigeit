@@ -6,9 +6,12 @@ import {
 import {
   AbstractControl,
   FormBuilder,
+  FormGroup,
   ValidationErrors,
   Validators,
 } from '@angular/forms';
+
+import { ResponseDepartmentSettingDto } from 'dashboard-sdk';
 
 import {
   finalize,
@@ -47,6 +50,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
   loading = false;
   loadError = false;
 
+  /** Una fila editable por departamento con su correlativo de oficios. */
+  officeRows: Array<{ setting: ResponseDepartmentSettingDto; form: FormGroup }> = [];
+  readonly currentYear = new Date().getFullYear();
+
   private sub$ = new Subscription();
 
   constructor(
@@ -58,6 +65,62 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.load();
+    this.loadOfficeSettings();
+  }
+
+  private loadOfficeSettings(): void {
+    this.sub$.add(
+      this.settingsService.findDepartments$().subscribe({
+        next: (settings) => (this.officeRows = settings.map((setting) => ({ setting, form: this.officeForm(setting) }))),
+        error: () => this.toastService.error('No se pudieron cargar los correlativos de oficio'),
+      }),
+    );
+  }
+
+  private officeForm(setting: ResponseDepartmentSettingDto): FormGroup {
+    return this.formBuilder.group({
+      officePrefix: [setting.officePrefix, [Validators.required, Validators.pattern(/^[A-Z0-9]{1,10}$/)]],
+      officeLastNumber: [setting.officeLastNumber, [Validators.required, Validators.min(0)]],
+      askOfficeNumberOnBulk: [setting.askOfficeNumberOnBulk],
+    });
+  }
+
+  /** Código de ejemplo del siguiente oficio, p. ej. DIS-250/2026. */
+  nextCode(form: FormGroup): string {
+    const { officePrefix, officeLastNumber } = form.value;
+    return `${officePrefix || '—'}-${String((+officeLastNumber || 0) + 1).padStart(3, '0')}/${this.currentYear}`;
+  }
+
+  saveOffice(row: { setting: ResponseDepartmentSettingDto; form: FormGroup }): void {
+    if (row.form.invalid) {
+      row.form.markAllAsTouched();
+      return;
+    }
+    const { officePrefix, officeLastNumber, askOfficeNumberOnBulk } = row.form.value;
+    this.sub$.add(
+      this.settingsService
+        .updateDepartment$(row.setting.departmentId, {
+          officePrefix,
+          officeLastNumber: +officeLastNumber,
+          askOfficeNumberOnBulk,
+        })
+        .subscribe({
+          next: (setting) => {
+            row.setting = setting;
+            row.form.reset({
+              officePrefix: setting.officePrefix,
+              officeLastNumber: setting.officeLastNumber,
+              askOfficeNumberOnBulk: setting.askOfficeNumberOnBulk,
+            });
+            this.toastService.success(`Correlativo de ${setting.departmentName} guardado`);
+          },
+          error: (error) => this.toastService.error(
+            error?.status === 403
+              ? 'No tiene permiso para modificar este departamento'
+              : 'No se pudo guardar el correlativo',
+          ),
+        }),
+    );
   }
 
   ngOnDestroy(): void {

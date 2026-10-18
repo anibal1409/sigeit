@@ -76,3 +76,55 @@
     </mat-card-actions>
   </form>
 </mat-card>
+
+<mat-card class="settings-card">
+  <mat-card-header>
+    <mat-card-title>Correlativos de oficio</mat-card-title>
+    <mat-card-subtitle>
+      Numeración de los oficios de cada departamento. Se reinicia cada año.
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p *ngIf="!officeRows.length" class="empty">No hay departamentos para mostrar.</p>
+    <div class="office-table" *ngIf="officeRows.length" role="table" aria-label="Correlativos por departamento">
+      <div class="office-row office-head" role="row">
+        <span role="columnheader">Departamento</span>
+        <span role="columnheader">Prefijo</span>
+        <span role="columnheader">Último número ({{ currentYear }})</span>
+        <span role="columnheader">Próximo código</span>
+        <span role="columnheader">Pedir en masiva</span>
+        <span role="columnheader"><span class="sr-only">Acciones</span></span>
+      </div>
+      <form
+        *ngFor="let row of officeRows"
+        class="office-row"
+        role="row"
+        [formGroup]="row.form"
+        (ngSubmit)="saveOffice(row)"
+      >
+        <span role="cell" class="department">{{ row.setting.departmentName }}</span>
+        <mat-form-field role="cell" subscriptSizing="dynamic">
+          <mat-label>Prefijo</mat-label>
+          <input matInput formControlName="officePrefix" maxlength="10" />
+          <mat-error>Mayúsculas y números, máx. 10</mat-error>
+        </mat-form-field>
+        <mat-form-field role="cell" subscriptSizing="dynamic">
+          <mat-label>Último número</mat-label>
+          <input matInput type="number" min="0" formControlName="officeLastNumber" />
+          <mat-error>Debe ser 0 o mayor</mat-error>
+        </mat-form-field>
+        <span role="cell" class="next-code">{{ nextCode(row.form) }}</span>
+        <mat-checkbox role="cell" formControlName="askOfficeNumberOnBulk" aria-label="Pedir número inicial en la generación masiva"></mat-checkbox>
+        <span role="cell">
+          <button mat-stroked-button color="primary" type="submit" [disabled]="row.form.pristine || row.form.invalid">
+            Guardar
+          </button>
+        </span>
+      </form>
+    </div>
+    <p class="hint">
+      «Pedir en masiva»: si está marcado, la generación masiva de cargas académicas pide el número inicial
+      (propone el siguiente disponible); si no, asigna los siguientes números automáticamente.
+    </p>
+  </mat-card-content>
+</mat-card>

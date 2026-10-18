@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 
 import {
+  ResponseDepartmentSettingDto,
   SettingService,
+  UpdateDepartmentSettingDto,
   UpdateSettingDto,
 } from 'dashboard-sdk';
 import {
@@ -25,5 +27,14 @@ export class SettingsService {
     return this.settingApi
       .settingControllerUpdate(setting as UpdateSettingDto)
       .pipe(map(Setting2SettingVm));
+  }
+
+  /** Correlativo de oficios de cada departamento. */
+  findDepartments$(): Observable<Array<ResponseDepartmentSettingDto>> {
+    return this.settingApi.settingControllerFindDepartments();
+  }
+
+  updateDepartment$(departmentId: number, changes: UpdateDepartmentSettingDto): Observable<ResponseDepartmentSettingDto> {
+    return this.settingApi.settingControllerUpdateDepartment(departmentId, changes);
   }
 }
