@@ -16,6 +16,7 @@ api/period.service.ts
 api/schedule.service.ts
 api/school.service.ts
 api/section.service.ts
+api/setting.service.ts
 api/statistics.service.ts
 api/subject-demand.service.ts
 api/subject.service.ts
@@ -86,6 +87,7 @@ model/response-schedule-dto.ts
 model/response-school-dto.ts
 model/response-section-dto.ts
 model/response-section-teacher-dto.ts
+model/response-setting-dto.ts
 model/response-subject-demand-dto.ts
 model/response-subject-dto.ts
 model/response-subject-history-dto.ts
@@ -123,6 +125,7 @@ model/update-period-dto.ts
 model/update-schedule-dto.ts
 model/update-school-dto.ts
 model/update-section-dto.ts
+model/update-setting-dto.ts
 model/update-subject-dto.ts
 model/update-teacher-degree-dto.ts
 model/update-teacher-dto.ts
