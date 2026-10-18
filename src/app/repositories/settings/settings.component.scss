@@ -1,57 +1,47 @@
-#modal-title {
-  font-size: 2rem;
-  margin-top: 1rem;
+.settings-card {
+  max-width: 56rem;
+  margin: 1.5rem auto;
+  padding: 1rem;
 }
 
-#modal-header {
-  justify-content: space-between;
-}
-
-#modal-close-button {
-  top: 0.35rem;
-  width: 2rem;
-  height: 2rem;
-}
-
-#modal-actions {
-  justify-content: space-around;
-}
-
-#modal-card {
-  min-width: 22rem;
-  overflow: hidden;
-}
-
-#modal-image {
+.row-fields {
   display: flex;
-  justify-content: center;
-  margin-bottom: 4rem;
-}
+  flex-wrap: wrap;
+  gap: 0 1rem;
 
-#modal-form-field-container {
-  width: 100%;
-  margin: auto;
-}
+  mat-form-field {
+    flex: 1 1 12rem;
+  }
 
-.img-container {
-  sm-soc-avatar-control {
-    --img-size: 10rem;
+  .grow {
+    flex: 3 1 20rem;
   }
 }
 
-.inputs-container {
-  display: flex;
-  gap: 1rem;
+.full {
+  width: 100%;
 }
 
-.img-container img {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center;
+.section-title {
+  margin: 0.5rem 0 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #495057;
+}
+
+.form-error {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: #c62828;
+}
+
+.load-error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 1rem 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background: #fdecea;
+  color: #c62828;
 }

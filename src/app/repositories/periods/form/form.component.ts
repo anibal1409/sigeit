@@ -24,6 +24,7 @@ import {
   STAGE_PERIODS_VALUE,
   StagePeriod,
 } from '../model';
+import { SettingsService } from '../../settings/settings.service';
 import { PeriodsService } from '../periods.service';
 
 @Component({
@@ -75,6 +76,7 @@ export class FormComponent implements OnInit, OnDestroy {
     private periodsService: PeriodsService,
     private formBuilder: FormBuilder,
     private toastService: ToastService,
+    private settingsService: SettingsService,
     @Inject(MAT_DIALOG_DATA) public data: PeriodVM,
   ) { }
 
@@ -110,27 +112,48 @@ export class FormComponent implements OnInit, OnDestroy {
     this.intervalsEnd = intervals.end;
   }
 
+  /** Periodo nuevo: toma el horario por defecto de Configuración; si falla, quedan los valores fijos. */
+  private loadDefaults(): void {
+    this.sub$.add(
+      this.settingsService.find$().subscribe({
+        next: ({ duration, interval, startTime, endTime }) => {
+          if (this.id || !this.form.pristine) return;
+          // duration/interval emiten para regenerar las opciones de hora antes de elegirlas.
+          this.form.patchValue({ duration: duration || 45, interval: interval ?? 5 });
+          this.form.patchValue({
+            startTime: this.intervalsStart.includes(startTime as never) ? startTime : this.form.value.startTime,
+            endTime: this.intervalsEnd.includes(endTime as never) ? endTime : this.form.value.endTime,
+          });
+          this.form.markAsPristine();
+        },
+        error: () => undefined,
+      }),
+    );
+  }
+
   loadData(): void {
-    if (this.data?.id) {
-      this.id = this.data?.id;
-      this.sub$.add(
-        this.periodsService
-          .find$({ id: this.id })
-          .subscribe((entity) => {
-            if (entity) {
-              this.oldFormValue = entity;
-              this.form.patchValue(
-                {
-                  ...entity,
-                },
-                {
-                  emitEvent: false,
-                }
-              );
-            }
-          })
-      );
+    if (!this.data?.id) {
+      this.loadDefaults();
+      return;
     }
+    this.id = this.data?.id;
+    this.sub$.add(
+      this.periodsService
+        .find$({ id: this.id })
+        .subscribe((entity) => {
+          if (entity) {
+            this.oldFormValue = entity;
+            this.form.patchValue(
+              {
+                ...entity,
+              },
+              {
+                emitEvent: false,
+              }
+            );
+          }
+        })
+    );
   }
 
   clickClosed(): void {

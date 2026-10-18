@@ -1,28 +1,29 @@
 import { Injectable } from '@angular/core';
-import { FindSettingService } from './use-cases';
-import { MatDialog } from '@angular/material/dialog';
-import { SettingsComponent } from './settings.component';
-import { Observable } from 'rxjs';
 
-@Injectable()
+import {
+  SettingService,
+  UpdateSettingDto,
+} from 'dashboard-sdk';
+import {
+  map,
+  Observable,
+} from 'rxjs';
+
+import { Setting2SettingVm } from './mappers';
+import { SettingVM } from './model';
+
+// En root: también lo usa el formulario de periodos para los valores por defecto.
+@Injectable({ providedIn: 'root' })
 export class SettingsService {
-  constructor(
-    private dialog: MatDialog,
-    private findSettingsService: FindSettingService
-  ) {}
+  constructor(private settingApi: SettingService) {}
 
-  open(): void {
-    const dialogRef = this.dialog.open(SettingsComponent, {
-      hasBackdrop: true,
-      disableClose: true,
-    });
-
-    (dialogRef.componentInstance as SettingsComponent).closed.subscribe(() => {
-      dialogRef.close();
-    });
+  find$(): Observable<SettingVM> {
+    return this.settingApi.settingControllerFind().pipe(map(Setting2SettingVm));
   }
 
-  findSettings$(): Observable<any> {
-    return this.findSettingsService.exec();
+  update$(setting: SettingVM): Observable<SettingVM> {
+    return this.settingApi
+      .settingControllerUpdate(setting as UpdateSettingDto)
+      .pipe(map(Setting2SettingVm));
   }
 }

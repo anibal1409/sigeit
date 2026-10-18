@@ -1,135 +1,78 @@
-<!-- Modal -->
-
-<mat-card id="modal-card">
-  <mat-card-header id="modal-header">
-    <mat-card-title><p id="modal-title">Configuración</p></mat-card-title>
-    <button
-      id="modal-close-button"
-      type="button"
-      mat-fab
-      color="basic"
-      aria-label="Close"
-      (click)="closeModal(false)"
-    >
-      <mat-icon>close</mat-icon>
-    </button>
+<mat-card class="settings-card">
+  <mat-card-header>
+    <mat-card-title>Configuración</mat-card-title>
+    <mat-card-subtitle>
+      Datos de la institución y valores por defecto del horario
+    </mat-card-subtitle>
   </mat-card-header>
 
-  <form class="formControl" [formGroup]="form!" (ngSubmit)="closeModal(true)">
+  <div *ngIf="loadError" class="load-error" role="alert">
+    <mat-icon>error_outline</mat-icon>
+    <span>No se pudo cargar la configuración.</span>
+    <button mat-button color="primary" type="button" (click)="load()">Reintentar</button>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
     <mat-card-content>
-      <!-- <div id="modal-image" class="img-container">
-          <sm-soc-avatar-control
-            formControlName="image"
-            id="image"
-            name="image"
-          ></sm-soc-avatar-control>
-        </div> -->
-      <mat-form-field id="modal-form-field-container">
-        <mat-label>Nombre de la institución</mat-label>
-        <input
-          matInput
-          type="text"
-          name="institute_name"
-          id="institute_name"
-          formControlName="institute_name"
-          required
-        />
-        <mat-error *ngIf="form.controls['institute_name'].hasError('required')"
-          >Campo requerido</mat-error
-        >
-      </mat-form-field>
-      <mat-form-field id="modal-form-field-container">
-        <mat-label>Siglas de la institución</mat-label>
-        <input
-          matInput
-          type="text"
-          name="institute_abbreviation"
-          id="institute_abbreviation"
-          formControlName="institute_abbreviation"
-          required
-        />
-        <mat-error
-          *ngIf="form.controls['institute_abbreviation'].hasError('required')"
-          >Campo requerido</mat-error
-        >
-      </mat-form-field>
-      <div class="inputs-container">
-      <mat-form-field id="modal-form-field-container">
-        <mat-label>Hora de entrada</mat-label>
-        <input
-          matInput
-          type="text"
-          name="start_time"
-          id="start_time"
-          formControlName="start_time"
-          required
-        />
-        <mat-error *ngIf="form.controls['start_time'].hasError('required')"
-          >Campo requerido</mat-error
-        >
-      </mat-form-field>
-      <mat-form-field id="modal-form-field-container">
-        <mat-label>Hora de salida</mat-label>
-        <input
-          matInput
-          type="text"
-          name="end_time"
-          id="end_time"
-          formControlName="end_time"
-          required
-        />
-        <mat-error *ngIf="form.controls['end_time'].hasError('required')"
-          >Campo requerido</mat-error
-        >
-      </mat-form-field>
-      </div>
-      <div class="inputs-container">
-       
-        <mat-form-field id="modal-form-field-container">
-          <mat-label>Duración de bloque de horario</mat-label>
-          <input
-            matInput
-            type="number"
-            name="duration"
-            id="duration"
-            formControlName="duration"
-            required
-          />
-          <mat-error *ngIf="form.controls['duration'].hasError('required')"
-            >Campo requerido</mat-error
-          >
+      <div class="row-fields">
+        <mat-form-field class="grow">
+          <mat-label>Nombre de la institución</mat-label>
+          <input matInput formControlName="instituteName" required />
+          <mat-error *ngIf="form.controls.instituteName.hasError('required')">Campo requerido</mat-error>
+          <mat-error *ngIf="form.controls.instituteName.hasError('maxlength')">Máximo 100 caracteres</mat-error>
         </mat-form-field>
-        <mat-form-field id="modal-form-field-container">
-            <mat-label>Intervalo entre bloque de horario</mat-label>
-            <input
-              matInput
-              type="number"
-              name="interval"
-              id="interval"
-              formControlName="interval"
-              required
-            />
-            <mat-error *ngIf="form.controls['interval'].hasError('required')"
-              >Campo requerido</mat-error
-            >
-          </mat-form-field>
+        <mat-form-field>
+          <mat-label>Siglas</mat-label>
+          <input matInput formControlName="instituteAbbreviation" required />
+          <mat-error *ngIf="form.controls.instituteAbbreviation.hasError('required')">Campo requerido</mat-error>
+          <mat-error *ngIf="form.controls.instituteAbbreviation.hasError('maxlength')">Máximo 20 caracteres</mat-error>
+        </mat-form-field>
       </div>
 
-      <mat-card-actions id="modal-actions">
-        <button
-          type="submit"
-          mat-button
-          color="primary"
-          [disabled]="!form.valid"
-        >
-          Guardar
-        </button>
-        <button mat-button type="button" (click)="closeModal(false)">
-          Cancelar
-        </button>
-      </mat-card-actions>
-      <div class="modal-footer"></div>
+      <mat-form-field class="full">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput formControlName="description" rows="3"></textarea>
+        <mat-error *ngIf="form.controls.description.hasError('maxlength')">Máximo 500 caracteres</mat-error>
+      </mat-form-field>
+
+      <h3 class="section-title">Horario</h3>
+      <div class="row-fields">
+        <mat-form-field>
+          <mat-label>Hora de entrada</mat-label>
+          <input matInput type="time" formControlName="startTime" required />
+          <mat-error *ngIf="form.controls.startTime.hasError('required')">Campo requerido</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Hora de salida</mat-label>
+          <input matInput type="time" formControlName="endTime" required />
+          <mat-error *ngIf="form.controls.endTime.hasError('required')">Campo requerido</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Duración del bloque</mat-label>
+          <input matInput type="number" min="1" formControlName="duration" required />
+          <span matTextSuffix>min</span>
+          <mat-error *ngIf="form.controls.duration.invalid">Entre 1 y 240 minutos</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Intervalo entre bloques</mat-label>
+          <input matInput type="number" min="0" formControlName="interval" required />
+          <span matTextSuffix>min</span>
+          <mat-error *ngIf="form.controls.interval.invalid">Entre 0 y 60 minutos</mat-error>
+        </mat-form-field>
+      </div>
+      <p *ngIf="form.hasError('timeRange')" class="form-error" role="alert">
+        La hora de salida debe ser posterior a la de entrada.
+      </p>
     </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button mat-button type="button" (click)="cancel()" [disabled]="loading || form.pristine">
+        Descartar cambios
+      </button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="loading || form.pristine || loadError">
+        <mat-icon>save</mat-icon>
+        Guardar
+      </button>
+    </mat-card-actions>
   </form>
 </mat-card>
-<!-- End of Modal  -->

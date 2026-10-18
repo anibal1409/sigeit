@@ -9,7 +9,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 
 import { SectionsModule } from '../repositories/sections/sections.module';
-import { SettingsModule } from '../repositories/settings/settings.module';
 import { VersionDisplayComponent, VersionInfoComponent } from '../common/version';
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminComponent } from './admin.component';
@@ -24,7 +23,6 @@ import { AdminService } from './admin.service';
   imports: [
     CommonModule,
     AdminRoutingModule,
-    SettingsModule,
     MatSidenavModule,
     MatToolbarModule,
     MatIconModule,

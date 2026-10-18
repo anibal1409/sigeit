@@ -1,11 +1,14 @@
+/** Configuración general de la institución (registro único). */
 export interface SettingVM {
-  id: number;
-  institute_name: string;
-  institute_logo: string | null;
+  instituteName: string;
+  instituteAbbreviation: string;
   description: string | null;
-  institute_abbreviation: string | null;
-  start_time: Date | string | number;
-  end_time: Date | string | number;
+  /** HH:mm */
+  startTime: string;
+  /** HH:mm */
+  endTime: string;
+  /** Minutos por bloque */
   duration: number;
+  /** Minutos entre bloques */
   interval: number;
 }
