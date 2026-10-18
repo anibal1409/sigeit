@@ -12,6 +12,7 @@ import { UserStateService } from '../../../common/user-state';
 import { PeriodVM } from '../../periods/model';
 import {
   DayVM,
+  SCHEDULE_DETAILS_DIALOG,
   ScheduleDetailsComponent,
   ScheduleItemVM,
 } from '../../schedules';
@@ -186,9 +187,8 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
 
   showScheduleDetails(schedules: Array<ScheduleItemVM>): void {
     const dialogRef = this.matDialog.open(ScheduleDetailsComponent, {
-      data: {
-        schedules: schedules,
-      },
+      data: { schedules },
+      ...SCHEDULE_DETAILS_DIALOG,
     });
 
     dialogRef.componentInstance.closed.subscribe((res) => {

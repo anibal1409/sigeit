@@ -15,6 +15,7 @@ import {
   ScheduleItemVM,
 } from '../../repositories/schedules/model';
 import {
+  SCHEDULE_DETAILS_DIALOG,
   ScheduleDetailsComponent,
 } from '../../repositories/schedules/schedule-details';
 import { StageInscription } from '../model';
@@ -168,9 +169,8 @@ export class ScheduleComponent implements OnInit, OnDestroy {
 
   showScheduleDetails(schedules: Array<ScheduleItemVM>): void {
     const dialogRef = this.matDialog.open(ScheduleDetailsComponent, {
-      data: {
-        schedules: schedules,
-      },
+      data: { schedules },
+      ...SCHEDULE_DETAILS_DIALOG,
     });
 
     dialogRef.componentInstance.closed.subscribe((res) => {

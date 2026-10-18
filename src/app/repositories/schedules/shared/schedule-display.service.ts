@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
-import { ScheduleDetailsComponent } from '../schedule-details';
+import {
+  SCHEDULE_DETAILS_DIALOG,
+  ScheduleDetailsComponent,
+} from '../schedule-details';
 import { ScheduleItemVM } from '../model';
 
 @Injectable({
@@ -17,9 +20,8 @@ export class ScheduleDisplayService {
    */
   showScheduleDetails(schedules: Array<ScheduleItemVM>): void {
     const dialogRef = this.matDialog.open(ScheduleDetailsComponent, {
-      data: {
-        schedules: schedules,
-      },
+      data: { schedules },
+      ...SCHEDULE_DETAILS_DIALOG,
     });
 
     dialogRef.componentInstance.closed.subscribe((res) => {
