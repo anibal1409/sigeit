@@ -8,7 +8,10 @@ import {
 } from 'rxjs';
 
 import { UseCase } from '../../../../common/memory-repository';
-import { Document2DocumentItemVM } from '../../mappers';
+import {
+  Document2DocumentDto,
+  Document2DocumentItemVM,
+} from '../../mappers';
 import { MemoryDocumentsService } from '../../memory';
 import { DocumentVM } from '../../model';
 import { DocumentItemVM } from '../../model/document-item-vm';
@@ -24,12 +27,7 @@ constructor(
 
 exec(entitySave: DocumentVM): Observable<DocumentItemVM | null> {
   return this.entityServices
-    .documentControllerCreate({
-      name: entitySave.name,
-      description: JSON.stringify(entitySave.description),
-      department: {id: entitySave.departmentId},
-      type: entitySave.type
-    })
+    .documentControllerCreate(Document2DocumentDto(entitySave))
     .pipe(
       map(Document2DocumentItemVM),
       tap((entity) => {

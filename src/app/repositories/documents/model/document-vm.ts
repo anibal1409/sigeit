@@ -4,7 +4,10 @@ export interface DocumentVM {
   id: number;
   type: TypeDocument;
   name: string;
-  description: string;
+  /** Cuerpo con variables ({profesor}, {tabla}, …) */
+  body: string;
+  /** Firma con variables */
+  signature: string;
   departmentId: number;
-  status: string | boolean;
+  status: boolean;
 }

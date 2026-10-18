@@ -4,16 +4,27 @@
     </mat-card-header>
     <mat-card-content>
       <sigeit-table
-        emptyMessage="No hay periodos para mostrar"
+        emptyMessage="No hay formatos para mostrar"
+        emptySearchMessage="Ningún formato coincide con la búsqueda"
         (clickOption)="clickAction($event)"
-      ></sigeit-table>
+      >
+        <mat-form-field filters *ngIf="!departmentIdUser">
+          <mat-label>Departamento</mat-label>
+          <mat-select [formControl]="departmentCtrl">
+            <mat-option [value]="null">Todos</mat-option>
+            <mat-option *ngFor="let department of departments" [value]="department.id">
+              {{ department.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </sigeit-table>
     </mat-card-content>
   </mat-card>
   <button
     mat-fab
-    matTooltip="Agregar periodo"
+    matTooltip="Agregar formato"
     color="primary"
-    aria-label="Agregar periodo"
+    aria-label="Agregar formato"
     class="btn-fixed"
     (click)="goToForm()"
   >

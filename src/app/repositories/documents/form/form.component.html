@@ -1,65 +1,121 @@
-<div class="modal-header">
-  <span mat-dialog-title> {{ id ? 'Modificar':  'Crear' }} formato </span>
-  <button
-    id="modal-close-button"
-    mat-dialog-close
-    mat-mini-fab
-    type="button"
-    aria-label="Cerrar"
-    color="basic"
-    (click)="clickClosed()"
-  >
-    <mat-icon>close</mat-icon>
-  </button>
+<div class="format-page">
+  <header class="page-header">
+    <button mat-icon-button type="button" aria-label="Volver a formatos" (click)="cancel()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1>{{ id ? 'Editar' : 'Crear' }} formato</h1>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="save()" class="format-grid">
+    <mat-card class="editor">
+      <mat-card-content>
+        <div class="row-fields">
+          <mat-form-field class="grow">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="name" required />
+            <mat-error *ngIf="form.controls.name.hasError('required')">Campo requerido</mat-error>
+            <mat-error *ngIf="form.controls.name.hasError('maxlength')">Máximo 100 caracteres</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Tipo</mat-label>
+            <mat-select formControlName="type">
+              <mat-option *ngFor="let type of types" [value]="type.value">{{ type.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Departamento</mat-label>
+            <mat-select formControlName="departmentId" required>
+              <mat-option *ngFor="let department of departments" [value]="department.id">
+                {{ department.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>Campo requerido</mat-error>
+          </mat-form-field>
+        </div>
+
+        <mat-checkbox formControlName="status">
+          Activo
+        </mat-checkbox>
+        <p class="hint">
+          Solo puede haber un formato activo por departamento y tipo: al activar este, se desactivan los demás.
+        </p>
+
+        <div class="field-header">
+          <h2>Cuerpo</h2>
+          <button mat-button type="button" (click)="restoreDefault()">
+            <mat-icon>restart_alt</mat-icon>
+            Restaurar texto por defecto
+          </button>
+        </div>
+        <div class="variables" role="group" aria-label="Insertar variable en el cuerpo">
+          <button
+            *ngFor="let variable of variables"
+            mat-stroked-button
+            type="button"
+            (click)="insertVariable(bodyInput, 'body', variable.key)"
+          >
+            {{ '{' + variable.key + '}' }}
+          </button>
+        </div>
+        <mat-form-field class="full">
+          <mat-label>Texto de la carta</mat-label>
+          <textarea #bodyInput matInput formControlName="body" rows="16"></textarea>
+          <mat-hint>Cada línea es un párrafo. Una línea vacía deja un espacio. **texto** va en negrita.</mat-hint>
+          <mat-error *ngIf="form.controls.body.hasError('maxlength')">Máximo 5000 caracteres</mat-error>
+        </mat-form-field>
+        <p *ngIf="form.hasError('missingVariables')" class="form-error" role="alert">
+          El cuerpo debe incluir {{ form.getError('missingVariables') }}.
+        </p>
+
+        <h2>Firma</h2>
+        <div class="variables" role="group" aria-label="Insertar variable en la firma">
+          <button
+            *ngFor="let variable of variables"
+            mat-stroked-button
+            type="button"
+            (click)="insertVariable(signatureInput, 'signature', variable.key)"
+          >
+            {{ '{' + variable.key + '}' }}
+          </button>
+        </div>
+        <mat-form-field class="full">
+          <mat-label>Firma</mat-label>
+          <textarea #signatureInput matInput formControlName="signature" rows="7"></textarea>
+          <mat-hint>Va centrada. Las líneas que empiezan con «C.c.» van alineadas a la izquierda y en letra pequeña.</mat-hint>
+          <mat-error *ngIf="form.controls.signature.hasError('maxlength')">Máximo 1000 caracteres</mat-error>
+        </mat-form-field>
+      </mat-card-content>
+
+      <mat-card-actions align="end">
+        <button mat-button type="button" (click)="cancel()">Cancelar</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="loading || form.invalid || form.pristine">
+          <mat-icon>save</mat-icon>
+          Guardar
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <section class="preview" aria-label="Vista previa">
+      <h2>Vista previa</h2>
+      <div class="sheet">
+        <p class="fixed">Encabezado institucional, fecha y número de oficio</p>
+        <ng-container *ngFor="let line of previewBody">
+          <div *ngIf="line.table" class="table-placeholder">Tabla de horarios · Total de horas</div>
+          <p *ngIf="!line.table"><ng-container *ngTemplateOutlet="segments; context: { $implicit: line.segments }"></ng-container>&nbsp;</p>
+        </ng-container>
+        <div class="signature">
+          <p *ngFor="let line of previewSignature" [class.cc]="line.cc">
+            <ng-container *ngTemplateOutlet="segments; context: { $implicit: line.segments }"></ng-container>&nbsp;
+          </p>
+        </div>
+      </div>
+    </section>
+  </form>
 </div>
 
-<form mat-dialog-content [formGroup]="form!">
-  <mat-form-field class="">
-    <mat-label>Nombre</mat-label>
-    <input type="text" matInput formControlName="name" />
-    <mat-error *ngIf="form.controls['name'].hasError('required')"
-      >Campo requerido</mat-error
-    >
-  </mat-form-field>
-
-
-  <!-- <mat-form-field>
-    <mat-label>Estado</mat-label>
-    <mat-select
-      name="status"
-      formControlName="status"
-      matSelect
-      placeholder="Estado"
-    >
-      <mat-option
-        *ngFor="let option of status"
-        [value]="option.value"
-      >
-        {{ option.name }}
-      </mat-option
-      >
-    </mat-select>
-  </mat-form-field> -->
-</form>
-
-<div class="modal-footer" mat-dialog-actions>
-  <button
-    mat-button
-    mat-dialog-close
-    cdkFocusInitial
-    type="button"
-    (click)="clickClosed()"
-  >
-    Cancelar
-  </button>
-  <button
-    mat-flat-button
-    type="button"
-    (click)="clickSave()"
-    color="primary"
-    [disabled]="submitDisabled || loading"
-  >
-    Guardar
-  </button>
-</div>
-<app-state *ngIf="loading" class="app-loading"> </app-state>
+<ng-template #segments let-segments>
+  <ng-container *ngFor="let segment of segments">
+    <strong *ngIf="segment.bold">{{ segment.text }}</strong>
+    <ng-container *ngIf="!segment.bold">{{ segment.text }}</ng-container>
+  </ng-container>
+</ng-template>

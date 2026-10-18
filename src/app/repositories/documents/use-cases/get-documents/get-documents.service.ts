@@ -25,7 +25,7 @@ export class GetDocumentsService
   ) { }
 
   exec(data: DocumentBaseQuery = {}): Observable<Array<DocumentItemVM>> {
-    return this.entityServices.documentControllerFindAll()
+    return this.entityServices.documentControllerFindAll(data.departmentId || undefined, data.type)
       .pipe(
         map((entities: any) => entities.map(Document2DocumentItemVM)),
         tap((entity) => {

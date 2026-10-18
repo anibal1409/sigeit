@@ -1,0 +1,145 @@
+.format-page {
+  padding: 1rem 1.5rem 2rem;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+
+  h1 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+}
+
+.format-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.row-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1rem;
+
+  mat-form-field {
+    flex: 1 1 12rem;
+  }
+
+  .grow {
+    flex: 2 1 16rem;
+  }
+}
+
+.full {
+  width: 100%;
+}
+
+h2 {
+  margin: 1.25rem 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.field-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.variables {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.hint {
+  margin: 0.25rem 0 0;
+  font-size: 0.8125rem;
+  color: #6c757d;
+}
+
+.form-error {
+  margin: 0 0 0.5rem;
+  font-size: 0.8125rem;
+  color: #c62828;
+}
+
+textarea {
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+.preview {
+  position: sticky;
+  top: 1rem;
+
+  h2 {
+    margin-top: 0;
+  }
+}
+
+.sheet {
+  max-height: 80vh;
+  overflow: auto;
+  padding: 2rem 2.5rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+  background: #fff;
+  color: #212529;
+  font-family: 'Times New Roman', serif;
+  font-size: 0.875rem;
+  line-height: 1.4;
+
+  p {
+    margin: 0;
+    text-align: justify;
+  }
+
+  .fixed {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border: 1px dashed #adb5bd;
+    color: #6c757d;
+    font-style: italic;
+    text-align: center;
+  }
+}
+
+.table-placeholder {
+  padding: 1rem;
+  border: 1px dashed #4facfe;
+  border-radius: 0.25rem;
+  background: #eef5ff;
+  color: #1565c0;
+  text-align: center;
+}
+
+.signature {
+  margin-top: 1rem;
+
+  p {
+    text-align: center;
+  }
+
+  .cc {
+    text-align: left;
+    font-size: 0.6875rem;
+  }
+}
+
+@media screen and (max-width: 64rem) {
+  .format-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .preview {
+    position: static;
+  }
+}
