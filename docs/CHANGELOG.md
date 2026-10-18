@@ -12,6 +12,51 @@ archivo explica el *porqué* y cómo encaja cada pieza.
 
 ## 2026-10-18
 
+### Seguridad y permisos de la UI (fase 1 de la auditoría + requisitos del backend)
+
+- **Interceptor** (`common/http-interceptor`):
+  - Cierra la sesión ante **cualquier 401** y ante el 403 `Inactive or deleted user.`
+    (usuario desactivado o eliminado). Antes solo cerraba si el 401 traía uno de tres
+    mensajes en español, y un usuario eliminado quedaba dentro viendo errores.
+  - Ante cualquier otro **403** muestra "No tiene permiso para esta acción".
+  - Ignora las peticiones a `/auth/`: el login con credenciales erróneas también da 401.
+  - **Convención:** las pantallas no tratan 401/403; en sus `error:` usan
+    `isHandledHttpError(error)` (`common/http-interceptor/http-errors.ts`) para no
+    duplicar el aviso.
+- **Guard de rol** (`admin/role.guard.ts`): impide entrar por URL a secciones que el rol
+  no tiene en el menú y lleva a `/dashboard`. Solo mira el primer segmento bajo
+  `/dashboard`, porque `scheludes/academic-charge` comparte nombre con la opción
+  "Carga Académica". El menú y el guard usan la misma matriz (`MENU` en
+  `admin/data/menu.ts`, con `menuForRole` y `canAccessSection`), que debe coincidir con la
+  de la API.
+- **Formatos para el jefe de departamento:** se añadió `HeadDepartment` al menú. Su
+  departamento ya queda fijo en el formulario y la API le devuelve la lista filtrada.
+- **Modal de confirmación sin HTML:** ya no usa `[innerHTML]`. El cuerpo es texto con
+  `**negrita**` y `\n` para separar párrafos (`parseBoldText` en `common/text`, también
+  usado por las plantillas de documentos). Los 15 mensajes que usaban `<strong>` y la
+  lista de choques de horarios (antes `<ul><li>`, ahora viñetas `•`) se adaptaron.
+  Motivo: los nombres escritos por el usuario no deben interpretarse como marcado.
+- **`UserStateService`:** lee `localStorage` una sola vez (antes parseaba en cada
+  `getRole()` o `getDepartmentId()`), con `try/catch`, porque un valor corrupto impedía
+  arrancar la app. Se eliminaron `getUser$()` (su única suscripción, en el panel, no
+  aportaba nada) y el `getUserStorage()` público.
+- **Números de oficio (modal masivo):**
+  - El número inicial no puede ser menor que el siguiente disponible.
+  - El año de la fecha debe estar entre el del último oficio emitido y el actual.
+  - Los 400 de la API se muestran traducidos (`officeNumberErrorMessage`).
+  - El rol Profesor no llega a esta pantalla por el guard de rol.
+- **Lint:** se instalaron `@angular-eslint` 16 y `@typescript-eslint` 5, se añadió el
+  target `lint` en `angular.json` y se corrigió `.eslintrc.json` (le faltaba el prefijo
+  `plugin:`). Se aplicó `ng lint --fix`. Quedan 28 errores y 296 avisos (sobre todo
+  `any`) para la fase 2.
+- **Pruebas:** `admin/data/menu.spec.ts` (matriz de permisos) y
+  `common/text/bold-text.spec.ts` (que no se interprete HTML). Karma no arranca porque
+  hay specs antiguos que no compilan (ver *Pendientes*); la misma lógica se comprobó
+  compilando esos archivos y ejecutándolos con Node.
+- **Corrección de la auditoría:** `ConfirmModalModule` **no** es código muerto: aunque
+  nadie lo importa, declara `ConfirmModalComponent`, e Ivy lo necesita para compilar
+  su plantilla.
+
 ### Inscripción de estudiantes eliminada del frontend (`5f457c9`, `cfc5260`)
 
 - **Qué:** se quitaron el menú y la ruta `/dashboard/inscription`, las pantallas de
@@ -158,11 +203,15 @@ Tras cambiar el backend: `npm run build:client:full` en `sigeit-api` regenera
   `setting` y `document`. Hace falta un guard de roles global.
 - **Backend:** antes de desplegar, migración de `document` (`description` →
   `body` + `signature`, `department` obligatorio).
+- **Pantallas sin desarrollar (la API ya está lista):** Estadísticas (`StatisticsService`,
+  contrato en `sigeit-api/src/repositories/statistics/FRONTEND_CHARTJS_CONTRACT.md`),
+  Auditoría de cambios (`AuditService`, solo Administrador) y Perfil (hoy muestra
+  `profile works!`).
 - **Auditoría del 2026-10-18** (ver la skill `sigeit-standards` para repetirla):
-  1. Seguridad del frontend: interceptor que solo cierra sesión con tres mensajes,
-     `JSON.parse` sin `try/catch` en `user-state`, rutas sin guard de rol,
-     `[innerHTML]` en `confirm-modal`, lint sin configurar.
-  2. Código muerto y fugas: exports sin uso, 53 variables sin usar, `console.*`,
+  1. ~~Seguridad del frontend~~ (hecho, ver arriba).
+  2. Código muerto y fugas (incluye arreglar los specs que no compilan, p. ej. los que
+     importan `admin-sdk` o servicios inexistentes, para que `ng test sigeit` vuelva a
+     funcionar): exports sin uso, 53 variables sin usar, `console.*`,
      `ngOnDestroy` ausente en `planned-schedules` y `sections-overview`, `subscribe`
      anidados.
   3. Duplicación: tabla agrupada repetida en `planned-schedules` y `sections-overview`

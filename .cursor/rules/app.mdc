@@ -1,37 +1,102 @@
 ---
-description:
+description: Reglas de desarrollo del frontend Sigeit (Angular)
 globs:
 alwaysApply: true
 ---
 
-# Reglas de Desarrollo - Sigeit
+# Reglas de desarrollo - Sigeit (frontend)
 
-## Estilos CSS/SCSS
+Fuente única de las reglas: la usan Cursor y Claude (`CLAUDE.md` apunta aquí).
+El procedimiento para aplicarlas y revisarlas está en la skill `sigeit-standards`
+(`.claude/skills/sigeit-standards/SKILL.md`, enlazada en `.cursor/skills/`).
 
-### Medidas
-- **SIEMPRE usar unidades `rem` para todas las medidas en estilos**
-- Evitar usar `px` para medidas de espaciado, tamaños, etc.
-- Usar `rem` para: padding, margin, width, height, border-radius, font-size, etc.
-- Solo usar `px` para valores muy específicos como border-width (1px, 2px)
+## 1. Idioma
+- Todo el código va en **inglés**: identificadores, nombres de archivos y carpetas, rutas,
+  parámetros de URL, claves de `localStorage`, selectores y clases CSS.
+- Comentarios, JSDoc, documentación y textos visibles para el usuario van en **español**.
+- Sin errores de escritura en nombres (`schedule`, no `schelude`; `department`, no `departament`).
 
-### Ejemplos correctos:
+## 2. Documentación en el código
+- Toda clase, interfaz, método, función y propiedad pública lleva JSDoc en español
+  (`/** ... */`) que explique qué hace y, si no es obvio, por qué.
+- Los bloques de lógica no triviales (cálculos, reglas de negocio, casos borde) llevan un
+  comentario breve que explique el porqué, no el qué.
+- Nada de comentarios desactualizados: al cambiar el código se actualiza su comentario.
+
+## 3. Lógica en servicios, no en componentes
+- Los componentes solo gestionan la vista: estado de pantalla, eventos del usuario y
+  enlace con la plantilla.
+- Reglas de negocio, transformaciones de datos, cálculos, llamadas HTTP, generación de
+  documentos o archivos y validaciones complejas van en **servicios** o en **funciones
+  puras** reutilizables (`common/` si las usan varios módulos).
+- Las llamadas a la API se hacen con los servicios de `dashboard-sdk`; no se usa
+  `HttpClient` directo.
+
+## 4. Componentes reutilizables
+- Antes de crear un componente, buscar si ya existe uno que sirva o que pueda
+  parametrizarse (`common/` y el módulo afectado).
+- Solo se crea un componente nuevo si se va a reutilizar, o si aísla una parte compleja
+  cuya separación esté justificada; no componentes de un solo uso sin motivo.
+- Se configuran con `@Input`/`@Output`; no dependen de la página que los contiene.
+- No se copian plantillas ni estilos entre componentes: se extrae un componente o un
+  estilo compartido.
+
+## 5. Sin código duplicado ni muerto
+- Prohibido duplicar lógica: si dos sitios hacen lo mismo, se extrae a un servicio,
+  función o componente compartido.
+- El código que no se usa se elimina (no se comenta): archivos, exports, métodos,
+  variables, imports, estilos y plantillas.
+- Sin `console.log` ni código de depuración en commits.
+
+## 6. Tamaño y legibilidad
+- Ningún método con más de **50 líneas** de código efectivas.
+- Un componente que pase de unas **300 líneas** se divide (servicio o subcomponentes).
+- Sin `any` ni `as any`: se usan los DTO del SDK o interfaces propias.
+
+## 7. RxJS y rendimiento
+- Toda suscripción se cancela (`sub$` + `ngOnDestroy`, o `takeUntilDestroyed`).
+- Sin `subscribe` anidados: se usan `switchMap`, `forkJoin`, `combineLatest`, etc.
+- Sin peticiones HTTP en bucle cuando la API permite una sola consulta.
+- `*ngFor` sobre listas de datos con `trackBy`.
+- Sin getters costosos ni llamadas a métodos pesados en plantillas: se calculan al cambiar
+  los datos y se guardan en propiedades.
+
+## 8. Seguridad
+- Los permisos se validan en el backend; la UI solo oculta opciones.
+- No usar `[innerHTML]` con datos del usuario ni `bypassSecurityTrust*` salvo con URLs
+  `blob:` generadas localmente. Los mensajes de `ConfirmModalComponent` son texto con
+  `**negrita**` y `\n`, nunca HTML.
+- Los 401 y 403 los trata el interceptor (cierra sesión o avisa); en los `error:` de las
+  pantallas se usa `isHandledHttpError(error)` para no repetir el aviso.
+- Toda opción nueva del panel se añade a `MENU` (`admin/data/menu.ts`) con sus roles: el
+  menú y el guard de rutas salen de ahí y deben coincidir con los permisos de la API.
+- No guardar tokens ni datos sensibles en `localStorage`/`sessionStorage`; lo que se guarde
+  se lee con `try/catch` (puede estar corrupto).
+- Sin URLs, credenciales ni claves en el código: van en `environments`.
+- Validar en el formulario lo mismo que valida el backend.
+
+## 9. Estilos CSS/SCSS
+- **Siempre `rem`** para medidas (padding, margin, width, height, border-radius,
+  font-size, etc.).
+- `px` solo para valores muy específicos como border-width (1px, 2px).
+
 ```scss
 .modal {
-  padding: 1.5rem 2rem;
-  margin: 1rem 0;
-  border-radius: 1rem;
-  font-size: 1.125rem;
-  width: 37.5rem;
-  height: 25rem;
+  padding: 1.5rem 2rem;   // ✅
+  border-radius: 1rem;    // ✅
+  margin: 16px 0;         // ❌ usar rem
 }
 ```
 
-### Ejemplos incorrectos:
-```scss
-.modal {
-  padding: 24px 32px;  // ❌ Usar rem
-  margin: 16px 0;      // ❌ Usar rem
-  border-radius: 16px; // ❌ Usar rem
-  font-size: 18px;     // ❌ Usar rem
-}
-```
+## 10. Registro de cambios
+- Antes de modificar una parte del sistema, leer `docs/CHANGELOG.md`: explica qué se
+  cambió, qué se eliminó y por qué.
+- Cada cambio funcional, eliminación o decisión de diseño se añade arriba en ese archivo,
+  con fecha, en el mismo commit que el cambio (qué, por qué, archivos nuevos o eliminados,
+  contratos con el backend y pendientes).
+
+## 11. Convenciones del proyecto
+- Los filtros de las listas (selects, inputs, paginación) se guardan en la URL con
+  `writeUrlQuery`/`readUrlNumber` de `common/url-query.ts`.
+- Commits con Conventional Commits y asunto en **minúscula** (lo exige commitlint).
+- Tras cambiar código: `graphify update .`.
