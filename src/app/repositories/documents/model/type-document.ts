@@ -1,7 +1,10 @@
-import { TypeDocument } from 'dashboard-sdk';
+import { TypeDocument as SdkTypeDocument } from 'dashboard-sdk';
 
-// Reexportación directa: con import + export {} el dev server pierde el valor (const) de TypeDocument.
-export { TypeDocument } from 'dashboard-sdk';
+/** Del SDK solo se toma el tipo: el valor se define aquí para no depender del build de la librería. */
+export type TypeDocument = SdkTypeDocument;
+export const TypeDocument = {
+  AcademicCharge: 'academic_charge' as TypeDocument,
+} as const;
 
 export const TYPE_DOCUMENT_LABELS: Record<TypeDocument, string> = {
   [TypeDocument.AcademicCharge]: 'Carga académica',
