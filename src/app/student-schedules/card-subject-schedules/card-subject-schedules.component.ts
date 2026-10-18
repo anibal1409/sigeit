@@ -16,28 +16,11 @@ export class CardSubjectSchedulesComponent {
   @Input()
   section!: SectionItemVM;
 
-  @Input()
-  inscription = false;
-
   @Output()
   deleteSection = new EventEmitter<SectionItemVM>();
 
-  @Output()
-  validate = new EventEmitter<SectionItemVM>();
-
-  @Output()
-  canceled = new EventEmitter<SectionItemVM>();
-
   deleteSectionClick(): void {
     this.deleteSection.emit(this.section);
-  }
-
-  validateClick(): void {
-    this.validate.emit(this.section);
-  }
-
-  canceledClick(): void {
-    this.canceled.emit(this.section);
   }
 
   getConflictConflictingWith(conflict: any): any[] {

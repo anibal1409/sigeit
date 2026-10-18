@@ -28,30 +28,18 @@ import { SchedulesModule } from '../repositories/schedules';
 import { SubjectsModule } from '../repositories/subjects';
 import { CardSectionSchedulesComponent } from './card-section-schedules';
 import { CardSubjectSchedulesComponent } from './card-subject-schedules';
-import { FinishedComponent } from './finished/finished.component';
-import { ScheduleComponent } from './schedule';
 import {
   StudentSchedulesRoutingModule,
 } from './student-schedules-routing.module';
 import { StudentSchedulesComponent } from './student-schedules.component';
 import { StudentSchedulesService } from './student-schedules.service';
-import {
-  CloseInscriptionService,
-  CreateInscriptionService,
-  DeleteInscriptionService,
-  FindInscriptionService,
-  GetInscriptionsService,
-  GetSchedulesService,
-  UpdateInscriptionService,
-} from './use-cases';
+import { GetSchedulesService } from './use-cases';
 
 @NgModule({
   declarations: [
     StudentSchedulesComponent,
     CardSectionSchedulesComponent,
     CardSubjectSchedulesComponent,
-    FinishedComponent,
-    ScheduleComponent,
   ],
   imports: [
     CommonModule,
@@ -78,12 +66,6 @@ import {
   providers: [
     StudentSchedulesService,
     GetSchedulesService,
-    CreateInscriptionService,
-    DeleteInscriptionService,
-    FindInscriptionService,
-    GetInscriptionsService,
-    UpdateInscriptionService,
-    CloseInscriptionService,
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
 })

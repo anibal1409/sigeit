@@ -87,12 +87,6 @@ export const MENU: Array<optionMenu> = [
     permissions: [UserRole.Administrator, UserRole.Director, UserRole.HeadDepartment, UserRole.Planner, UserRole.Student],
   },
   {
-    name: 'Inscripción',
-    value: 'inscription',
-    icon: 'playlist_add_check',
-    permissions: [UserRole.Student],
-  },
-  {
     name: 'Carga Académica',
     value: 'academic-charge',
     icon: 'class',

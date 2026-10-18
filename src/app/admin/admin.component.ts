@@ -95,20 +95,8 @@ export class AdminComponent implements OnInit, OnDestroy {
       title: 'Formatos',
     },
     {
-      path: '/dashboard/inscription',
-      title: 'Inscripción',
-    },
-    {
       path: '/dashboard/schedules-students',
       title: 'Horarios',
-    },
-    {
-      path: '/dashboard/schedules-students/finished',
-      title: 'Inscripción finalizada',
-    },
-    {
-      path: '/dashboard/schedules-students/schedule',
-      title: 'Horario inscrito',
     },
     {
       path: '/dashboard/academic-charge',

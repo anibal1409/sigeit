@@ -60,7 +60,7 @@
         </div>
       </form>
 
-      <div *ngIf="!isInscription" class="semester-check">
+      <div class="semester-check">
         <button
           mat-stroked-button
           color="primary"
@@ -143,36 +143,23 @@
     </div>
 
     <div class="action-section">
-      <button
-        *ngIf="isInscription; else Schedules"
-        mat-raised-button
-        color="primary"
-        (click)="confirmClose()"
-        [disabled]="loading || disabledSubmit"
-        class="action-btn"
-      >
-        <mat-icon>check_circle</mat-icon>
-        Cerrar inscripción
-      </button>
-      <ng-template #Schedules>
-        <div class="save-section">
-          <mat-form-field class="name-field">
-            <mat-label>Nombre del horario</mat-label>
-            <input type="text" matInput [formControl]="nameCtrl" placeholder="Ej: Mi horario 2024" />
-            <mat-error *ngIf="nameCtrl.hasError('required')">Campo requerido</mat-error>
-          </mat-form-field>
-          <button
-            mat-raised-button
-            color="primary"
-            (click)="saveShedule()"
-            [disabled]="loading || !nameCtrl.value"
-            class="save-btn"
-          >
-            <mat-icon>save</mat-icon>
-            Guardar
-          </button>
-        </div>
-      </ng-template>
+      <div class="save-section">
+        <mat-form-field class="name-field">
+          <mat-label>Nombre del horario</mat-label>
+          <input type="text" matInput [formControl]="nameCtrl" placeholder="Ej: Mi horario 2024" />
+          <mat-error *ngIf="nameCtrl.hasError('required')">Campo requerido</mat-error>
+        </mat-form-field>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="saveShedule()"
+          [disabled]="loading || !nameCtrl.value"
+          class="save-btn"
+        >
+          <mat-icon>save</mat-icon>
+          Guardar
+        </button>
+      </div>
     </div>
   </div>
   <div class="content-body">
@@ -209,10 +196,7 @@
           *ngFor="let section of sectionsSelected; trackBy: trackBySection"
           [section]="section"
           [ngClass]="{'danger': !!section?.collapse?.length}"
-          [inscription]="isInscription"
           (deleteSection)="addSection(section)"
-          (validate)="createInscription(section)"
-          (canceled)="deleteInscription(section)"
           class="subject-card"
         >
         </app-card-subject-schedules>

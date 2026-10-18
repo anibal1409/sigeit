@@ -9,7 +9,6 @@ export interface SectionItemVM extends SectionVM {
   schedules?: Array<ScheduleItemVM>;
   nameTeacher?: string;
   collapse?: Array<ScheduleItemVM>;
-  validateId?: number;
   options?: {
     options?: Array<RowOptionVM<RowActionSection>>;
   };
