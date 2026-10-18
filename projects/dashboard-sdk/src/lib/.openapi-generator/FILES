@@ -11,7 +11,6 @@ api/day.service.ts
 api/default.service.ts
 api/department.service.ts
 api/document.service.ts
-api/inscription.service.ts
 api/period.service.ts
 api/schedule.service.ts
 api/school.service.ts
@@ -33,7 +32,6 @@ model/career-section-stat-item-dto.ts
 model/change-password-dto.ts
 model/change-password-response-dto.ts
 model/classroom-usage-item-dto.ts
-model/close-inscription-dto.ts
 model/conflict-pair-dto.ts
 model/coverage-status.ts
 model/create-career-dto.ts
@@ -41,7 +39,6 @@ model/create-classroom-dto.ts
 model/create-day-dto.ts
 model/create-department-dto.ts
 model/create-document-dto.ts
-model/create-inscription-dto.ts
 model/create-period-dto.ts
 model/create-schedule-dto.ts
 model/create-schedules-bulk-dto.ts
@@ -83,7 +80,6 @@ model/response-day-dto.ts
 model/response-department-dto.ts
 model/response-department-setting-dto.ts
 model/response-document-dto.ts
-model/response-inscription-dto.ts
 model/response-office-numbers-dto.ts
 model/response-period-dto.ts
 model/response-schedule-dto.ts
@@ -125,7 +121,6 @@ model/update-day-dto.ts
 model/update-department-dto.ts
 model/update-department-setting-dto.ts
 model/update-document-dto.ts
-model/update-inscription-dto.ts
 model/update-period-dto.ts
 model/update-schedule-dto.ts
 model/update-school-dto.ts

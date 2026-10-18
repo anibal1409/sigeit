@@ -14,7 +14,6 @@
 export interface ResponseSectionDto { 
     id: number;
     capacity: number;
-    inscribed: number;
     name: string;
     subjectId: number;
     subject: object;
