@@ -1,81 +1,80 @@
 # Graph Report - sigeit  (2026-10-18)
 
 ## Corpus Check
-- 1009 files · ~192,342 words
+- 983 files · ~191,485 words
 - Verdict: corpus is large enough that graph structure adds value.
-- Unclassified: 78 file(s) not represented in the graph (top: .scss 64, (none) 11, .mdc 1)
+- Unclassified: 77 file(s) not represented in the graph (top: .scss 62, (none) 11, .mdc 2)
 
 ## Summary
-- 4331 nodes · 11281 edges · 201 communities (167 shown, 34 thin omitted)
-- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 358 edges (avg confidence: 0.81)
+- 4279 nodes · 10975 edges · 221 communities (178 shown, 43 thin omitted)
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 357 edges (avg confidence: 0.82)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `eb421f20`
+- Built from commit: `6e35fa03`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - SchoolItemVM
 - teachers.module.ts
-- .setLoading
 - careers.module.ts
-- periods.module.ts
+- sections.service.ts
 - StudentSchedulesComponent
 - models.ts
-- statistics.service.ts
-- ref_angular_core
-- UserStateService
+- StatisticsService
+- ref_angular_common
+- @angular/forms
 - departments.module.ts
 - error-handler.module.ts
-- ScheduleComponent
+- teacher.service.ts
 - AcademicChargeTeacherComponent
 - AcademicChargeTeacherComponent
-- active-period.service.ts
+- create-schedule.service.ts
 - FormComponent
 - form-control-errors.directive.ts
 - package.json
 - http-form-data-client.service.ts
 - GradeSearchComponent
-- UseCase
+- MemoryRepository
 - PlanningAuditComponent
 - SectionsManageComponent
 - url-access-guard.guard.ts
 - SelectExComponent
 - PlannedSchedulesComponent
-- student-schedules.service.ts
-- PeriodsComponent
-- DepartmentItemVM
-- TeacherAcademicService
+- student-schedules.component.ts
+- user-item-vm.ts
+- ClassroomsService
+- AcademicComponent
 - Configuration
 - AuthService
 - TogglePasswordViewComponent
-- create-document.service.ts
-- FormComponent
+- documents/model/index.ts
+- SchedulesService
 - MemoryDocumentsService
-- finished.component.ts
-- TeacherItemVM
+- src_app_repositories_users_index_user2useritemvm
+- create-school.service.ts
 - dependencies
 - classrooms.module.ts
-- BulkAcademicChargeModalComponent
-- ScheduleService
+- documents/form/form.component.ts
+- period-audit-dto.ts
 - 📱 Sistema de Visualización de Versión - SIGEIT
 - ToastService
 - ScheduleItemVM
 - 📋 Gestión de Versiones - SIGEIT
 - PeriodService
-- SchedulesService
+- ClassroomsSchedulesComponent
 - devDependencies
 - SchoolService
 - SectionService
 - logger.service.ts
 - schools.module.ts
-- settings.component.ts
+- periods/form/form.component.ts
 - SectionsOverviewComponent
 - Changelog
 - scripts
-- @angular/material
-- get-classrooms.service.ts
+- TableService
+- ref_angular_core
 - DayService
 - documents.module.ts
 - PeriodVM
@@ -83,29 +82,29 @@
 - SchedulesComponent
 - production
 - GlobalPeriodService
-- teacher.service.ts
+- teacher-degree.service.ts
 - UserService
 - AuditService
-- InscriptionService
-- app-routing.module.ts
-- subject-demands.component.ts
-- SubjectDemandPanelComponent
+- create-department.service.ts
+- @angular/material
+- import-demand.component.ts
+- auth.module.ts
 - SectionsComponent
 - Componente de Vista General de Secciones
-- UserStateVM
+- http-interceptor.interceptor.ts
 - schedules/academic-charge-teacher/academic-charge-teacher.component.ts
-- AdminComponent
+- UserStateService
 - DocumentsComponent
 - LoginComponent
-- ref_dashboard_sdk
+- grade-search.component.ts
 - FormComponent
 - users.service.ts
 - DocumentService
 - SubjectDemandService
 - TeacherPickerComponent
-- src_app_common_memory_repository_index_usecase
+- subjects.component.ts
 - ClassroomType
-- FinishedComponent
+- ListComponentService
 - RecoveryPasswordComponent
 - CareerService
 - ClassroomService
@@ -114,31 +113,31 @@
 - SubjectDemandStoreService
 - VersionService
 - ReportConfigModalComponent
-- free-slot-dto.ts
+- ScheduleService
 - FormComponent
-- settings.module.ts
+- careers.component.ts
 - FormComponent
-- StudentSchedulesService
+- 2026-10-18
 - Sistema de Período Académico Global
 - DegreeDetailComponent
-- get-periods.service.ts
-- VersionInfoComponent
-- FormComponent
+- common/index.ts
+- sections-manage.component.ts
+- classrooms/form/form.component.ts
 - FormComponent
 - FormComponent
 - projects
 - options
 - toast.module.ts
 - admin.component.ts
-- login.service.ts
+- login.component.spec.ts
 - FormComponent
 - FormComponent
 - auditoria
-- state-routing.module.ts
+- state/index.ts
 - DegreeFormComponent
-- ClassroomVM
+- schedules/form/form.component.ts
 - repositories/profile/profile.module.ts
-- periods/model/index.ts
+- sections.component.ts
 - api-interfaces/package.json
 - dashboard-sdk/package.json
 - error-handler/package.json
@@ -147,27 +146,29 @@
 - logger/package.json
 - login/package.json
 - toast/package.json
-- student-schedules/use-cases/index.ts
-- computeCoverage
-- create-period-dto.ts
+- .ngOnInit
+- period-comparison-response-dto.ts
+- ScheduleComponent
 - SubjectDemandsComponent
-- src_app_common_index_usecase
-- update-period-dto.ts
+- DepartmentItemVM
+- TeacherAcademicService
 - TeachersComponent
-- build
+- ScheduleBaseQuery
 - development
 - @
 - @
 - src_app_repositories_departments_index_department2departmentitemvm
 - academic.module.ts
-- writeUrlQuery
+- UserRole
 - app.module.ts
-- test
+- error-handler
 - sigeit
 - DefaultService
 - lib/param.ts
 - Sigeit
-- create-classroom.service.ts
+- SubjectsComponent
+- ClassroomsMemoryService
+- subject-demand.module.ts
 - ApiInterfaces
 - ErrorHandler
 - FormControlErrors
@@ -175,21 +176,24 @@
 - Logger
 - Login
 - Toast
-- student-schedules.component.ts
+- CardSubjectSchedulesComponent
 - src_app_repositories_settings_use_cases_index_findsettingservice
-- FindDocumentService
-- @angular/forms
-- api-interfaces
+- ResetPasswordComponent
+- SignUpComponent
+- build
 - form-control-errors
 - form-control-erros
 - http-form-data-client
-- logger
+- test
 - login
-- toast
+- ClassroomItemVM
 - CustomHttpParameterCodec
 - ApiModule
 - inject-version.js
+- dashboard-sdk
 - schedules/index.ts
+- Estándares Sigeit
+- home_anibal_projects_sigeit_dist_dashboard_sdk
 - api-interfaces/src/index.ts
 - api-interfaces/ng-package.json
 - dashboard-sdk/ng-package.json
@@ -199,45 +203,60 @@
 - logger/ng-package.json
 - login/ng-package.json
 - toast/ng-package.json
-- sections.service.ts
+- SectionItemVM
+- src_app_admin_data_index_menu
+- src_app_repositories_documents_model_index_parsetemplateline
 - .eslintrc.json
 - ng-package.json
 - subject-demand-store.service.ts
-- subjects.component.ts
+- FormComponent
+- src_app_repositories_documents_model_index_templatesegment
 - lib/public-api.ts
-- common/index.ts
+- array-validator.directive.ts
 - commit-msg
 - dashboard-sdk/git_push.sh
 - lib/git_push.sh
-- ClassroomsComponent
+- classrooms.component.ts
 - environment.auditoria.ts
 - environment.prod.ts
-- Reglas de desarrollo - Sigeit
+- src_app_repositories_users_index_useritemvm
+- src_app_student_schedules_finished_index_finishedcomponent
+- CLAUDE.md
 - schedules.service.ts
+- src_app_student_schedules_mappers_index_inscription2inscriptionvm
+- src_app_student_schedules_model_index_inscriptionvm
+- src_app_student_schedules_model_index_stageinscription
+- src_app_student_schedules_schedule_index_schedulecomponent
+- src_app_student_schedules_use_cases_index_closeinscriptionservice
+- src_app_student_schedules_use_cases_index_createinscriptionservice
+- src_app_student_schedules_use_cases_index_deleteinscriptionservice
+- src_app_student_schedules_use_cases_index_findinscriptionservice
+- src_app_student_schedules_use_cases_index_getinscriptionsservice
+- src_app_student_schedules_use_cases_index_updateinscriptionservice
 
 ## God Nodes (most connected - your core abstractions)
-1. `rxjs` - 171 edges
-2. `UseCase` - 134 edges
-3. `@angular/material` - 79 edges
-4. `StudentSchedulesComponent` - 76 edges
-5. `UserStateService` - 69 edges
-6. `@angular/forms` - 68 edges
-7. `StateService` - 60 edges
-8. `@angular/router` - 57 edges
-9. `ScheduleItemVM` - 53 edges
-10. `Configuration` - 50 edges
+1. `rxjs` - 161 edges
+2. `UseCase` - 124 edges
+3. `@angular/material` - 78 edges
+4. `@angular/forms` - 68 edges
+5. `StudentSchedulesComponent` - 68 edges
+6. `UserStateService` - 67 edges
+7. `@angular/router` - 57 edges
+8. `StateService` - 56 edges
+9. `ScheduleItemVM` - 51 edges
+10. `Configuration` - 48 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `3. **Modal de Información (`VersionInfoComponent`)**` --references--> `VersionInfoComponent`  [INFERRED]
-  VERSION_DISPLAY.md → src/app/common/version/version-info.component.ts
-- `2. **Componente de Visualización (`VersionDisplayComponent`)**` --references--> `VersionDisplayComponent`  [INFERRED]
-  VERSION_DISPLAY.md → src/app/common/version/version-display.component.ts
-- `1. **Servicio de Versión (`VersionService`)**` --references--> `VersionService`  [INFERRED]
-  VERSION_DISPLAY.md → src/app/common/version/version.service.ts
-- `Integración` --references--> `SchedulesService`  [INFERRED]
-  src/app/common/global-period/README.md → src/app/repositories/schedules/schedules.service.ts
-- `BulkAcademicChargeModalData` --references--> `TeacherItemVM`  [EXTRACTED]
-  src/app/repositories/schedules/academic-charge-teacher/bulk-academic-charge-modal.component.ts → src/app/repositories/teachers/model/teacher-item-vm.ts
+- `Al desarrollar` --references--> `writeUrlQuery()`  [INFERRED]
+  .claude/skills/sigeit-standards/SKILL.md → src/app/common/url-query.ts
+- `Otras asignaturas en el mismo bloque horario — `a3b60c7`, `9ad1e3e`` --references--> `Schedule2ScheduleVM()`  [INFERRED]
+  docs/CHANGELOG.md → src/app/repositories/schedules/mappers/schedule-2-schedule-vm.ts
+- `2. Inscripción eliminada` --references--> `SectionItemVM`  [INFERRED]
+  docs/decisiones/2026-10-roles-configuracion-formatos.md → src/app/repositories/sections/model/section-item-vm.ts
+- `Pendientes` --references--> `AuditService`  [INFERRED]
+  docs/CHANGELOG.md → projects/dashboard-sdk/src/lib/api/audit.service.ts
+- `Configuración conectada a la API — `d62eb25`` --references--> `SettingService`  [INFERRED]
+  docs/CHANGELOG.md → projects/dashboard-sdk/src/lib/api/setting.service.ts
 
 ## Import Cycles
 - 4-file cycle: `src/app/repositories/schedules/index.ts -> src/app/repositories/schedules/memory/index.ts -> src/app/repositories/schedules/memory/schedule-memory/index.ts -> src/app/repositories/schedules/memory/schedule-memory/schedule-memory.service.ts -> src/app/repositories/schedules/index.ts`
@@ -259,82 +278,90 @@
 - 5-file cycle: `src/app/repositories/schedules/index.ts -> src/app/repositories/schedules/schedules.service.ts -> src/app/repositories/sections/index.ts -> src/app/repositories/sections/model/index.ts -> src/app/repositories/sections/model/section-item-vm.ts -> src/app/repositories/schedules/index.ts`
 - 5-file cycle: `src/app/repositories/schedules/index.ts -> src/app/repositories/schedules/schedules.module.ts -> src/app/repositories/schedules/schedules.component.ts -> src/app/repositories/sections/model/index.ts -> src/app/repositories/sections/model/section-item-vm.ts -> src/app/repositories/schedules/index.ts`
 
-## Communities (201 total, 34 thin omitted)
+## Communities (221 total, 43 thin omitted)
 
 ### Community 0 - "SchoolItemVM"
-Cohesion: 0.10
-Nodes (19): src_app_repositories_departments_model_index_departmentvm, src_app_repositories_schools_mappers_index_school2schoolitemvm, School2SchoolItemVM(), School2SchoolVM(), SchoolMemoryService, Injectable, src_app_repositories_schools_model_index_schoolitemvm, src_app_repositories_schools_model_index_schoolvm (+11 more)
+Cohesion: 0.11
+Nodes (15): src_app_repositories_careers_index_careervm, src_app_repositories_schools_mappers_index_school2schoolvm, School2SchoolItemVM(), School2SchoolVM(), src_app_repositories_schools_model_index_schoolvm, RowActionSchool, delete, update (+7 more)
 
 ### Community 1 - "teachers.module.ts"
-Cohesion: 0.07
-Nodes (23): src_app_repositories_teachers_mappers_index_teacher2teacheritemvm, src_app_repositories_teachers_mappers_index_teachervm2teacherdto, TeacherVM2TeacherDto(), src_app_repositories_teachers_memory_index_teachermemoryservice, TeacherMemoryService, Injectable, src_app_repositories_teachers_model_index_teacheritemvm, routes (+15 more)
+Cohesion: 0.05
+Nodes (38): src_app_common_index_tablemodule, Inject, src_app_repositories_teachers_mappers_index_teacher2teacheritemvm, src_app_repositories_teachers_mappers_index_teachervm2teacherdto, Teacher2TeacherItemVM(), Teacher2TeacherVM(), TeacherVM2TeacherDto(), src_app_repositories_teachers_memory_index_teachermemoryservice (+30 more)
 
 ### Community 3 - "careers.module.ts"
-Cohesion: 0.05
-Nodes (41): src_app_common_memory_repository_index_memoryrepository, CareersComponent, Component, CareersRoutingModule, routes, NgModule, CareersService, Injectable (+33 more)
+Cohesion: 0.06
+Nodes (35): lodash, Career2CareerItemVM(), Career2CareerVM(), src_app_repositories_careers_mappers_index_career2careeritemvm, src_app_repositories_careers_mappers_index_career2careervm, CareerMemoryService, Injectable, src_app_repositories_careers_memory_index_careermemoryservice (+27 more)
 
-### Community 4 - "periods.module.ts"
-Cohesion: 0.16
-Nodes (13): src_app_repositories_periods_memory_index_periodmemoryservice, PeriodsRoutingModule, routes, NgModule, DeletePeriodService, Injectable, src_app_repositories_periods_use_cases_index_createperiodservice, src_app_repositories_periods_use_cases_index_deleteperiodservice (+5 more)
+### Community 4 - "sections.service.ts"
+Cohesion: 0.07
+Nodes (28): src_app_common_index_subjectdemandmodule, src_app_repositories_departments_index_departmentbasequery, src_app_repositories_periods_index_activeperiodservice, src_app_repositories_periods_index_periodvm, src_app_repositories_periods_index_toplanperiodservice, ActivePeriodService, Injectable, ToPlanPeriodService (+20 more)
+
+### Community 5 - "StudentSchedulesComponent"
+Cohesion: 0.05
+Nodes (4): StudentSchedulesComponent, Component, StudentSchedulesService, Injectable
 
 ### Community 6 - "models.ts"
-Cohesion: 0.05
-Nodes (46): CreateCareerDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, CreateClassroomDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, CreateDepartmentDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, CreateInscriptionDto (+38 more)
-
-### Community 7 - "statistics.service.ts"
-Cohesion: 0.05
-Nodes (35): NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, StatisticsService, Inject, Injectable, Optional, CareerSectionStatItemDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, ClassroomUsageItemDto (+27 more)
-
-### Community 8 - "ref_angular_core"
-Cohesion: 0.09
-Nodes (34): APIS, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-… (+26 more)
-
-### Community 9 - "UserStateService"
 Cohesion: 0.06
-Nodes (30): @angular/router, AppComponent, Component, src_app_common_index_computecoverage, src_app_common_index_readurlnumber, src_app_common_index_sections_load_panel_key, src_app_common_index_semesters, src_app_common_index_stateservice (+22 more)
+Nodes (42): CreateCareerDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, CreateClassroomDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, CreateDepartmentDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, CreateDocumentDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-… (+34 more)
+
+### Community 7 - "StatisticsService"
+Cohesion: 0.05
+Nodes (26): StatisticsService, Inject, Injectable, Optional, CareerSectionStatItemDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, ClassroomUsageItemDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-… (+18 more)
+
+### Community 8 - "ref_angular_common"
+Cohesion: 0.11
+Nodes (27): APIS, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-… (+19 more)
+
+### Community 9 - "@angular/forms"
+Cohesion: 0.09
+Nodes (31): Filtros de las listas en la URL — `f6be70d`, @angular/forms, @angular/router, moment, xlsx, src_app_common_confirm_modal_index_confirmmodalcomponent, src_app_common_index_readurlnumber, src_app_common_index_stateservice (+23 more)
 
 ### Community 10 - "departments.module.ts"
-Cohesion: 0.08
-Nodes (23): src_app_common_index_listcomponentservice, src_app_common_index_selectexmodule, DepartmentsRoutingModule, NgModule, DepartmentsService, Injectable, src_app_repositories_departments_mappers_index_department2departmentitemvm, DepartmentsMemoryService (+15 more)
+Cohesion: 0.07
+Nodes (27): DepartmentsComponent, Component, DepartmentsRoutingModule, routes, NgModule, DepartmentsService, Injectable, src_app_repositories_departments_form_index_formcomponent (+19 more)
 
 ### Community 11 - "error-handler.module.ts"
 Cohesion: 0.07
 Nodes (27): AlertServiceService, Injectable, projects_error_handler_src_lib_alert_service_index_alertserviceservice, AlertMethotKey, AlertServiceKey, ErrorHandlerConfigKey, projects_error_handler_src_lib_consts_index_alertmethotkey, projects_error_handler_src_lib_consts_index_alertservicekey (+19 more)
 
+### Community 12 - "teacher.service.ts"
+Cohesion: 0.12
+Nodes (21): NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, TeacherService, Inject, Injectable, Optional, CreateTeacherDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, EmploymentStatus (+13 more)
+
 ### Community 13 - "AcademicChargeTeacherComponent"
 Cohesion: 0.13
 Nodes (5): AcademicChargeTeacherComponent, Component, AcademicChargeTeacherService, Injectable, Intervals
 
-### Community 15 - "active-period.service.ts"
-Cohesion: 0.14
-Nodes (5): src_app_repositories_periods_mappers_index_period2periodvm, Period2PeriodVM(), src_app_repositories_periods_model_index_perioditemvm, FindPeriodService, Injectable
+### Community 15 - "create-schedule.service.ts"
+Cohesion: 0.09
+Nodes (17): Classroom2ClassroomVM(), src_app_repositories_classrooms_mappers_index_classroom2classroomvm, Day2DayVM(), src_app_repositories_schedules_mappers_index_schedule2schedulevm, Schedule2ScheduleItemVM(), Schedule2ScheduleVM(), ScheduleMemoryService, Injectable (+9 more)
 
 ### Community 16 - "FormComponent"
-Cohesion: 0.14
-Nodes (7): FormComponent, Component, Inject, Input, Output, PeriodsService, Injectable
+Cohesion: 0.16
+Nodes (5): FormComponent, Component, Inject, Input, Output
 
 ### Community 17 - "form-control-errors.directive.ts"
 Cohesion: 0.08
 Nodes (19): COMMON_MESSAGES, FEATURE_MESSAGES, FormControlErrorsComponent, Component, Input, FormControlErrorsDirective, FormControlTestComponent, Component (+11 more)
 
 ### Community 18 - "package.json"
-Cohesion: 0.05
-Nodes (39): engines, node, @angular/common, @angular/core, tslib, name, private, version (+31 more)
+Cohesion: 0.04
+Nodes (46): engines, node, @angular/common, @angular/core, tslib, name, private, version (+38 more)
 
 ### Community 19 - "http-form-data-client.service.ts"
 Cohesion: 0.10
 Nodes (18): BlobVM, projects_http_form_data_client_src_lib_class_index_blobvm, HttpFormDataClientModule, NgModule, HttpFormDataClientService, Inject, Injectable, Optional (+10 more)
 
 ### Community 20 - "GradeSearchComponent"
-Cohesion: 0.17
-Nodes (5): GradeSearchComponent, normalize(), Component, Inject, Optional
+Cohesion: 0.14
+Nodes (6): GradeSearchComponent, groupByTeacher(), normalize(), Component, Inject, Optional
 
-### Community 21 - "UseCase"
-Cohesion: 0.05
-Nodes (14): ListComponentService, Optional, MemoryRepository, src_app_common_memory_repository_models_index_paginationstatus, PaginationStatus, UseCase, ScheduleMemoryService, Injectable (+6 more)
+### Community 21 - "MemoryRepository"
+Cohesion: 0.09
+Nodes (4): src_app_common_memory_repository_index_memoryrepository, Optional, MemoryRepository, PaginationStatus
 
 ### Community 23 - "SectionsManageComponent"
-Cohesion: 0.09
+Cohesion: 0.10
 Nodes (4): normalize(), SectionsManageComponent, toRow(), Component
 
 ### Community 25 - "SelectExComponent"
@@ -342,20 +369,24 @@ Cohesion: 0.08
 Nodes (7): @angular/cdk, NormalizeWords(), searchCallback(), SelectExComponent, Component, Input, ViewChild
 
 ### Community 26 - "PlannedSchedulesComponent"
-Cohesion: 0.08
-Nodes (11): xlsx, Group, PlannedSchedulesComponent, ShiftRow, Component, src_app_repositories_schedules_planned_schedules_report_config_modal_index_reportconfig, src_app_repositories_schedules_planned_schedules_report_config_modal_index_reportconfigmodalcomponent, ReportConfig (+3 more)
+Cohesion: 0.11
+Nodes (6): PlannedSchedulesComponent, Component, ReportConfig, sectionShift(), Shift, SHIFT_LABELS
 
-### Community 27 - "student-schedules.service.ts"
-Cohesion: 0.08
-Nodes (24): src_app_repositories_schedules_index_intervals, src_app_repositories_schedules_index_schedulebasequery, src_app_repositories_sections_index_sectionvm, src_app_repositories_subjects_index_subjectbasequery, src_app_repositories_subjects_index_subjectsmodule, CardSectionSchedulesComponent, Component, Input (+16 more)
-
-### Community 29 - "DepartmentItemVM"
-Cohesion: 0.09
-Nodes (12): lodash, ClassroomsService, Injectable, src_app_repositories_classrooms_model_index_classroom_types, DepartmentsComponent, Component, routes, DepartmentItemVM (+4 more)
-
-### Community 30 - "TeacherAcademicService"
+### Community 27 - "student-schedules.component.ts"
 Cohesion: 0.07
-Nodes (12): MAX_UPLOAD_SIZE, uploadSizeError(), AcademicComponent, fullName(), normalize(), Component, buildWeek(), ProfileComponent (+4 more)
+Nodes (36): home_anibal_projects_sigeit_src_app_student_schedules_mappers, ref_mappers, src_app_common_index_selectexmodule, src_app_common_index_statemodule, src_app_common_state_index_stateservice, src_app_common_user_state_index_userstateservice, src_app_repositories_careers_index_careersmodule, src_app_repositories_periods_index_stageperiod (+28 more)
+
+### Community 28 - "user-item-vm.ts"
+Cohesion: 0.11
+Nodes (13): src_app_common_memory_repository_index_basequery, src_app_repositories_departments_index_department2departmentvm, src_app_repositories_schools_index_schoolvm, src_app_repositories_teachers_index_teacher2teachervm, src_app_repositories_users_mappers_index_user2uservm, User2UserItemVM(), User2UserVM(), src_app_repositories_users_model_index_user_roles_value (+5 more)
+
+### Community 29 - "ClassroomsService"
+Cohesion: 0.33
+Nodes (3): ClassroomsService, Injectable, Inject
+
+### Community 30 - "AcademicComponent"
+Cohesion: 0.13
+Nodes (5): AcademicComponent, fullName(), normalize(), Component, buildWeek()
 
 ### Community 31 - "Configuration"
 Cohesion: 0.08
@@ -369,41 +400,37 @@ Nodes (16): AuthService, Inject, Injectable, Optional, ChangePasswordDto, NOTE: 
 Cohesion: 0.09
 Nodes (14): LoginModule, NgModule, projects_login_src_lib_toggle_password_view_index_togglepasswordviewmodule, TogglePasswordViewComponent, Component, HostBinding, HostListener, Input (+6 more)
 
-### Community 34 - "create-document.service.ts"
+### Community 34 - "documents/model/index.ts"
 Cohesion: 0.16
-Nodes (17): Document2DocumentDto(), Document2DocumentItemVM(), Document2DocumentVM(), src_app_repositories_documents_mappers_index_document2documentdto, src_app_repositories_documents_mappers_index_document2documentitemvm, src_app_repositories_documents_mappers_index_document2documentvm, src_app_repositories_documents_memory_index_memorydocumentsservice, DocumentBaseQuery (+9 more)
+Nodes (13): Document2DocumentItemVM(), Document2DocumentVM(), DocumentBaseQuery, DocumentItemVM, DocumentVM, src_app_repositories_documents_model_index_type_document_labels, RowActionDocument, delete (+5 more)
 
-### Community 35 - "FormComponent"
-Cohesion: 0.10
-Nodes (7): moment, timeValidator(), clashHtml(), FormComponent, Component, Input, Output
+### Community 35 - "SchedulesService"
+Cohesion: 0.09
+Nodes (9): timeValidator(), clashText(), FormComponent, Component, Input, Output, IntervalsSelect, SchedulesService (+1 more)
 
 ### Community 36 - "MemoryDocumentsService"
-Cohesion: 0.11
+Cohesion: 0.14
 Nodes (10): MemoryDocumentsService, Injectable, CreateDocumentService, Injectable, DeleteDocumentService, Injectable, GetDocumentsService, Injectable (+2 more)
 
-### Community 37 - "finished.component.ts"
-Cohesion: 0.10
-Nodes (18): src_app_repositories_users_index_user2useritemvm, src_app_repositories_users_index_useritemvm, src_app_student_schedules_mappers_index_inscription2inscriptionvm, inscription2InscriptionVM(), src_app_student_schedules_model_index_inscriptionvm, InscriptionBaseQuery, InscriptionVM, StageInscription (+10 more)
-
-### Community 38 - "TeacherItemVM"
-Cohesion: 0.14
-Nodes (14): Teacher2TeacherItemVM(), Teacher2TeacherVM(), src_app_repositories_teachers_model_index_teacherbasequery, src_app_repositories_teachers_model_index_teachervm, RowActionTeacher, academic, delete, profile (+6 more)
+### Community 38 - "create-school.service.ts"
+Cohesion: 0.12
+Nodes (10): src_app_repositories_schools_mappers_index_school2schoolitemvm, SchoolMemoryService, Injectable, src_app_repositories_schools_model_index_schoolitemvm, CreateSchoolService, Injectable, DeleteSchoolService, Injectable (+2 more)
 
 ### Community 39 - "dependencies"
 Cohesion: 0.07
 Nodes (28): dependencies, ajv-formats, @angular/animations, @angular/cdk, @angular/common, @angular/compiler, @angular/core, @angular/forms (+20 more)
 
 ### Community 40 - "classrooms.module.ts"
+Cohesion: 0.25
+Nodes (9): src_app_common_index_listcomponentservice, ClassroomsRoutingModule, routes, NgModule, src_app_repositories_classrooms_use_cases_index_createclassroomservice, src_app_repositories_classrooms_use_cases_index_deleteclassroomservice, src_app_repositories_classrooms_use_cases_index_findclassroomservice, src_app_repositories_classrooms_use_cases_index_getclassroomsservice (+1 more)
+
+### Community 41 - "documents/form/form.component.ts"
+Cohesion: 0.12
+Nodes (14): Formatos de documento (`/dashboard/formats`) — `77be1ac`, `41bab94`, `b083e17`, src_app_common_index_ishandledhttperror, src_app_common_index_parseboldtext, src_app_common_index_textsegment, parseBoldText(), TextSegment, PreviewLine, DEFAULT_TEMPLATES (+6 more)
+
+### Community 42 - "period-audit-dto.ts"
 Cohesion: 0.17
-Nodes (11): ClassroomsRoutingModule, routes, NgModule, src_app_repositories_classrooms_memory_index_classroomsmemoryservice, DeleteClassroomService, Injectable, src_app_repositories_classrooms_use_cases_index_createclassroomservice, src_app_repositories_classrooms_use_cases_index_deleteclassroomservice (+3 more)
-
-### Community 41 - "BulkAcademicChargeModalComponent"
-Cohesion: 0.22
-Nodes (3): BulkAcademicChargeModalComponent, Component, Inject
-
-### Community 42 - "ScheduleService"
-Cohesion: 0.09
-Nodes (17): ScheduleService, Injectable, AuditSummaryDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, ConflictPairDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, CoverageStatus, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-… (+9 more)
+Nodes (14): AuditSummaryDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, ConflictPairDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, CoverageStatus, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, DayConflictsDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-… (+6 more)
 
 ### Community 43 - "📱 Sistema de Visualización de Versión - SIGEIT"
 Cohesion: 0.08
@@ -414,24 +441,24 @@ Cohesion: 0.20
 Nodes (4): ToastService, Inject, Injectable, Optional
 
 ### Community 45 - "ScheduleItemVM"
-Cohesion: 0.06
-Nodes (31): src_app_repositories_periods_index_periodvm, src_app_repositories_schedules_index_schedule2scheduleitemvm, Day2DayVM(), src_app_repositories_schedules_mappers_index_schedule2scheduleitemvm, src_app_repositories_schedules_mappers_index_schedule2schedulevm, Schedule2ScheduleItemVM(), Schedule2ScheduleVM(), src_app_repositories_schedules_memory_index_schedulememoryservice (+23 more)
+Cohesion: 0.11
+Nodes (14): src_app_repositories_schedules_mappers_index_schedule2scheduleitemvm, src_app_repositories_schedules_model_index_scheduleitemvm, ScheduleItemVM, src_app_repositories_schedules_schedule_details_index_schedule_details_dialog, src_app_repositories_schedules_schedule_details_index_scheduledetailscomponent, groupBySection(), SCHEDULE_DETAILS_DIALOG, ScheduleDetailsComponent (+6 more)
 
 ### Community 46 - "📋 Gestión de Versiones - SIGEIT"
 Cohesion: 0.08
 Nodes (24): 1. Desarrollo Normal, 2. Generar Nueva Versión, 📁 Archivos de Configuración, 📊 Changelog Automático, 🚀 Comandos Disponibles, Commit Message, Configuración de Commit Template, 🔧 Configuración del IDE (+16 more)
 
 ### Community 47 - "PeriodService"
-Cohesion: 0.26
-Nodes (3): PeriodService, Injectable, ResponsePeriodDto
+Cohesion: 0.11
+Nodes (10): PeriodService, Inject, Injectable, Optional, CreatePeriodDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, ResponsePeriodDto (+2 more)
 
-### Community 48 - "SchedulesService"
-Cohesion: 0.07
-Nodes (12): src_app_repositories_classrooms_model_index_classroomvm, ClassroomsSchedulesComponent, Component, Input, DayVM, ScheduleComponent, Component, Input (+4 more)
+### Community 48 - "ClassroomsSchedulesComponent"
+Cohesion: 0.16
+Nodes (5): ClassroomsSchedulesComponent, Component, Input, ScheduleDisplayService, Injectable
 
 ### Community 49 - "devDependencies"
-Cohesion: 0.09
-Nodes (23): devDependencies, ajv, @angular/cli, @angular/compiler-cli, @angular-devkit/build-angular, baseline-browser-mapping, @commitlint/cli, @commitlint/config-conventional (+15 more)
+Cohesion: 0.07
+Nodes (30): devDependencies, ajv, @angular/cli, @angular/compiler-cli, @angular-devkit/build-angular, @angular-eslint/builder, @angular-eslint/eslint-plugin, @angular-eslint/eslint-plugin-template (+22 more)
 
 ### Community 50 - "SchoolService"
 Cohesion: 0.12
@@ -446,15 +473,15 @@ Cohesion: 0.15
 Nodes (11): projects_logger_src_lib_interfaces_index_loggerconfig, projects_logger_src_lib_interfaces_index_loggerconfigkey, LoggerConfig, LoggerConfigKey, LoggerModule, NgModule, LoggerService, TODO: Crear un API res para el reporte de errores (+3 more)
 
 ### Community 53 - "schools.module.ts"
-Cohesion: 0.09
-Nodes (17): src_app_repositories_schools_form_index_formcomponent, src_app_repositories_schools_memory_index_schoolmemoryservice, src_app_repositories_schools_model_index_rowactionschool, SchoolsComponent, Component, routes, SchoolsRoutingModule, NgModule (+9 more)
+Cohesion: 0.12
+Nodes (15): src_app_repositories_schools_form_index_formcomponent, src_app_repositories_schools_memory_index_schoolmemoryservice, src_app_repositories_schools_model_index_rowactionschool, SchoolsComponent, Component, routes, SchoolsRoutingModule, NgModule (+7 more)
 
-### Community 54 - "settings.component.ts"
-Cohesion: 0.11
-Nodes (8): src_app_repositories_settings_mappers_index_setting2settingvm, Setting2SettingVm(), src_app_repositories_settings_model_index_settingvm, SettingVM, SettingsComponent, Component, SettingsService, Injectable
+### Community 54 - "periods/form/form.component.ts"
+Cohesion: 0.07
+Nodes (23): 4. Reglas al consumir la API, ref_toast, src_app_repositories_periods_model_index_stage_periods, src_app_repositories_periods_model_index_stage_periods_value, src_app_repositories_periods_model_index_stageperiod, STAGE_PERIODS, STAGE_PERIODS_VALUE, StagePeriod (+15 more)
 
 ### Community 55 - "SectionsOverviewComponent"
-Cohesion: 0.16
+Cohesion: 0.15
 Nodes (3): Group, SectionsOverviewComponent, Component
 
 ### Community 56 - "Changelog"
@@ -465,37 +492,41 @@ Nodes (21): 0.0.1 (2025-09-21), 0.0.2 (2025-09-21), 0.0.3 (2025-09-21), ✨ Cara
 Cohesion: 0.09
 Nodes (22): scripts, build, build-error-handler, build:prod, build-projects, build:versioned, changelog, dashboard-sdk (+14 more)
 
-### Community 58 - "@angular/material"
-Cohesion: 0.05
-Nodes (48): @angular/material, ConfirmModalComponent, Component, Inject, Output, ConfirmModalModule, NgModule, src_app_common_confirm_modal_index_confirmmodalcomponent (+40 more)
+### Community 58 - "TableService"
+Cohesion: 0.09
+Nodes (16): src_app_common_table_model_index_optionaction, src_app_common_table_model_index_rowoptionvm, src_app_common_table_model_index_tabledatavm, OptionAction, RowOptionVM, TableDataVM, getSpanishPaginatorIntl(), TableComponent (+8 more)
 
-### Community 59 - "get-classrooms.service.ts"
-Cohesion: 0.21
-Nodes (8): src_app_repositories_classrooms_mappers_index_classroom2classroomvm, ClassroomBaseQuery, ClassroomItemVM, src_app_repositories_classrooms_model_index_classroombasequery, FindClassroomService, Injectable, GetClassroomsService, Injectable
+### Community 59 - "ref_angular_core"
+Cohesion: 0.06
+Nodes (31): ref_admin_sdk, ref_angular_core, ref_dashboard_sdk, rxjs, src_app_common_memory_repository_index_usecase, src_app_common_memory_repository_models_index_paginationstatus, UseCase, Classroom2ClassroomItemVM() (+23 more)
 
 ### Community 60 - "DayService"
 Cohesion: 0.12
 Nodes (10): DayService, Inject, Injectable, Optional, CreateDayDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, ResponseDayDto (+2 more)
 
 ### Community 61 - "documents.module.ts"
-Cohesion: 0.17
-Nodes (11): src_app_common_table_index_tablemodule, DocumentsModule, NgModule, DocumentsFileService, Injectable, src_app_repositories_documents_memory_memory_documents_index_memorydocumentsservice, src_app_repositories_documents_use_cases_create_document_index_createdocumentservice, src_app_repositories_documents_use_cases_delete_document_index_deletedocumentservice (+3 more)
+Cohesion: 0.15
+Nodes (13): src_app_common_table_index_tablemodule, DocumentsModule, NgModule, DocumentsRoutingModule, routes, NgModule, src_app_repositories_documents_form_index_formcomponent, src_app_repositories_documents_memory_memory_documents_index_memorydocumentsservice (+5 more)
 
 ### Community 62 - "PeriodVM"
-Cohesion: 0.21
-Nodes (5): Period2PeriodItemVM(), PeriodItemVM, PeriodVM, CreatePeriodService, Injectable
+Cohesion: 0.18
+Nodes (5): PeriodVM, Inject, Optional, SectionsService, Injectable
 
 ### Community 63 - "SettingService"
-Cohesion: 0.07
-Nodes (16): SettingService, Inject, Injectable, Optional, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, ReserveOfficeNumbersDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, ResponseDepartmentSettingDto (+8 more)
+Cohesion: 0.06
+Nodes (21): 1. SDK (`projects/dashboard-sdk`), 2. Inscripción eliminada, 3. Permisos: lo que ahora exige la API, 5. Pendiente, Roles, configuración, formatos e inscripción (octubre 2026) — frontend, SettingService, Inject, Injectable (+13 more)
 
 ### Community 65 - "production"
-Cohesion: 0.10
-Nodes (20): serve, production, port, aot, baseHref, browserTarget, budgets, buildOptimizer (+12 more)
+Cohesion: 0.14
+Nodes (14): production, aot, baseHref, browserTarget, budgets, buildOptimizer, extractLicenses, fileReplacements (+6 more)
 
-### Community 67 - "teacher.service.ts"
-Cohesion: 0.05
-Nodes (49): TeacherDegreeService, Injectable, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, TeacherService, Injectable, CreateTeacherDegreeDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, CreateTeacherDto (+41 more)
+### Community 66 - "GlobalPeriodService"
+Cohesion: 0.13
+Nodes (4): AdminComponent, Component, GlobalPeriodService, Injectable
+
+### Community 67 - "teacher-degree.service.ts"
+Cohesion: 0.08
+Nodes (31): NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, TeacherDegreeService, Injectable, CreateTeacherDegreeDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, DegreeLevel, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, GradeStatus (+23 more)
 
 ### Community 68 - "UserService"
 Cohesion: 0.17
@@ -505,21 +536,21 @@ Nodes (7): Inject, Injectable, Optional, UserService, CreateUserDto, NOTE: This 
 Cohesion: 0.15
 Nodes (11): AuditService, Inject, Injectable, Optional, AuditLogsPageDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, EntityAuditHistoryDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-… (+3 more)
 
-### Community 70 - "InscriptionService"
+### Community 70 - "create-department.service.ts"
 Cohesion: 0.15
-Nodes (8): InscriptionService, Inject, Injectable, Optional, CloseInscriptionDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, ResponseInscriptionDto
+Nodes (4): src_app_repositories_departments_mappers_index_department2departmentitemvm, src_app_repositories_departments_mappers_index_department2departmentvm, src_app_repositories_departments_memory_index_departmentsmemoryservice, src_app_repositories_departments_model_index_departmentbasequery
 
-### Community 71 - "app-routing.module.ts"
-Cohesion: 0.19
-Nodes (7): AppRoutingModule, routes, NgModule, AuthGuard, Injectable, AuthLoginGuard, Injectable
+### Community 71 - "@angular/material"
+Cohesion: 0.17
+Nodes (9): @angular/material, ConfirmModalComponent, Component, Inject, Output, ModalMessageModel, SelectExModule, NgModule (+1 more)
 
-### Community 72 - "subject-demands.component.ts"
+### Community 72 - "import-demand.component.ts"
 Cohesion: 0.10
-Nodes (15): src_app_common_subject_demand_index_subjectdemandstoreservice, SubjectDemandDialogComponent, Component, Inject, LevelBar, ImportDemandComponent, Component, Inject (+7 more)
+Nodes (13): src_app_common_subject_demand_index_subjectdemandstoreservice, MAX_UPLOAD_SIZE, uploadSizeError(), ImportDemandComponent, Component, Inject, SubjectDemandsModule, NgModule (+5 more)
 
-### Community 73 - "SubjectDemandPanelComponent"
-Cohesion: 0.21
-Nodes (4): SubjectDemandPanelComponent, Component, Input, levelPercent()
+### Community 73 - "auth.module.ts"
+Cohesion: 0.15
+Nodes (10): AuthRoutingModule, routes, NgModule, src_app_auth_login_index_logincomponent, src_app_auth_login_index_loginservice, src_app_auth_recovery_password_index_recoverypasswordcomponent, src_app_auth_reset_password_index_resetpasswordcomponent, src_app_auth_sign_up_index_signupcomponent (+2 more)
 
 ### Community 74 - "SectionsComponent"
 Cohesion: 0.21
@@ -529,37 +560,41 @@ Nodes (5): SectionsComponent, Component, HostBinding, Input, Output
 Cohesion: 0.11
 Nodes (18): API, Características, Columnas Dinámicas, Columnas Dinámicas, Componente de Vista General de Secciones, Dependencias, **Estilos Aplicados:**, Estructura de Datos (+10 more)
 
-### Community 76 - "UserStateVM"
-Cohesion: 0.21
-Nodes (3): HttpInterceptorInterceptor, Injectable, UserStateVM
+### Community 76 - "http-interceptor.interceptor.ts"
+Cohesion: 0.23
+Nodes (5): FORBIDDEN_MESSAGE, INACTIVE_USER_MESSAGE, HttpInterceptorInterceptor, Injectable, DEMAND_PREFERENCE_KEYS
 
 ### Community 77 - "schedules/academic-charge-teacher/academic-charge-teacher.component.ts"
-Cohesion: 0.09
-Nodes (26): home_anibal_projects_sigeit_dist_dashboard_sdk, docx, file-saver, jszip, PreviewLine, DEFAULT_TEMPLATES, DOCUMENT_VARIABLES, fillTemplate() (+18 more)
+Cohesion: 0.08
+Nodes (18): docx, file-saver, jszip, src_app_common_http_interceptor_index_ishandledhttperror, src_app_common_text_index_parseboldtext, src_app_repositories_documents_model_index_default_templates, src_app_repositories_documents_model_index_filltemplate, src_app_repositories_documents_model_index_typedocument (+10 more)
 
-### Community 78 - "AdminComponent"
-Cohesion: 0.14
-Nodes (5): AdminComponent, Component, AdminService, Injectable, optionMenu
+### Community 78 - "UserStateService"
+Cohesion: 0.12
+Nodes (9): Seguridad y permisos de la UI (fase 1 de la auditoría + requisitos del backend), AdminService, Injectable, ConfirmModalModule, NgModule, src_app_common_user_state_models_index_userstatevm, UserStateVM, Injectable (+1 more)
 
 ### Community 79 - "DocumentsComponent"
-Cohesion: 0.16
-Nodes (6): DocumentsComponent, Component, DocumentsRoutingModule, routes, NgModule, src_app_repositories_documents_form_index_formcomponent
+Cohesion: 0.18
+Nodes (4): DocumentsComponent, Component, DocumentsFileService, Injectable
 
-### Community 81 - "ref_dashboard_sdk"
+### Community 80 - "LoginComponent"
+Cohesion: 0.20
+Nodes (4): LoginComponent, Component, LoginService, Injectable
+
+### Community 81 - "grade-search.component.ts"
 Cohesion: 0.11
-Nodes (29): ref_dashboard_sdk, src_app_common_index_uploadsizeerror, Editing, STATUS_LABELS, GradeIssue, DEFAULT_MIN_PERCENT, GradeSearchDialogData, SubjectMatches (+21 more)
+Nodes (27): src_app_common_index_uploadsizeerror, Editing, STATUS_LABELS, GradeIssue, DEFAULT_MIN_PERCENT, SubjectMatches, TeacherResult, src_app_repositories_teachers_model_index_category_options (+19 more)
 
 ### Community 82 - "FormComponent"
-Cohesion: 0.18
+Cohesion: 0.20
 Nodes (5): FormComponent, Component, Inject, Input, Output
 
 ### Community 83 - "users.service.ts"
-Cohesion: 0.04
-Nodes (54): ref_admin_sdk, src_app_common_memory_repository_index_basequery, src_app_repositories_careers_use_cases_index_getcareersservice, src_app_repositories_departments_index_departmentvm, src_app_repositories_departments_index_getdepartmentsservice, src_app_repositories_schools_index_getschoolsservice, src_app_repositories_schools_index_schoolvm, src_app_repositories_teachers_index_teacher2teachervm (+46 more)
+Cohesion: 0.06
+Nodes (36): src_app_common_index_tableservice, src_app_common_memory_repository_index_listcomponentservice, StateModule, NgModule, src_app_repositories_careers_index_careeritemvm, src_app_repositories_careers_use_cases_index_getcareersservice, src_app_repositories_schools_index_getschoolsservice, src_app_repositories_users_form_index_formcomponent (+28 more)
 
 ### Community 84 - "DocumentService"
-Cohesion: 0.18
-Nodes (9): DocumentService, Inject, Injectable, Optional, CreateDocumentDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, ResponseDocumentDto, TypeDocument (+1 more)
+Cohesion: 0.23
+Nodes (5): DocumentService, Inject, Injectable, Optional, ResponseDocumentDto
 
 ### Community 85 - "SubjectDemandService"
 Cohesion: 0.15
@@ -569,13 +604,17 @@ Nodes (8): SubjectDemandService, Inject, Injectable, Optional, ImportSubjectDema
 Cohesion: 0.17
 Nodes (6): fullName(), normalize(), TeacherPickerComponent, Component, Input, Output
 
-### Community 87 - "src_app_common_memory_repository_index_usecase"
-Cohesion: 0.07
-Nodes (24): src_app_common_memory_repository_index_usecase, src_app_repositories_subjects_mappers_index_subject2subjectitemvm, src_app_repositories_subjects_mappers_index_subject2subjectvm, Subject2SubjectItemVM(), Subject2SubjectVM(), src_app_repositories_subjects_memory_index_subjectmemoryservice, SubjectMemoryService, Injectable (+16 more)
+### Community 87 - "subjects.component.ts"
+Cohesion: 0.06
+Nodes (38): src_app_common_index_confirmmodalcomponent, src_app_common_index_optionaction, src_app_common_index_tabledatavm, src_app_repositories_careers_index_getcareersservice, src_app_repositories_departments_index_departmentitemvm, src_app_repositories_subjects_form_index_formcomponent, src_app_repositories_subjects_mappers_index_subject2subjectitemvm, Subject2SubjectItemVM() (+30 more)
 
 ### Community 88 - "ClassroomType"
 Cohesion: 0.33
 Nodes (5): CLASSROOM_TYPES, ClassroomType, Classrroom, Laboratory, Virtual
+
+### Community 89 - "ListComponentService"
+Cohesion: 0.11
+Nodes (4): ListComponentService, Inject, SubjectsService, Injectable
 
 ### Community 91 - "CareerService"
 Cohesion: 0.19
@@ -594,32 +633,36 @@ Cohesion: 0.19
 Nodes (6): SubjectService, Inject, Injectable, Optional, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, ResponseSubjectDto
 
 ### Community 95 - "SubjectDemandStoreService"
-Cohesion: 0.22
+Cohesion: 0.19
 Nodes (4): isValidDemandConfig(), SubjectDemandStoreService, summarizeDemand(), Injectable
 
 ### Community 96 - "VersionService"
-Cohesion: 0.12
-Nodes (10): Component, VersionDisplayComponent, Inject, Injectable, VersionService, 1. **Servicio de Versión (`VersionService`)**, 2. **Componente de Visualización (`VersionDisplayComponent`)**, 3. **Modal de Información (`VersionInfoComponent`)** (+2 more)
+Cohesion: 0.09
+Nodes (15): Component, VersionDisplayComponent, Component, Inject, VersionInfoComponent, Injectable, VersionInfo, VersionService (+7 more)
 
 ### Community 97 - "ReportConfigModalComponent"
 Cohesion: 0.12
 Nodes (3): ReportConfigModalComponent, Component, Inject
 
-### Community 98 - "free-slot-dto.ts"
-Cohesion: 0.47
-Nodes (4): FreeClassroomDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, FreeSlotDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…
+### Community 98 - "ScheduleService"
+Cohesion: 0.10
+Nodes (12): ScheduleService, Inject, Injectable, Optional, FreeClassroomDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, FreeSlotDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-… (+4 more)
 
 ### Community 99 - "FormComponent"
 Cohesion: 0.22
 Nodes (4): FormComponent, Component, Input, Output
 
-### Community 100 - "settings.module.ts"
-Cohesion: 0.50
-Nodes (3): routes, SettingsRoutingModule, NgModule
+### Community 100 - "careers.component.ts"
+Cohesion: 0.14
+Nodes (9): CareersComponent, Component, CareersRoutingModule, routes, NgModule, CareersService, Injectable, src_app_repositories_careers_form_index_formcomponent (+1 more)
 
 ### Community 101 - "FormComponent"
-Cohesion: 0.18
+Cohesion: 0.20
 Nodes (5): FormComponent, Component, Inject, Input, Output
+
+### Community 102 - "2026-10-18"
+Cohesion: 0.12
+Nodes (15): 2026-10-18, Carta de carga académica desde el formato — `2170be2`, Configuración conectada a la API — `d62eb25`, Contratos con el backend (`sigeit-api`), Correlativos de oficio por departamento — `709d298`, Horario semanal en el perfil y diálogos a 90vh — `3dda440`, Inscripción de estudiantes eliminada del frontend (`5f457c9`, `cfc5260`), Otras asignaturas en el mismo bloque horario — `a3b60c7`, `9ad1e3e` (+7 more)
 
 ### Community 103 - "Sistema de Período Académico Global"
 Cohesion: 0.14
@@ -629,29 +672,29 @@ Nodes (13): 1. En el Header Principal, 2. En Componentes Específicos, 3. Banner
 Cohesion: 0.40
 Nodes (3): DegreeDetailComponent, Component, Input
 
-### Community 105 - "get-periods.service.ts"
+### Community 105 - "common/index.ts"
+Cohesion: 0.05
+Nodes (43): src_app_common_index_basequery, src_app_common_index_usecase, BaseQuery, src_app_repositories_periods_form_index_formcomponent, src_app_repositories_periods_mappers_index_period2perioditemvm, src_app_repositories_periods_mappers_index_period2periodvm, Period2PeriodItemVM(), Period2PeriodVM() (+35 more)
+
+### Community 106 - "sections-manage.component.ts"
 Cohesion: 0.12
-Nodes (9): src_app_repositories_periods_mappers_index_period2perioditemvm, PeriodMemoryService, Injectable, GetPeriodsService, Injectable, SetActivePeriodService, Injectable, Injectable (+1 more)
+Nodes (13): src_app_common_index_computecoverage, src_app_common_index_sections_load_panel_key, src_app_common_index_subjectcoverage, src_app_common_index_subjectdemanddialogcomponent, src_app_common_index_subjectdemanddialogdata, src_app_common_index_subjectdemandstoreservice, src_app_common_index_subjectdemandsummary, SubjectDemandDialogData (+5 more)
 
-### Community 106 - "VersionInfoComponent"
-Cohesion: 0.22
-Nodes (5): Component, VersionInfoComponent, VersionInfo, VERSION_INFO, Window
-
-### Community 107 - "FormComponent"
+### Community 107 - "classrooms/form/form.component.ts"
 Cohesion: 0.18
-Nodes (5): FormComponent, Component, Inject, Input, Output
+Nodes (5): FormComponent, Component, Input, Output, src_app_repositories_classrooms_model_index_classroom_types
 
 ### Community 108 - "FormComponent"
 Cohesion: 0.21
 Nodes (5): FormComponent, Component, Inject, Input, Output
 
 ### Community 109 - "FormComponent"
-Cohesion: 0.14
-Nodes (11): FormComponent, Component, Input, Output, UserRole, Administrator, Director, HeadDepartment (+3 more)
+Cohesion: 0.18
+Nodes (5): FormComponent, Component, Inject, Input, Output
 
 ### Community 110 - "projects"
 Cohesion: 0.15
-Nodes (12): cli, analytics, architect, prefix, projectType, root, sourceRoot, newProjectRoot (+4 more)
+Nodes (12): cli, analytics, newProjectRoot, projects, toast, $schema, architect, prefix (+4 more)
 
 ### Community 111 - "options"
 Cohesion: 0.22
@@ -662,44 +705,44 @@ Cohesion: 0.27
 Nodes (5): TOAST_OPTIONS, ToastModule, NgModule, @ngx-translate/core, toastr
 
 ### Community 113 - "admin.component.ts"
-Cohesion: 0.13
-Nodes (15): AdminModule, NgModule, AdminRoutingModule, routes, NgModule, src_app_admin_data_index_menu, MENU, src_app_admin_models_index_optionmenu (+7 more)
+Cohesion: 0.10
+Nodes (19): AdminRoutingModule, routes, NgModule, src_app_admin_data_index_canaccesssection, src_app_admin_data_index_menuforrole, canAccessSection(), MENU, menuForRole() (+11 more)
 
-### Community 114 - "login.service.ts"
-Cohesion: 0.16
-Nodes (7): @angular/platform-browser, ref_recovery_password_service, AuthModule, NgModule, LoginService, Injectable, src_app_common_user_state_models_index_userstatevm
+### Community 114 - "login.component.spec.ts"
+Cohesion: 0.38
+Nodes (4): @angular/platform-browser, ref_recovery_password_service, AuthModule, NgModule
 
 ### Community 115 - "FormComponent"
-Cohesion: 0.19
-Nodes (3): errorMessage(), FormComponent, Component
+Cohesion: 0.15
+Nodes (4): isHandledHttpError(), errorMessage(), FormComponent, Component
 
 ### Community 116 - "FormComponent"
-Cohesion: 0.18
-Nodes (5): FormComponent, Component, Inject, Input, Output
+Cohesion: 0.22
+Nodes (4): FormComponent, Component, Input, Output
 
 ### Community 117 - "auditoria"
 Cohesion: 0.17
 Nodes (12): aot, baseHref, budgets, buildOptimizer, extractLicenses, fileReplacements, namedChunks, optimization (+4 more)
 
-### Community 118 - "state-routing.module.ts"
-Cohesion: 0.50
-Nodes (3): routes, StateRoutingModule, NgModule
+### Community 118 - "state/index.ts"
+Cohesion: 0.12
+Nodes (9): AppComponent, Component, StateComponent, Component, HostBinding, Input, routes, StateRoutingModule (+1 more)
 
 ### Community 119 - "DegreeFormComponent"
 Cohesion: 0.11
 Nodes (5): DegreeFormComponent, normalize(), Component, Input, Output
 
-### Community 120 - "ClassroomVM"
-Cohesion: 0.20
-Nodes (7): Classroom2ClassroomItemVM(), Classroom2ClassroomVM(), ClassroomVM, RowActionClassroom, delete, update, src_app_repositories_departments_index_department2departmentvm
+### Community 120 - "schedules/form/form.component.ts"
+Cohesion: 0.11
+Nodes (10): src_app_common_index_rowoptionvm, src_app_common_timer_index_timevalidator, ClassroomVM, src_app_repositories_classrooms_model_index_classroomvm, DayVM, src_app_repositories_schedules_model_index_intervalselect, IntervalSelect, RowActionSchedule (+2 more)
 
 ### Community 121 - "repositories/profile/profile.module.ts"
 Cohesion: 0.18
 Nodes (9): ProfileComponent, Component, ProfileModule, NgModule, ProfileRoutingModule, routes, NgModule, ProfileService (+1 more)
 
-### Community 122 - "periods/model/index.ts"
-Cohesion: 0.12
-Nodes (16): ref_toast, src_app_repositories_periods_model_index_periodvm, src_app_repositories_periods_model_index_stage_periods, src_app_repositories_periods_model_index_stage_periods_value, src_app_repositories_periods_model_index_stageperiod, RowActionPeriod, delete, setActive (+8 more)
+### Community 122 - "sections.component.ts"
+Cohesion: 0.16
+Nodes (8): src_app_common_index_semesters, src_app_common_index_semestervm, src_app_common_semester_index_semesters, src_app_common_semester_index_semestervm, SEMESTERS, SemesterVM, FieldOption, src_app_repositories_sections_model_index_rowactionsection
 
 ### Community 123 - "api-interfaces/package.json"
 Cohesion: 0.18
@@ -733,21 +776,29 @@ Nodes (10): dependencies, tslib, @angular/common, @angular/core, tslib, name, pe
 Cohesion: 0.18
 Nodes (10): dependencies, tslib, @angular/common, @angular/core, tslib, name, peerDependencies, @angular/common (+2 more)
 
-### Community 131 - "student-schedules/use-cases/index.ts"
-Cohesion: 0.11
-Nodes (4): CloseInscriptionService, Injectable, DeleteInscriptionService, Injectable
+### Community 132 - "period-comparison-response-dto.ts"
+Cohesion: 0.26
+Nodes (8): PeriodComparisonDeltaDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, PeriodComparisonResponseDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, PeriodMetricResponseDto, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, NOTE: This class is auto generated by OpenAPI Generator (https://openapi-…, SubjectDemandIncreaseItemDto
 
-### Community 135 - "src_app_common_index_usecase"
-Cohesion: 0.14
-Nodes (13): src_app_common_index_rowoptionvm, src_app_common_index_usecase, Department2DepartmentItemVM(), Department2DepartmentVM(), src_app_repositories_departments_mappers_index_department2departmentvm, DepartmentBaseQuery, src_app_repositories_departments_model_index_departmentbasequery, RowActionDepartment (+5 more)
+### Community 133 - "ScheduleComponent"
+Cohesion: 0.33
+Nodes (3): ScheduleComponent, Component, Input
 
-### Community 138 - "build"
-Cohesion: 0.22
-Nodes (9): build, extract-i18n, builder, configurations, defaultConfiguration, builder, options, browserTarget (+1 more)
+### Community 135 - "DepartmentItemVM"
+Cohesion: 0.16
+Nodes (8): Department2DepartmentItemVM(), DepartmentBaseQuery, DepartmentItemVM, DepartmentVM, RowActionDepartment, delete, update, src_app_repositories_schools_index_school2schoolvm
+
+### Community 136 - "TeacherAcademicService"
+Cohesion: 0.18
+Nodes (3): Inject, TeacherAcademicService, Injectable
+
+### Community 138 - "ScheduleBaseQuery"
+Cohesion: 0.24
+Nodes (4): src_app_repositories_schedules_index_schedule2scheduleitemvm, ScheduleBaseQuery, GetSchedulesService, Injectable
 
 ### Community 139 - "development"
-Cohesion: 0.22
-Nodes (9): development, browserTarget, buildOptimizer, extractLicenses, namedChunks, optimization, sourceMap, tsConfig (+1 more)
+Cohesion: 0.13
+Nodes (15): serve, development, browserTarget, buildOptimizer, extractLicenses, namedChunks, optimization, sourceMap (+7 more)
 
 ### Community 140 - "@"
 Cohesion: 0.22
@@ -758,40 +809,44 @@ Cohesion: 0.22
 Nodes (9): @, Building, consuming, Customizing path parameter encoding, General usage, publishing, Set service base path, Using @angular/cli (+1 more)
 
 ### Community 143 - "academic.module.ts"
-Cohesion: 0.13
-Nodes (15): src_app_common_state_index_statemodule, src_app_repositories_academic_academic_charge_teacher_index_academicchargeteachercomponent, src_app_repositories_academic_academic_charge_teacher_index_academicchargeteacherservice, AcademicModule, NgModule, AcademicRoutingModule, routes, NgModule (+7 more)
+Cohesion: 0.12
+Nodes (17): src_app_common_state_index_statemodule, src_app_repositories_academic_academic_charge_teacher_index_academicchargeteachercomponent, src_app_repositories_academic_academic_charge_teacher_index_academicchargeteacherservice, AcademicModule, NgModule, AcademicRoutingModule, routes, NgModule (+9 more)
 
-### Community 145 - "writeUrlQuery"
-Cohesion: 0.16
-Nodes (6): TableComponent, Component, Input, Output, ViewChild, writeUrlQuery()
+### Community 145 - "UserRole"
+Cohesion: 0.20
+Nodes (9): USER_ROLES, USER_ROLES_VALUE, UserRole, Administrator, Director, HeadDepartment, Planner, Student (+1 more)
 
 ### Community 146 - "app.module.ts"
-Cohesion: 0.07
-Nodes (24): @angular/platform-browser-dynamic, ref_error_handler, ref_http_form_data_client, AppModule, NgModule, GlobalPeriodModule, NgModule, src_app_common_global_period_index_globalperiodmodule (+16 more)
+Cohesion: 0.06
+Nodes (29): @angular/platform-browser-dynamic, ref_error_handler, ref_http_form_data_client, AppModule, NgModule, AppRoutingModule, routes, NgModule (+21 more)
 
-### Community 147 - "test"
-Cohesion: 0.25
-Nodes (8): test, architect, prefix, projectType, root, sourceRoot, error-handler, builder
+### Community 147 - "error-handler"
+Cohesion: 0.33
+Nodes (6): architect, prefix, projectType, root, sourceRoot, error-handler
 
 ### Community 148 - "sigeit"
-Cohesion: 0.25
-Nodes (8): sigeit, style, @schematics/angular:component, prefix, projectType, root, schematics, sourceRoot
+Cohesion: 0.12
+Nodes (17): extract-i18n, lint, builder, options, builder, options, browserTarget, lintFilePatterns (+9 more)
 
 ### Community 149 - "DefaultService"
 Cohesion: 0.29
 Nodes (4): DefaultService, Inject, Injectable, Optional
 
 ### Community 150 - "lib/param.ts"
-Cohesion: 0.17
-Nodes (9): ConfigurationParameters, DataFormat, DataType, Param, ParamLocation, ParamStyle, StandardDataFormat, StandardDataType (+1 more)
+Cohesion: 0.25
+Nodes (7): DataFormat, DataType, ParamLocation, ParamStyle, StandardDataFormat, StandardDataType, StandardParamStyle
 
 ### Community 151 - "Sigeit"
 Cohesion: 0.25
 Nodes (7): Build, Code scaffolding, Development server, Further help, Running end-to-end tests, Running unit tests, Sigeit
 
-### Community 153 - "create-classroom.service.ts"
-Cohesion: 0.14
-Nodes (9): src_app_common_index_memoryrepository, src_app_repositories_classrooms_mappers_index_classroom2classroomitemvm, ClassroomsMemoryService, Injectable, src_app_repositories_classrooms_model_index_classroomitemvm, CreateClassroomService, Injectable, Injectable (+1 more)
+### Community 153 - "ClassroomsMemoryService"
+Cohesion: 0.10
+Nodes (11): src_app_common_index_memoryrepository, ClassroomsMemoryService, Injectable, CreateClassroomService, Injectable, DeleteClassroomService, Injectable, FindClassroomService (+3 more)
+
+### Community 154 - "subject-demand.module.ts"
+Cohesion: 0.28
+Nodes (5): SubjectDemandDialogComponent, Component, Inject, SubjectDemandModule, NgModule
 
 ### Community 155 - "ApiInterfaces"
 Cohesion: 0.29
@@ -821,17 +876,17 @@ Nodes (6): Build, Code scaffolding, Further help, Login, Publishing, Running uni
 Cohesion: 0.29
 Nodes (6): Build, Code scaffolding, Further help, Publishing, Running unit tests, Toast
 
-### Community 162 - "student-schedules.component.ts"
-Cohesion: 0.09
-Nodes (18): src_app_common_index_semestervm, src_app_repositories_careers_index_careervm, src_app_repositories_periods_index_stageperiod, src_app_repositories_schedules_index_dayvm, src_app_repositories_schedules_index_schedule_details_dialog, src_app_repositories_schedules_index_scheduledetailscomponent, src_app_repositories_schedules_index_scheduleitemvm, src_app_repositories_sections_index_sectionitemvm (+10 more)
+### Community 162 - "CardSubjectSchedulesComponent"
+Cohesion: 0.22
+Nodes (4): CardSubjectSchedulesComponent, Component, Input, Output
 
-### Community 165 - "@angular/forms"
-Cohesion: 0.05
-Nodes (29): @angular/forms, AuthRoutingModule, routes, NgModule, src_app_auth_login_index_logincomponent, src_app_auth_login_index_loginservice, src_app_auth_recovery_password_index_recoverypasswordcomponent, src_app_auth_reset_password_index_resetpasswordcomponent (+21 more)
+### Community 165 - "SignUpComponent"
+Cohesion: 0.13
+Nodes (7): SignUpComponent, Component, SignUpService, Injectable, CreateUserStudentService, Injectable, SaveUser
 
-### Community 166 - "api-interfaces"
-Cohesion: 0.33
-Nodes (6): architect, prefix, projectType, root, sourceRoot, api-interfaces
+### Community 166 - "build"
+Cohesion: 0.20
+Nodes (10): architect, prefix, projectType, root, sourceRoot, build, builder, configurations (+2 more)
 
 ### Community 167 - "form-control-errors"
 Cohesion: 0.33
@@ -845,17 +900,17 @@ Nodes (6): architect, prefix, projectType, root, sourceRoot, form-control-erros
 Cohesion: 0.33
 Nodes (6): architect, prefix, projectType, root, sourceRoot, http-form-data-client
 
-### Community 170 - "logger"
-Cohesion: 0.33
-Nodes (6): architect, prefix, projectType, root, sourceRoot, logger
+### Community 170 - "test"
+Cohesion: 0.25
+Nodes (8): test, architect, prefix, projectType, root, sourceRoot, logger, builder
 
 ### Community 171 - "login"
 Cohesion: 0.33
 Nodes (6): architect, prefix, projectType, root, sourceRoot, login
 
-### Community 172 - "toast"
-Cohesion: 0.33
-Nodes (6): toast, architect, prefix, projectType, root, sourceRoot
+### Community 172 - "ClassroomItemVM"
+Cohesion: 0.36
+Nodes (5): ClassroomBaseQuery, ClassroomItemVM, RowActionClassroom, delete, update
 
 ### Community 174 - "ApiModule"
 Cohesion: 0.33
@@ -865,9 +920,17 @@ Nodes (4): ApiModule, NgModule, Optional, SkipSelf
 Cohesion: 0.33
 Nodes (4): ref_fs, ref_path, fs, path
 
+### Community 176 - "dashboard-sdk"
+Cohesion: 0.33
+Nodes (6): architect, prefix, projectType, root, sourceRoot, dashboard-sdk
+
 ### Community 177 - "schedules/index.ts"
-Cohesion: 0.20
+Cohesion: 0.16
 Nodes (6): src_app_repositories_schedules_academic_charge_teacher_index_academicchargeteachercomponent, src_app_repositories_schedules_planned_schedules_index_plannedschedulescomponent, src_app_repositories_schedules_planning_audit_index_planningauditcomponent, routes, SchedulesRoutingModule, NgModule
+
+### Community 178 - "Estándares Sigeit"
+Cohesion: 0.40
+Nodes (4): Al desarrollar, Al revisar (checklist), Comprobaciones automáticas, Estándares Sigeit
 
 ### Community 181 - "api-interfaces/ng-package.json"
 Cohesion: 0.40
@@ -901,9 +964,9 @@ Nodes (4): dest, lib, entryFile, $schema
 Cohesion: 0.40
 Nodes (4): dest, lib, entryFile, $schema
 
-### Community 189 - "sections.service.ts"
-Cohesion: 0.04
-Nodes (59): src_app_common_index_subjectdemandmodule, SelectExModule, NgModule, SubjectDemandModule, NgModule, src_app_repositories_departments_index_departmentbasequery, src_app_repositories_periods_index_activeperiodservice, src_app_repositories_periods_index_toplanperiodservice (+51 more)
+### Community 189 - "SectionItemVM"
+Cohesion: 0.08
+Nodes (24): src_app_repositories_sections_mappers_index_section2sectionitemvm, src_app_repositories_sections_mappers_index_section2sectionvm, Section2SectionItemVM(), Section2SectionVM(), src_app_repositories_sections_memory_index_sectionmemoryservice, SectionMemoryService, Injectable, src_app_repositories_sections_model_index_sectionbasequery (+16 more)
 
 ### Community 192 - ".eslintrc.json"
 Cohesion: 0.50
@@ -914,40 +977,40 @@ Cohesion: 0.50
 Nodes (3): lib, entryFile, $schema
 
 ### Community 194 - "subject-demand-store.service.ts"
-Cohesion: 0.16
-Nodes (14): attendedByLevel(), CoverageStatus, DEFAULT_DEMAND_CONFIG, DEFAULT_DEMAND_FACTOR, DEFAULT_SECTION_CAPACITY, DEMAND_CONFIG_KEY, DEMAND_PREFERENCE_KEYS, DemandConfig (+6 more)
+Cohesion: 0.11
+Nodes (21): LevelBar, SubjectDemandPanelComponent, Component, Input, attendedByLevel(), computeCoverage(), CoverageStatus, DEFAULT_DEMAND_CONFIG (+13 more)
 
-### Community 195 - "subjects.component.ts"
-Cohesion: 0.07
-Nodes (25): src_app_common_index_statemodule, src_app_common_index_tablemodule, src_app_common_memory_repository_index_listcomponentservice, src_app_common_user_state_index_userstateservice, src_app_repositories_careers_index_getcareersservice, FormComponent, Component, Inject (+17 more)
+### Community 195 - "FormComponent"
+Cohesion: 0.22
+Nodes (4): FormComponent, Component, Input, Output
 
-### Community 198 - "common/index.ts"
-Cohesion: 0.13
-Nodes (6): ArrayValidators, src_app_common_index_basequery, BaseQuery, src_app_repositories_schools_mappers_index_school2schoolvm, FindSchoolService, Injectable
+### Community 202 - "classrooms.component.ts"
+Cohesion: 0.27
+Nodes (4): ClassroomsComponent, Component, src_app_repositories_classrooms_form_index_formcomponent, src_app_repositories_classrooms_model_index_rowactionclassroom
 
 ### Community 210 - "schedules.service.ts"
-Cohesion: 0.05
-Nodes (43): src_app_common_select_ex_index_selectexmodule, src_app_common_subject_demand_index_subjectdemandmodule, src_app_common_timer_index_timevalidator, ActivePeriodService, Injectable, src_app_repositories_periods_use_cases_index_toplanperiodservice, ToPlanPeriodService, Injectable (+35 more)
+Cohesion: 0.06
+Nodes (41): src_app_common_select_ex_index_selectexmodule, src_app_common_subject_demand_index_subjectdemandmodule, GetClassroomsService, Injectable, src_app_repositories_periods_use_cases_index_activeperiodservice, src_app_repositories_periods_use_cases_index_toplanperiodservice, src_app_repositories_schedules_mappers_index_day2dayvm, src_app_repositories_schedules_memory_index_schedulememoryservice (+33 more)
 
 ## Knowledge Gaps
-- **542 isolated node(s):** `root`, `ignorePatterns`, `overrides`, `$schema`, `version` (+537 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 1469 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **34 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **566 isolated node(s):** `root`, `ignorePatterns`, `overrides`, `$schema`, `version` (+561 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 1492 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **43 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `rxjs` connect `ref_angular_core` to `SchoolItemVM`, `teachers.module.ts`, `careers.module.ts`, `periods.module.ts`, `student-schedules/use-cases/index.ts`, `statistics.service.ts`, `src_app_common_index_usecase`, `UserStateService`, `departments.module.ts`, `active-period.service.ts`, `form-control-errors.directive.ts`, `package.json`, `http-form-data-client.service.ts`, `UseCase`, `url-access-guard.guard.ts`, `SelectExComponent`, `create-classroom.service.ts`, `PlannedSchedulesComponent`, `student-schedules.service.ts`, `DepartmentItemVM`, `student-schedules.component.ts`, `create-document.service.ts`, `MemoryDocumentsService`, `@angular/forms`, `TeacherItemVM`, `finished.component.ts`, `classrooms.module.ts`, `ScheduleItemVM`, `SchedulesService`, `schools.module.ts`, `settings.component.ts`, `@angular/material`, `get-classrooms.service.ts`, `sections.service.ts`, `PeriodVM`, `subject-demand-store.service.ts`, `teacher.service.ts`, `subjects.component.ts`, `common/index.ts`, `app-routing.module.ts`, `subject-demands.component.ts`, `schedules/academic-charge-teacher/academic-charge-teacher.component.ts`, `ref_dashboard_sdk`, `schedules.service.ts`, `users.service.ts`, `src_app_common_memory_repository_index_usecase`, `get-periods.service.ts`, `VersionInfoComponent`, `admin.component.ts`, `login.service.ts`, `periods/model/index.ts`?**
-  _High betweenness centrality (0.128) - this node is a cross-community bridge._
-- **Why does `@angular/material` connect `@angular/material` to `teachers.module.ts`, `careers.module.ts`, `periods.module.ts`, `UserStateService`, `departments.module.ts`, `academic.module.ts`, `package.json`, `app.module.ts`, `SelectExComponent`, `PlannedSchedulesComponent`, `student-schedules.service.ts`, `DepartmentItemVM`, `student-schedules.component.ts`, `@angular/forms`, `classrooms.module.ts`, `ScheduleItemVM`, `SchedulesService`, `schools.module.ts`, `documents.module.ts`, `sections.service.ts`, `subjects.component.ts`, `subject-demands.component.ts`, `schedules/academic-charge-teacher/academic-charge-teacher.component.ts`, `ref_dashboard_sdk`, `schedules.service.ts`, `users.service.ts`, `TeacherPickerComponent`, `settings.module.ts`, `VersionInfoComponent`, `admin.component.ts`, `periods/model/index.ts`?**
-  _High betweenness centrality (0.029) - this node is a cross-community bridge._
-- **Why does `FormComponent` connect `FormComponent` to `careers.module.ts`, `SchoolItemVM`, `users.service.ts`, `DepartmentItemVM`?**
-  _High betweenness centrality (0.028) - this node is a cross-community bridge._
+- **Why does `rxjs` connect `ref_angular_core` to `SchoolItemVM`, `teachers.module.ts`, `careers.module.ts`, `sections.service.ts`, `ref_angular_common`, `@angular/forms`, `departments.module.ts`, `ScheduleBaseQuery`, `teacher.service.ts`, `create-schedule.service.ts`, `form-control-errors.directive.ts`, `package.json`, `http-form-data-client.service.ts`, `app.module.ts`, `url-access-guard.guard.ts`, `SelectExComponent`, `student-schedules.component.ts`, `user-item-vm.ts`, `create-school.service.ts`, `classrooms.module.ts`, `documents/form/form.component.ts`, `ScheduleItemVM`, `schools.module.ts`, `periods/form/form.component.ts`, `TableService`, `SectionItemVM`, `subject-demand-store.service.ts`, `teacher-degree.service.ts`, `create-department.service.ts`, `@angular/material`, `import-demand.component.ts`, `classrooms.component.ts`, `http-interceptor.interceptor.ts`, `schedules/academic-charge-teacher/academic-charge-teacher.component.ts`, `grade-search.component.ts`, `schedules.service.ts`, `users.service.ts`, `subjects.component.ts`, `VersionService`, `careers.component.ts`, `common/index.ts`, `sections-manage.component.ts`, `classrooms/form/form.component.ts`, `admin.component.ts`, `state/index.ts`, `schedules/form/form.component.ts`, `sections.component.ts`?**
+  _High betweenness centrality (0.114) - this node is a cross-community bridge._
+- **Why does `@angular/material` connect `@angular/material` to `teachers.module.ts`, `careers.module.ts`, `sections.service.ts`, `@angular/forms`, `departments.module.ts`, `academic.module.ts`, `package.json`, `app.module.ts`, `SelectExComponent`, `subject-demand.module.ts`, `student-schedules.component.ts`, `classrooms.module.ts`, `ScheduleItemVM`, `schools.module.ts`, `periods/form/form.component.ts`, `TableService`, `documents.module.ts`, `import-demand.component.ts`, `auth.module.ts`, `classrooms.component.ts`, `schedules/academic-charge-teacher/academic-charge-teacher.component.ts`, `grade-search.component.ts`, `schedules.service.ts`, `users.service.ts`, `subjects.component.ts`, `VersionService`, `careers.component.ts`, `common/index.ts`, `sections-manage.component.ts`, `classrooms/form/form.component.ts`, `admin.component.ts`, `state/index.ts`, `schedules/form/form.component.ts`, `sections.component.ts`?**
+  _High betweenness centrality (0.033) - this node is a cross-community bridge._
+- **Why does `FormComponent` connect `FormComponent` to `SchoolItemVM`, `careers.module.ts`, `DepartmentItemVM`, `UserRole`, `users.service.ts`, `user-item-vm.ts`?**
+  _High betweenness centrality (0.030) - this node is a cross-community bridge._
 - **What connects `root`, `ignorePatterns`, `overrides` to the rest of the system?**
-  _542 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _566 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `SchoolItemVM` be split into smaller, more focused modules?**
-  _Cohesion score 0.09898989898989899 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.1126984126984127 - nodes in this community are weakly interconnected._
 - **Should `teachers.module.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.07407407407407407 - nodes in this community are weakly interconnected._
-- **Should `.setLoading` be split into smaller, more focused modules?**
-  _Cohesion score 0.10668563300142248 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05495151337055539 - nodes in this community are weakly interconnected._
+- **Should `careers.module.ts` be split into smaller, more focused modules?**
+  _Cohesion score 0.06049382716049383 - nodes in this community are weakly interconnected._
