@@ -1,0 +1,10 @@
+---
+description: Registro de decisiones y cambios relevantes del frontend
+globs:
+alwaysApply: true
+---
+
+Antes de tocar permisos, menú, configuración, formatos, horarios o el SDK, leer
+`docs/decisiones/` (qué se hizo, por qué y qué se eliminó). La lógica de la API
+está en `../sigeit-api/docs/decisiones/`. Al hacer un cambio de ese tipo,
+registrarlo en un documento nuevo de esa carpeta.
