@@ -1,9 +1,18 @@
-<div class="modal-container">
-  <!-- Header -->
+<div class="details">
   <div class="modal-header">
     <div class="header-content">
       <mat-icon class="header-icon">schedule</mat-icon>
-      <h2 class="modal-title">Horarios Planificados</h2>
+      <div class="title-block">
+        <span mat-dialog-title>Detalle de horario</span>
+        <p class="subtitle" *ngIf="groups.length === 1">
+          <span class="code">({{ groups[0].section?.subject?.code }})</span>
+          {{ groups[0].section?.subject?.name }}
+          · Sección {{ groups[0].section?.name }}
+        </p>
+        <p class="subtitle" *ngIf="groups.length > 1">
+          {{ groups.length }} secciones en este bloque
+        </p>
+      </div>
     </div>
     <button
       class="close-button"
@@ -16,95 +25,146 @@
     </button>
   </div>
 
-  <!-- Content -->
-  <div class="modal-content">
-    <div *ngIf="schedules.length === 0" class="empty-state">
+  <div mat-dialog-content class="body">
+    <div *ngIf="!groups.length" class="empty-state">
       <mat-icon class="empty-icon">event_busy</mat-icon>
-      <p class="empty-text">No hay horarios disponibles</p>
+      <p>No hay horarios disponibles</p>
     </div>
 
-    <!-- Agrupar horarios por sección -->
-    <div *ngFor="let sectionGroup of getGroupedSchedules(); let i = index" class="section-card">
-      <div class="card-header">
-        <div class="schedule-number">{{ i + 1 }}</div>
+    <article *ngFor="let group of groups; let i = index" class="section-card">
+      <header class="card-header">
+        <div class="schedule-number" *ngIf="groups.length > 1">{{ i + 1 }}</div>
         <div class="schedule-info">
-          <h3 class="subject-title">
-            <span class="subject-code">({{ sectionGroup.section?.subject?.code }})</span>
-            {{ sectionGroup.section?.subject?.name }}
+          <h3 class="subject-title" *ngIf="groups.length > 1">
+            <span class="subject-code">({{ group.section?.subject?.code }})</span>
+            {{ group.section?.subject?.name }}
           </h3>
-          <div class="section-info">
-            <mat-icon class="info-icon">group</mat-icon>
-            <span>Sección {{ sectionGroup.section?.name }}</span>
+          <div class="section-chip" *ngIf="groups.length > 1">
+            <mat-icon>group</mat-icon>
+            <span>Sección {{ group.section?.name }}</span>
           </div>
         </div>
-      </div>
+      </header>
 
       <div class="card-body">
-        <!-- Información general de la sección -->
-        <div class="section-info-grid">
-          <!-- Profesor -->
-          <div class="info-item">
-            <div class="info-label">
-              <mat-icon class="label-icon">person</mat-icon>
+        <div class="meta-grid">
+          <div class="meta-item teacher">
+            <div class="meta-label">
+              <mat-icon>person</mat-icon>
               <span>Profesor</span>
             </div>
-            <div class="info-value">
-              <ng-container *ngIf="sectionGroup.section?.teacher?.lastName; else noLastName">
-                {{ sectionGroup.section?.teacher?.lastName + ', ' + sectionGroup.section?.teacher?.firstName }}
-              </ng-container>
-              <ng-template #noLastName>
-                {{ sectionGroup.section?.teacher?.firstName || 'Por asignar' }}
-              </ng-template>
+            <div class="meta-value">{{ teacherName(group.section) }}</div>
+          </div>
+          <div class="meta-item" *ngIf="group.section?.subject?.credits != null">
+            <div class="meta-label">
+              <mat-icon>school</mat-icon>
+              <span>Créditos</span>
             </div>
+            <div class="meta-value">{{ group.section?.subject?.credits }}</div>
+          </div>
+          <div class="meta-item" *ngIf="group.section?.subject?.hours != null">
+            <div class="meta-label">
+              <mat-icon>timelapse</mat-icon>
+              <span>Horas</span>
+            </div>
+            <div class="meta-value">{{ group.section?.subject?.hours }}</div>
           </div>
         </div>
 
-        <!-- Lista de horarios -->
-        <div class="schedules-list">
-          <div class="schedules-header">
-            <mat-icon class="schedules-icon">schedule</mat-icon>
+        <div class="schedules-block">
+          <div class="schedules-title">
+            <mat-icon>event</mat-icon>
             <span>Horarios de la sección</span>
+            <span class="count">{{ group.schedules.length }}</span>
           </div>
 
           <div class="schedule-items">
-            <div *ngFor="let schedule of sectionGroup.schedules; let j = index" class="schedule-item">
-              <div class="schedule-item-header">
-                <div class="schedule-item-number">{{ j + 1 }}</div>
-                <div class="schedule-item-info">
-                  <div class="schedule-day">{{ schedule?.day?.name }}</div>
-                  <div class="schedule-time">
-                    <span class="time-start">{{ schedule?.start }}</span>
-                    <mat-icon class="time-separator">arrow_forward</mat-icon>
-                    <span class="time-end">{{ schedule?.end }}</span>
-                  </div>
-                </div>
+            <div *ngFor="let schedule of group.schedules" class="schedule-entry">
+            <div class="schedule-item">
+              <div class="day-badge">
+                <mat-icon>today</mat-icon>
+                <span>{{ schedule.day?.name || '—' }}</span>
               </div>
+              <div class="time-badge">
+                <span class="time">{{ schedule.start }}</span>
+                <mat-icon class="arrow">arrow_forward</mat-icon>
+                <span class="time">{{ schedule.end }}</span>
+              </div>
+              <div class="room-badge">
+                <mat-icon>room</mat-icon>
+                <span>{{ schedule.classroom?.name || '—' }}</span>
+              </div>
+              <button
+                *ngIf="schedule.id"
+                type="button"
+                mat-icon-button
+                class="parallels-toggle"
+                [class.active]="openParallels.has(schedule.id)"
+                [attr.aria-expanded]="openParallels.has(schedule.id)"
+                [attr.aria-controls]="'parallels-' + schedule.id"
+                matTooltip="Ver otras asignaturas en este mismo bloque"
+                aria-label="Ver otras asignaturas en este mismo bloque"
+                (click)="toggleParallels(schedule)"
+              >
+                <mat-icon>{{ openParallels.has(schedule.id) ? 'expand_less' : 'call_split' }}</mat-icon>
+              </button>
+            </div>
 
-              <div class="schedule-item-details">
-                <div class="detail-item">
-                  <mat-icon class="detail-icon">room</mat-icon>
-                  <span class="detail-label">Aula:</span>
-                  <span class="detail-value">{{ schedule?.classroom?.name }}</span>
-                </div>
-              </div>
+            <div
+              *ngIf="schedule.id && openParallels.has(schedule.id)"
+              class="parallels"
+              [id]="'parallels-' + schedule.id"
+              aria-live="polite"
+            >
+              <ng-container *ngIf="parallels.has(schedule.id); else loadingParallels">
+                <ng-container *ngIf="parallels.get(schedule.id) as list; else errorParallels">
+                  <p class="parallels-title">
+                    Mismo bloque en otras aulas
+                    <span class="count">{{ list.length }}</span>
+                  </p>
+                  <p *ngIf="!list.length" class="parallels-empty">
+                    Ninguna otra asignatura usa este bloque.
+                  </p>
+                  <ul *ngIf="list.length" class="parallels-list">
+                    <li *ngFor="let other of list">
+                      <div class="parallel-subject">
+                        <span class="subject-code">({{ other.section?.subject?.code }})</span>
+                        {{ other.section?.subject?.name }}
+                      </div>
+                      <div class="parallel-meta">
+                        <span><mat-icon>group</mat-icon>Sección {{ other.section?.name }}</span>
+                        <span><mat-icon>schedule</mat-icon>{{ other.start }} – {{ other.end }}</span>
+                        <span><mat-icon>room</mat-icon>{{ other.classroom?.name || '—' }}</span>
+                        <span><mat-icon>person</mat-icon>{{ teacherName(other.section) }}</span>
+                      </div>
+                    </li>
+                  </ul>
+                </ng-container>
+              </ng-container>
+              <ng-template #loadingParallels>
+                <p class="parallels-empty">Buscando…</p>
+              </ng-template>
+              <ng-template #errorParallels>
+                <p class="parallels-empty error">No se pudo consultar. Cierra y vuelve a intentar.</p>
+              </ng-template>
+            </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </article>
   </div>
 
-  <!-- Footer -->
-  <div class="modal-footer">
+  <div mat-dialog-actions align="end" class="footer">
     <button
-      class="close-footer-button"
-      type="button"
       mat-raised-button
       color="primary"
+      type="button"
+      class="close-footer-button"
       (click)="clickClosed()"
     >
       <mat-icon>check</mat-icon>
-      <span>Cerrar</span>
+      Cerrar
     </button>
   </div>
 </div>
