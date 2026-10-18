@@ -10,12 +10,21 @@
  * Do not edit the class manually.
  */
 import { IdCreateEntity } from './id-create-entity';
+import { TypeDocument } from './type-document';
 
 
 export interface UpdateDocumentDto { 
     name?: string;
-    description?: string;
-    type?: string;
+    type?: TypeDocument;
+    /**
+     * Cuerpo con variables; carga académica exige {tabla}
+     */
+    body?: string;
+    signature?: string;
     department?: IdCreateEntity;
+    status?: boolean;
 }
+export namespace UpdateDocumentDto {
+}
+
 

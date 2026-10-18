@@ -9,15 +9,20 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TypeDocument } from './type-document';
 
 
 export interface ResponseDocumentDto { 
     id: number;
     name: string;
-    description: string;
-    type: string;
+    body: string;
+    signature: string;
+    type: TypeDocument;
     departmentId: number;
-    department: object;
+    department?: object;
     status: boolean;
 }
+export namespace ResponseDocumentDto {
+}
+
 

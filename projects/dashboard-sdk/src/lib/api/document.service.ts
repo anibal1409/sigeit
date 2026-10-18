@@ -23,6 +23,8 @@ import { CreateDocumentDto } from '../model/create-document-dto';
 // @ts-ignore
 import { ResponseDocumentDto } from '../model/response-document-dto';
 // @ts-ignore
+import { TypeDocument } from '../model/type-document';
+// @ts-ignore
 import { UpdateDocumentDto } from '../model/update-document-dto';
 
 // @ts-ignore
@@ -96,6 +98,7 @@ export class DocumentService {
     }
 
     /**
+     * Crear formato
      * @param createDocumentDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -163,13 +166,32 @@ export class DocumentService {
     }
 
     /**
+     * Formato activo de un departamento y tipo
+     * @param departmentId 
+     * @param type 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public documentControllerFindActive(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseDocumentDto>;
-    public documentControllerFindActive(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseDocumentDto>>;
-    public documentControllerFindActive(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseDocumentDto>>;
-    public documentControllerFindActive(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public documentControllerFindActive(departmentId: number, type: TypeDocument, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseDocumentDto>;
+    public documentControllerFindActive(departmentId: number, type: TypeDocument, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseDocumentDto>>;
+    public documentControllerFindActive(departmentId: number, type: TypeDocument, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseDocumentDto>>;
+    public documentControllerFindActive(departmentId: number, type: TypeDocument, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (departmentId === null || departmentId === undefined) {
+            throw new Error('Required parameter departmentId was null or undefined when calling documentControllerFindActive.');
+        }
+        if (type === null || type === undefined) {
+            throw new Error('Required parameter type was null or undefined when calling documentControllerFindActive.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (departmentId !== undefined && departmentId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>departmentId, 'departmentId');
+        }
+        if (type !== undefined && type !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>type, 'type');
+        }
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -206,6 +228,7 @@ export class DocumentService {
         return this.httpClient.request<ResponseDocumentDto>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -216,13 +239,27 @@ export class DocumentService {
     }
 
     /**
+     * Listar formatos
+     * Un jefe de departamento solo ve los de su departamento.
+     * @param departmentId 
+     * @param type 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public documentControllerFindAll(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<ResponseDocumentDto>>;
-    public documentControllerFindAll(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<ResponseDocumentDto>>>;
-    public documentControllerFindAll(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<ResponseDocumentDto>>>;
-    public documentControllerFindAll(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public documentControllerFindAll(departmentId?: number, type?: TypeDocument, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<ResponseDocumentDto>>;
+    public documentControllerFindAll(departmentId?: number, type?: TypeDocument, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<ResponseDocumentDto>>>;
+    public documentControllerFindAll(departmentId?: number, type?: TypeDocument, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<ResponseDocumentDto>>>;
+    public documentControllerFindAll(departmentId?: number, type?: TypeDocument, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (departmentId !== undefined && departmentId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>departmentId, 'departmentId');
+        }
+        if (type !== undefined && type !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>type, 'type');
+        }
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -259,6 +296,7 @@ export class DocumentService {
         return this.httpClient.request<Array<ResponseDocumentDto>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -269,6 +307,7 @@ export class DocumentService {
     }
 
     /**
+     * Obtener formato
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -326,6 +365,7 @@ export class DocumentService {
     }
 
     /**
+     * Eliminar formato
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -383,6 +423,7 @@ export class DocumentService {
     }
 
     /**
+     * Actualizar formato (solo los campos enviados)
      * @param id 
      * @param updateDocumentDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
