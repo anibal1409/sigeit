@@ -119,7 +119,7 @@
 
 <div class="w-100 d-flex justify-content-center px-4">
   <button
-    (click)="showTableSchedules = !showTableSchedules"
+    (click)="toggleItineraries()"
     mat-raised-button
     [color]="'accent'"
     [disabled]="!departmentId || loading"
@@ -131,7 +131,8 @@
 
 
 <ng-container *ngIf="showTableSchedules && departmentId">
-  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center" animationDuration="0ms">
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center" animationDuration="0ms"
+    [selectedIndex]="itineraryTab" (selectedIndexChange)="changeItineraryTab($event)">
     <mat-tab label="Por aula">
       <app-schedule
         [departmentId]="departmentId"

@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
 import {
@@ -15,6 +18,7 @@ import {
   finalize,
   forkJoin,
   map,
+  merge,
   Subscription,
 } from 'rxjs';
 import * as XLSX from 'xlsx';
@@ -22,6 +26,8 @@ import * as XLSX from 'xlsx';
 import {
   StateService,
   UserStateService,
+  readUrlNumber,
+  writeUrlQuery,
 } from '../../../common';
 import { GlobalPeriodService } from '../../../common/global-period';
 import { DepartmentVM } from '../../departments/model';
@@ -101,6 +107,7 @@ export class PlannedSchedulesComponent {
     private dialog: MatDialog,
     private sectionService: SectionService,
     private scheduleService: ScheduleService,
+    private route: ActivatedRoute,
   ) {
     this.columns = [
       {
@@ -151,6 +158,11 @@ export class PlannedSchedulesComponent {
   ngOnInit() {
     this.departmentIdUser = this.userStateService.getDepartmentId() || 0;
     this.departmentId = this.departmentIdUser;
+    const urlDepartmentId = readUrlNumber(this.route, 'departmentId');
+    if (!this.departmentIdUser && urlDepartmentId) {
+      this.departmentId = urlDepartmentId;
+      this.departmentCtrl.setValue(urlDepartmentId, { emitEvent: false });
+    }
 
     this.sub$.add(
       this.schedulesService.getLoading$().subscribe((loading) => {
@@ -164,7 +176,7 @@ export class PlannedSchedulesComponent {
         if (period?.id) {
           this.periodId = period.id;
           this.period = period;
-          if (this.departmentIdUser) {
+          if (this.departmentId) {
             this.loadSchedules();
           }
           this.loadShiftSummary();
@@ -181,6 +193,18 @@ export class PlannedSchedulesComponent {
           this.calculateHourlyLoad();
         }
       })
+    );
+    const urlGroupBy = this.route.snapshot.queryParamMap.get('groupBy');
+    if (urlGroupBy && this.groupsBy.some((g) => g.field === urlGroupBy)) {
+      this.groupByCtrl.setValue(urlGroupBy);
+    }
+    this.sub$.add(
+      merge(this.departmentCtrl.valueChanges, this.groupByCtrl.valueChanges).subscribe(() =>
+        writeUrlQuery(this.router, this.route, {
+          departmentId: this.departmentIdUser ? null : this.departmentCtrl.value || null,
+          groupBy: this.groupByCtrl.value === 'semester' ? null : this.groupByCtrl.value,
+        }),
+      ),
     );
 
     this.loadDepartments();

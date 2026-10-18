@@ -5,7 +5,10 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
 
 import { Subscription } from 'rxjs';
 import * as XLSX from 'xlsx';
@@ -15,6 +18,8 @@ import {
   TableDataVM,
   TableService,
   UserStateService,
+  readUrlNumber,
+  writeUrlQuery,
 } from 'src/app/common';
 import { StateService } from 'src/app/common/state';
 
@@ -29,7 +34,7 @@ import {
   TeacherItemVM,
   TeacherVM,
 } from './model';
-import { ProfileComponent } from './profile/profile.component';
+import { PROFILE_DIALOG, ProfileComponent } from './profile/profile.component';
 import { TeachersService } from './teachers.service';
 
 @Component({
@@ -114,6 +119,7 @@ export class TeachersComponent implements OnInit, OnDestroy {
     private matDialog: MatDialog,
     private userStateService: UserStateService,
     private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -143,18 +149,36 @@ export class TeachersComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.departmentIdCtrl.valueChanges.subscribe((departmentId) => {
+        this.syncUrl();
         this.loadTeachers(departmentId, this.statusCtrl.value);
       })
     );
 
     this.sub$.add(
       this.statusCtrl.valueChanges.subscribe((status) => {
+        this.syncUrl();
         this.loadTeachers(this.departmentIdCtrl.value, status);
       })
     );
 
     this.loadDepartments();
-    this.loadTeachers(this.userStateService.getDepartmentId());
+    const params = this.route.snapshot.queryParamMap;
+    const urlDepartmentId = readUrlNumber(this.route, 'departmentId');
+    if (urlDepartmentId) {
+      this.departmentIdCtrl.setValue(urlDepartmentId, { emitEvent: false });
+    }
+    if (params.has('status')) {
+      this.statusCtrl.setValue(params.get('status') === 'true', { emitEvent: false });
+    }
+    this.loadTeachers(urlDepartmentId || this.userStateService.getDepartmentId());
+  }
+
+  private syncUrl(): void {
+    const status = this.statusCtrl.value;
+    writeUrlQuery(this.router, this.route, {
+      departmentId: this.departmentIdCtrl.value || null,
+      status: status === null || status === undefined ? null : String(status),
+    });
   }
 
   ngOnDestroy(): void {
@@ -330,8 +354,7 @@ export class TeachersComponent implements OnInit, OnDestroy {
   showProfile(teacher: TeacherItemVM): void {
     this.matDialog.open(ProfileComponent, {
       data: { teacher },
-      width: '64rem',
-      maxWidth: '95vw',
+      ...PROFILE_DIALOG,
     });
   }
 

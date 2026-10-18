@@ -19,6 +19,15 @@ import {
   DayVM,
   ScheduleItemVM,
 } from '../model';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
+
+import {
+  readUrlNumber,
+  writeUrlQuery,
+} from '../../../common/url-query';
 import { SchedulesService } from '../schedules.service';
 import { ScheduleDisplayService } from '../shared/schedule-display.service';
 
@@ -56,6 +65,8 @@ export class ClassroomsSchedulesComponent
   constructor(
     private schedulesService: SchedulesService,
     private scheduleDisplayService: ScheduleDisplayService,
+    private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -68,6 +79,7 @@ export class ClassroomsSchedulesComponent
   }
 
   ngOnInit(): void {
+    this.dayCtrl.setValue(readUrlNumber(this.route, 'dayId') || '', { emitEvent: false });
     this.loadClassrooms();
     this.loadDays();
     this.loadIntervals();
@@ -116,7 +128,8 @@ export class ClassroomsSchedulesComponent
 
   private subDay(): void {
     this.sub$.add(
-      this.dayCtrl.valueChanges.subscribe(() => {
+      this.dayCtrl.valueChanges.subscribe((dayId) => {
+        writeUrlQuery(this.router, this.route, { dayId: dayId || null });
         this.loadScheduleDay();
       })
     );

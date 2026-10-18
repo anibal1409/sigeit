@@ -4,7 +4,10 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
 
 import {
   PeriodAuditDto,
@@ -15,6 +18,8 @@ import { Subscription } from 'rxjs';
 import {
   StateService,
   UserStateService,
+  readUrlNumber,
+  writeUrlQuery,
 } from '../../../common';
 import { DepartmentVM } from '../../departments/model';
 import { SchedulesService } from '../schedules.service';
@@ -52,10 +57,14 @@ export class PlanningAuditComponent implements OnInit, OnDestroy {
     private stateService: StateService,
     private userStateService: UserStateService,
     private router: Router,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
     this.departmentIdUser = this.userStateService.getDepartmentId() || 0;
+    if (!this.departmentIdUser) {
+      this.departmentCtrl.setValue(readUrlNumber(this.route, 'departmentId') || null, { emitEvent: false });
+    }
     this.sub$.add(
       this.schedulesService.getLoading$().subscribe((loading) => this.stateService.setLoading(loading))
     );
@@ -68,7 +77,10 @@ export class PlanningAuditComponent implements OnInit, OnDestroy {
         }
       })
     );
-    this.sub$.add(this.departmentCtrl.valueChanges.subscribe(() => this.load()));
+    this.sub$.add(this.departmentCtrl.valueChanges.subscribe((departmentId) => {
+      writeUrlQuery(this.router, this.route, { departmentId: departmentId || null });
+      this.load();
+    }));
     if (!this.departmentIdUser) {
       this.sub$.add(
         this.schedulesService

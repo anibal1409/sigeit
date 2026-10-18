@@ -9,6 +9,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
 
 import {
   AlignmentType,
@@ -78,6 +82,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
   private sub$ = new Subscription();
   loading = false;
   academicCharge: Array<ScheduleItemVM> = [];
+  private pendingTeacherId = 0;
 
   constructor(
     private schedulesService: SchedulesService,
@@ -86,6 +91,8 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
     private stateService: StateService,
     private userStateService: UserStateService,
     private dialog: MatDialog,
+    private router: Router,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnDestroy(): void {
@@ -95,7 +102,24 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.departmentIdUser = this.userStateService.getDepartmentId() || 0;
     this.departmentId = this.departmentIdUser;
+    const params = this.route.snapshot.queryParamMap;
+    this.pendingTeacherId = +(params.get('teacherId') || 0);
+    this.allTeachers = params.get('allTeachers') === 'true';
     this.createForm();
+    this.form.patchValue({ allTeachers: this.allTeachers }, { emitEvent: false });
+    this.sub$.add(
+      this.form.valueChanges.subscribe(({ departmentId, teacherId, allTeachers }) => {
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: {
+            departmentId: departmentId || null,
+            teacherId: teacherId || null,
+            allTeachers: allTeachers || null,
+          },
+          replaceUrl: true,
+        });
+      })
+    );
     this.sub$.add(
       this.schedulesService.getLoading$().subscribe((loading) => {
         this.loading = loading;
@@ -187,6 +211,7 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
             );
             this.startIntervals = intervals.start;
             this.endIntervals = intervals.end;
+            this.loadSchedules();
           }
         })
     );
@@ -248,8 +273,11 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
         .getDepartaments$({ schoolId: this.userStateService.getSchoolId() })
         .subscribe((departaments) => {
           this.departments = departaments;
+          const urlDepartmentId = +(this.route.snapshot.queryParamMap.get('departmentId') || 0);
           if (departaments.length && this.departmentIdUser) {
             this.changeDepartmentId(this.departmentIdUser);
+          } else if (urlDepartmentId) {
+            this.form.patchValue({ departmentId: urlDepartmentId });
           }
         })
     );
@@ -261,6 +289,10 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
         .getTeachers$({ departmentId: this.allTeachers ? undefined : +this.departmentId, status: true })
         .subscribe((teachers) => {
           this.teachers = teachers;
+          if (this.pendingTeacherId && teachers.some((t) => t.id === this.pendingTeacherId)) {
+            this.form.patchValue({ teacherId: this.pendingTeacherId });
+          }
+          this.pendingTeacherId = 0;
         })
     );
   }

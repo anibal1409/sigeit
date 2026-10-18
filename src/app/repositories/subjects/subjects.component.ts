@@ -5,6 +5,10 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
 
 import { Subscription } from 'rxjs';
 import {
@@ -13,6 +17,8 @@ import {
   TableDataVM,
   TableService,
   UserStateService,
+  readUrlNumber,
+  writeUrlQuery,
 } from 'src/app/common';
 import { StateService } from 'src/app/common/state';
 
@@ -80,6 +86,8 @@ export class SubjectsComponent implements OnInit, OnDestroy {
     private stateService: StateService,
     private matDialog: MatDialog,
     private userStateService: UserStateService,
+    private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -103,11 +111,16 @@ export class SubjectsComponent implements OnInit, OnDestroy {
 
     this.sub$.add(
       this.departmentIdCtrl.valueChanges.subscribe((departmentId) => {
+        writeUrlQuery(this.router, this.route, { departmentId: departmentId || null });
         this.loadSubjects(departmentId);
       })
     );
     this.loadDepartments();
-    this.loadSubjects(this.userStateService.getDepartmentId());
+    const urlDepartmentId = readUrlNumber(this.route, 'departmentId');
+    if (urlDepartmentId) {
+      this.departmentIdCtrl.setValue(urlDepartmentId, { emitEvent: false });
+    }
+    this.loadSubjects(urlDepartmentId || this.userStateService.getDepartmentId());
   }
 
   ngOnDestroy(): void {

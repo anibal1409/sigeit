@@ -9,6 +9,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
 
 import {
   CoverageStatus,
@@ -27,6 +31,10 @@ import {
   TableDataVM,
   TableService,
 } from '../../common/table';
+import {
+  readUrlNumber,
+  writeUrlQuery,
+} from '../../common/url-query';
 import { UserStateService } from '../../common/user-state';
 import { DepartmentVM } from '../departments/model';
 import { SectionsComponent } from '../sections';
@@ -106,9 +114,13 @@ export class SchedulesComponent implements OnInit, OnDestroy {
   showForm = false;
   loading = false;
   showTableSchedules = false;
+  /** Pestaña de itinerarios: 0 por aula, 1 por día. */
+  itineraryTab = 0;
 
   private sub$ = new Subscription();
   addDisabled = true;
+  /** Filtros de la URL pendientes de aplicar mientras cargan las listas en cascada. */
+  private pending = { departmentId: 0, semester: 0, subjectId: 0, sectionId: 0 };
 
   constructor(
     private fb: FormBuilder,
@@ -117,11 +129,22 @@ export class SchedulesComponent implements OnInit, OnDestroy {
     private schedulesService: SchedulesService,
     private stateService: StateService,
     private userStateService: UserStateService,
+    private router: Router,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
     this.departmentIdUser = this.userStateService.getDepartmentId() || 0;
     this.departmentId = this.departmentIdUser;
+    const itinerary = this.route.snapshot.queryParamMap.get('itinerary');
+    this.showTableSchedules = itinerary !== null;
+    this.itineraryTab = itinerary === 'day' ? 1 : 0;
+    this.pending = {
+      departmentId: readUrlNumber(this.route, 'departmentId'),
+      semester: readUrlNumber(this.route, 'semester'),
+      subjectId: readUrlNumber(this.route, 'subjectId'),
+      sectionId: readUrlNumber(this.route, 'sectionId'),
+    };
     this.createForm();
 
     this.sub$.add(
@@ -252,8 +275,14 @@ export class SchedulesComponent implements OnInit, OnDestroy {
       })
     );
     this.sub$.add(
-      this.form.valueChanges.subscribe(() => {
+      this.form.valueChanges.subscribe(({ departmentId, semester, subjectId, sectionId }) => {
         this.addDisabled = this.form.invalid;
+        writeUrlQuery(this.router, this.route, {
+          departmentId: this.departmentIdUser ? null : departmentId || null,
+          semester: semester || null,
+          subjectId: subjectId || null,
+          sectionId: sectionId || null,
+        });
       })
     );
   }
@@ -310,12 +339,17 @@ export class SchedulesComponent implements OnInit, OnDestroy {
         .subscribe((departaments) => {
           this.departments = departaments;
           if (departaments.length) {
+            const urlDepartment = departaments.find((department) => department.id === this.pending.departmentId);
             this.form.patchValue({
-              departmentId: departaments[0]?.id,
+              departmentId: (urlDepartment || departaments[0])?.id,
             });
             if (this.departmentIdUser) {
               this.changeDepartmentId(this.departmentIdUser);
             }
+            if (this.pending.semester) {
+              this.form.patchValue({ semester: this.pending.semester });
+            }
+            this.pending.departmentId = this.pending.semester = 0;
           }
         })
     );
@@ -332,6 +366,10 @@ export class SchedulesComponent implements OnInit, OnDestroy {
           })
           .subscribe((subjects) => {
             this.subjects = subjects;
+            if (this.pending.subjectId && subjects.some((subject) => subject.id === this.pending.subjectId)) {
+              this.form.patchValue({ subjectId: this.pending.subjectId });
+              this.pending.subjectId = 0;
+            }
           })
       );
     }
@@ -349,6 +387,10 @@ export class SchedulesComponent implements OnInit, OnDestroy {
           })
           .subscribe((sections) => {
             this.sections = sections;
+            if (this.pending.sectionId && sections.some((section) => section.id === this.pending.sectionId)) {
+              this.form.patchValue({ sectionId: this.pending.sectionId });
+              this.pending.sectionId = 0;
+            }
             this.offeredCapacity = sections.reduce((sum, section) => sum + (+section.capacity || 0), 0);
           })
       );
@@ -364,6 +406,23 @@ export class SchedulesComponent implements OnInit, OnDestroy {
     } else {
       this.loadSubjectSchedules();
     }
+  }
+
+  toggleItineraries(): void {
+    this.showTableSchedules = !this.showTableSchedules;
+    this.syncItineraryUrl();
+  }
+
+  changeItineraryTab(index: number): void {
+    this.itineraryTab = index;
+    this.syncItineraryUrl();
+  }
+
+  /** Al ocultar los itinerarios se quitan también sus filtros de la URL. */
+  private syncItineraryUrl(): void {
+    writeUrlQuery(this.router, this.route, this.showTableSchedules
+      ? { itinerary: this.itineraryTab ? 'day' : 'classroom' }
+      : { itinerary: null, classroomId: null, allClassrooms: null, dayId: null });
   }
 
   changeShowForm(showForm: boolean): void {

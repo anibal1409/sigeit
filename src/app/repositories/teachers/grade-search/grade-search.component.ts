@@ -14,6 +14,10 @@ import {
   MAT_DIALOG_DATA,
   MatDialog,
 } from '@angular/material/dialog';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
 
 import {
   DepartmentService,
@@ -33,7 +37,11 @@ import {
   switchMap,
   toArray,
 } from 'rxjs';
-import { UserStateService } from 'src/app/common';
+import {
+  readUrlNumber,
+  UserStateService,
+  writeUrlQuery,
+} from 'src/app/common';
 
 import {
   DEGREE_LEVEL_OPTIONS,
@@ -43,6 +51,7 @@ import {
 import {
   ProfileComponent,
   ProfileData,
+  PROFILE_DIALOG,
 } from '../profile/profile.component';
 import { TeacherAcademicService } from '../teacher-academic.service';
 
@@ -102,9 +111,22 @@ export class GradeSearchComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private matDialog: MatDialog,
     @Optional() @Inject(MAT_DIALOG_DATA) public dialogData: GradeSearchDialogData | null,
+    private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
+    // Como modal no se toca la URL de la página que lo abrió.
+    const params = this.dialogData ? null : this.route.snapshot.queryParamMap;
+    let pendingSubjectIds = (params?.get('subjectIds') || '').split(',').map(Number).filter(Boolean);
+    let pendingSearch = params?.get('searched') === 'true';
+    if (params) {
+      this.form.patchValue({
+        teacherName: params.get('teacherName') || '',
+        minPercent: params.has('minPercent') ? +params.get('minPercent')! : DEFAULT_MIN_PERCENT,
+      });
+      this.sub$.add(this.form.valueChanges.subscribe(() => this.syncUrl()));
+    }
     this.sub$.add(
       this.departmentService
         .departmentControllerFindAll(this.userStateService.getSchoolId(), true)
@@ -120,10 +142,20 @@ export class GradeSearchComponent implements OnInit, OnDestroy {
         )
         .subscribe((subjects) => {
           this.subjects = [...subjects].sort((a, b) => a.semester - b.semester || a.name.localeCompare(b.name, 'es'));
-          this.form.controls.subjectIds.setValue([]);
+          this.form.controls.subjectIds.setValue(
+            pendingSubjectIds.filter((id) => this.subjects.some((subject) => subject.id === id)),
+          );
+          pendingSubjectIds = [];
+          if (pendingSearch) {
+            pendingSearch = false;
+            this.search();
+          }
         }),
     );
-    departmentCtrl.setValue(this.dialogData?.departmentId || this.userStateService.getDepartmentId() || null);
+    departmentCtrl.setValue(
+      (params && readUrlNumber(this.route, 'departmentId'))
+      || this.dialogData?.departmentId || this.userStateService.getDepartmentId() || null,
+    );
   }
 
   ngOnDestroy(): void {
@@ -170,8 +202,18 @@ export class GradeSearchComponent implements OnInit, OnDestroy {
   openProfile(teacher: ResponseTeacherDto): void {
     this.matDialog.open<ProfileComponent, ProfileData>(ProfileComponent, {
       data: { teacher },
-      width: '56rem',
-      maxWidth: '95vw',
+      ...PROFILE_DIALOG,
+    });
+  }
+
+  private syncUrl(searched?: boolean): void {
+    const { departmentId, subjectIds, teacherName, minPercent } = this.form.getRawValue();
+    writeUrlQuery(this.router, this.route, {
+      departmentId: departmentId || null,
+      subjectIds: subjectIds?.join(',') || null,
+      teacherName: teacherName || null,
+      minPercent: minPercent === DEFAULT_MIN_PERCENT || minPercent === null ? null : minPercent,
+      ...(searched === undefined ? {} : { searched }),
     });
   }
 
@@ -179,6 +221,9 @@ export class GradeSearchComponent implements OnInit, OnDestroy {
     if (this.form.invalid || this.loading) {
       this.form.markAllAsTouched();
       return;
+    }
+    if (!this.dialogData) {
+      this.syncUrl(true);
     }
     const { subjectIds, minPercent } = this.form.getRawValue();
     this.searchedAll = !subjectIds?.length;

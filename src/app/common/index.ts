@@ -13,4 +13,4 @@ export * from './url-access-guard';
 export * from './user-state';
 export * from './text';
 export * from './upload';
-export * from './http-interceptor';
+export * from './http-interceptor';export * from './url-query';

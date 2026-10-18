@@ -1,10 +1,15 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
 import moment from 'moment';
 import {
   finalize,
   forkJoin,
+  merge,
   Subscription,
 } from 'rxjs';
 
@@ -14,6 +19,8 @@ import {
   SubjectDemandStoreService,
   SubjectDemandSummary,
   UserStateService,
+  readUrlNumber,
+  writeUrlQuery,
 } from '../../../common';
 import { SubjectVM } from '../../subjects/model';
 import { DepartmentVM } from '../../departments/model';
@@ -71,6 +78,8 @@ export class SectionsOverviewComponent {
     private stateService: StateService,
     private userStateService: UserStateService,
     private subjectDemandStore: SubjectDemandStoreService,
+    private router: Router,
+    private route: ActivatedRoute,
   ) {
     this.columns = [
       {
@@ -118,7 +127,12 @@ export class SectionsOverviewComponent {
   ngOnInit() {
     this.departmentIdUser = this.userStateService.getDepartmentId() || 0;
     this.departmentId = this.departmentIdUser;
-    
+    const urlDepartmentId = readUrlNumber(this.route, 'departmentId');
+    if (!this.departmentIdUser && urlDepartmentId) {
+      this.departmentId = urlDepartmentId;
+      this.departmentCtrl.setValue(urlDepartmentId, { emitEvent: false });
+    }
+
     this.sub$.add(
       this.sectionsService.getLoading$().subscribe((loading) => {
         this.loading = loading;
@@ -144,6 +158,18 @@ export class SectionsOverviewComponent {
         }
       })
     );
+    const urlGroupBy = this.route.snapshot.queryParamMap.get('groupBy');
+    if (urlGroupBy && this.groupsBy.some((g) => g.field === urlGroupBy)) {
+      this.groupByCtrl.setValue(urlGroupBy);
+    }
+    this.sub$.add(
+      merge(this.departmentCtrl.valueChanges, this.groupByCtrl.valueChanges).subscribe(() =>
+        writeUrlQuery(this.router, this.route, {
+          departmentId: this.departmentIdUser ? null : this.departmentCtrl.value || null,
+          groupBy: this.groupByCtrl.value === 'semester' ? null : this.groupByCtrl.value,
+        }),
+      ),
+    );
 
     this.loadDepartments();
     
@@ -161,7 +187,7 @@ export class SectionsOverviewComponent {
         if (period?.id) {
           this.periodId = period.id;
           this.period = period;
-          if (this.departmentIdUser) {
+          if (this.departmentId) {
             this.loadSections();
           }
         }

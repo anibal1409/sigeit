@@ -13,7 +13,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Router, NavigationEnd } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 import { Subscription, filter, finalize, forkJoin } from 'rxjs';
 
@@ -22,6 +22,8 @@ import {
   SEMESTERS,
   SemesterVM,
   UserStateService,
+  readUrlNumber,
+  writeUrlQuery,
 } from '../common';
 import { StateService } from '../common/state';
 import { CareerVM } from '../repositories/careers';
@@ -31,6 +33,7 @@ import {
 } from '../repositories/periods';
 import {
   DayVM,
+  SCHEDULE_DETAILS_DIALOG,
   ScheduleDetailsComponent,
   ScheduleItemVM,
 } from '../repositories/schedules';
@@ -129,6 +132,7 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
     private userStateService: UserStateService,
     private router: Router,
     private cdr: ChangeDetectorRef,
+    private route: ActivatedRoute,
   ) {
     this.loading = true;
   }
@@ -169,6 +173,15 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // En inscripción no se toca la URL: el listener de navegación limpiaría el localStorage.
+    if (this.form && !this.isInscription) {
+      writeUrlQuery(this.router, this.route, {
+        careerId: this.careerIdUser ? null : this.form.get('careerId')?.value || null,
+        semesterId: this.form.get('semesterId')?.value || null,
+        subjectId: this.form.get('subjectId')?.value || null,
+      });
+    }
+
     if (this.form) {
       const subjectId = this.form.get('subjectId')?.value;
 
@@ -198,9 +211,18 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
   private loadFiltersFromStorage(): void {
     try {
       const storedFilters = localStorage.getItem(this.FILTERS_STORAGE_KEY);
+      // La URL tiene prioridad sobre localStorage (permite recargar o compartir el enlace).
+      const urlFilters = !this.isInscription && this.route.snapshot.queryParamMap.has('semesterId')
+        ? {
+          careerId: readUrlNumber(this.route, 'careerId'),
+          semesterId: readUrlNumber(this.route, 'semesterId'),
+          subjectId: readUrlNumber(this.route, 'subjectId'),
+          timestamp: Date.now(),
+        }
+        : null;
 
-      if (storedFilters) {
-        const filters = JSON.parse(storedFilters);
+      if (urlFilters || storedFilters) {
+        const filters = urlFilters || JSON.parse(storedFilters!);
 
         // Verificar que los filtros no sean muy antiguos (máximo 24 horas)
         const maxAge = 24 * 60 * 60 * 1000; // 24 horas en milisegundos
@@ -621,9 +643,8 @@ export class StudentSchedulesComponent implements OnInit, OnDestroy {
 
 
       const dialogRef = this.matDialog.open(ScheduleDetailsComponent, {
-        data: {
-          schedules: allSectionSchedules,
-        },
+        data: { schedules: allSectionSchedules },
+        ...SCHEDULE_DETAILS_DIALOG,
       });
 
       dialogRef.componentInstance.closed.subscribe((res) => {

@@ -5,6 +5,10 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
 
 import {
   ResponseDepartmentDto,
@@ -23,6 +27,8 @@ import {
 import {
   StateService,
   UserStateService,
+  readUrlNumber,
+  writeUrlQuery,
 } from '../../common';
 import { ImportDemandComponent } from './import-demand/import-demand.component';
 import { SubjectDemandsService } from './subject-demands.service';
@@ -51,11 +57,19 @@ export class SubjectDemandsComponent implements OnInit, OnDestroy {
     private stateService: StateService,
     private userStateService: UserStateService,
     private matDialog: MatDialog,
+    private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
     this.sub$.add(
-      merge(this.periodCtrl.valueChanges, this.departmentCtrl.valueChanges).subscribe(() => this.loadDemand()),
+      merge(this.periodCtrl.valueChanges, this.departmentCtrl.valueChanges).subscribe(() => {
+        writeUrlQuery(this.router, this.route, {
+          periodId: this.periodCtrl.value || null,
+          departmentId: this.departmentCtrl.value || null,
+        });
+        this.loadDemand();
+      }),
     );
 
     this.setLoading(true);
@@ -68,9 +82,13 @@ export class SubjectDemandsComponent implements OnInit, OnDestroy {
           switchMap(([periods, departments]) => {
             this.periods = periods;
             this.departments = departments;
-            const periodId = (periods.find((period) => period.isActive) || periods[0])?.id ?? null;
+            const urlPeriodId = readUrlNumber(this.route, 'periodId');
+            const periodId = (periods.find((period) => period.id === urlPeriodId)
+              || periods.find((period) => period.isActive) || periods[0])?.id ?? null;
+            const departmentId = readUrlNumber(this.route, 'departmentId') || null;
             this.periodCtrl.setValue(periodId, { emitEvent: false });
-            return periodId ? this.subjectDemandsService.getDemand$(periodId) : of([]);
+            this.departmentCtrl.setValue(departmentId, { emitEvent: false });
+            return periodId ? this.subjectDemandsService.getDemand$(periodId, departmentId ?? undefined) : of([]);
           }),
           finalize(() => this.setLoading(false)),
         )

@@ -11,10 +11,18 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
 
 import { Subscription } from 'rxjs';
 
 import { ClassroomVM } from '../../classrooms/model';
+import {
+  readUrlNumber,
+  writeUrlQuery,
+} from '../../../common/url-query';
 import {
   DayVM,
   ScheduleItemVM,
@@ -53,6 +61,8 @@ export class ScheduleComponent implements OnInit, OnDestroy, OnChanges {
   constructor(
     private schedulesService: SchedulesService,
     private scheduleDisplayService: ScheduleDisplayService,
+    private router: Router,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -65,6 +75,9 @@ export class ScheduleComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit(): void {
+    this.classroomCtrl.setValue(readUrlNumber(this.route, 'classroomId') || '', { emitEvent: false });
+    this.allClassrooms = this.route.snapshot.queryParamMap.get('allClassrooms') === 'true';
+    this.allClassroomsCtrl.setValue(this.allClassrooms, { emitEvent: false });
     this.loadDays();
     this.loadIntervals();
     this.subClassrooms();
@@ -154,6 +167,7 @@ export class ScheduleComponent implements OnInit, OnDestroy, OnChanges {
   private subClassrooms(): void {
     this.sub$.add(
       this.classroomCtrl?.valueChanges.subscribe((classroomId) => {
+        writeUrlQuery(this.router, this.route, { classroomId: classroomId || null });
         if (classroomId) {
           this.loadSchedulesClassroom();
         }
@@ -163,6 +177,7 @@ export class ScheduleComponent implements OnInit, OnDestroy, OnChanges {
     this.sub$.add(
       this.allClassroomsCtrl.valueChanges.subscribe((val) => {
         this.allClassrooms = val as boolean;
+        writeUrlQuery(this.router, this.route, { allClassrooms: this.allClassrooms });
         this.loadClassrooms();
       })
     );
@@ -176,6 +191,10 @@ export class ScheduleComponent implements OnInit, OnDestroy, OnChanges {
         })
         .subscribe((classrooms) => {
           this.classrooms = classrooms;
+          // Aula restaurada desde la URL: carga su itinerario una vez hay aulas.
+          if (this.classroomCtrl.value && !this.dataSourceByClassroom.length) {
+            this.loadSchedulesClassroom();
+          }
         })
     );
   }

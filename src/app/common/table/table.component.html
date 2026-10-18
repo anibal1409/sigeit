@@ -1,7 +1,7 @@
 <div class="d-flex align-items-center w-100 justify-content-between">
   <mat-form-field>
     <mat-label>Buscar</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="" #input />
+    <input matInput (keyup)="applyFilter($event)" [value]="initialSearch" placeholder="" #input />
   </mat-form-field>
   <div class="w-100 d-flex justify-content-end align-items-center">
     <ng-content select="[filters]"></ng-content>
@@ -10,7 +10,7 @@
 
 
 <div class="mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource" matSort>
+  <table mat-table [dataSource]="dataSource" matSort (matSortChange)="onSort($event)">
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     <ng-container
@@ -73,5 +73,6 @@
   <mat-paginator
     [pageSizeOptions]="[5, 10, 25, 100]"
     aria-label="Select page"
+    (page)="onPage($event)"
   ></mat-paginator>
 </div>

@@ -5,6 +5,10 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
 
 import {
   ResponseSectionDto,
@@ -44,6 +48,7 @@ import {
   GradeSearchDialogData,
 } from '../../teachers/grade-search/grade-search.component';
 import {
+  PROFILE_DIALOG,
   ProfileComponent,
   ProfileData,
 } from '../../teachers/profile/profile.component';
@@ -120,18 +125,22 @@ export class SectionsManageComponent implements OnInit, OnDestroy {
     private userStateService: UserStateService,
     private matDialog: MatDialog,
     private toastService: ToastService,
+    private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
     this.departmentIdUser = this.userStateService.getDepartmentId() || 0;
+    this.restoreFiltersFromUrl();
 
     this.sub$.add(
       this.sectionsService.getActivePeriod$().subscribe((period) => {
         if (!period?.id) return;
         this.periodId = period.id;
         this.periodName = period.name;
-        if (this.departmentIdUser) {
-          this.selectDepartment(this.departmentIdUser);
+        const departmentId = this.departmentIdUser || this.departmentCtrl.value;
+        if (departmentId) {
+          this.selectDepartment(+departmentId);
         }
       }),
     );
@@ -156,11 +165,47 @@ export class SectionsManageComponent implements OnInit, OnDestroy {
       ).subscribe(() => this.applyFilters()),
     );
     this.sub$.add(
+      merge(
+        this.departmentCtrl.valueChanges,
+        this.semesterCtrl.valueChanges,
+        this.searchCtrl.valueChanges,
+        this.uncoveredCtrl.valueChanges,
+        this.unassignedCtrl.valueChanges,
+      ).subscribe(() => this.syncFiltersToUrl()),
+    );
+    this.sub$.add(
       this.demandStore.getConfigChanges$().subscribe(() => {
         this.groups.forEach((group) => this.recompute(group));
         this.updateTotals();
       }),
     );
+  }
+
+  /** Restaura los filtros desde la URL sin disparar valueChanges; se aplican al cargar el departamento. */
+  private restoreFiltersFromUrl(): void {
+    const params = this.route.snapshot.queryParamMap;
+    const opts = { emitEvent: false };
+    const departmentId = +(params.get('departmentId') || 0);
+    if (departmentId && !this.departmentIdUser) this.departmentCtrl.setValue(departmentId, opts);
+    if (params.has('semester')) this.semesterCtrl.setValue(+params.get('semester')!, opts);
+    this.searchCtrl.setValue(params.get('search') || '', opts);
+    this.uncoveredCtrl.setValue(params.get('uncovered') === 'true', opts);
+    this.unassignedCtrl.setValue(params.get('unassigned') === 'true', opts);
+  }
+
+  private syncFiltersToUrl(): void {
+    const semester = this.semesterCtrl.value;
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        departmentId: this.departmentCtrl.value || null,
+        semester: semester != null && semester !== -1 ? semester : null,
+        search: this.searchCtrl.value || null,
+        uncovered: this.uncoveredCtrl.value || null,
+        unassigned: this.unassignedCtrl.value || null,
+      },
+      replaceUrl: true,
+    });
   }
 
   ngOnDestroy(): void {
@@ -312,8 +357,7 @@ export class SectionsManageComponent implements OnInit, OnDestroy {
       { id: row.teacherId || 0, firstName, lastName };
     this.matDialog.open<ProfileComponent, ProfileData>(ProfileComponent, {
       data: { teacher },
-      width: '56rem',
-      maxWidth: '95vw',
+      ...PROFILE_DIALOG,
     });
   }
 

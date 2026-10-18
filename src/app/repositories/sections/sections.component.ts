@@ -18,6 +18,10 @@ import {
   MAT_DIALOG_DATA,
   MatDialog,
 } from '@angular/material/dialog';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
 
 import { Subscription } from 'rxjs';
 import {
@@ -28,6 +32,8 @@ import {
   TableDataVM,
   TableService,
   UserStateService,
+  readUrlNumber,
+  writeUrlQuery,
 } from 'src/app/common';
 import { StateService } from 'src/app/common/state';
 
@@ -110,6 +116,8 @@ export class SectionsComponent implements OnInit, OnDestroy {
 
   queryParamsList!: { [key: string]: string };
   readingFromParams = false;
+  /** Filtros de la URL pendientes de aplicar mientras cargan las listas. */
+  private pending = { departmentId: 0, semester: 0, subjectId: 0 };
 
   constructor(
     private sectionsService: SectionsService,
@@ -119,6 +127,8 @@ export class SectionsComponent implements OnInit, OnDestroy {
     @Optional() @Inject(MAT_DIALOG_DATA) private item: any,
     private stateService: StateService,
     private userStateService: UserStateService,
+    private router: Router,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnDestroy(): void {
@@ -130,6 +140,13 @@ export class SectionsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.departmentIdUser = this.userStateService.getDepartmentId() || 0;
     this.departmentId = this.departmentIdUser;
+    if (!this.item) {
+      this.pending = {
+        departmentId: readUrlNumber(this.route, 'departmentId'),
+        semester: readUrlNumber(this.route, 'semester'),
+        subjectId: readUrlNumber(this.route, 'subjectId'),
+      };
+    }
     this.createForm();
 
     this.sub$.add(
@@ -227,8 +244,15 @@ export class SectionsComponent implements OnInit, OnDestroy {
     }
 
     this.sub$.add(
-      this.form.valueChanges.subscribe(() => {
+      this.form.valueChanges.subscribe(({ departmentId, semester, subjectId }) => {
         this.addDisabled = this.form.invalid;
+        if (!this.modal) {
+          writeUrlQuery(this.router, this.route, {
+            departmentId: departmentId || null,
+            semester: semester || null,
+            subjectId: subjectId || null,
+          });
+        }
       })
     );
   }
@@ -262,7 +286,13 @@ export class SectionsComponent implements OnInit, OnDestroy {
           this.departments = departaments;
           if (this.departmentIdUser) {
             this.changeDepartmentId(this.departmentIdUser);
+          } else if (this.pending.departmentId) {
+            this.form.patchValue({ departmentId: this.pending.departmentId });
           }
+          if (this.pending.semester && this.departmentId) {
+            this.form.patchValue({ semester: this.pending.semester });
+          }
+          this.pending.departmentId = this.pending.semester = 0;
         })
     );
   }
@@ -277,6 +307,10 @@ export class SectionsComponent implements OnInit, OnDestroy {
         })
         .subscribe((subjects) => {
           this.subjects = subjects;
+          if (this.pending.subjectId && subjects.some((s) => s.id === this.pending.subjectId)) {
+            this.form.patchValue({ subjectId: this.pending.subjectId });
+            this.pending.subjectId = 0;
+          }
         })
     );
   }
