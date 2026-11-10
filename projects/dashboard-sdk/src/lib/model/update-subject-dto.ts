@@ -17,7 +17,18 @@ export interface UpdateSubjectDto {
     code?: string;
     credits?: number;
     description?: string;
+    /**
+     * Horas semanales totales (teoría + práctica)
+     */
     hours?: number;
+    /**
+     * Horas semanales teóricas; si no se envía, se asume todo el total como teoría
+     */
+    theoreticalHours?: number;
+    /**
+     * Horas semanales prácticas; por defecto 0
+     */
+    practicalHours?: number;
     semester?: number;
     typeCurriculum?: number;
     department?: IdCreateEntity;

@@ -71,6 +71,7 @@ export * from './section-coverage-dto';
 export * from './section-open-distribution-item-dto';
 export * from './start-time-slot-item-dto';
 export * from './subject-demand-increase-item-dto';
+export * from './subject-instruction-type';
 export * from './subject-ref-dto';
 export * from './subject-stat-item-dto';
 export * from './teacher-category';

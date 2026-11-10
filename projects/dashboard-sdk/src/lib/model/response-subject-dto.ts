@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { SubjectInstructionType } from './subject-instruction-type';
 
 
 export interface ResponseSubjectDto { 
@@ -17,7 +18,19 @@ export interface ResponseSubjectDto {
     code: string;
     credits: number;
     description?: string;
+    /**
+     * Horas semanales totales
+     */
     hours: number;
+    /**
+     * Horas semanales teóricas
+     */
+    theoreticalHours: number;
+    /**
+     * Horas semanales prácticas
+     */
+    practicalHours: number;
+    instructionType: SubjectInstructionType;
     semester: number;
     typeCurriculum: number;
     departmentId: number;
@@ -26,4 +39,7 @@ export interface ResponseSubjectDto {
     careerIds: Array<number>;
     careers: Array<string>;
 }
+export namespace ResponseSubjectDto {
+}
+
 

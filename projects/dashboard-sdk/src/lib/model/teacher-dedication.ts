@@ -11,12 +11,11 @@
  */
 
 
-export type TeacherDedication = 'EXCLUSIVE' | 'FULL_TIME' | 'HALF_TIME' | 'CONVENTIONAL';
+export type TeacherDedication = 'EXCLUSIVA' | 'TIEMPO_COMPLETO' | 'MEDIO_TIEMPO';
 
 export const TeacherDedication = {
-    Exclusive: 'EXCLUSIVE' as TeacherDedication,
-    FullTime: 'FULL_TIME' as TeacherDedication,
-    HalfTime: 'HALF_TIME' as TeacherDedication,
-    Conventional: 'CONVENTIONAL' as TeacherDedication
+    Exclusiva: 'EXCLUSIVA' as TeacherDedication,
+    TiempoCompleto: 'TIEMPO_COMPLETO' as TeacherDedication,
+    MedioTiempo: 'MEDIO_TIEMPO' as TeacherDedication
 };
 

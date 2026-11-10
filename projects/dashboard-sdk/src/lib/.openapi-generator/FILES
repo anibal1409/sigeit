@@ -100,6 +100,7 @@ model/section-coverage-dto.ts
 model/section-open-distribution-item-dto.ts
 model/start-time-slot-item-dto.ts
 model/subject-demand-increase-item-dto.ts
+model/subject-instruction-type.ts
 model/subject-ref-dto.ts
 model/subject-stat-item-dto.ts
 model/teacher-category.ts

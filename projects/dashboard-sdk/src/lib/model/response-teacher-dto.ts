@@ -30,7 +30,7 @@ export interface ResponseTeacherDto {
      */
     categoryLevel?: string;
     employmentStatus?: EmploymentStatus;
-    dedication?: TeacherDedication;
+    dedication: TeacherDedication;
     hiringEvaluationStatus?: HiringEvaluationStatus;
     hiringEvaluationDate?: string;
     hiringEvaluationNotes?: string;
