@@ -1,0 +1,26 @@
+<div class="audit-charts" *ngIf="stats">
+  <mat-card class="audit-chart-card">
+    <mat-card-header>
+      <mat-card-title>Por acción</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="chart-wrap">
+      <canvas #actionCanvas></canvas>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="audit-chart-card">
+    <mat-card-header>
+      <mat-card-title>Por recurso (top)</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="chart-wrap">
+      <canvas #resourceCanvas></canvas>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="audit-chart-card audit-chart-card--wide">
+    <mat-card-header>
+      <mat-card-title>Eventos por día (UTC)</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="chart-wrap chart-wrap--tall">
+      <canvas #dayCanvas></canvas>
+    </mat-card-content>
+  </mat-card>
+</div>

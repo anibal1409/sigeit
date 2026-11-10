@@ -44,6 +44,13 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'audit',
+        loadChildren: () =>
+          import('../repositories/audit/audit.module').then(
+            (m) => m.AuditModule,
+          ),
+      },
+      {
         path: 'departments',
         loadChildren: () =>
           import('../repositories/departments/departments.module').then(

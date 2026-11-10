@@ -1,0 +1,22 @@
+<div class="kpi-row" *ngIf="stats">
+  <mat-card class="kpi-card">
+    <span class="kpi-label">Total eventos</span>
+    <span class="kpi-value">{{ stats.totalEvents }}</span>
+  </mat-card>
+  <mat-card class="kpi-card kpi-card--ok">
+    <span class="kpi-label">Exitosos</span>
+    <span class="kpi-value">{{ stats.successCount }}</span>
+  </mat-card>
+  <mat-card class="kpi-card kpi-card--fail">
+    <span class="kpi-label">Fallidos</span>
+    <span class="kpi-value">{{ stats.failureCount }}</span>
+  </mat-card>
+  <mat-card class="kpi-card">
+    <span class="kpi-label">Actores distintos</span>
+    <span class="kpi-value">{{ stats.distinctActors }}</span>
+  </mat-card>
+  <mat-card class="kpi-card">
+    <span class="kpi-label">Tasa de éxito</span>
+    <span class="kpi-value">{{ successRate() }}</span>
+  </mat-card>
+</div>

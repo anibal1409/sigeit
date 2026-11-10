@@ -32,6 +32,12 @@ export const MENU: Array<optionMenu> = [
     permissions: [UserRole.Administrator],
   },
   {
+    name: 'Auditoría',
+    value: 'audit',
+    icon: 'fact_check',
+    permissions: [UserRole.Administrator],
+  },
+  {
     name: 'Demanda por asignatura',
     value: 'subject-demands',
     icon: 'groups',

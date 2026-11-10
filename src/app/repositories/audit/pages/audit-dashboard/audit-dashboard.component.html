@@ -1,0 +1,33 @@
+<mat-card class="audit-page">
+  <mat-card-header>
+    <mat-card-title>Auditoría del sistema</mat-card-title>
+    <mat-card-subtitle>Registro de acciones y autenticación (solo administrador)</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <app-audit-filters-form
+      [form]="filterForm"
+      (apply)="applyFilters()"
+      (clear)="clearFilters()"
+    ></app-audit-filters-form>
+
+    <app-audit-kpi-row [stats]="stats"></app-audit-kpi-row>
+    <app-audit-charts [stats]="stats"></app-audit-charts>
+
+    <div class="toolbar">
+      <button mat-stroked-button type="button" [disabled]="exporting || loading" (click)="exportCsv()">
+        Exportar CSV
+      </button>
+    </div>
+
+    <app-audit-logs-table
+      [items]="items"
+      [total]="total"
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      (pageChange)="onPage($event)"
+      (rowOpen)="openRow($event)"
+      (entityOpen)="openEntity($event)"
+    ></app-audit-logs-table>
+  </mat-card-content>
+</mat-card>
+<app-state *ngIf="loading"></app-state>

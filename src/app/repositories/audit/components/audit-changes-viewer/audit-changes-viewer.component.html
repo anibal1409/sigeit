@@ -1,0 +1,17 @@
+<p class="audit-empty" *ngIf="!rows.length">Sin detalle de cambios.</p>
+<table class="audit-diff" *ngIf="rows.length">
+  <thead>
+    <tr>
+      <th>Campo</th>
+      <th *ngIf="action !== 'CREATE'">Anterior</th>
+      <th>{{ action === 'CREATE' ? 'Valor enviado' : 'Nuevo' }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of rows">
+      <td>{{ row.field }}</td>
+      <td *ngIf="action !== 'CREATE'">{{ row.previous }}</td>
+      <td>{{ row.current }}</td>
+    </tr>
+  </tbody>
+</table>

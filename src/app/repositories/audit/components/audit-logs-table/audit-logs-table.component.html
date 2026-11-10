@@ -1,0 +1,64 @@
+<table mat-table [dataSource]="items" class="audit-table">
+  <ng-container matColumnDef="createdAt">
+    <th mat-header-cell *matHeaderCellDef>Fecha</th>
+    <td mat-cell *matCellDef="let row">{{ formatDate(row.createdAt) }}</td>
+  </ng-container>
+  <ng-container matColumnDef="user">
+    <th mat-header-cell *matHeaderCellDef>Usuario</th>
+    <td mat-cell *matCellDef="let row">{{ actor(row) }}</td>
+  </ng-container>
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef>Acción</th>
+    <td mat-cell *matCellDef="let row">
+      <span class="audit-chip" [ngClass]="chipClass(row)">{{ actionLabel(row) }}</span>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="resource">
+    <th mat-header-cell *matHeaderCellDef>Recurso</th>
+    <td mat-cell *matCellDef="let row">
+      {{ resourceLabel(row.resource) }}
+      <ng-container *ngIf="row.resourceId">
+        ·
+        <button
+          type="button"
+          class="link-btn"
+          (click)="$event.stopPropagation(); entityOpen.emit({ resource: row.resource, resourceId: row.resourceId })"
+        >
+          {{ row.resourceId }}
+        </button>
+      </ng-container>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="success">
+    <th mat-header-cell *matHeaderCellDef>Estado</th>
+    <td mat-cell *matCellDef="let row">
+      <span [class.ok]="row.success" [class.fail]="!row.success">
+        {{ row.success ? row.statusCode : row.statusCode + ' ✗' }}
+      </span>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="client">
+    <th mat-header-cell *matHeaderCellDef>Cliente</th>
+    <td mat-cell *matCellDef="let row">{{ row.clientSummary || '—' }}</td>
+  </ng-container>
+  <ng-container matColumnDef="ip">
+    <th mat-header-cell *matHeaderCellDef>IP</th>
+    <td mat-cell *matCellDef="let row">{{ row.ipAddress || '—' }}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr
+    mat-row
+    *matRowDef="let row; columns: displayedColumns"
+    class="audit-row"
+    (click)="rowOpen.emit(row)"
+  ></tr>
+</table>
+
+<mat-paginator
+  [length]="total"
+  [pageIndex]="pageIndex"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="[25, 50, 100]"
+  (page)="pageChange.emit($event)"
+></mat-paginator>

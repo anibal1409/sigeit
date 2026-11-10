@@ -1,0 +1,57 @@
+<form class="filters" [formGroup]="form" (ngSubmit)="apply.emit()">
+  <mat-form-field>
+    <mat-label>Buscar</mat-label>
+    <input matInput formControlName="search" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Correo</mat-label>
+    <input matInput formControlName="userEmail" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Id usuario</mat-label>
+    <input matInput formControlName="userId" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Acciones</mat-label>
+    <mat-select formControlName="actions" multiple>
+      <mat-option *ngFor="let opt of actionOptions" [value]="opt.value">{{ opt.label }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Recurso</mat-label>
+    <mat-select formControlName="resource">
+      <mat-option [value]="''">Todos</mat-option>
+      <mat-option *ngFor="let opt of resourceOptions" [value]="opt.value">{{ opt.label }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Id recurso</mat-label>
+    <input matInput formControlName="resourceId" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Resultado</mat-label>
+    <mat-select formControlName="success">
+      <mat-option *ngFor="let opt of successOptions" [value]="opt.value">{{ opt.label }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Método HTTP</mat-label>
+    <mat-select formControlName="httpMethod">
+      <mat-option [value]="''">Todos</mat-option>
+      <mat-option *ngFor="let m of httpMethods" [value]="m.value">{{ m.label }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Desde</mat-label>
+    <input matInput type="date" formControlName="from" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Hasta</mat-label>
+    <input matInput type="date" formControlName="to" />
+  </mat-form-field>
+  <mat-checkbox formControlName="authOnly">Solo autenticación</mat-checkbox>
+  <div class="filters__actions">
+    <button mat-stroked-button type="button" (click)="clear.emit()">Limpiar</button>
+    <button mat-flat-button color="primary" type="submit">Aplicar</button>
+  </div>
+</form>
