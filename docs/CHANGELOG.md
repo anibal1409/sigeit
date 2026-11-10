@@ -12,6 +12,17 @@ archivo explica el *porqué* y cómo encaja cada pieza.
 
 ## 2026-11-09
 
+## 2026-11-09
+
+### Módulo de auditoría del sistema (solo administrador)
+
+- Ruta `/dashboard/audit`: filtros en URL, KPIs, gráficos (Chart.js) y tabla
+  paginada server-side vía `AuditFacade` sobre `AuditService`.
+- Detalle `/dashboard/audit/:id` y historial `/dashboard/audit/entity?resource=&entityId=`.
+- Exportación CSV de la página actual o hasta 20 páginas filtradas.
+- Menú **Auditoría** con rol Administrador (la API devuelve 403 al resto).
+- Pendiente: pestaña «Historial» en fichas CRUD que reutilice `entityHistory`.
+
 ### Tipografía del C-1 según formato oficial
 
 - Membrete: Arial 12 pt, sin negrita, izquierda. «C-1»: 18 pt negrita a la derecha.
