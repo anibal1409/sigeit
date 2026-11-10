@@ -71,6 +71,11 @@ import {
   BulkAcademicChargeModalComponent,
   BulkAcademicChargeModalResult,
 } from './bulk-academic-charge-modal.component';
+import {
+  buildC1Document,
+  buildC1FileName,
+  enrichSchedulesWithSubjects,
+} from './c1-document';
 
 /**
  * Traduce los errores 400 de la reserva de números de oficio. La API responde en inglés
@@ -377,6 +382,42 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
     }).catch(() => this.toastService.error('No se pudo leer la configuración de oficios del departamento'));
   }
 
+  /** Abre el modal para generar el C-1 de varios profesores (sin número de oficio). */
+  openBulkC1Modal(): void {
+    if (!this.periodActive?.id || !this.departmentId) {
+      return;
+    }
+    void firstValueFrom(
+      this.schedulesService.getTeachers$({
+        schoolId: this.userStateService.getSchoolId(),
+        status: true,
+      }),
+    ).then((allActiveTeachers) => {
+      if (!allActiveTeachers.length) {
+        return;
+      }
+      this.dialog
+        .open(BulkAcademicChargeModalComponent, {
+          width: '40rem',
+          maxWidth: '95vw',
+          data: {
+            teachers: allActiveTeachers.slice(),
+            askOfficeNumber: false,
+            suggestedNextOfficeCode: 1,
+            officePrefix: '',
+            officeYear: new Date().getFullYear(),
+            documentKind: 'c1',
+          },
+        })
+        .afterClosed()
+        .subscribe((result: BulkAcademicChargeModalResult | undefined) => {
+          if (result?.selectedTeacherIds?.length) {
+            void this.runBulkC1(result, allActiveTeachers);
+          }
+        });
+    }).catch(() => this.toastService.error('No se pudo cargar la lista de profesores'));
+  }
+
   /** Formato activo del departamento; sin formato (404) se usa el texto por defecto. */
   private async loadTemplate(): Promise<{ body: string; signature: string }> {
     try {
@@ -523,6 +564,106 @@ export class AcademicChargeTeacherComponent implements OnInit, OnDestroy {
     const doc = this.buildAcademicChargeDocument(context, this.academicCharge, nameTeacher, codes[0]);
     const blob = await Packer.toBlob(doc);
     saveAs(blob, this.buildAcademicChargeFileName(codes[0], nameTeacher, period.name));
+  }
+
+  /** Genera el C-1 del profesor seleccionado con sus secciones del período activo. */
+  async createC1(): Promise<void> {
+    const period = this.periodActive;
+    const teacher = this.teachers.find((item) => item.id === this.teacherId);
+    if (!this.teacherId || !period?.id || !this.departmentId || !teacher) {
+      return;
+    }
+    const blob = await this.buildC1Blob(teacher, this.academicCharge, period);
+    if (!blob) {
+      return;
+    }
+    saveAs(blob, buildC1FileName(teacher.fullName || `${teacher.firstName} ${teacher.lastName}`, period.name));
+  }
+
+  /** Genera el C-1 de varios profesores y descarga archivos sueltos o un ZIP. */
+  private async runBulkC1(
+    result: BulkAcademicChargeModalResult,
+    teacherList: TeacherItemVM[],
+  ): Promise<void> {
+    const period = this.periodActive;
+    if (!period?.id) {
+      return;
+    }
+    const downloadMode = result.downloadMode ?? 'separate';
+    const zipEntries: { name: string; blob: Blob }[] = [];
+
+    for (const teacherId of result.selectedTeacherIds) {
+      const teacher = teacherList.find((item) => item.id === teacherId);
+      if (!teacher) {
+        continue;
+      }
+      const schedules = await firstValueFrom(
+        this.schedulesService.getSchedules$({
+          teacherId,
+          periodId: period.id,
+          departmentId: undefined,
+          status: true,
+        }),
+      );
+      const blob = await this.buildC1Blob(teacher, schedules, period);
+      if (!blob) {
+        continue;
+      }
+      const fileName = buildC1FileName(
+        teacher.fullName || `${teacher.firstName} ${teacher.lastName}`,
+        period.name,
+      );
+      if (downloadMode === 'zip') {
+        zipEntries.push({ name: fileName, blob });
+      } else {
+        saveAs(blob, fileName);
+      }
+    }
+
+    if (downloadMode === 'zip' && zipEntries.length) {
+      const zip = new JSZip();
+      const zipInnerFolder =
+        this.sanitizePathSegment(`C1-${period.name}`) || 'C1';
+      const folder = zip.folder(zipInnerFolder);
+      const target = folder ?? zip;
+      zipEntries.forEach((entry) => target.file(entry.name, entry.blob));
+      const zipBlob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+      saveAs(zipBlob, `${zipInnerFolder}.zip`);
+    }
+  }
+
+  /** Arma el .docx C-1 de un profesor; null si no se pudo leer el logo. */
+  private async buildC1Blob(
+    teacher: TeacherItemVM,
+    schedules: Array<ScheduleItemVM>,
+    period: PeriodVM,
+  ): Promise<Blob | null> {
+    const department = this.departments.find((item) => item.id === this.departmentId);
+    const img = await this.schedulesService.getFile('assets/logo-udo.png');
+    if (!img) {
+      this.toastService.error('No se pudo cargar el logo para el C1');
+      return null;
+    }
+    // Catálogo del departamento: trae theoreticalHours / practicalHours / instructionType.
+    const subjects = this.departmentId
+      ? await firstValueFrom(
+          this.schedulesService.getSubjects$({
+            departmentId: this.departmentId,
+            status: true,
+          }),
+        )
+      : [];
+    const yearMatch = String(period.name || '').match(/(20\d{2})/);
+    const doc = buildC1Document({
+      logoBuffer: await img.arrayBuffer(),
+      schoolName: department?.school?.name || '',
+      departmentName: department?.name || '',
+      periodName: period.name,
+      academicYear: yearMatch?.[1] || String(new Date().getFullYear()),
+      teacher,
+      schedules: enrichSchedulesWithSubjects(schedules, subjects),
+    });
+    return Packer.toBlob(doc);
   }
 
   private buildAcademicChargeDocument(

@@ -1,7 +1,10 @@
-<h2 mat-dialog-title>Carga académica masiva</h2>
+<h2 mat-dialog-title>{{ isC1 ? 'C1 masiva' : 'Carga académica masiva' }}</h2>
 
 <mat-dialog-content [formGroup]="form" class="bulk-modal">
-  <p class="hint">
+  <p class="hint" *ngIf="isC1">
+    Marque a qué profesores se les generará el formulario C-1 (distribución de carga académica) del período activo.
+  </p>
+  <p class="hint" *ngIf="!isC1">
     <ng-container *ngIf="data.askOfficeNumber">
       Indique la fecha del oficio, el número inicial del código de oficio (se incrementará por cada profesor seleccionado) y marque a quiénes se les generará el documento.
     </ng-container>
@@ -10,7 +13,7 @@
     </ng-container>
   </p>
 
-  <div class="fields">
+  <div class="fields" *ngIf="!isC1">
     <mat-form-field *ngIf="data.askOfficeNumber" appearance="outline" class="field-code">
       <mat-label>Código de oficio (inicial)</mat-label>
       <input matInput type="number" formControlName="officeCode" min="1" />
@@ -41,8 +44,12 @@
       <mat-checkbox [formControlName]="'sel_' + t.id">
         {{ t.fullName || (t.firstName + ' ' + t.lastName) }}
       </mat-checkbox>
-      <span class="badge" *ngIf="form.get('sel_' + t.id)?.value === true">Se generará carga</span>
-      <span class="badge muted" *ngIf="form.get('sel_' + t.id)?.value !== true">Sin carga</span>
+      <span class="badge" *ngIf="form.get('sel_' + t.id)?.value === true">
+        {{ isC1 ? 'Se generará C1' : 'Se generará carga' }}
+      </span>
+      <span class="badge muted" *ngIf="form.get('sel_' + t.id)?.value !== true">
+        {{ isC1 ? 'Sin C1' : 'Sin carga' }}
+      </span>
     </div>
   </div>
 </mat-dialog-content>
@@ -56,6 +63,6 @@
     [disabled]="form.invalid"
     (click)="submit()"
   >
-    Generar cargas
+    {{ isC1 ? 'Generar C1' : 'Generar cargas' }}
   </button>
 </mat-dialog-actions>

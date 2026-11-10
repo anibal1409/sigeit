@@ -63,6 +63,27 @@
         <mat-icon>get_app</mat-icon>
         Carga académica
       </button>
+      <button
+        mat-stroked-button
+        color="primary"
+        type="button"
+        class="bulk-charge-btn"
+        (click)="openBulkC1Modal()"
+        [disabled]="loading || !periodActive?.id || !departmentId"
+      >
+        <mat-icon>library_books</mat-icon>
+        C1 masiva
+      </button>
+      <button
+        mat-stroked-button
+        color="primary"
+        type="button"
+        (click)="createC1()"
+        [disabled]="!teacherId"
+      >
+        <mat-icon>description</mat-icon>
+        C1
+      </button>
     </div>
   </div>
 </div>

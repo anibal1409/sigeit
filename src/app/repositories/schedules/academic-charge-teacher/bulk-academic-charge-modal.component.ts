@@ -17,6 +17,9 @@ import {
 
 import { TeacherItemVM } from '../../teachers';
 
+/** Documento que genera el modal masivo. */
+export type BulkDocumentKind = 'academic_charge' | 'c1';
+
 export interface BulkAcademicChargeModalData {
   teachers: TeacherItemVM[];
   /** Si el departamento pide el número inicial en la generación masiva */
@@ -25,6 +28,8 @@ export interface BulkAcademicChargeModalData {
   officePrefix: string;
   /** Año del último oficio emitido: la fecha no puede ser anterior (la API responde 400). */
   officeYear: number;
+  /** Por defecto carga académica; el C1 no usa número de oficio. */
+  documentKind?: BulkDocumentKind;
 }
 
 export type BulkDownloadMode = 'separate' | 'zip';
@@ -35,6 +40,7 @@ export interface BulkAcademicChargeModalResult {
   letterDate: string;
   selectedTeacherIds: number[];
   downloadMode: BulkDownloadMode;
+  documentKind: BulkDocumentKind;
 }
 
 /**
@@ -56,6 +62,8 @@ function letterYearValidator(lastYear: number): ValidatorFn {
 })
 export class BulkAcademicChargeModalComponent {
   form: FormGroup;
+  /** true cuando se generan formularios C1 (sin oficio). */
+  readonly isC1: boolean;
 
   constructor(
     private readonly fb: FormBuilder,
@@ -65,13 +73,18 @@ export class BulkAcademicChargeModalComponent {
     >,
     @Inject(MAT_DIALOG_DATA) public readonly data: BulkAcademicChargeModalData,
   ) {
+    this.isC1 = data.documentKind === 'c1';
+    const askOffice = !this.isC1 && data.askOfficeNumber;
     const controls: Record<string, unknown> = {
       officeCode: [
         data.suggestedNextOfficeCode,
         // La API exige que el inicio supere al último número emitido.
-        data.askOfficeNumber ? [Validators.required, Validators.min(data.suggestedNextOfficeCode)] : [],
+        askOffice ? [Validators.required, Validators.min(data.suggestedNextOfficeCode)] : [],
       ],
-      letterDate: [this.todayIso(), [Validators.required, letterYearValidator(data.officeYear)]],
+      letterDate: [
+        this.todayIso(),
+        this.isC1 ? [] : [Validators.required, letterYearValidator(data.officeYear)],
+      ],
       downloadMode: ['separate' as BulkDownloadMode],
     };
     data.teachers.forEach((t) => {
@@ -109,10 +122,11 @@ export class BulkAcademicChargeModalComponent {
       return;
     }
     this.dialogRef.close({
-      officeCodeStart: this.data.askOfficeNumber ? +(v['officeCode'] as number) : null,
-      letterDate: String(v['letterDate']),
+      officeCodeStart: !this.isC1 && this.data.askOfficeNumber ? +(v['officeCode'] as number) : null,
+      letterDate: String(v['letterDate'] || this.todayIso()),
       selectedTeacherIds,
       downloadMode: v['downloadMode'] as BulkDownloadMode,
+      documentKind: this.isC1 ? 'c1' : 'academic_charge',
     });
   }
 
