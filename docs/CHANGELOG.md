@@ -10,6 +10,66 @@ archivo explica el *porqué* y cómo encaja cada pieza.
 
 ---
 
+## 2026-11-09
+
+### Tipografía del C-1 según formato oficial
+
+- Membrete: Arial 12 pt, sin negrita, izquierda. «C-1»: 18 pt negrita a la derecha.
+- Título del formulario: 12 pt negrita centrado. Datos núcleo/profesor/período: 11 pt.
+- Tabla: 9 pt con márgenes internos. Firmas (profesor, sello, directora): 12 pt negrita.
+
+### C-1 usa horas T/P y modalidad de asignaturas
+
+- Antes de armar el Word se cargan las asignaturas del departamento y se
+  enriquecen los horarios con `theoreticalHours`, `practicalHours` e
+  `instructionType`.
+- ACTIVIDAD y «N° Horas por Sem.» salen de ese reparto (`N HRS T` / `M HRS P`);
+  Total H/Sem. = (teoría+práctica) × Nº Sec.
+
+### Asignaturas: horas teóricas/prácticas y modalidad
+
+- SDK con `theoreticalHours`, `practicalHours` e `instructionType`
+  (`TEORICA` | `TEORICA_PRACTICA` | `PRACTICA`).
+- Formulario: campos de teoría/práctica, validación suma = total, atajo al cambiar
+  el total (todo a teoría), vista previa de modalidad; se reactivó descripción.
+- Listado: columnas Teóricas, Prácticas y Modalidad. Create/update envían el
+  reparto y **no** `instructionType` (lo calcula la API).
+- C-1 reutiliza `instructionTypeFromHours` / etiquetas compartidas.
+
+### Ajuste del C-1 al formato oficial
+
+- Horas semanales con desglose teórico/práctico (`N HRS T` / `M HRS P`) usando
+  `theoreticalHours` / `practicalHours` de la asignatura (ya vienen en el SDK).
+- «C-1» a la derecha; encabezado con columna para el logo; escuela sin prefijo
+  duplicado «ESCUELA DE»; profesor en línea de datos como APELLIDO NOMBRE.
+- Firmas: `Prof. Nombre Apellido` y `Profa. Hortensia Carolina Calzadilla Bastidas`
+  / Directora, como el Word de referencia.
+- Cabeceras de tabla con fusión vertical (excepto CÓDIGO/NOMBRE).
+
+### Dedicación del profesor alineada con la API
+
+- El SDK regenerado expone `TeacherDedication` con `EXCLUSIVA`, `TIEMPO_COMPLETO` y
+  `MEDIO_TIEMPO` (se eliminaron `EXCLUSIVE`, `FULL_TIME`, `HALF_TIME`, `CONVENTIONAL`).
+- `DEDICATION_OPTIONS` / `DEDICATION_LABEL` mapean esos valores a etiquetas en español.
+- En crear/editar el valor por defecto es **Exclusiva**; el listado muestra columna
+  Dedicación; perfil, registro académico, gestión de secciones y C-1 ya usan las
+  opciones compartidas.
+- `TeacherVM.dedication` pasa a ser obligatorio (como en `ResponseTeacherDto`).
+
+### Formulario C-1 en carga académica del profesor
+
+- En `/dashboard/scheludes/academic-charge` se añadieron **C1** (profesor seleccionado) y
+  **C1 masiva** (varios profesores, `.docx` sueltos o un `.zip`), con el mismo flujo de
+  la carta de carga académica.
+- El Word sigue el formato de ejemplo `docs/C-1 ANDRICK LOPEZ III-2026 - A4.docx`
+  (apaisado A4): encabezado UDO, datos del profesor, tabla de asignaturas/secciones/horas
+  y firmas. La lógica está en `c1-document.ts` para no engordar más el componente.
+- El modal masivo acepta `documentKind: 'c1' | 'academic_charge'`; en C1 no pide número
+  de oficio. Sin desglose teórico/práctico en la base, la columna de horas semanales
+  muestra el total de la asignatura (`N HRS`).
+
+---
+
 ## 2026-10-18
 
 ### Seguridad y permisos de la UI (fase 1 de la auditoría + requisitos del backend)
