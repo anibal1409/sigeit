@@ -19,9 +19,15 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
+import { AuditAction } from '../model/audit-action';
+// @ts-ignore
 import { AuditLogsPageDto } from '../model/audit-logs-page-dto';
 // @ts-ignore
+import { AuditStatsDto } from '../model/audit-stats-dto';
+// @ts-ignore
 import { EntityAuditHistoryDto } from '../model/entity-audit-history-dto';
+// @ts-ignore
+import { ResponseAuditLogDto } from '../model/response-audit-log-dto';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -95,7 +101,7 @@ export class AuditService {
 
     /**
      * Historial de cambios de un registro
-     * Devuelve todos los eventos de auditoría donde resource y resourceId coinciden con el tipo de entidad y el id (p. ej. period / 12).
+     * Devuelve todos los eventos donde resource y resourceId coinciden (p. ej. period / 12).
      * @param resource 
      * @param entityId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -157,19 +163,79 @@ export class AuditService {
     }
 
     /**
-     * Listar registros de auditoría (paginado)
-     * Incluye userAgent, clientSummary y propertyChanges (diff en updates, campos en creaciones).
+     * Listar registros de auditoría (paginado y filtrado)
+     * Filtros por usuario, acción, recurso, fechas, éxito, búsqueda libre, etc.
+     * @param userId Id del usuario actor
+     * @param userEmail Correo del actor (coincidencia parcial, sin distinguir mayúsculas)
+     * @param action 
+     * @param actions Varias acciones separadas por coma (ej. CREATE,UPDATE)
+     * @param resource Segmento de API / recurso (ej. subject, period)
+     * @param resourceId 
+     * @param success true &#x3D; solo éxitos HTTP 2xx/3xx
+     * @param httpMethod 
+     * @param from Inicio del rango (ISO 8601, inclusive)
+     * @param to Fin del rango (ISO 8601, inclusive)
+     * @param search Texto libre en ruta, correo, IP, cliente o id de recurso (coincidencia parcial)
+     * @param authOnly Si true, solo eventos de autenticación (AUTH_*)
      * @param page 
      * @param limit 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public auditControllerFindLogs(page?: number, limit?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<AuditLogsPageDto>;
-    public auditControllerFindLogs(page?: number, limit?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<AuditLogsPageDto>>;
-    public auditControllerFindLogs(page?: number, limit?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<AuditLogsPageDto>>;
-    public auditControllerFindLogs(page?: number, limit?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public auditControllerFindLogs(userId?: string, userEmail?: string, action?: AuditAction, actions?: string, resource?: string, resourceId?: string, success?: boolean, httpMethod?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE', from?: string, to?: string, search?: string, authOnly?: boolean, page?: number, limit?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<AuditLogsPageDto>;
+    public auditControllerFindLogs(userId?: string, userEmail?: string, action?: AuditAction, actions?: string, resource?: string, resourceId?: string, success?: boolean, httpMethod?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE', from?: string, to?: string, search?: string, authOnly?: boolean, page?: number, limit?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<AuditLogsPageDto>>;
+    public auditControllerFindLogs(userId?: string, userEmail?: string, action?: AuditAction, actions?: string, resource?: string, resourceId?: string, success?: boolean, httpMethod?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE', from?: string, to?: string, search?: string, authOnly?: boolean, page?: number, limit?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<AuditLogsPageDto>>;
+    public auditControllerFindLogs(userId?: string, userEmail?: string, action?: AuditAction, actions?: string, resource?: string, resourceId?: string, success?: boolean, httpMethod?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE', from?: string, to?: string, search?: string, authOnly?: boolean, page?: number, limit?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (userId !== undefined && userId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>userId, 'userId');
+        }
+        if (userEmail !== undefined && userEmail !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>userEmail, 'userEmail');
+        }
+        if (action !== undefined && action !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>action, 'action');
+        }
+        if (actions !== undefined && actions !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>actions, 'actions');
+        }
+        if (resource !== undefined && resource !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>resource, 'resource');
+        }
+        if (resourceId !== undefined && resourceId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>resourceId, 'resourceId');
+        }
+        if (success !== undefined && success !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>success, 'success');
+        }
+        if (httpMethod !== undefined && httpMethod !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>httpMethod, 'httpMethod');
+        }
+        if (from !== undefined && from !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>from, 'from');
+        }
+        if (to !== undefined && to !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>to, 'to');
+        }
+        if (search !== undefined && search !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search, 'search');
+        }
+        if (authOnly !== undefined && authOnly !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>authOnly, 'authOnly');
+        }
         if (page !== undefined && page !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>page, 'page');
@@ -212,6 +278,182 @@ export class AuditService {
 
         let localVarPath = `/audit/logs`;
         return this.httpClient.request<AuditLogsPageDto>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Detalle de un registro de auditoría
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public auditControllerFindOne(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ResponseAuditLogDto>;
+    public auditControllerFindOne(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ResponseAuditLogDto>>;
+    public auditControllerFindOne(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ResponseAuditLogDto>>;
+    public auditControllerFindOne(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling auditControllerFindOne.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/audit/logs/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
+        return this.httpClient.request<ResponseAuditLogDto>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Estadísticas y KPIs de auditoría
+     * Totales, éxitos/fallos, actores distintos, desglose por acción, recurso y día.
+     * @param userId Id del usuario actor
+     * @param userEmail Correo del actor (coincidencia parcial, sin distinguir mayúsculas)
+     * @param action 
+     * @param actions Varias acciones separadas por coma (ej. CREATE,UPDATE)
+     * @param resource Segmento de API / recurso (ej. subject, period)
+     * @param resourceId 
+     * @param success true &#x3D; solo éxitos HTTP 2xx/3xx
+     * @param httpMethod 
+     * @param from Inicio del rango (ISO 8601, inclusive)
+     * @param to Fin del rango (ISO 8601, inclusive)
+     * @param search Texto libre en ruta, correo, IP, cliente o id de recurso (coincidencia parcial)
+     * @param authOnly Si true, solo eventos de autenticación (AUTH_*)
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public auditControllerFindStats(userId?: string, userEmail?: string, action?: AuditAction, actions?: string, resource?: string, resourceId?: string, success?: boolean, httpMethod?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE', from?: string, to?: string, search?: string, authOnly?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<AuditStatsDto>;
+    public auditControllerFindStats(userId?: string, userEmail?: string, action?: AuditAction, actions?: string, resource?: string, resourceId?: string, success?: boolean, httpMethod?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE', from?: string, to?: string, search?: string, authOnly?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<AuditStatsDto>>;
+    public auditControllerFindStats(userId?: string, userEmail?: string, action?: AuditAction, actions?: string, resource?: string, resourceId?: string, success?: boolean, httpMethod?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE', from?: string, to?: string, search?: string, authOnly?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<AuditStatsDto>>;
+    public auditControllerFindStats(userId?: string, userEmail?: string, action?: AuditAction, actions?: string, resource?: string, resourceId?: string, success?: boolean, httpMethod?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE', from?: string, to?: string, search?: string, authOnly?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (userId !== undefined && userId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>userId, 'userId');
+        }
+        if (userEmail !== undefined && userEmail !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>userEmail, 'userEmail');
+        }
+        if (action !== undefined && action !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>action, 'action');
+        }
+        if (actions !== undefined && actions !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>actions, 'actions');
+        }
+        if (resource !== undefined && resource !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>resource, 'resource');
+        }
+        if (resourceId !== undefined && resourceId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>resourceId, 'resourceId');
+        }
+        if (success !== undefined && success !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>success, 'success');
+        }
+        if (httpMethod !== undefined && httpMethod !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>httpMethod, 'httpMethod');
+        }
+        if (from !== undefined && from !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>from, 'from');
+        }
+        if (to !== undefined && to !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>to, 'to');
+        }
+        if (search !== undefined && search !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search, 'search');
+        }
+        if (authOnly !== undefined && authOnly !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>authOnly, 'authOnly');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/audit/stats`;
+        return this.httpClient.request<AuditStatsDto>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,

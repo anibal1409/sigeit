@@ -26,7 +26,12 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/audit-action.ts
 model/audit-logs-page-dto.ts
+model/audit-stats-action-item-dto.ts
+model/audit-stats-by-day-item-dto.ts
+model/audit-stats-dto.ts
+model/audit-stats-resource-item-dto.ts
 model/audit-summary-dto.ts
 model/career-section-stat-item-dto.ts
 model/change-password-dto.ts
