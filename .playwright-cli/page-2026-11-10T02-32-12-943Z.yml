@@ -1,0 +1,21 @@
+- generic [ref=e7]:
+  - generic [ref=e9]:
+    - heading "Bienvenido a" [level=2] [ref=e11]
+    - img "logo" [ref=e13]
+  - generic [ref=e14]:
+    - generic [ref=e18]:
+      - generic [ref=e19]:
+        - text: Usuario
+        - generic [aria-hidden] [ref=e20]: "*"
+      - textbox "Usuario" [ref=e21]
+    - generic [ref=e25]:
+      - generic [ref=e26]:
+        - generic [ref=e27]:
+          - text: Contraseña
+          - generic [aria-hidden] [ref=e28]: "*"
+        - textbox "Contraseña" [ref=e29]
+      - button "Hide password" [pressed] [ref=e31] [cursor=pointer]:
+        - img [aria-hidden] [ref=e33]: visibility
+    - generic [ref=e37]: Restablecer contraseña
+  - generic [ref=e39]:
+    - button "Iniciar Sesión" [disabled]

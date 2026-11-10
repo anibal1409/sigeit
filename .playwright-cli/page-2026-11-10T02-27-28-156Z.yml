@@ -1,0 +1,107 @@
+- generic [ref=f1e1]:
+  - generic [ref=f1e7]:
+    - generic [ref=f1e8]:
+      - button "Example icon-button with menu icon" [ref=f1e9] [cursor=pointer]:
+        - img [aria-hidden] [ref=f1e10]: menu
+      - generic [ref=f1e13]: Formatos
+      - generic [ref=f1e14]:
+        - img [aria-hidden] [ref=f1e15]: school
+        - generic [ref=f1e16]: II-2026
+      - generic [ref=f1e17]: Adminnistrador
+      - button "Example icon-button with share icon" [ref=f1e18] [cursor=pointer]:
+        - img [aria-hidden] [ref=f1e19]: more_vert
+    - generic [ref=f1e120]:
+      - banner [ref=f1e121]:
+        - button "Volver a formatos" [ref=f1e122] [cursor=pointer]:
+          - img [aria-hidden] [ref=f1e123]: arrow_back
+        - heading "Crear formato" [level=1] [ref=f1e126]
+      - generic [ref=f1e127]:
+        - generic [ref=f1e128]:
+          - generic [ref=f1e129]:
+            - generic [ref=f1e130]:
+              - generic [ref=f1e134]:
+                - generic [ref=f1e135]:
+                  - text: Nombre
+                  - generic [aria-hidden] [ref=f1e136]: "*"
+                - textbox "Nombre" [ref=f1e137]: C-1 Distribución de Carga Académica
+              - generic [ref=f1e142] [cursor=pointer]:
+                - generic [ref=f1e143]:
+                  - text: Tipo
+                  - generic [aria-hidden] [ref=f1e144]: "*"
+                - combobox "Tipo Carga académica" [ref=f1e145]:
+                  - generic [ref=f1e146]: Carga académica
+              - generic [ref=f1e157] [cursor=pointer]:
+                - generic [ref=f1e158]:
+                  - text: Departamento
+                  - generic [aria-hidden] [ref=f1e159]: "*"
+                - combobox "Departamento" [expanded] [active] [ref=f1e160]
+            - generic [ref=f1e170]:
+              - checkbox "Activo" [checked] [ref=f1e173] [cursor=pointer]
+              - generic [ref=f1e174] [cursor=pointer]: Activo
+            - paragraph [ref=f1e175]: "Solo puede haber un formato activo por departamento y tipo: al activar este, se desactivan los demás."
+            - generic [ref=f1e176]:
+              - heading "Cuerpo" [level=2] [ref=f1e177]
+              - button "Restaurar texto por defecto" [ref=f1e178] [cursor=pointer]:
+                - img [aria-hidden] [ref=f1e179]: restart_alt
+            - group "Insertar variable en el cuerpo" [ref=f1e183]:
+              - 'button "{profesor}" [ref=f1e184] [cursor=pointer]'
+              - 'button "{periodo}" [ref=f1e188] [cursor=pointer]'
+              - 'button "{horas}" [ref=f1e192] [cursor=pointer]'
+              - 'button "{departamento}" [ref=f1e196] [cursor=pointer]'
+              - 'button "{tabla}" [ref=f1e200] [cursor=pointer]'
+            - generic [ref=f1e204]:
+              - generic [ref=f1e207]:
+                - generic [ref=f1e208]:
+                  - text: Texto de la carta
+                  - generic [aria-hidden] [ref=f1e209]: "*"
+                - textbox "Texto de la carta" [ref=f1e210]: "Ciudadano(a) **PROF. {profesor}** Presente Estimado Profesor: Es grato dirigirme a usted, en la oportunidad de saludarle y hacerle entrega de su Carga Académica para el Periodo Académico {periodo}; que se detalla a continuación: {tabla} En tal sentido, le auguro un semestre de éxitos profesionales y de buenos rendimientos para los estudiantes que cursan la(s) asignatura(s) que usted dictará en el Departamento de {departamento} y en pro de enaltecer a nuestra Casa más Alta. Sin otro particular, reiterándole mi aprecio y consideración. Le saluda"
+              - generic [ref=f1e211]: Cada línea es un párrafo. Una línea vacía deja un espacio. **texto** va en negrita.
+            - heading "Firma" [level=2] [ref=f1e215]
+            - group "Insertar variable en la firma" [ref=f1e216]:
+              - 'button "{profesor}" [ref=f1e217] [cursor=pointer]'
+              - 'button "{periodo}" [ref=f1e221] [cursor=pointer]'
+              - 'button "{horas}" [ref=f1e225] [cursor=pointer]'
+              - 'button "{departamento}" [ref=f1e229] [cursor=pointer]'
+              - 'button "{tabla}" [ref=f1e233] [cursor=pointer]'
+            - generic [ref=f1e237]:
+              - generic [ref=f1e240]:
+                - generic [ref=f1e241]:
+                  - text: Firma
+                  - generic [aria-hidden] [ref=f1e242]: "*"
+                - textbox "Firma" [ref=f1e243]: Atentamente, **Jefe(a) de Departamento** C.c. Expediente, Archivo
+              - generic [ref=f1e244]: Va centrada. Las líneas que empiezan con «C.c.» van alineadas a la izquierda y en letra pequeña.
+          - generic [ref=f1e248]:
+            - button "Cancelar" [ref=f1e249] [cursor=pointer]
+            - button "Guardar" [disabled]:
+              - img [aria-hidden]: save
+        - region "Vista previa" [ref=f1e253]:
+          - heading "Vista previa" [level=2] [ref=f1e254]
+          - generic [ref=f1e255]:
+            - paragraph [ref=f1e256]: Encabezado institucional, fecha y número de oficio
+            - paragraph [ref=f1e282]: Ciudadano(a)
+            - paragraph [ref=f1e283]:
+              - strong [ref=f1e284]: PROF. PÉREZ GONZÁLEZ, MARÍA
+            - paragraph [ref=f1e285]: Presente
+            - paragraph [ref=f1e286]
+            - paragraph [ref=f1e287]: "Estimado Profesor:"
+            - paragraph [ref=f1e288]
+            - paragraph [ref=f1e289]: "Es grato dirigirme a usted, en la oportunidad de saludarle y hacerle entrega de su Carga Académica para el Periodo Académico I-2026; que se detalla a continuación:"
+            - paragraph [ref=f1e290]
+            - generic [ref=f1e291]: Tabla de horarios · Total de horas
+            - paragraph [ref=f1e292]
+            - paragraph [ref=f1e293]: En tal sentido, le auguro un semestre de éxitos profesionales y de buenos rendimientos para los estudiantes que cursan la(s) asignatura(s) que usted dictará en el Departamento de Ingeniería de Sistemas y en pro de enaltecer a nuestra Casa más Alta.
+            - paragraph [ref=f1e294]
+            - paragraph [ref=f1e295]: Sin otro particular, reiterándole mi aprecio y consideración.
+            - paragraph [ref=f1e296]
+            - paragraph [ref=f1e297]: Le saluda
+            - generic [ref=f1e273]:
+              - paragraph [ref=f1e298]: Atentamente,
+              - paragraph [ref=f1e299]
+              - paragraph [ref=f1e300]
+              - paragraph [ref=f1e301]
+              - paragraph [ref=f1e302]:
+                - strong [ref=f1e303]: Jefe(a) de Departamento
+              - paragraph [ref=f1e304]
+              - paragraph [ref=f1e305]: C.c. Expediente, Archivo
+  - listbox "Departamento" [ref=f1e308]:
+    - option "Ingeniería de Sistemas" [ref=f1e309] [cursor=pointer]

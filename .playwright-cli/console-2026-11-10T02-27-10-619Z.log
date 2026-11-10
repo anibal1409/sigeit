@@ -1,0 +1,2 @@
+[      32ms] [INFO] [webpack-dev-server] Server started: Hot Module Replacement disabled, Live Reloading enabled, Progress disabled, Overlay enabled. @ http://localhost:4201/polyfills.js:1586
+[     161ms] [LOG] Angular is running in development mode. @ http://localhost:4201/vendor.js:110064
