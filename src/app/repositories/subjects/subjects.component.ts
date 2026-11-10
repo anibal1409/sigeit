@@ -26,6 +26,7 @@ import { DepartmentItemVM } from '../departments';
 import { FormComponent } from './form';
 import {
   RowActionSubject,
+  SUBJECT_INSTRUCTION_LABEL,
   SubjectItemVM,
   SubjectVM,
 } from './model';
@@ -59,6 +60,26 @@ export class SubjectsComponent implements OnInit, OnDestroy {
         columnDef: 'hours',
         header: 'Horas Semanales',
         cell: (element: { [key: string]: string }) => `${element['hours']}`,
+      },
+      {
+        columnDef: 'theoreticalHours',
+        header: 'Teóricas',
+        cell: (element: { [key: string]: string }) =>
+          `${element['theoreticalHours'] ?? 0}`,
+      },
+      {
+        columnDef: 'practicalHours',
+        header: 'Prácticas',
+        cell: (element: { [key: string]: string }) =>
+          `${element['practicalHours'] ?? 0}`,
+      },
+      {
+        columnDef: 'instructionType',
+        header: 'Modalidad',
+        cell: (element: { [key: string]: string }) => {
+          const type = element['instructionType'] as keyof typeof SUBJECT_INSTRUCTION_LABEL;
+          return type ? SUBJECT_INSTRUCTION_LABEL[type] : '';
+        },
       },
       {
         columnDef: 'semester',

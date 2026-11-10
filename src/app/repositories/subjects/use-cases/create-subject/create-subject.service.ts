@@ -31,6 +31,8 @@ export class CreateSubjectService
         code: entitySave.code,
         credits: entitySave.credits,
         hours: entitySave.hours,
+        theoreticalHours: entitySave.theoreticalHours,
+        practicalHours: entitySave.practicalHours,
         semester: entitySave.semester,
         typeCurriculum: entitySave.typeCurriculum,
         description: entitySave.description,

@@ -29,22 +29,15 @@
     >
   </mat-form-field>
 
-  <!-- <mat-form-field class="">
+  <mat-form-field>
     <mat-label>Descripción</mat-label>
     <textarea
-      class="form-control"
       id="description"
-      type="text"
       formControlName="description"
-      maxlength="200"
-      rows="2"
+      rows="3"
       matInput
-    >
-    </textarea>
-    <mat-error *ngIf="form.controls['description'].hasError('maxlength')"
-      >200 caracteres maximo</mat-error
-    >
-  </mat-form-field> -->
+    ></textarea>
+  </mat-form-field>
 
   <mat-grid-list cols="2" rowHeight="80px">
     <mat-grid-tile>
@@ -65,7 +58,7 @@
         >
       </mat-form-field>
     </mat-grid-tile>
-    <mat-grid-tile>  
+    <mat-grid-tile>
       <mat-form-field>
         <mat-label>Semestre</mat-label>
         <input
@@ -87,7 +80,7 @@
   <mat-grid-list cols="2" rowHeight="80px">
     <mat-grid-tile>
       <mat-form-field>
-        <mat-label>Creditos</mat-label>
+        <mat-label>Créditos</mat-label>
         <input
           matInput
           type="number"
@@ -102,9 +95,9 @@
         >
       </mat-form-field>
     </mat-grid-tile>
-    <mat-grid-tile>  
+    <mat-grid-tile>
       <mat-form-field>
-        <mat-label>Hora(s)</mat-label>
+        <mat-label>Horas semanales</mat-label>
         <input
           matInput
           type="number"
@@ -120,6 +113,56 @@
       </mat-form-field>
     </mat-grid-tile>
   </mat-grid-list>
+
+  <mat-grid-list cols="2" rowHeight="80px">
+    <mat-grid-tile>
+      <mat-form-field>
+        <mat-label>Horas teóricas</mat-label>
+        <input
+          matInput
+          type="number"
+          name="theoreticalHours"
+          id="theoreticalHours"
+          formControlName="theoreticalHours"
+          required
+        />
+        <mat-error
+          *ngIf="form.controls['theoreticalHours'].hasError('min')"
+          >Debe ser ≥ 0</mat-error
+        >
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field>
+        <mat-label>Horas prácticas</mat-label>
+        <input
+          matInput
+          type="number"
+          name="practicalHours"
+          id="practicalHours"
+          formControlName="practicalHours"
+          required
+        />
+        <mat-error
+          *ngIf="form.controls['practicalHours'].hasError('min')"
+          >Debe ser ≥ 0</mat-error
+        >
+      </mat-form-field>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <p class="modality-preview" *ngIf="!form.hasError('hoursMismatch') && !form.hasError('hoursEmptySplit') && !form.hasError('hoursInvalid')">
+    Modalidad: {{ modalityPreview }}
+  </p>
+  <p class="hours-error" *ngIf="form.hasError('hoursMismatch')">
+    Las horas teóricas y prácticas deben sumar el total semanal.
+  </p>
+  <p class="hours-error" *ngIf="form.hasError('hoursEmptySplit')">
+    Con horas semanales mayores a 0 debe haber teoría y/o práctica.
+  </p>
+  <p class="hours-error" *ngIf="form.hasError('hoursInvalid')">
+    Las horas deben ser enteros mayores o iguales a 0.
+  </p>
 
   <mat-form-field>
     <mat-label>Departamento</mat-label>
@@ -140,7 +183,7 @@
     >Campo requerido</mat-error
     >
   </mat-form-field>
-  
+
   <mat-form-field>
     <mat-label>Estado</mat-label>
     <mat-select

@@ -2,4 +2,17 @@
   mat-form-field {
     width: 100%;
   }
+
+  .modality-preview {
+    margin: 0 0 0.75rem;
+    font-size: 0.875rem;
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .hours-error {
+    margin: 0 0 0.75rem;
+    font-size: 0.75rem;
+    color: #f44336;
+  }
 }
+
