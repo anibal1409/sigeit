@@ -1,4 +1,7 @@
-import { CreateTeacherDto } from 'dashboard-sdk';
+import {
+  CreateTeacherDto,
+  TeacherDedication,
+} from 'dashboard-sdk';
 
 import { TeacherVM } from '../model';
 
@@ -16,7 +19,7 @@ export function TeacherVM2TeacherDto(teacher: TeacherVM): CreateTeacherDto {
     email: teacher.email,
     category: teacher.category ?? null,
     employmentStatus: teacher.employmentStatus ?? null,
-    dedication: teacher.dedication ?? null,
+    dedication: teacher.dedication || TeacherDedication.Exclusiva,
     hiringEvaluationStatus: teacher.hiringEvaluationStatus ?? null,
     hiringEvaluationDate: teacher.hiringEvaluationDate || null,
     hiringEvaluationNotes: teacher.hiringEvaluationNotes || null,

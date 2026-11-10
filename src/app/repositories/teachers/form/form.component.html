@@ -124,11 +124,11 @@
   <mat-form-field>
     <mat-label>Dedicación</mat-label>
     <mat-select formControlName="dedication">
-      <mat-option [value]="null">Sin especificar</mat-option>
       <mat-option *ngFor="let option of dedicationOptions" [value]="option.value">
         {{ option.name }}
       </mat-option>
     </mat-select>
+    <mat-error *ngIf="form.controls['dedication'].hasError('required')">Campo requerido</mat-error>
   </mat-form-field>
 
   <mat-form-field>

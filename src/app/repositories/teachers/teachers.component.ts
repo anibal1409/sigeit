@@ -27,6 +27,7 @@ import { DepartmentItemVM } from '../departments';
 import { FormComponent } from './form';
 import {
   CATEGORY_OPTIONS,
+  DEDICATION_OPTIONS,
   EMPLOYMENT_STATUS_OPTIONS,
   HIRING_EVALUATION_OPTIONS,
   optionName,
@@ -78,6 +79,11 @@ export class TeachersComponent implements OnInit, OnDestroy {
         columnDef: 'employmentStatus',
         header: 'Condición',
         cell: (element: any) => optionName(EMPLOYMENT_STATUS_OPTIONS, element.employmentStatus),
+      },
+      {
+        columnDef: 'dedication',
+        header: 'Dedicación',
+        cell: (element: any) => optionName(DEDICATION_OPTIONS, element.dedication),
       },
       {
         columnDef: 'hiringEvaluationStatus',

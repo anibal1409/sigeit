@@ -1,3 +1,5 @@
+import { TeacherDedication } from 'dashboard-sdk';
+
 import { TeacherVM } from '../model';
 
 export function Teacher2TeacherVM(teacher: any): TeacherVM {
@@ -12,7 +14,8 @@ export function Teacher2TeacherVM(teacher: any): TeacherVM {
     fullName: teacher?.lastName ? `${teacher?.lastName}, ${teacher?.firstName}` : teacher?.firstName,
     category: teacher?.category ?? null,
     employmentStatus: teacher?.employmentStatus ?? null,
-    dedication: teacher?.dedication ?? null,
+    // La API siempre envía dedicación; si faltara (datos viejos en memoria) se asume exclusiva.
+    dedication: teacher?.dedication ?? TeacherDedication.Exclusiva,
     hiringEvaluationStatus: teacher?.hiringEvaluationStatus ?? null,
     hiringEvaluationDate: teacher?.hiringEvaluationDate ?? null,
     hiringEvaluationNotes: teacher?.hiringEvaluationNotes ?? null,

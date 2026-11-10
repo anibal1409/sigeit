@@ -19,6 +19,8 @@ import { Subscription } from 'rxjs';
 
 import { UserStateService } from '../../../common';
 import { DepartmentItemVM } from '../../departments';
+import { TeacherDedication } from 'dashboard-sdk';
+
 import {
   CATEGORY_OPTIONS,
   DEDICATION_OPTIONS,
@@ -53,6 +55,7 @@ export class FormComponent implements OnInit, OnDestroy {
     lastName: '',
     status: true,
     id: 0,
+    dedication: TeacherDedication.Exclusiva,
   };
 
   status = [
@@ -137,7 +140,7 @@ export class FormComponent implements OnInit, OnDestroy {
       departmentId: [null, [Validators.required]],
       category: [null],
       employmentStatus: [null],
-      dedication: [null],
+      dedication: [TeacherDedication.Exclusiva, [Validators.required]],
       hiringEvaluationStatus: [null],
       hiringEvaluationDate: [null],
       hiringEvaluationNotes: [null],

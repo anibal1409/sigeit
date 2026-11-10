@@ -384,7 +384,7 @@ export class SectionsManageComponent implements OnInit, OnDestroy {
   }
 
   dedicationName(item: ResponseSectionTeacherDto): string {
-    return DEDICATION_OPTIONS.find((option) => option.value === item.teacher.dedication)?.name || 'Sin dedicación';
+    return DEDICATION_OPTIONS.find((option) => option.value === item.teacher.dedication)?.name || '—';
   }
 
   sectionHours(group: SubjectGroup, row: SectionRow): number {

@@ -25,12 +25,17 @@ export const EMPLOYMENT_STATUS_OPTIONS: Array<OptionVM<EmploymentStatus>> = [
   { value: EmploymentStatus.Permanent, name: 'Fijo' },
 ];
 
+/** Valores de dedicación alineados con la API (`EXCLUSIVA`, `TIEMPO_COMPLETO`, `MEDIO_TIEMPO`). */
 export const DEDICATION_OPTIONS: Array<OptionVM<TeacherDedication>> = [
-  { value: TeacherDedication.Exclusive, name: 'Exclusiva' },
-  { value: TeacherDedication.FullTime, name: 'Tiempo completo' },
-  { value: TeacherDedication.HalfTime, name: 'Medio tiempo' },
-  { value: TeacherDedication.Conventional, name: 'Convencional' },
+  { value: TeacherDedication.Exclusiva, name: 'Exclusiva' },
+  { value: TeacherDedication.TiempoCompleto, name: 'Tiempo completo' },
+  { value: TeacherDedication.MedioTiempo, name: 'Medio tiempo' },
 ];
+
+/** Etiqueta visible de cada dedicación; evita mostrar el enum crudo. */
+export const DEDICATION_LABEL: Record<TeacherDedication, string> = Object.fromEntries(
+  DEDICATION_OPTIONS.map((option) => [option.value, option.name]),
+) as Record<TeacherDedication, string>;
 
 export const HIRING_EVALUATION_OPTIONS: Array<OptionVM<HiringEvaluationStatus>> = [
   { value: HiringEvaluationStatus.InEvaluation, name: 'En evaluación' },

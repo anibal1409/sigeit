@@ -16,7 +16,8 @@ export interface TeacherVM {
   fullName?: string;
   category?: TeacherCategory | null;
   employmentStatus?: EmploymentStatus | null;
-  dedication?: TeacherDedication | null;
+  /** Dedicación del profesor; en respuestas de la API siempre viene informada. */
+  dedication: TeacherDedication;
   hiringEvaluationStatus?: HiringEvaluationStatus | null;
   hiringEvaluationDate?: string | null;
   hiringEvaluationNotes?: string | null;
